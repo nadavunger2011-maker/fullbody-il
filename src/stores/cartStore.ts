@@ -23,16 +23,37 @@ export const useCartStore = create<CartState>()(
         const { items } = get();
         const existingItem = items.find(i => i.variantId === item.variantId);
         
+        let newItems: CartItem[];
         if (existingItem) {
-          set({
-            items: items.map(i =>
-              i.variantId === item.variantId
-                ? { ...i, quantity: i.quantity + item.quantity }
-                : i
-            )
-          });
+          newItems = items.map(i =>
+            i.variantId === item.variantId
+              ? { ...i, quantity: i.quantity + item.quantity }
+              : i
+          );
         } else {
-          set({ items: [...items, item] });
+          newItems = [...items, item];
+        }
+        
+        set({ items: newItems });
+        
+        // Track cart update with Flashy
+        if (typeof window !== 'undefined' && window.flashy) {
+          const total = newItems.reduce(
+            (sum, i) => sum + parseFloat(i.price.amount) * i.quantity,
+            0
+          );
+          window.flashy('UpdateCart', {
+            items: newItems.map(i => ({
+              product_id: i.product.node.id,
+              variant_id: i.variantId,
+              title: i.product.node.title,
+              quantity: i.quantity,
+              price: parseFloat(i.price.amount),
+              image_url: i.product.node.images.edges[0]?.node.url
+            })),
+            total,
+            currency: 'ILS'
+          });
         }
       },
       

@@ -41,6 +41,23 @@ const ThankYou = () => {
         'ILS'
       );
 
+      // Track purchase with Flashy
+      if (typeof window !== 'undefined' && window.flashy) {
+        window.flashy('Purchase', {
+          order_id: orderId || `order_${Date.now()}`,
+          items: items.map(item => ({
+            product_id: item.product.node.id,
+            variant_id: item.variantId,
+            title: item.product.node.title,
+            quantity: item.quantity,
+            price: parseFloat(item.price.amount),
+            image_url: item.product.node.images.edges[0]?.node.url
+          })),
+          total,
+          currency: 'ILS'
+        });
+      }
+
       // Clear the cart after tracking
       clearCart();
     }
