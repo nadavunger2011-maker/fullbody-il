@@ -283,6 +283,9 @@ export default function FullBody() {
 
       {/* Header */}
       <header className="sticky top-0 z-40 bg-card shadow-card border-b border-border">
+        {/* Flashy Popup Injection */}
+        <div data-inject-flashy-popup="58404" data-conditions="false"></div>
+        
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
           
           {/* Mobile Menu Button */}
