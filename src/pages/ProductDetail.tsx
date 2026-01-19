@@ -35,6 +35,14 @@ export default function ProductDetail() {
         // Get related products (exclude current product)
         const related = products.filter(p => p.node.handle !== handle).slice(0, 4);
         setRelatedProducts(related);
+        
+        // Track ViewContent with Flashy
+        if (typeof window !== 'undefined' && window.flashy) {
+          const productId = foundProduct.node.id.replace('gid://shopify/Product/', '');
+          window.flashy('ViewContent', {
+            content_ids: [productId]
+          });
+        }
       }
       setIsLoading(false);
     };

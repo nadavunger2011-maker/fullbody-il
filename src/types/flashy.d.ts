@@ -6,22 +6,33 @@ declare global {
   }
 }
 
+interface FlashyContacts {
+  create: (data: FlashyContactData, listId?: number) => void;
+  update: (data: Record<string, unknown>) => void;
+  anonymous: () => boolean;
+  createOrUpdate: (data: FlashyContactData & { lists?: Record<number, boolean> }) => void;
+}
+
 type FlashyFunction = {
   (command: 'init', accountId: string): void;
-  (command: 'identify', data: FlashyIdentifyData): void;
+  (command: 'PageView'): void;
+  (command: 'ViewContent', data: FlashyViewContentData): void;
   (command: 'setCustomer', data: FlashyCustomerData): void;
   (command: 'UpdateCart', data: FlashyCartData): void;
+  (command: 'AddToCart', data: FlashyCartData): void;
   (command: 'Purchase', data: FlashyPurchaseData): void;
-  (command: 'track', eventName: string, data?: Record<string, unknown>): void;
+  (command: 'PurchaseUpdated', data: FlashyPurchaseUpdatedData): void;
+  (command: 'CustomEvent', data: { event_name: string }): void;
+  (command: string, data?: Record<string, unknown>): void;
+  contacts: FlashyContacts;
   q?: unknown[];
 };
 
-interface FlashyIdentifyData {
+interface FlashyContactData {
   email: string;
   first_name?: string;
   last_name?: string;
   phone?: string;
-  list_id?: string;
   [key: string]: unknown;
 }
 
@@ -33,28 +44,29 @@ interface FlashyCustomerData {
   [key: string]: unknown;
 }
 
-interface FlashyCartItem {
-  product_id: string;
-  variant_id: string;
-  title: string;
-  quantity: number;
-  price: number;
-  image_url?: string;
+interface FlashyViewContentData {
+  content_ids: string[];
 }
 
 interface FlashyCartData {
-  cart_id?: string;
-  items: FlashyCartItem[];
-  total: number;
-  currency?: string;
+  content_ids: string[];
+  value: number;
+  currency: string;
 }
 
 interface FlashyPurchaseData {
+  content_ids: string[];
+  value: number;
+  currency: string;
   order_id: string;
-  items: FlashyCartItem[];
-  total: number;
+}
+
+interface FlashyPurchaseUpdatedData {
+  status: string;
+  order_id: string;
+  content_ids?: string[];
+  value?: number;
   currency?: string;
-  email?: string;
 }
 
 declare const flashy: FlashyFunction;
