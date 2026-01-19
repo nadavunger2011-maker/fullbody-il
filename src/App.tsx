@@ -16,6 +16,7 @@ import FAQ from "./pages/FAQ";
 import Contact from "./pages/Contact";
 import About from "./pages/About";
 import Accessibility from "./pages/Accessibility";
+import ProductDetail from "./pages/ProductDetail";
 
 const queryClient = new QueryClient();
 
@@ -27,6 +28,7 @@ const App = () => (
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Index />} />
+          <Route path="/product/:handle" element={<ProductDetail />} />
           <Route path="/blog" element={<Blog />} />
           <Route path="/blog/:slug" element={<BlogPost />} />
           <Route path="/thank-you" element={<ThankYou />} />
