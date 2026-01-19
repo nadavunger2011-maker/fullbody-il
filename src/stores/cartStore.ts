@@ -4,17 +4,20 @@ import type { CartItem } from '@/lib/shopify';
 
 interface CartState {
   items: CartItem[];
+  isLoading: boolean;
   addItem: (item: CartItem) => void;
   removeItem: (variantId: string) => void;
   updateQuantity: (variantId: string, quantity: number) => void;
   clearCart: () => void;
   getTotal: () => number;
+  createCheckout: () => Promise<string | null>;
 }
 
 export const useCartStore = create<CartState>()(
   persist(
     (set, get) => ({
       items: [],
+      isLoading: false,
       
       addItem: (item: CartItem) => {
         const { items } = get();
@@ -56,6 +59,14 @@ export const useCartStore = create<CartState>()(
           (sum, item) => sum + parseFloat(item.price.amount) * item.quantity,
           0
         );
+      },
+
+      createCheckout: async () => {
+        set({ isLoading: true });
+        // Mock checkout - returns thank you page
+        await new Promise(resolve => setTimeout(resolve, 500));
+        set({ isLoading: false });
+        return '/thank-you';
       }
     }),
     {
