@@ -36,22 +36,18 @@ export const useCartStore = create<CartState>()(
         
         set({ items: newItems });
         
-        // Track cart update with Flashy
+        // Track cart update with Flashy (using correct format from docs)
         if (typeof window !== 'undefined' && window.flashy) {
           const total = newItems.reduce(
             (sum, i) => sum + parseFloat(i.price.amount) * i.quantity,
             0
           );
+          const contentIds = newItems.map(i => 
+            i.product.node.id.replace('gid://shopify/Product/', '')
+          );
           window.flashy('UpdateCart', {
-            items: newItems.map(i => ({
-              product_id: i.product.node.id,
-              variant_id: i.variantId,
-              title: i.product.node.title,
-              quantity: i.quantity,
-              price: parseFloat(i.price.amount),
-              image_url: i.product.node.images.edges[0]?.node.url
-            })),
-            total,
+            content_ids: contentIds,
+            value: total,
             currency: 'ILS'
           });
         }

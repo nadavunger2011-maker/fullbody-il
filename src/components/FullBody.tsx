@@ -9,6 +9,7 @@ import logoImage from '@/assets/logo.png';
 import { fetchShopifyProducts, ShopifyProduct, CartItem as ShopifyCartItem } from '@/lib/shopify';
 import { useCartStore } from '@/stores/cartStore';
 import { toast } from 'sonner';
+import { useFlashyPageView } from '@/hooks/useFlashyPageView';
 
 import AccessibilityWidget from './AccessibilityWidget';
 import CartDrawer from './CartDrawer';
@@ -185,6 +186,9 @@ export default function FullBody() {
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [isLoading, setIsLoading] = useState(true);
   const [products, setProducts] = useState<ShopifyProduct[]>([]);
+
+  // Send Flashy PageView event for general pages
+  useFlashyPageView();
 
   // Cart store
   const { items: cartItems, addItem, createCheckout } = useCartStore();

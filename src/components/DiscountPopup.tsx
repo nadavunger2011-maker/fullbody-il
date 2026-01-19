@@ -57,13 +57,15 @@ const DiscountPopup = () => {
     setIsSubmitting(true);
 
     try {
-      // Send to Flashy
-      if (typeof window !== 'undefined' && window.flashy) {
-        window.flashy('identify', {
+      // Send to Flashy - Subscribe contact to list
+      if (typeof window !== 'undefined' && window.flashy?.contacts) {
+        const contactData: { email: string; first_name?: string } = {
           email: email.trim(),
-          first_name: firstName.trim() || undefined,
-          list_id: '34516'
-        });
+        };
+        if (firstName.trim()) {
+          contactData.first_name = firstName.trim();
+        }
+        window.flashy.contacts.create(contactData, 34516);
       }
 
       // Mark popup as shown
