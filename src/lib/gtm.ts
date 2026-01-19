@@ -44,6 +44,17 @@ export function trackAddToCart(item: GTMItem) {
   });
 }
 
+export function trackViewCart(items: GTMItem[], total: number, currency: string) {
+  pushToDataLayer({
+    event: 'view_cart',
+    ecommerce: {
+      currency,
+      value: total,
+      items
+    }
+  });
+}
+
 export function trackRemoveFromCart(item: GTMItem) {
   pushToDataLayer({
     event: 'remove_from_cart',
