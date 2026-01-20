@@ -17,7 +17,6 @@ import Contact from "./pages/Contact";
 import About from "./pages/About";
 import Accessibility from "./pages/Accessibility";
 import ProductDetail from "./pages/ProductDetail";
-import DiscountPopup from "./components/DiscountPopup";
 
 const queryClient = new QueryClient();
 
@@ -27,7 +26,6 @@ const App = () => (
       <Toaster />
       <Sonner />
       <BrowserRouter>
-        <DiscountPopup />
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/product/:handle" element={<ProductDetail />} />
