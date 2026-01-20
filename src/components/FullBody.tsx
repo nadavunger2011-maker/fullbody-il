@@ -496,14 +496,14 @@ export default function FullBody() {
                   className="group bg-card rounded-xl overflow-hidden hover:shadow-hover transition-all duration-300 border border-border flex flex-col animate-fade-in"
                   style={{ animationDelay: `${index * 0.05}s` }}
                 >
-                  <Link to={`/product/${product.node.handle}`} className="relative overflow-hidden aspect-square bg-secondary block cursor-pointer">
+                  <Link to={`/product/${product.node.handle}`} className="relative overflow-hidden aspect-square bg-white block cursor-pointer">
                     {product.node.images?.edges?.[0]?.node && (
                       <img 
                         src={product.node.images.edges[0].node.url} 
                         alt={product.node.title}
                         loading="lazy"
                         decoding="async"
-                        className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500" 
+                        className="w-full h-full object-contain transform group-hover:scale-105 transition-transform duration-500" 
                       />
                     )}
                   </Link>
