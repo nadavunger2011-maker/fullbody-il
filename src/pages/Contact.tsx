@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { Helmet } from 'react-helmet-async';
 import { ArrowRight, Phone, Mail, MapPin, Clock, Send, Zap } from 'lucide-react';
 import { toast } from 'sonner';
 
@@ -19,6 +20,11 @@ export default function Contact() {
 
   return (
     <div dir="rtl" className="font-sans text-foreground bg-background min-h-screen">
+      <Helmet>
+        <title>צור קשר | FullBody - תוספי תזונה</title>
+        <meta name="description" content="צרו קשר עם FullBody בטלפון 052-4487537 או במייל info@fullbody.co.il. שעות פעילות: א'-ה' 9:00-18:00. כתובת: רחוב זרחין 1, רעננה." />
+        <link rel="canonical" href="https://fullbody.co.il/contact" />
+      </Helmet>
       {/* Header */}
       <header className="sticky top-0 z-40 bg-card shadow-card border-b border-border">
         <div className="container mx-auto px-4 h-20 flex items-center justify-between">

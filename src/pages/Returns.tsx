@@ -1,9 +1,15 @@
 import { Link } from 'react-router-dom';
+import { Helmet } from 'react-helmet-async';
 import { ArrowRight, RotateCcw, Package, Clock, AlertTriangle, Mail, Phone, MapPin, Zap } from 'lucide-react';
 
 export default function Returns() {
   return (
     <div dir="rtl" className="font-sans text-foreground bg-background min-h-screen">
+      <Helmet>
+        <title>מדיניות החזרות | FullBody - תוספי תזונה</title>
+        <meta name="description" content="מדיניות החזרות והחזר כספי של FullBody. ביטול עסקה תוך 14 יום, החזר כספי עד 14 ימי עסקים. מוצרים באריזה מקורית סגורה." />
+        <link rel="canonical" href="https://fullbody.co.il/returns" />
+      </Helmet>
       {/* Header */}
       <header className="sticky top-0 z-40 bg-card shadow-card border-b border-border">
         <div className="container mx-auto px-4 h-20 flex items-center justify-between">

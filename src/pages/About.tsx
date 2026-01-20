@@ -1,10 +1,16 @@
 import { Link } from 'react-router-dom';
+import { Helmet } from 'react-helmet-async';
 import { Zap, Award, Users, Target, ArrowRight } from 'lucide-react';
 import Footer from '@/components/Footer';
 
 export default function About() {
   return (
     <div dir="rtl" className="font-sans text-foreground bg-background min-h-screen">
+      <Helmet>
+        <title>אודות | FullBody - תוספי תזונה איכותיים</title>
+        <meta name="description" content="הכירו את FullBody - חנות תוספי התזונה המובילה בישראל. אנחנו מאמינים שכל אחד יכול להגיע לשיא הפוטנציאל הפיזי שלו עם מוצרים איכותיים." />
+        <link rel="canonical" href="https://fullbody.co.il/about" />
+      </Helmet>
       {/* Header */}
       <header className="sticky top-0 z-40 bg-card shadow-card border-b border-border">
         <div className="container mx-auto px-4 h-20 flex items-center justify-between">
