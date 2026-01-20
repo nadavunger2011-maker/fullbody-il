@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { Helmet } from 'react-helmet-async';
 import { Menu, X, Zap } from 'lucide-react';
 import {
   Accordion,
@@ -50,6 +51,11 @@ const FAQ: React.FC = () => {
 
   return (
     <div dir="rtl" className="bg-background min-h-screen font-sans text-foreground">
+      <Helmet>
+        <title>שאלות נפוצות | FullBody - תוספי תזונה</title>
+        <meta name="description" content="תשובות לשאלות נפוצות על משלוחים, החזרות, כשרות ועוד. משלוח חינם מעל ₪299, מוצרים כשרים למהדרין, והחזרה תוך 14 יום." />
+        <link rel="canonical" href="https://fullbody.co.il/faq" />
+      </Helmet>
       {/* Header */}
       <header className="sticky top-0 z-40 bg-card shadow-card border-b border-border">
         <div className="container mx-auto px-4 h-20 flex items-center justify-between">

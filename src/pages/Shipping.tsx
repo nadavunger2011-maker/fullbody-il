@@ -1,9 +1,15 @@
 import { Link } from 'react-router-dom';
+import { Helmet } from 'react-helmet-async';
 import { ArrowRight, Truck, Clock, Package, RotateCcw } from 'lucide-react';
 
 export default function Shipping() {
   return (
     <div dir="rtl" className="font-sans text-foreground bg-background min-h-screen">
+      <Helmet>
+        <title>משלוחים והחזרות | FullBody - תוספי תזונה</title>
+        <meta name="description" content="מדיניות משלוחים והחזרות של FullBody. משלוח חינם מעל ₪299, זמן אספקה עד 5 ימי עסקים, החזרה תוך 14 יום באריזה סגורה." />
+        <link rel="canonical" href="https://fullbody.co.il/shipping" />
+      </Helmet>
       {/* Header */}
       <header className="sticky top-0 z-40 bg-card shadow-card border-b border-border">
         <div className="container mx-auto px-4 h-20 flex items-center justify-between">

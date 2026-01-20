@@ -1,9 +1,15 @@
 import { Link } from 'react-router-dom';
+import { Helmet } from 'react-helmet-async';
 import { ArrowRight } from 'lucide-react';
 
 export default function Terms() {
   return (
     <div dir="rtl" className="font-sans text-foreground bg-background min-h-screen">
+      <Helmet>
+        <title>תנאי שימוש | FullBody - תוספי תזונה</title>
+        <meta name="description" content="תנאי השימוש של אתר FullBody. מידע על הזמנות, ביטולים, החזרות ופרטי העסק." />
+        <link rel="canonical" href="https://fullbody.co.il/terms" />
+      </Helmet>
       {/* Header */}
       <header className="sticky top-0 z-40 bg-card shadow-card border-b border-border">
         <div className="container mx-auto px-4 h-20 flex items-center justify-between">

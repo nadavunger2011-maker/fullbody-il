@@ -1,9 +1,15 @@
 import { Link } from 'react-router-dom';
+import { Helmet } from 'react-helmet-async';
 import { Zap, ArrowLeft, Eye, Ear, Hand, Brain } from 'lucide-react';
 
 const Accessibility = () => {
   return (
     <div dir="rtl" className="min-h-screen bg-background font-sans">
+      <Helmet>
+        <title>הצהרת נגישות | FullBody - תוספי תזונה</title>
+        <meta name="description" content="הצהרת הנגישות של FullBody. האתר עומד בתקן WCAG 2.1 AA ומותאם לאנשים עם מוגבלויות. לפניות: 052-4487537." />
+        <link rel="canonical" href="https://fullbody.co.il/accessibility" />
+      </Helmet>
       {/* Header */}
       <header className="sticky top-0 z-40 bg-card shadow-card border-b border-border">
         <div className="container mx-auto px-4 h-16 flex items-center justify-between">

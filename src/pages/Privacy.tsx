@@ -1,9 +1,15 @@
 import { Link } from 'react-router-dom';
+import { Helmet } from 'react-helmet-async';
 import { ArrowRight, Zap } from 'lucide-react';
 
 export default function Privacy() {
   return (
     <div dir="rtl" className="font-sans text-foreground bg-background min-h-screen">
+      <Helmet>
+        <title>מדיניות פרטיות | FullBody - תוספי תזונה</title>
+        <meta name="description" content="מדיניות הפרטיות של FullBody בהתאם לתיקון 13 לחוק הגנת הפרטיות. מידע על איסוף מידע, שימוש בנתונים וזכויותיך." />
+        <link rel="canonical" href="https://fullbody.co.il/privacy" />
+      </Helmet>
       {/* Header */}
       <header className="sticky top-0 z-40 bg-card shadow-card border-b border-border">
         <div className="container mx-auto px-4 h-20 flex items-center justify-between">

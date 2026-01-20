@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useMemo, useRef } from 'react';
 import { Link } from 'react-router-dom';
+import { Helmet } from 'react-helmet-async';
 import { 
   Menu, X, ShoppingBag, Search, 
   Truck, ShieldCheck, CheckCircle, HeartPulse, 
@@ -266,6 +267,15 @@ export default function FullBody() {
 
   return (
     <div dir="rtl" className="font-sans text-foreground bg-background min-h-screen">
+      <Helmet>
+        <title>FullBody - תוספי תזונה איכותיים | משלוח חינם מעל ₪299</title>
+        <meta name="description" content="חנות תוספי התזונה המובילה בישראל. אבקות חלבון, ויטמינים, פרה-וורקאאוט ועוד. מוצרים כשרים למהדרין, משלוח מהיר לכל הארץ." />
+        <link rel="canonical" href="https://fullbody.co.il/" />
+        <meta property="og:title" content="FullBody - תוספי תזונה איכותיים" />
+        <meta property="og:description" content="חנות תוספי התזונה המובילה בישראל. אבקות חלבון, ויטמינים, פרה-וורקאאוט ועוד." />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://fullbody.co.il/" />
+      </Helmet>
       
       <AccessibilityWidget />
       

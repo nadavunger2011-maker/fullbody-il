@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import { Helmet } from 'react-helmet-async';
 import { Calendar, Clock, ArrowLeft, Menu, X, Search, ShoppingBag } from 'lucide-react';
 import { useState } from 'react';
 
@@ -116,6 +117,11 @@ export default function Blog() {
 
   return (
     <div dir="rtl" className="font-sans text-foreground bg-background min-h-screen">
+      <Helmet>
+        <title>הבלוג | FullBody - מאמרים על תזונה, אימון ואורח חיים בריא</title>
+        <meta name="description" content="מאמרים מקצועיים על תזונת ספורטאים, תוספי תזונה, טיפים לאימון ואורח חיים בריא. כל מה שצריך לדעת על חלבונים, קריאטין ועוד." />
+        <link rel="canonical" href="https://fullbody.co.il/blog" />
+      </Helmet>
       {/* Announcement Bar */}
       <div className="bg-primary text-primary-foreground text-center py-2.5 text-sm font-medium">
         משלוח חינם בקנייה מעל ₪299 | כשר למהדרין
