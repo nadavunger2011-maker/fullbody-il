@@ -51,20 +51,19 @@ export default function BlogPost() {
     loadRelatedProducts();
   }, [post, navigate]);
 
-  const handleAddToCart = (product: ShopifyProduct) => {
+  const handleAddToCart = async (product: ShopifyProduct) => {
     const variant = product.node.variants.edges[0]?.node;
     if (!variant) return;
 
-    const cartItem: ShopifyCartItem = {
+    await addItem({
       product,
       variantId: variant.id,
       variantTitle: variant.title,
       price: variant.price,
       quantity: 1,
       selectedOptions: variant.selectedOptions || []
-    };
+    });
     
-    addItem(cartItem);
     toast.success(`${product.node.title} נוסף לעגלה`);
   };
 
