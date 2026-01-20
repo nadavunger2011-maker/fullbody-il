@@ -49,22 +49,21 @@ export default function ProductDetail() {
     loadProduct();
   }, [handle]);
 
-  const handleAddToCart = () => {
+  const handleAddToCart = async () => {
     if (!product) return;
     
     const variant = product.node.variants.edges[selectedVariantIndex]?.node;
     if (!variant) return;
 
-    const cartItem: ShopifyCartItem = {
+    await addItem({
       product,
       variantId: variant.id,
       variantTitle: variant.title,
       price: variant.price,
       quantity,
       selectedOptions: variant.selectedOptions || []
-    };
+    });
     
-    addItem(cartItem);
     setIsCartOpen(true);
     toast.success(`${product.node.title} נוסף לעגלה`);
   };

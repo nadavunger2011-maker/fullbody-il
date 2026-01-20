@@ -191,7 +191,7 @@ export default function FullBody() {
   useFlashyPageView();
 
   // Cart store
-  const { items: cartItems, addItem, createCheckout } = useCartStore();
+  const { items: cartItems, addItem } = useCartStore();
 
   // Fetch products (mock data for now)
   useEffect(() => {
@@ -243,30 +243,23 @@ export default function FullBody() {
     }
   }, [isMobileMenuOpen]);
 
-  const handleAddToCart = (product: ShopifyProduct) => {
+  const handleAddToCart = async (product: ShopifyProduct) => {
     const variant = product.node.variants.edges[0]?.node;
     if (!variant) return;
 
-    const cartItem: ShopifyCartItem = {
+    await addItem({
       product,
       variantId: variant.id,
       variantTitle: variant.title,
       price: variant.price,
       quantity: 1,
       selectedOptions: variant.selectedOptions || []
-    };
+    });
     
-    addItem(cartItem);
     setIsCartOpen(true);
     toast.success(`${product.node.title} נוסף לעגלה`);
   };
 
-  const handleCheckout = async () => {
-    const checkoutUrl = await createCheckout();
-    if (checkoutUrl) {
-      window.location.href = checkoutUrl;
-    }
-  };
 
   const cartTotal = cartItems.reduce((sum, item) => sum + (parseFloat(item.price.amount) * item.quantity), 0);
   const cartCount = cartItems.reduce((sum, item) => sum + item.quantity, 0);

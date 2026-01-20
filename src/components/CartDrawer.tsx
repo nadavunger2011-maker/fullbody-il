@@ -1,6 +1,5 @@
-import { X, Plus, Minus, ShoppingBag, Trash2 } from 'lucide-react';
+import { X, Plus, Minus, ShoppingBag, Trash2, Loader2 } from 'lucide-react';
 import { useCartStore } from '@/stores/cartStore';
-import { createShopifyCheckout } from '@/lib/shopify';
 import { Button } from '@/components/ui/button';
 import { toast } from 'sonner';
 
@@ -10,21 +9,22 @@ interface CartDrawerProps {
 }
 
 export default function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
-  const { items, removeItem, updateQuantity, getTotal } = useCartStore();
+  const { items, removeItem, updateQuantity, getTotal, getCheckoutUrl, isLoading } = useCartStore();
   const total = getTotal();
   const freeShippingThreshold = 299;
   const remainingForFreeShipping = Math.max(0, freeShippingThreshold - total);
 
-  const handleCheckout = async () => {
+  const handleCheckout = () => {
     if (items.length === 0) {
       toast.error('העגלה ריקה');
       return;
     }
     
-    try {
-      const checkoutUrl = await createShopifyCheckout(items);
-      window.location.href = checkoutUrl;
-    } catch (error) {
+    const checkoutUrl = getCheckoutUrl();
+    if (checkoutUrl) {
+      window.open(checkoutUrl, '_blank');
+      onClose();
+    } else {
       toast.error('שגיאה ביצירת הזמנה');
     }
   };
