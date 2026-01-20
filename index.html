@@ -14,11 +14,9 @@
     
     <!-- Flashy Pixel -->
     <script>
-      !function(f,l,a,s,h,y){f.FlashyObject=h;f[h]=f[h]||function(){
-      (f[h].q=f[h].q||[]).push(arguments)};y=l.createElement(a);
-      y.async=1;y.src=s;l.head.appendChild(y)}
-      (window,document,'script','https://cdn.flashy.co.il/flashy.min.js','flashy');
-      flashy('init', '12132');
+      'use strict'; (function (a, b, c) { if (!a.flashy) { a.flashy = function () { a.flashy.event && a.flashy.event(arguments), a.flashy.queue.push(arguments) }, a.flashy.queue = []; var d = document.getElementsByTagName('script')[0], e = document.createElement(b); e.src = c, e.async = !0, d.parentNode.insertBefore(e, d) } })(window, 'script', 'https://js.flashyapp.com/thunder.js');
+      flashy('init', 12132);
+      flashy('PageView');
     </script>
     <!-- TODO: Set the document title to the name of your application -->
     <title>Lovable App</title>
