@@ -1,1 +1,7 @@
 project_id = "jfogxnstkykpsyeegmnm"
+
+[functions.google-merchant-feed]
+verify_jwt = false
+
+[functions.shopify-proxy]
+verify_jwt = false

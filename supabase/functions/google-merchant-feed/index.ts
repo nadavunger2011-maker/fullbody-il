@@ -8,7 +8,6 @@ const corsHeaders = {
 const SHOPIFY_STORE_DOMAIN = 'fullbody-il.myshopify.com';
 const SHOPIFY_API_VERSION = '2025-07';
 const SHOPIFY_STOREFRONT_URL = `https://${SHOPIFY_STORE_DOMAIN}/api/${SHOPIFY_API_VERSION}/graphql.json`;
-const SHOPIFY_STOREFRONT_TOKEN = '24f43d6d6b1e9e40c173ab07430458b3';
 const STORE_URL = 'https://fullbody.co.il';
 
 const STOREFRONT_QUERY = `
@@ -142,6 +141,16 @@ serve(async (req) => {
   }
 
   try {
+    const SHOPIFY_STOREFRONT_TOKEN = Deno.env.get('SHOPIFY_STOREFRONT_ACCESS_TOKEN');
+    
+    if (!SHOPIFY_STOREFRONT_TOKEN) {
+      console.error('Missing SHOPIFY_STOREFRONT_ACCESS_TOKEN environment variable');
+      return new Response(
+        JSON.stringify({ error: 'Server configuration error' }),
+        { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+
     console.log('Fetching products from Shopify for Google Merchant Feed...');
     
     const response = await fetch(SHOPIFY_STOREFRONT_URL, {
