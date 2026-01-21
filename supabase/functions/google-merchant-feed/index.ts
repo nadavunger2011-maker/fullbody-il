@@ -116,7 +116,7 @@ function generateProductXml(product: ShopifyProduct): string {
   
   const price = parseFloat(node.priceRange.minVariantPrice.amount).toFixed(2);
   const currency = node.priceRange.minVariantPrice.currencyCode;
-  const availability = variant?.availableForSale ? 'in_stock' : 'out_of_stock';
+  const availability = 'in_stock';
   const productId = node.id.split('/').pop();
   
   return `
