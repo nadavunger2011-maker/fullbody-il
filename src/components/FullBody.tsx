@@ -500,54 +500,69 @@ export default function FullBody() {
                 <p className="text-muted-foreground">נסו לחפש במילים אחרות או לבחור קטגוריה אחרת</p>
               </div>
             ) : (
-              filteredProducts.map((product, index) => (
-                <div 
-                  key={product.node.id} 
-                  className="group bg-card rounded-xl overflow-hidden hover:shadow-hover transition-all duration-300 border border-border flex flex-col animate-fade-in"
-                  style={{ animationDelay: `${index * 0.05}s` }}
-                >
-                  <Link to={`/product/${product.node.handle}`} className="relative overflow-hidden aspect-square bg-secondary/30 block cursor-pointer flex items-center justify-center p-4">
-                    {product.node.images?.edges?.[0]?.node ? (
-                      <img 
-                        src={product.node.images.edges[0].node.url} 
-                        alt={product.node.title}
-                        loading="lazy"
-                        decoding="async"
-                        className="max-w-[85%] max-h-[85%] object-contain transform group-hover:scale-105 transition-transform duration-500" 
-                      />
-                    ) : (
-                      <div className="w-full h-full flex items-center justify-center bg-muted">
-                        <ShoppingBag className="w-12 h-12 text-muted-foreground opacity-30" />
-                      </div>
-                    )}
-                  </Link>
-                  <div className="p-3 sm:p-5 flex-1 flex flex-col">
-                    <Link to={`/product/${product.node.handle}`} className="font-bold text-sm sm:text-lg text-foreground mb-1 sm:mb-2 group-hover:text-accent transition-colors hover:underline">
-                      <span className="sm:hidden">{product.node.title.length > 25 ? product.node.title.slice(0, 25) + '...' : product.node.title}</span>
-                      <span className="hidden sm:inline">{product.node.title}</span>
+              <>
+                {filteredProducts.slice(0, 8).map((product, index) => (
+                  <div 
+                    key={product.node.id} 
+                    className="group bg-card rounded-xl overflow-hidden hover:shadow-hover transition-all duration-300 border border-border flex flex-col animate-fade-in"
+                    style={{ animationDelay: `${index * 0.05}s` }}
+                  >
+                    <Link to={`/product/${product.node.handle}`} className="relative overflow-hidden aspect-square bg-secondary/30 block cursor-pointer flex items-center justify-center p-4">
+                      {product.node.images?.edges?.[0]?.node ? (
+                        <img 
+                          src={product.node.images.edges[0].node.url} 
+                          alt={product.node.title}
+                          loading="lazy"
+                          decoding="async"
+                          className="max-w-[85%] max-h-[85%] object-contain transform group-hover:scale-105 transition-transform duration-500" 
+                        />
+                      ) : (
+                        <div className="w-full h-full flex items-center justify-center bg-muted">
+                          <ShoppingBag className="w-12 h-12 text-muted-foreground opacity-30" />
+                        </div>
+                      )}
                     </Link>
-                    <p className="text-xs sm:text-sm text-muted-foreground line-clamp-2 mb-2 sm:mb-4">
-                      <span className="sm:hidden">{product.node.description.length > 60 ? product.node.description.slice(0, 60) + '...' : product.node.description}</span>
-                      <span className="hidden sm:inline">{product.node.description}</span>
-                    </p>
-                    <div className="mt-auto flex items-center justify-between mb-2 sm:mb-4">
-                      <span className="font-black text-lg sm:text-xl text-foreground">
-                        {product.node.priceRange.minVariantPrice.currencyCode === 'ILS' ? '₪' : product.node.priceRange.minVariantPrice.currencyCode}
-                        {parseFloat(product.node.priceRange.minVariantPrice.amount).toFixed(0)}
-                      </span>
+                    <div className="p-3 sm:p-5 flex-1 flex flex-col">
+                      <Link to={`/product/${product.node.handle}`} className="font-bold text-sm sm:text-lg text-foreground mb-1 sm:mb-2 group-hover:text-accent transition-colors hover:underline">
+                        <span className="sm:hidden">{product.node.title.length > 25 ? product.node.title.slice(0, 25) + '...' : product.node.title}</span>
+                        <span className="hidden sm:inline">{product.node.title}</span>
+                      </Link>
+                      <p className="text-xs sm:text-sm text-muted-foreground line-clamp-2 mb-2 sm:mb-4">
+                        <span className="sm:hidden">{product.node.description.length > 60 ? product.node.description.slice(0, 60) + '...' : product.node.description}</span>
+                        <span className="hidden sm:inline">{product.node.description}</span>
+                      </p>
+                      <div className="mt-auto flex items-center justify-between mb-2 sm:mb-4">
+                        <span className="font-black text-lg sm:text-xl text-foreground">
+                          {product.node.priceRange.minVariantPrice.currencyCode === 'ILS' ? '₪' : product.node.priceRange.minVariantPrice.currencyCode}
+                          {parseFloat(product.node.priceRange.minVariantPrice.amount).toFixed(0)}
+                        </span>
+                      </div>
+                      <button 
+                        onClick={() => handleAddToCart(product)}
+                        className="w-full bg-accent text-accent-foreground font-bold py-2 sm:py-3 text-sm sm:text-base rounded-lg shadow-cta transition-all duration-300 flex justify-center items-center gap-2 hover:bg-accent/90 active:scale-95 border border-primary-foreground/20"
+                      >
+                        הוסף לעגלה
+                        <ShoppingBag className="w-4 h-4" />
+                      </button>
                     </div>
-                    <button 
-                      onClick={() => handleAddToCart(product)}
-                      className="w-full bg-accent text-accent-foreground font-bold py-2 sm:py-3 text-sm sm:text-base rounded-lg shadow-cta transition-all duration-300 flex justify-center items-center gap-2 hover:bg-accent/90 active:scale-95 border border-primary-foreground/20"
-                    >
-                      הוסף לעגלה
-                      <ShoppingBag className="w-4 h-4" />
-                    </button>
                   </div>
-                </div>
-              ))
+                ))}
+              </>
             )}
           </div>
+
+          {/* View All Products Button */}
+          {!isLoading && filteredProducts.length > 8 && (
+            <div className="text-center mt-10">
+              <Link 
+                to="/products"
+                className="inline-flex items-center gap-2 bg-primary text-primary-foreground font-bold py-3 px-8 rounded-lg shadow-lg hover:bg-primary/90 transition-all duration-300 active:scale-95"
+              >
+                צפייה בכל המוצרים ({filteredProducts.length})
+                <ShoppingBag className="w-5 h-5" />
+              </Link>
+            </div>
+          )}
         </div>
       </section>
 
