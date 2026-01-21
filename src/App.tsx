@@ -19,6 +19,7 @@ import Contact from "./pages/Contact";
 import About from "./pages/About";
 import Accessibility from "./pages/Accessibility";
 import ProductDetail from "./pages/ProductDetail";
+import Products from "./pages/Products";
 
 const queryClient = new QueryClient();
 
@@ -29,6 +30,7 @@ function AppContent() {
     <Routes>
       <Route path="/" element={<Index />} />
       <Route path="/product/:handle" element={<ProductDetail />} />
+      <Route path="/products" element={<Products />} />
       <Route path="/blog" element={<Blog />} />
       <Route path="/blog/:slug" element={<BlogPost />} />
       <Route path="/thank-you" element={<ThankYou />} />
