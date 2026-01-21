@@ -124,7 +124,7 @@ function generateProductXml(product: ShopifyProduct): string {
       <g:id>${escapeXml(productId || node.handle)}</g:id>
       <g:title>${escapeXml(node.title)}</g:title>
       <g:description>${escapeXml(node.description || node.title)}</g:description>
-      <g:link>${STORE_URL}/products/${escapeXml(node.handle)}</g:link>
+      <g:link>${STORE_URL}/product/${escapeXml(node.handle)}</g:link>
       <g:image_link>${escapeXml(image?.url || '')}</g:image_link>
       <g:availability>${availability}</g:availability>
       <g:price>${price} ${currency}</g:price>
