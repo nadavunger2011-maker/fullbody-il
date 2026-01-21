@@ -566,6 +566,104 @@ export default function FullBody() {
         </div>
       </section>
 
+      {/* News & Updates Section */}
+      <section className="py-20 bg-secondary/30">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl md:text-4xl font-black text-foreground mb-4">חדשות ועדכונים</h2>
+            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+              מאמרים, טיפים ומידע מקצועי על תזונה, אימון ואורח חיים בריא
+            </p>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {/* Blog Post 1 */}
+            <Link 
+              to="/blog/protein-guide-beginners"
+              className="group bg-card rounded-2xl overflow-hidden border border-border hover:shadow-hover transition-all duration-300"
+            >
+              <div className="aspect-video overflow-hidden">
+                <img 
+                  src="https://images.unsplash.com/photo-1593095948071-474c5cc2989d?w=800" 
+                  alt="המדריך המלא לאבקות חלבון"
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                />
+              </div>
+              <div className="p-6">
+                <span className="inline-block bg-accent/10 text-accent px-3 py-1 rounded-full text-sm font-bold mb-3">
+                  תוספים
+                </span>
+                <h3 className="text-xl font-bold text-foreground mb-2 group-hover:text-accent transition-colors">
+                  המדריך המלא לאבקות חלבון למתחילים
+                </h3>
+                <p className="text-muted-foreground text-sm line-clamp-2">
+                  כל מה שצריך לדעת על אבקות חלבון: סוגים, יתרונות, ואיך לבחור את האבקה הנכונה עבורכם.
+                </p>
+              </div>
+            </Link>
+
+            {/* Blog Post 2 */}
+            <Link 
+              to="/blog/best-pre-workout-tips"
+              className="group bg-card rounded-2xl overflow-hidden border border-border hover:shadow-hover transition-all duration-300"
+            >
+              <div className="aspect-video overflow-hidden">
+                <img 
+                  src="https://images.unsplash.com/photo-1517836357463-d25dfeac3438?w=800" 
+                  alt="טיפים לפרה-וורקאאוט"
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                />
+              </div>
+              <div className="p-6">
+                <span className="inline-block bg-accent/10 text-accent px-3 py-1 rounded-full text-sm font-bold mb-3">
+                  אימון
+                </span>
+                <h3 className="text-xl font-bold text-foreground mb-2 group-hover:text-accent transition-colors">
+                  5 טיפים לאימון מושלם עם פרה-וורקאאוט
+                </h3>
+                <p className="text-muted-foreground text-sm line-clamp-2">
+                  איך להפיק את המקסימום מתוסף הפרה-וורקאאוט שלכם ולשפר את הביצועים באימון.
+                </p>
+              </div>
+            </Link>
+
+            {/* Blog Post 3 */}
+            <Link 
+              to="/blog/creatine-benefits"
+              className="group bg-card rounded-2xl overflow-hidden border border-border hover:shadow-hover transition-all duration-300"
+            >
+              <div className="aspect-video overflow-hidden">
+                <img 
+                  src="https://images.unsplash.com/photo-1579722821273-0f6c7d44362f?w=800" 
+                  alt="היתרונות של קריאטין"
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                />
+              </div>
+              <div className="p-6">
+                <span className="inline-block bg-accent/10 text-accent px-3 py-1 rounded-full text-sm font-bold mb-3">
+                  תוספים
+                </span>
+                <h3 className="text-xl font-bold text-foreground mb-2 group-hover:text-accent transition-colors">
+                  היתרונות של קריאטין: למה כל ספורטאי צריך
+                </h3>
+                <p className="text-muted-foreground text-sm line-clamp-2">
+                  קריאטין הוא אחד התוספים הנחקרים ביותר. גלו את כל היתרונות שלו לבניית שריר וכוח.
+                </p>
+              </div>
+            </Link>
+          </div>
+
+          <div className="text-center mt-10">
+            <Link 
+              to="/blog"
+              className="inline-flex items-center gap-2 bg-primary text-primary-foreground font-bold py-3 px-8 rounded-lg shadow-lg hover:bg-primary/90 transition-all duration-300 active:scale-95"
+            >
+              לכל המאמרים
+            </Link>
+          </div>
+        </div>
+      </section>
+
       {/* About Section */}
       <section id="about" className="py-20 bg-primary text-primary-foreground">
         <div className="container mx-auto px-4">
