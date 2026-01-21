@@ -1,10 +1,10 @@
 import { toast } from "sonner";
+import { supabase } from "@/integrations/supabase/client";
 
 // Shopify API Configuration
 const SHOPIFY_API_VERSION = '2025-07';
 const SHOPIFY_STORE_PERMANENT_DOMAIN = 'fullbody-il.myshopify.com';
 const SHOPIFY_STOREFRONT_URL = `https://${SHOPIFY_STORE_PERMANENT_DOMAIN}/api/${SHOPIFY_API_VERSION}/graphql.json`;
-const SHOPIFY_STOREFRONT_TOKEN = '24f43d6d6b1e9e40c173ab07430458b3';
 
 // Shopify Types
 export interface ShopifyPrice {
@@ -206,38 +206,36 @@ const CART_LINES_REMOVE_MUTATION = `
   }
 `;
 
-// Storefront API helper function
+// Storefront API helper function - now uses Edge Function proxy for security
 export async function storefrontApiRequest(query: string, variables: Record<string, unknown> = {}) {
-  const response = await fetch(SHOPIFY_STOREFRONT_URL, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'X-Shopify-Storefront-Access-Token': SHOPIFY_STOREFRONT_TOKEN
-    },
-    body: JSON.stringify({
-      query,
-      variables,
-    }),
-  });
-
-  if (response.status === 402) {
-    toast.error("Shopify: Payment required", {
-      description: "Shopify API access requires an active Shopify billing plan.",
+  try {
+    const { data, error } = await supabase.functions.invoke('shopify-proxy', {
+      body: { query, variables },
     });
-    return;
-  }
 
-  if (!response.ok) {
-    throw new Error(`HTTP error! status: ${response.status}`);
-  }
+    if (error) {
+      console.error('Shopify proxy error:', error);
+      throw new Error(error.message || 'Failed to call Shopify API');
+    }
 
-  const data = await response.json();
-  
-  if (data.errors) {
-    throw new Error(`Error calling Shopify: ${data.errors.map((e: { message: string }) => e.message).join(', ')}`);
-  }
+    if (data?.errors) {
+      throw new Error(`Error calling Shopify: ${data.errors.map((e: { message: string }) => e.message).join(', ')}`);
+    }
 
-  return data;
+    return data;
+  } catch (error) {
+    console.error('Storefront API request failed:', error);
+    
+    // Check for 402 payment required
+    if (error instanceof Error && error.message.includes('402')) {
+      toast.error("Shopify: Payment required", {
+        description: "Shopify API access requires an active Shopify billing plan.",
+      });
+      return;
+    }
+    
+    throw error;
+  }
 }
 
 // Fetch products from Shopify
