@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
-import { ChevronRight, ShoppingBag, Truck, ShieldCheck, ArrowLeft } from 'lucide-react';
+import { ChevronRight, ShoppingBag, Truck, ShieldCheck, ArrowLeft, Clock, Award, RefreshCw, HeartHandshake, Loader2 } from 'lucide-react';
 import { fetchShopifyProducts, ShopifyProduct, CartItem as ShopifyCartItem } from '@/lib/shopify';
 import { useCartStore } from '@/stores/cartStore';
 import { toast } from 'sonner';
@@ -9,6 +9,12 @@ import logoImage from '@/assets/logo.png';
 import Footer from '@/components/Footer';
 import CartDrawer from '@/components/CartDrawer';
 import AccessibilityWidget from '@/components/AccessibilityWidget';
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
 
 export default function ProductDetail() {
   const { handle } = useParams<{ handle: string }>();
@@ -16,6 +22,7 @@ export default function ProductDetail() {
   const [product, setProduct] = useState<ShopifyProduct | null>(null);
   const [relatedProducts, setRelatedProducts] = useState<ShopifyProduct[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [isAddingToCart, setIsAddingToCart] = useState(false);
   const [selectedVariantIndex, setSelectedVariantIndex] = useState(0);
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
   const [quantity, setQuantity] = useState(1);
@@ -50,22 +57,29 @@ export default function ProductDetail() {
   }, [handle]);
 
   const handleAddToCart = async () => {
-    if (!product) return;
+    if (!product || isAddingToCart) return;
     
     const variant = product.node.variants.edges[selectedVariantIndex]?.node;
     if (!variant) return;
 
-    await addItem({
-      product,
-      variantId: variant.id,
-      variantTitle: variant.title,
-      price: variant.price,
-      quantity,
-      selectedOptions: variant.selectedOptions || []
-    });
-    
-    setIsCartOpen(true);
-    toast.success(`${product.node.title} נוסף לעגלה`);
+    setIsAddingToCart(true);
+    try {
+      await addItem({
+        product,
+        variantId: variant.id,
+        variantTitle: variant.title,
+        price: variant.price,
+        quantity,
+        selectedOptions: variant.selectedOptions || []
+      });
+      
+      setIsCartOpen(true);
+      toast.success(`${product.node.title} נוסף לעגלה`);
+    } catch (error) {
+      toast.error('שגיאה בהוספה לעגלה. נסה שוב.');
+    } finally {
+      setIsAddingToCart(false);
+    }
   };
 
   if (isLoading) {
@@ -88,6 +102,15 @@ export default function ProductDetail() {
   const selectedVariant = product.node.variants.edges[selectedVariantIndex]?.node;
   const images = product.node.images.edges;
   const currentImage = images[selectedImageIndex]?.node;
+
+  const trustFactors = [
+    { icon: Truck, text: 'משלוח חינם מעל ₪299' },
+    { icon: ShieldCheck, text: 'כשרות למהדרין' },
+    { icon: Clock, text: 'אספקה תוך 3-5 ימי עסקים' },
+    { icon: Award, text: 'מוצרים באיכות פרימיום' },
+    { icon: RefreshCw, text: 'החזרה עד 14 יום' },
+    { icon: HeartHandshake, text: 'שירות לקוחות אישי' },
+  ];
 
   return (
     <>
@@ -160,7 +183,7 @@ export default function ProductDetail() {
             {/* Image Gallery */}
             <div className="space-y-4">
               {/* Main Image */}
-              <div className="aspect-square bg-secondary rounded-2xl overflow-hidden">
+              <div className="aspect-square bg-secondary rounded-2xl overflow-hidden shadow-lg">
                 {currentImage && (
                   <img 
                     src={currentImage.url} 
@@ -178,7 +201,7 @@ export default function ProductDetail() {
                       key={index}
                       onClick={() => setSelectedImageIndex(index)}
                       className={`w-20 h-20 rounded-lg overflow-hidden flex-shrink-0 border-2 transition-all ${
-                        selectedImageIndex === index ? 'border-accent' : 'border-transparent'
+                        selectedImageIndex === index ? 'border-accent ring-2 ring-accent/30' : 'border-transparent hover:border-muted-foreground/30'
                       }`}
                     >
                       <img 
@@ -194,18 +217,19 @@ export default function ProductDetail() {
 
             {/* Product Info */}
             <div className="space-y-6">
-              <div>
-                <h1 className="text-3xl md:text-4xl font-black text-foreground mb-4">
+              {/* Title & Description */}
+              <div className="bg-card/50 rounded-2xl p-6 border border-border/50">
+                <h1 className="text-3xl md:text-4xl font-black text-foreground mb-4 leading-tight">
                   {product.node.title}
                 </h1>
-                <p className="text-muted-foreground leading-relaxed">
+                <p className="text-muted-foreground leading-relaxed text-base">
                   {product.node.description}
                 </p>
               </div>
 
               {/* Price */}
               <div className="flex items-baseline gap-3">
-                <span className="text-4xl font-black text-foreground">
+                <span className="text-4xl font-black text-accent">
                   ₪{parseFloat(selectedVariant?.price.amount || '0').toFixed(0)}
                 </span>
               </div>
@@ -220,12 +244,12 @@ export default function ProductDetail() {
                         key={variant.node.id}
                         onClick={() => setSelectedVariantIndex(index)}
                         disabled={!variant.node.availableForSale}
-                        className={`px-4 py-2 rounded-lg border-2 font-bold transition-all ${
+                        className={`px-5 py-2.5 rounded-xl border-2 font-bold transition-all ${
                           selectedVariantIndex === index
-                            ? 'border-accent bg-accent text-accent-foreground'
+                            ? 'border-accent bg-accent text-accent-foreground shadow-md'
                             : variant.node.availableForSale
-                              ? 'border-border hover:border-accent'
-                              : 'border-border opacity-50 cursor-not-allowed'
+                              ? 'border-border hover:border-accent hover:bg-accent/5'
+                              : 'border-border opacity-50 cursor-not-allowed line-through'
                         }`}
                       >
                         {variant.node.title}
@@ -241,14 +265,14 @@ export default function ProductDetail() {
                 <div className="flex items-center gap-3">
                   <button
                     onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                    className="w-10 h-10 rounded-lg border border-border flex items-center justify-center hover:border-accent transition-colors"
+                    className="w-12 h-12 rounded-xl border-2 border-border flex items-center justify-center hover:border-accent hover:bg-accent/5 transition-all text-lg font-bold"
                   >
                     -
                   </button>
-                  <span className="w-12 text-center font-bold text-lg">{quantity}</span>
+                  <span className="w-14 text-center font-black text-xl">{quantity}</span>
                   <button
                     onClick={() => setQuantity(quantity + 1)}
-                    className="w-10 h-10 rounded-lg border border-border flex items-center justify-center hover:border-accent transition-colors"
+                    className="w-12 h-12 rounded-xl border-2 border-border flex items-center justify-center hover:border-accent hover:bg-accent/5 transition-all text-lg font-bold"
                   >
                     +
                   </button>
@@ -258,22 +282,69 @@ export default function ProductDetail() {
               {/* Add to Cart Button */}
               <button
                 onClick={handleAddToCart}
-                disabled={!selectedVariant?.availableForSale}
-                className="w-full bg-accent text-accent-foreground font-bold py-4 text-lg rounded-xl shadow-cta transition-all duration-300 flex justify-center items-center gap-3 hover:bg-accent/90 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed"
+                disabled={!selectedVariant?.availableForSale || isAddingToCart}
+                className="w-full bg-accent text-accent-foreground font-bold py-4 text-lg rounded-xl shadow-cta transition-all duration-300 flex justify-center items-center gap-3 hover:bg-accent/90 hover:shadow-lg active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                <ShoppingBag className="w-5 h-5" />
-                הוסף לעגלה - ₪{(parseFloat(selectedVariant?.price.amount || '0') * quantity).toFixed(0)}
+                {isAddingToCart ? (
+                  <>
+                    <Loader2 className="w-5 h-5 animate-spin" />
+                    מוסיף לעגלה...
+                  </>
+                ) : (
+                  <>
+                    <ShoppingBag className="w-5 h-5" />
+                    הוסף לעגלה - ₪{(parseFloat(selectedVariant?.price.amount || '0') * quantity).toFixed(0)}
+                  </>
+                )}
               </button>
 
-              {/* Trust Badges */}
-              <div className="grid grid-cols-2 gap-4 pt-6 border-t border-border">
-                <div className="flex items-center gap-3">
-                  <Truck className="w-5 h-5 text-accent" />
-                  <span className="text-sm text-muted-foreground">משלוח חינם מעל ₪299</span>
-                </div>
-                <div className="flex items-center gap-3">
-                  <ShieldCheck className="w-5 h-5 text-accent" />
-                  <span className="text-sm text-muted-foreground">כשרות למהדרין</span>
+              {/* Product Information Accordion */}
+              <Accordion type="single" collapsible className="w-full border border-border rounded-xl overflow-hidden">
+                <AccordionItem value="ingredients" className="border-b border-border">
+                  <AccordionTrigger className="px-4 py-3 hover:bg-muted/50 text-right font-bold">
+                    מרכיבים
+                  </AccordionTrigger>
+                  <AccordionContent className="px-4 pb-4 text-muted-foreground leading-relaxed">
+                    המוצר מכיל מרכיבים טבעיים באיכות הגבוהה ביותר. לפרטים מלאים על הרכב המוצר, עיין באריזה או פנה לשירות הלקוחות שלנו.
+                  </AccordionContent>
+                </AccordionItem>
+                <AccordionItem value="usage" className="border-b border-border">
+                  <AccordionTrigger className="px-4 py-3 hover:bg-muted/50 text-right font-bold">
+                    אופן השימוש
+                  </AccordionTrigger>
+                  <AccordionContent className="px-4 pb-4 text-muted-foreground leading-relaxed">
+                    יש לפעול לפי הוראות היצרן המופיעות על האריזה. מומלץ להתייעץ עם רופא או דיאטנית לפני השימוש. שמור במקום קריר ויבש.
+                  </AccordionContent>
+                </AccordionItem>
+                <AccordionItem value="warnings" className="border-b border-border">
+                  <AccordionTrigger className="px-4 py-3 hover:bg-muted/50 text-right font-bold">
+                    אזהרות
+                  </AccordionTrigger>
+                  <AccordionContent className="px-4 pb-4 text-muted-foreground leading-relaxed">
+                    אין לחרוג מהמנה היומית המומלצת. תוסף תזונה אינו תחליף לתזונה מאוזנת ולאורח חיים בריא. יש לשמור הרחק מהישג ידם של ילדים. נשים בהיריון או מניקות - יש להתייעץ עם רופא.
+                  </AccordionContent>
+                </AccordionItem>
+                <AccordionItem value="shipping" className="border-none">
+                  <AccordionTrigger className="px-4 py-3 hover:bg-muted/50 text-right font-bold">
+                    משלוחים והחזרות
+                  </AccordionTrigger>
+                  <AccordionContent className="px-4 pb-4 text-muted-foreground leading-relaxed">
+                    משלוח חינם בהזמנות מעל ₪299. זמן אספקה: 3-5 ימי עסקים. ניתן להחזיר מוצרים תוך 14 יום מיום הקבלה בכפוף למדיניות ההחזרות שלנו.
+                  </AccordionContent>
+                </AccordionItem>
+              </Accordion>
+
+              {/* Trust Factors */}
+              <div className="bg-muted/30 rounded-2xl p-5 border border-border/50">
+                <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                  {trustFactors.map((item, index) => (
+                    <div key={index} className="flex items-center gap-3 text-sm">
+                      <div className="w-10 h-10 rounded-xl bg-accent/10 flex items-center justify-center flex-shrink-0">
+                        <item.icon className="w-5 h-5 text-accent" />
+                      </div>
+                      <span className="text-foreground font-medium">{item.text}</span>
+                    </div>
+                  ))}
                 </div>
               </div>
             </div>
