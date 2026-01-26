@@ -3,10 +3,7 @@ import { MessageCircle, X } from "lucide-react";
 
 const WhatsAppButton = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const phoneNumber = "972524487537";
-  const message = "שלום, אשמח לקבל מידע נוסף על המוצרים שלכם";
-  
-  const whatsappUrl = `https://api.whatsapp.com/send?phone=${phoneNumber}&text=${encodeURIComponent(message)}`;
+  const whatsappUrl = "https://wa.link/0g4tht";
 
   const handleButtonClick = () => {
     if (isOpen) {
