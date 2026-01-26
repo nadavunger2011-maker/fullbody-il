@@ -9,7 +9,7 @@ const WhatsAppButton = () => {
   const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
 
   return (
-    <div className="fixed bottom-6 left-6 z-50 flex flex-col items-start gap-3">
+    <div className="fixed bottom-6 right-6 z-50 flex flex-col items-end gap-3">
       {/* Popup Message */}
       {isOpen && (
         <div className="bg-white rounded-2xl shadow-2xl p-4 max-w-[280px] animate-in slide-in-from-bottom-2 fade-in duration-300 border border-border">
