@@ -6,7 +6,21 @@ const WhatsAppButton = () => {
   const phoneNumber = "972524487537";
   const message = "שלום, אשמח לקבל מידע נוסף על המוצרים שלכם";
   
-  const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
+  const whatsappUrl = `https://api.whatsapp.com/send?phone=${phoneNumber}&text=${encodeURIComponent(message)}`;
+
+  const handleButtonClick = () => {
+    if (isOpen) {
+      setIsOpen(false);
+    } else {
+      // Open WhatsApp directly on mobile, show popup on desktop
+      const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+      if (isMobile) {
+        window.open(whatsappUrl, '_blank');
+      } else {
+        setIsOpen(true);
+      }
+    }
+  };
 
   return (
     <div className="fixed bottom-6 right-6 z-50 flex flex-col items-end gap-3">
@@ -50,7 +64,7 @@ const WhatsAppButton = () => {
 
       {/* Floating Button */}
       <button
-        onClick={() => setIsOpen(!isOpen)}
+        onClick={handleButtonClick}
         className="group w-14 h-14 bg-[#25D366] hover:bg-[#20bd5a] rounded-full shadow-lg hover:shadow-xl flex items-center justify-center transition-all duration-300 hover:scale-110"
         aria-label="פתח צ'אט ווטסאפ"
       >
@@ -63,7 +77,7 @@ const WhatsAppButton = () => {
       
       {/* Pulse animation when closed */}
       {!isOpen && (
-        <span className="absolute bottom-0 left-0 w-14 h-14 bg-[#25D366] rounded-full animate-ping opacity-20 pointer-events-none" />
+        <span className="absolute bottom-0 right-0 w-14 h-14 bg-[#25D366] rounded-full animate-ping opacity-20 pointer-events-none" />
       )}
     </div>
   );
