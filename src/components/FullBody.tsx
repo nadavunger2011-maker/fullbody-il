@@ -265,16 +265,90 @@ export default function FullBody() {
   const cartTotal = cartItems.reduce((sum, item) => sum + (parseFloat(item.price.amount) * item.quantity), 0);
   const cartCount = cartItems.reduce((sum, item) => sum + item.quantity, 0);
 
+  // Schema.org structured data for SEO and Google Merchant Center
+  const organizationSchema = {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "FullBody",
+    "legalName": "FullBody בע\"מ",
+    "url": "https://fullbody.co.il",
+    "logo": "https://fullbody.co.il/og-image.jpg",
+    "description": "חנות תוספי תזונה איכותיים לספורטאים בישראל",
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "רחוב זרחין 1",
+      "addressLocality": "רעננה",
+      "addressCountry": "IL"
+    },
+    "contactPoint": {
+      "@type": "ContactPoint",
+      "telephone": "+972-52-4487537",
+      "email": "info@fullbody.co.il",
+      "contactType": "customer service",
+      "availableLanguage": ["Hebrew", "English"]
+    },
+    "sameAs": []
+  };
+
+  const localBusinessSchema = {
+    "@context": "https://schema.org",
+    "@type": "Store",
+    "name": "FullBody - תוספי תזונה",
+    "image": "https://fullbody.co.il/og-image.jpg",
+    "url": "https://fullbody.co.il",
+    "telephone": "+972-52-4487537",
+    "email": "info@fullbody.co.il",
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "רחוב זרחין 1",
+      "addressLocality": "רעננה",
+      "addressCountry": "IL"
+    },
+    "openingHoursSpecification": [
+      {
+        "@type": "OpeningHoursSpecification",
+        "dayOfWeek": ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday"],
+        "opens": "09:00",
+        "closes": "18:00"
+      },
+      {
+        "@type": "OpeningHoursSpecification",
+        "dayOfWeek": "Friday",
+        "opens": "09:00",
+        "closes": "13:00"
+      }
+    ],
+    "priceRange": "₪₪"
+  };
+
+  const websiteSchema = {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "FullBody",
+    "url": "https://fullbody.co.il",
+    "potentialAction": {
+      "@type": "SearchAction",
+      "target": "https://fullbody.co.il/?search={search_term_string}",
+      "query-input": "required name=search_term_string"
+    }
+  };
+
   return (
     <div dir="rtl" className="font-sans text-foreground bg-background min-h-screen">
       <Helmet>
         <title>FullBody - תוספי תזונה איכותיים | משלוח חינם מעל ₪299</title>
-        <meta name="description" content="חנות תוספי התזונה המובילה בישראל. אבקות חלבון, ויטמינים, פרה-וורקאאוט ועוד. מוצרים כשרים למהדרין, משלוח מהיר לכל הארץ." />
+        <meta name="description" content="חנות תוספי התזונה המובילה בישראל. אבקות חלבון, ויטמינים, פרה-וורקאאוט ועוד. מוצרים כשרים למהדרין, משלוח מהיר לכל הארץ. פועלים מאז 2018." />
         <link rel="canonical" href="https://fullbody.co.il/" />
         <meta property="og:title" content="FullBody - תוספי תזונה איכותיים" />
-        <meta property="og:description" content="חנות תוספי התזונה המובילה בישראל. אבקות חלבון, ויטמינים, פרה-וורקאאוט ועוד." />
+        <meta property="og:description" content="חנות תוספי התזונה המובילה בישראל. אבקות חלבון, ויטמינים, פרה-וורקאאוט ועוד. כשר למהדרין." />
         <meta property="og:type" content="website" />
         <meta property="og:url" content="https://fullbody.co.il/" />
+        <meta property="og:image" content="https://fullbody.co.il/og-image.jpg" />
+        <meta property="og:locale" content="he_IL" />
+        <meta property="og:site_name" content="FullBody" />
+        <script type="application/ld+json">{JSON.stringify(organizationSchema)}</script>
+        <script type="application/ld+json">{JSON.stringify(localBusinessSchema)}</script>
+        <script type="application/ld+json">{JSON.stringify(websiteSchema)}</script>
       </Helmet>
       
       <AccessibilityWidget />
