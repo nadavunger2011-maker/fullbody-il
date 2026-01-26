@@ -20,6 +20,7 @@ import About from "./pages/About";
 import Accessibility from "./pages/Accessibility";
 import ProductDetail from "./pages/ProductDetail";
 import Products from "./pages/Products";
+import WhatsAppButton from "./components/WhatsAppButton";
 
 const queryClient = new QueryClient();
 
@@ -56,6 +57,7 @@ const App = () => (
         <Sonner />
         <BrowserRouter>
           <AppContent />
+          <WhatsAppButton />
         </BrowserRouter>
       </TooltipProvider>
     </QueryClientProvider>
