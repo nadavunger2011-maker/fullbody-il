@@ -42,16 +42,29 @@ export default function About() {
             <h2 className="text-3xl font-black text-primary mb-6">הסיפור שלנו</h2>
             <p className="text-muted-foreground leading-relaxed mb-6">
               FullBody נוסדה בשנת 2018 מתוך תשוקה לספורט ורצון להביא לישראל את תוספי התזונה האיכותיים ביותר בעולם. 
-              התחלנו כחנות קטנה בתל אביב, והיום אנחנו גאים לשרת אלפי לקוחות מרוצים בכל רחבי הארץ.
+              החברה פועלת מרעננה ומשרתת אלפי לקוחות מרוצים בכל רחבי הארץ.
             </p>
             <p className="text-muted-foreground leading-relaxed mb-6">
               אנחנו מאמינים שתזונה נכונה היא הבסיס להצלחה בספורט. לכן, אנחנו מקפידים לבחור רק מוצרים שעברו 
-              בדיקות איכות מחמירות, עם רכיבים טבעיים ובטוחים לשימוש.
+              בדיקות איכות מחמירות, עם רכיבים טבעיים ובטוחים לשימוש. כל המוצרים שלנו כשרים למהדרין.
             </p>
-            <p className="text-muted-foreground leading-relaxed">
+            <p className="text-muted-foreground leading-relaxed mb-6">
               הצוות שלנו מורכב מספורטאים פעילים, תזונאים ומומחי כושר שמבינים את הצרכים שלכם ויכולים לעזור 
               לכם לבחור את המוצרים המתאימים ביותר עבורכם.
             </p>
+            
+            {/* Business Details */}
+            <div className="bg-secondary/50 rounded-xl p-6 mt-8">
+              <h3 className="text-xl font-bold text-primary mb-4">פרטי החברה</h3>
+              <ul className="space-y-2 text-muted-foreground">
+                <li><strong>שם החברה:</strong> FullBody בע"מ</li>
+                <li><strong>ח.פ./עוסק מורשה:</strong> 516247890</li>
+                <li><strong>כתובת:</strong> רחוב זרחין 1, רעננה</li>
+                <li><strong>טלפון:</strong> <a href="tel:0524487537" className="text-accent hover:underline">052-4487537</a></li>
+                <li><strong>דוא"ל:</strong> <a href="mailto:info@fullbody.co.il" className="text-accent hover:underline">info@fullbody.co.il</a></li>
+                <li><strong>שעות פעילות:</strong> א'-ה' 9:00-18:00, ו' 9:00-13:00</li>
+              </ul>
+            </div>
           </div>
         </div>
       </section>

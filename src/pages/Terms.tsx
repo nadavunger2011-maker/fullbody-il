@@ -93,12 +93,16 @@ export default function Terms() {
 
               <section>
                 <h2 className="text-2xl font-bold text-foreground mb-4">7. פרטי העסק</h2>
-                <p className="text-muted-foreground leading-relaxed">
-                  <strong>שם העסק:</strong> FullBody - תוספי תזונה<br />
-                  <strong>סוג עסק:</strong> עוסק מורשה<br />
-                  <strong>מספר עוסק:</strong> 300800950<br />
-                  <strong>כתובת:</strong> רחוב זרחין 1, רעננה
-                </p>
+                <div className="bg-secondary/50 p-6 rounded-xl border border-border">
+                  <ul className="text-muted-foreground space-y-2 leading-relaxed">
+                    <li><strong>שם העסק:</strong> FullBody בע"מ</li>
+                    <li><strong>ח.פ./עוסק מורשה:</strong> 516247890</li>
+                    <li><strong>כתובת:</strong> רחוב זרחין 1, רעננה</li>
+                    <li><strong>טלפון:</strong> <a href="tel:0524487537" className="text-accent hover:underline">052-4487537</a></li>
+                    <li><strong>דוא"ל:</strong> <a href="mailto:info@fullbody.co.il" className="text-accent hover:underline">info@fullbody.co.il</a></li>
+                    <li><strong>שעות פעילות:</strong> א'-ה' 9:00-18:00, ו' 9:00-13:00</li>
+                  </ul>
+                </div>
               </section>
             </div>
           </div>
