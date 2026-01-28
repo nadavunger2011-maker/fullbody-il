@@ -3,6 +3,7 @@ import { useSearchParams, Link } from 'react-router-dom';
 import { CheckCircle, Package, ArrowRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { trackPurchase } from '@/lib/gtm';
+import { trackPurchase as trackFBPurchase } from '@/lib/fbPixel';
 import { useCartStore } from '@/stores/cartStore';
 
 const ThankYou = () => {
@@ -53,6 +54,13 @@ const ThankYou = () => {
           order_id: orderId || `order_${Date.now()}`
         });
       }
+
+      // Track purchase with Facebook Pixel
+      const fbContentIds = items.map(item => 
+        item.product.node.id.replace('gid://shopify/Product/', '')
+      );
+      const numItems = items.reduce((sum, item) => sum + item.quantity, 0);
+      trackFBPurchase(fbContentIds, total, numItems);
 
       // Clear the cart after tracking
       clearCart();
