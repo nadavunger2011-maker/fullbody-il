@@ -282,7 +282,7 @@ export default function ProductDetail() {
               {/* Add to Cart Button */}
               <button
                 onClick={handleAddToCart}
-                disabled={!selectedVariant?.availableForSale || isAddingToCart}
+                disabled={isAddingToCart}
                 className="w-full bg-accent text-accent-foreground font-bold py-4 text-lg rounded-xl shadow-cta transition-all duration-300 flex justify-center items-center gap-3 hover:bg-accent/90 hover:shadow-lg active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {isAddingToCart ? (
