@@ -9,6 +9,7 @@ import logoImage from '@/assets/logo.png';
 import Footer from '@/components/Footer';
 import CartDrawer from '@/components/CartDrawer';
 import AccessibilityWidget from '@/components/AccessibilityWidget';
+import { trackViewContent, trackAddToCart } from '@/lib/fbPixel';
 import {
   Accordion,
   AccordionContent,
@@ -50,6 +51,11 @@ export default function ProductDetail() {
             content_ids: [productId]
           });
         }
+        
+        // Track ViewContent with Facebook Pixel
+        const productId = foundProduct.node.id.replace('gid://shopify/Product/', '');
+        const price = parseFloat(foundProduct.node.priceRange.minVariantPrice.amount);
+        trackViewContent(productId, foundProduct.node.title, price);
       }
       setIsLoading(false);
     };
@@ -72,6 +78,11 @@ export default function ProductDetail() {
         quantity,
         selectedOptions: variant.selectedOptions || []
       });
+      
+      // Track AddToCart with Facebook Pixel
+      const productId = product.node.id.replace('gid://shopify/Product/', '');
+      const itemValue = parseFloat(variant.price.amount) * quantity;
+      trackAddToCart(productId, product.node.title, itemValue);
       
       setIsCartOpen(true);
       toast.success(`${product.node.title} נוסף לעגלה`);

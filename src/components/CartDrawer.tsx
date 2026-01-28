@@ -2,6 +2,7 @@ import { X, Plus, Minus, ShoppingBag, Trash2, Loader2 } from 'lucide-react';
 import { useCartStore } from '@/stores/cartStore';
 import { Button } from '@/components/ui/button';
 import { toast } from 'sonner';
+import { trackInitiateCheckout } from '@/lib/fbPixel';
 
 interface CartDrawerProps {
   isOpen: boolean;
@@ -22,6 +23,13 @@ export default function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
     
     const checkoutUrl = getCheckoutUrl();
     if (checkoutUrl) {
+      // Track InitiateCheckout with Facebook Pixel
+      const contentIds = items.map(item => 
+        item.product.node.id.replace('gid://shopify/Product/', '')
+      );
+      const numItems = items.reduce((sum, item) => sum + item.quantity, 0);
+      trackInitiateCheckout(contentIds, total, numItems);
+      
       window.open(checkoutUrl, '_blank');
       onClose();
     } else {
