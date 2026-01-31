@@ -7,7 +7,7 @@ import {
   ChevronDown
 } from 'lucide-react';
 import logoImage from '@/assets/logo.png';
-import { fetchShopifyProducts, ShopifyProduct, CartItem as ShopifyCartItem } from '@/lib/shopify';
+import { fetchShopifyProducts, ShopifyProduct, CartItem as ShopifyCartItem, getFirstAvailableVariant, isProductAvailableForSale } from '@/lib/shopify';
 import { useCartStore } from '@/stores/cartStore';
 import { toast } from 'sonner';
 import { useFlashyPageView } from '@/hooks/useFlashyPageView';
@@ -245,10 +245,13 @@ export default function FullBody() {
   }, [isMobileMenuOpen]);
 
   const handleAddToCart = async (product: ShopifyProduct) => {
-    const variant = product.node.variants.edges[0]?.node;
-    if (!variant) return;
+    const variant = getFirstAvailableVariant(product);
+    if (!variant) {
+      toast.error('המוצר אזל מהמלאי');
+      return;
+    }
 
-    await addItem({
+    const ok = await addItem({
       product,
       variantId: variant.id,
       variantTitle: variant.title,
@@ -256,6 +259,11 @@ export default function FullBody() {
       quantity: 1,
       selectedOptions: variant.selectedOptions || []
     });
+
+    if (!ok) {
+      toast.error('לא ניתן להוסיף לעגלה כרגע');
+      return;
+    }
     
     setIsCartOpen(true);
     toast.success(`${product.node.title} נוסף לעגלה`);
@@ -613,9 +621,10 @@ export default function FullBody() {
                       </div>
                       <button 
                         onClick={() => handleAddToCart(product)}
-                        className="w-full bg-accent text-accent-foreground font-bold py-2 sm:py-3 text-sm sm:text-base rounded-lg shadow-cta transition-all duration-300 flex justify-center items-center gap-2 hover:bg-accent/90 active:scale-95 border border-primary-foreground/20"
+                        disabled={!isProductAvailableForSale(product)}
+                        className="w-full bg-accent text-accent-foreground font-bold py-2 sm:py-3 text-sm sm:text-base rounded-lg shadow-cta transition-all duration-300 flex justify-center items-center gap-2 hover:bg-accent/90 active:scale-95 border border-primary-foreground/20 disabled:opacity-50 disabled:cursor-not-allowed"
                       >
-                        הוסף לעגלה
+                        {isProductAvailableForSale(product) ? 'הוסף לעגלה' : 'אזל מהמלאי'}
                         <ShoppingBag className="w-4 h-4" />
                       </button>
                     </div>

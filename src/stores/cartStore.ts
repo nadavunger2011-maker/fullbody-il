@@ -16,7 +16,7 @@ interface CartStore {
   checkoutUrl: string | null;
   isLoading: boolean;
   isSyncing: boolean;
-  addItem: (item: Omit<CartItem, 'lineId'>) => Promise<void>;
+  addItem: (item: Omit<CartItem, 'lineId'>) => Promise<boolean>;
   updateQuantity: (variantId: string, quantity: number) => Promise<void>;
   removeItem: (variantId: string) => Promise<void>;
   clearCart: () => void;
@@ -50,12 +50,14 @@ export const useCartStore = create<CartStore>()(
                 items: newItems
               });
               trackCartUpdate(newItems);
+              return true;
             }
+            return false;
           } else if (existingItem) {
             const newQuantity = existingItem.quantity + item.quantity;
             if (!existingItem.lineId) {
               console.error('Cannot update quantity for item without lineId:', existingItem);
-              return;
+              return false;
             }
             const result = await updateShopifyCartLine(cartId, existingItem.lineId, newQuantity);
             if (result.success) {
@@ -63,9 +65,12 @@ export const useCartStore = create<CartStore>()(
               const newItems = currentItems.map(i => i.variantId === item.variantId ? { ...i, quantity: newQuantity } : i);
               set({ items: newItems });
               trackCartUpdate(newItems);
+              return true;
             } else if (result.cartNotFound) {
               clearCart();
+              return false;
             }
+            return false;
           } else {
             const result = await addLineToShopifyCart(cartId, { ...item, lineId: null });
             if (result.success) {
@@ -73,12 +78,16 @@ export const useCartStore = create<CartStore>()(
               const newItems = [...currentItems, { ...item, lineId: result.lineId ?? null }];
               set({ items: newItems });
               trackCartUpdate(newItems);
+              return true;
             } else if (result.cartNotFound) {
               clearCart();
+              return false;
             }
+            return false;
           }
         } catch (error) {
           console.error('Failed to add item:', error);
+          return false;
         } finally {
           set({ isLoading: false });
         }

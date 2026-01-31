@@ -2,7 +2,7 @@ import { useState, useEffect, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { ShoppingBag, ChevronDown, Search, ArrowRight } from 'lucide-react';
-import { fetchShopifyProducts, ShopifyProduct } from '@/lib/shopify';
+import { fetchShopifyProducts, ShopifyProduct, getFirstAvailableVariant, isProductAvailableForSale } from '@/lib/shopify';
 import { useCartStore } from '@/stores/cartStore';
 import { toast } from 'sonner';
 import Footer from '@/components/Footer';
@@ -73,11 +73,14 @@ export default function Products() {
     return filtered;
   }, [products, searchQuery, sortOption]);
 
-  const handleAddToCart = (product: ShopifyProduct) => {
-    const variant = product.node.variants.edges[0]?.node;
-    if (!variant) return;
+  const handleAddToCart = async (product: ShopifyProduct) => {
+    const variant = getFirstAvailableVariant(product);
+    if (!variant) {
+      toast.error('המוצר אזל מהמלאי');
+      return;
+    }
 
-    addItem({
+    const ok = await addItem({
       product,
       variantId: variant.id,
       variantTitle: variant.title,
@@ -85,6 +88,11 @@ export default function Products() {
       quantity: 1,
       selectedOptions: variant.selectedOptions,
     });
+
+    if (!ok) {
+      toast.error('לא ניתן להוסיף לעגלה כרגע');
+      return;
+    }
 
     setIsCartOpen(true);
     toast.success('המוצר נוסף לעגלה!');
@@ -191,7 +199,7 @@ export default function Products() {
                       </div>
                     )}
                   </Link>
-                  <div className="p-3 sm:p-5 flex-1 flex flex-col">
+                   <div className="p-3 sm:p-5 flex-1 flex flex-col">
                     <Link to={`/product/${product.node.handle}`} className="font-bold text-sm sm:text-lg text-foreground mb-1 sm:mb-2 group-hover:text-accent transition-colors hover:underline">
                       <span className="sm:hidden">{product.node.title.length > 25 ? product.node.title.slice(0, 25) + '...' : product.node.title}</span>
                       <span className="hidden sm:inline">{product.node.title}</span>
@@ -206,13 +214,14 @@ export default function Products() {
                         {parseFloat(product.node.priceRange.minVariantPrice.amount).toFixed(0)}
                       </span>
                     </div>
-                    <button 
-                      onClick={() => handleAddToCart(product)}
-                      className="w-full bg-accent text-accent-foreground font-bold py-2 sm:py-3 text-sm sm:text-base rounded-lg shadow-cta transition-all duration-300 flex justify-center items-center gap-2 hover:bg-accent/90 active:scale-95 border border-primary-foreground/20"
-                    >
-                      הוסף לעגלה
-                      <ShoppingBag className="w-4 h-4" />
-                    </button>
+                     <button 
+                       onClick={() => handleAddToCart(product)}
+                       disabled={!isProductAvailableForSale(product)}
+                       className="w-full bg-accent text-accent-foreground font-bold py-2 sm:py-3 text-sm sm:text-base rounded-lg shadow-cta transition-all duration-300 flex justify-center items-center gap-2 hover:bg-accent/90 active:scale-95 border border-primary-foreground/20 disabled:opacity-50 disabled:cursor-not-allowed"
+                     >
+                       {isProductAvailableForSale(product) ? 'הוסף לעגלה' : 'אזל מהמלאי'}
+                       <ShoppingBag className="w-4 h-4" />
+                     </button>
                   </div>
                 </div>
               ))

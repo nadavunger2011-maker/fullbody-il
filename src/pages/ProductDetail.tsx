@@ -68,9 +68,14 @@ export default function ProductDetail() {
     const variant = product.node.variants.edges[selectedVariantIndex]?.node;
     if (!variant) return;
 
+    if (!variant.availableForSale) {
+      toast.error('המוצר אזל מהמלאי');
+      return;
+    }
+
     setIsAddingToCart(true);
     try {
-      await addItem({
+      const ok = await addItem({
         product,
         variantId: variant.id,
         variantTitle: variant.title,
@@ -78,6 +83,11 @@ export default function ProductDetail() {
         quantity,
         selectedOptions: variant.selectedOptions || []
       });
+
+      if (!ok) {
+        toast.error('לא ניתן להוסיף לעגלה כרגע');
+        return;
+      }
       
       // Track AddToCart with Facebook Pixel
       const productId = product.node.id.replace('gid://shopify/Product/', '');
@@ -113,6 +123,7 @@ export default function ProductDetail() {
   const selectedVariant = product.node.variants.edges[selectedVariantIndex]?.node;
   const images = product.node.images.edges;
   const currentImage = images[selectedImageIndex]?.node;
+  const isSelectedVariantAvailable = !!selectedVariant?.availableForSale;
 
   const trustFactors = [
     { icon: Truck, text: 'משלוח חינם מעל ₪299' },
@@ -293,7 +304,7 @@ export default function ProductDetail() {
               {/* Add to Cart Button */}
               <button
                 onClick={handleAddToCart}
-                disabled={isAddingToCart}
+                disabled={isAddingToCart || !isSelectedVariantAvailable}
                 className="w-full bg-accent text-accent-foreground font-bold py-4 text-lg rounded-xl shadow-cta transition-all duration-300 flex justify-center items-center gap-3 hover:bg-accent/90 hover:shadow-lg active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {isAddingToCart ? (
@@ -301,6 +312,8 @@ export default function ProductDetail() {
                     <Loader2 className="w-5 h-5 animate-spin" />
                     מוסיף לעגלה...
                   </>
+                ) : !isSelectedVariantAvailable ? (
+                  <>אזל מהמלאי</>
                 ) : (
                   <>
                     <ShoppingBag className="w-5 h-5" />
