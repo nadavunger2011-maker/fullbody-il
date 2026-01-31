@@ -3,6 +3,7 @@ import { useCartStore } from '@/stores/cartStore';
 import { Button } from '@/components/ui/button';
 import { toast } from 'sonner';
 import { trackInitiateCheckout } from '@/lib/fbPixel';
+import { formatCheckoutUrl } from '@/lib/shopify';
 
 interface CartDrawerProps {
   isOpen: boolean;
@@ -30,7 +31,9 @@ export default function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
       const numItems = items.reduce((sum, item) => sum + item.quantity, 0);
       trackInitiateCheckout(contentIds, total, numItems);
       
-      window.open(checkoutUrl, '_blank');
+      // Format URL with channel parameter and open in new tab
+      const formattedUrl = formatCheckoutUrl(checkoutUrl);
+      window.open(formattedUrl, '_blank');
       onClose();
     } else {
       toast.error('שגיאה ביצירת הזמנה');

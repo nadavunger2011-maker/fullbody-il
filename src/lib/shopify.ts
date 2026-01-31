@@ -271,7 +271,7 @@ export async function fetchProductByHandle(handle: string): Promise<ShopifyProdu
 }
 
 // Cart helper functions
-function formatCheckoutUrl(checkoutUrl: string): string {
+export function formatCheckoutUrl(checkoutUrl: string): string {
   try {
     const url = new URL(checkoutUrl);
     url.searchParams.set('channel', 'online_store');
