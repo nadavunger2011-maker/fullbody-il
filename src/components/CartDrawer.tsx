@@ -3,7 +3,7 @@ import { useCartStore } from '@/stores/cartStore';
 import { Button } from '@/components/ui/button';
 import { toast } from 'sonner';
 import { trackInitiateCheckout } from '@/lib/fbPixel';
-import { formatCheckoutUrl } from '@/lib/shopify';
+import { formatCheckoutUrl, getVariantById } from '@/lib/shopify';
 
 interface CartDrawerProps {
   isOpen: boolean;
@@ -19,6 +19,17 @@ export default function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
   const handleCheckout = () => {
     if (items.length === 0) {
       toast.error('העגלה ריקה');
+      return;
+    }
+
+    const unavailableItems = items.filter((item) => {
+      const variant = getVariantById(item.product, item.variantId);
+      return variant ? !variant.availableForSale : false;
+    });
+    if (unavailableItems.length > 0) {
+      toast.error('חלק מהמוצרים בעגלה אזלו מהמלאי', {
+        description: 'הסר/י אותם כדי להמשיך לתשלום.',
+      });
       return;
     }
     

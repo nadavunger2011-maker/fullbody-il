@@ -59,6 +59,19 @@ export interface CartItem {
   selectedOptions: Array<{ name: string; value: string }>;
 }
 
+// Product/variant helpers
+export function isProductAvailableForSale(product: ShopifyProduct): boolean {
+  return product.node.variants.edges.some((e) => e.node.availableForSale);
+}
+
+export function getFirstAvailableVariant(product: ShopifyProduct): ShopifyVariant | null {
+  return product.node.variants.edges.find((e) => e.node.availableForSale)?.node ?? null;
+}
+
+export function getVariantById(product: ShopifyProduct, variantId: string): ShopifyVariant | null {
+  return product.node.variants.edges.find((e) => e.node.id === variantId)?.node ?? null;
+}
+
 // GraphQL Queries
 const STOREFRONT_QUERY = `
   query GetProducts($first: Int!, $query: String) {

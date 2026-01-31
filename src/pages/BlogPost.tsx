@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { Link, useParams, useNavigate } from 'react-router-dom';
 import { ShoppingBag, Menu, X, Search, Calendar, Clock, ArrowRight, Tag } from 'lucide-react';
 import { blogPosts, blogCategories } from './Blog';
-import { fetchShopifyProducts, ShopifyProduct } from '@/lib/shopify';
+import { fetchShopifyProducts, ShopifyProduct, getFirstAvailableVariant, isProductAvailableForSale } from '@/lib/shopify';
 import { useCartStore } from '@/stores/cartStore';
 import { toast } from 'sonner';
 import type { CartItem as ShopifyCartItem } from '@/lib/shopify';
@@ -52,10 +52,13 @@ export default function BlogPost() {
   }, [post, navigate]);
 
   const handleAddToCart = async (product: ShopifyProduct) => {
-    const variant = product.node.variants.edges[0]?.node;
-    if (!variant) return;
+    const variant = getFirstAvailableVariant(product);
+    if (!variant) {
+      toast.error('המוצר אזל מהמלאי');
+      return;
+    }
 
-    await addItem({
+    const ok = await addItem({
       product,
       variantId: variant.id,
       variantTitle: variant.title,
@@ -63,6 +66,11 @@ export default function BlogPost() {
       quantity: 1,
       selectedOptions: variant.selectedOptions || []
     });
+
+    if (!ok) {
+      toast.error('לא ניתן להוסיף לעגלה כרגע');
+      return;
+    }
     
     toast.success(`${product.node.title} נוסף לעגלה`);
   };
@@ -243,9 +251,10 @@ export default function BlogPost() {
                       
                       <button 
                         onClick={() => handleAddToCart(product)}
-                        className="w-full bg-accent text-accent-foreground font-bold py-2 text-sm rounded-lg shadow-cta transition-all hover:opacity-90 active:scale-95 flex items-center justify-center gap-2"
+                        disabled={!isProductAvailableForSale(product)}
+                        className="w-full bg-accent text-accent-foreground font-bold py-2 text-sm rounded-lg shadow-cta transition-all hover:opacity-90 active:scale-95 flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
                       >
-                        הוסף לעגלה
+                        {isProductAvailableForSale(product) ? 'הוסף לעגלה' : 'אזל מהמלאי'}
                         <ShoppingBag className="w-4 h-4" />
                       </button>
                     </div>
