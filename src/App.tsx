@@ -1,10 +1,12 @@
+import { useEffect } from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import { HelmetProvider } from "react-helmet-async";
 import { useCartSync } from "@/hooks/useCartSync";
+import { initGA4, trackGA4PageView } from "@/lib/ga4";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import Blog from "./pages/Blog";
@@ -24,28 +26,50 @@ import WhatsAppButton from "./components/WhatsAppButton";
 
 const queryClient = new QueryClient();
 
+const GA4_MEASUREMENT_ID = "G-FJ5SDNJCE1";
+
+function AnalyticsListener() {
+  const location = useLocation();
+
+  useEffect(() => {
+    void initGA4(GA4_MEASUREMENT_ID);
+  }, []);
+
+  useEffect(() => {
+    // Let Helmet update the title before we send the page_view
+    const path = `${location.pathname}${location.search}`;
+    const t = window.setTimeout(() => trackGA4PageView(path), 0);
+    return () => window.clearTimeout(t);
+  }, [location.pathname, location.search]);
+
+  return null;
+}
+
 function AppContent() {
   useCartSync();
   
   return (
-    <Routes>
-      <Route path="/" element={<Index />} />
-      <Route path="/product/:handle" element={<ProductDetail />} />
-      <Route path="/products" element={<Products />} />
-      <Route path="/blog" element={<Blog />} />
-      <Route path="/blog/:slug" element={<BlogPost />} />
-      <Route path="/thank-you" element={<ThankYou />} />
-      <Route path="/terms" element={<Terms />} />
-      <Route path="/shipping" element={<Shipping />} />
-      <Route path="/returns" element={<Returns />} />
-      <Route path="/privacy" element={<Privacy />} />
-      <Route path="/faq" element={<FAQ />} />
-      <Route path="/contact" element={<Contact />} />
-      <Route path="/about" element={<About />} />
-      <Route path="/accessibility" element={<Accessibility />} />
-      {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-      <Route path="*" element={<NotFound />} />
-    </Routes>
+    <>
+      <AnalyticsListener />
+      <Routes>
+        <Route path="/" element={<Index />} />
+        <Route path="/product/:handle" element={<ProductDetail />} />
+        <Route path="/products" element={<Products />} />
+        <Route path="/blog" element={<Blog />} />
+        <Route path="/blog/:slug" element={<BlogPost />} />
+        <Route path="/thank-you" element={<ThankYou />} />
+        <Route path="/terms" element={<Terms />} />
+        <Route path="/shipping" element={<Shipping />} />
+        <Route path="/returns" element={<Returns />} />
+        <Route path="/privacy" element={<Privacy />} />
+        <Route path="/faq" element={<FAQ />} />
+        <Route path="/contact" element={<Contact />} />
+        <Route path="/about" element={<About />} />
+        <Route path="/accessibility" element={<Accessibility />} />
+        {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+        <Route path="*" element={<NotFound />} />
+      </Routes>
+    </>
   );
 }
 
