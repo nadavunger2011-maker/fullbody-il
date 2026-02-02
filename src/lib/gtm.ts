@@ -1,6 +1,6 @@
 // Google Tag Manager tracking functions
 
-interface GTMItem {
+export interface GTMItem {
   item_id: string;
   item_name: string;
   item_variant?: string;

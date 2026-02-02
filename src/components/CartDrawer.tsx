@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button';
 import { toast } from 'sonner';
 import { trackInitiateCheckout } from '@/lib/fbPixel';
 import { formatCheckoutUrl, getVariantById } from '@/lib/shopify';
+import { trackBeginCheckout, trackRemoveFromCart, type GTMItem } from '@/lib/gtm';
 
 interface CartDrawerProps {
   isOpen: boolean;
@@ -41,6 +42,17 @@ export default function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
       );
       const numItems = items.reduce((sum, item) => sum + item.quantity, 0);
       trackInitiateCheckout(contentIds, total, numItems);
+      
+      // Track begin_checkout with GTM
+      const gtmItems: GTMItem[] = items.map(item => ({
+        item_id: item.product.node.id.replace('gid://shopify/Product/', ''),
+        item_name: item.product.node.title,
+        item_variant: item.variantTitle !== 'Default Title' ? item.variantTitle : undefined,
+        price: parseFloat(item.price.amount),
+        quantity: item.quantity,
+        currency: item.price.currencyCode || 'ILS'
+      }));
+      trackBeginCheckout(gtmItems, total, 'ILS');
       
       // Format URL with channel parameter and open in new tab
       const formattedUrl = formatCheckoutUrl(checkoutUrl);

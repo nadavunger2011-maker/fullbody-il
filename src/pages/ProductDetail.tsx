@@ -10,6 +10,7 @@ import Footer from '@/components/Footer';
 import CartDrawer from '@/components/CartDrawer';
 import AccessibilityWidget from '@/components/AccessibilityWidget';
 import { trackViewContent, trackAddToCart } from '@/lib/fbPixel';
+import { trackViewItem, trackAddToCart as gtmTrackAddToCart } from '@/lib/gtm';
 import {
   Accordion,
   AccordionContent,
@@ -56,6 +57,22 @@ export default function ProductDetail() {
         const productId = foundProduct.node.id.replace('gid://shopify/Product/', '');
         const price = parseFloat(foundProduct.node.priceRange.minVariantPrice.amount);
         trackViewContent(productId, foundProduct.node.title, price);
+        
+        // Track view_item with GTM
+        gtmTrackAddToCart({
+          item_id: productId,
+          item_name: foundProduct.node.title,
+          price: price,
+          quantity: 1,
+          currency: foundProduct.node.priceRange.minVariantPrice.currencyCode || 'ILS'
+        });
+        trackViewItem({
+          item_id: productId,
+          item_name: foundProduct.node.title,
+          price: price,
+          quantity: 1,
+          currency: foundProduct.node.priceRange.minVariantPrice.currencyCode || 'ILS'
+        });
       }
       setIsLoading(false);
     };
@@ -93,6 +110,16 @@ export default function ProductDetail() {
       const productId = product.node.id.replace('gid://shopify/Product/', '');
       const itemValue = parseFloat(variant.price.amount) * quantity;
       trackAddToCart(productId, product.node.title, itemValue);
+      
+      // Track add_to_cart with GTM
+      gtmTrackAddToCart({
+        item_id: productId,
+        item_name: product.node.title,
+        item_variant: variant.title !== 'Default Title' ? variant.title : undefined,
+        price: parseFloat(variant.price.amount),
+        quantity: quantity,
+        currency: variant.price.currencyCode || 'ILS'
+      });
       
       setIsCartOpen(true);
       toast.success(`${product.node.title} נוסף לעגלה`);
