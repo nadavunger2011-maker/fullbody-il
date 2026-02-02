@@ -4,6 +4,7 @@ import { CheckCircle, Package, ArrowRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { trackPurchase } from '@/lib/gtm';
 import { trackPurchase as trackFBPurchase } from '@/lib/fbPixel';
+import { trackGA4Purchase } from '@/lib/ga4';
 import { useCartStore } from '@/stores/cartStore';
 
 const ThankYou = () => {
@@ -24,6 +25,8 @@ const ThankYou = () => {
   useEffect(() => {
     // Only fire if we have items or an order ID (to prevent duplicate fires)
     if ((items.length > 0 || orderId) && total > 0) {
+      const transactionId = orderId || `order_${Date.now()}`;
+
       // Convert cart items to GTM format
       const gtmItems = items.map(item => ({
         item_id: item.variantId,
@@ -36,8 +39,22 @@ const ThankYou = () => {
 
       // Fire purchase event
       trackPurchase(
-        orderId || `order_${Date.now()}`,
+        transactionId,
         gtmItems,
+        total,
+        'ILS'
+      );
+
+      // Track purchase with GA4
+      trackGA4Purchase(
+        transactionId,
+        items.map((item) => ({
+          item_id: item.product.node.id.replace('gid://shopify/Product/', ''),
+          item_name: item.product.node.title,
+          item_variant: item.variantTitle !== 'Default Title' ? item.variantTitle : undefined,
+          price: parseFloat(item.price.amount),
+          quantity: item.quantity,
+        })),
         total,
         'ILS'
       );
@@ -51,7 +68,7 @@ const ThankYou = () => {
           content_ids: contentIds,
           value: total,
           currency: 'ILS',
-          order_id: orderId || `order_${Date.now()}`
+          order_id: transactionId
         });
       }
 

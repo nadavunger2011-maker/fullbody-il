@@ -5,6 +5,7 @@ import { toast } from 'sonner';
 import { trackInitiateCheckout } from '@/lib/fbPixel';
 import { formatCheckoutUrl, getVariantById } from '@/lib/shopify';
 import { trackBeginCheckout, trackRemoveFromCart, type GTMItem } from '@/lib/gtm';
+import { trackGA4BeginCheckout } from '@/lib/ga4';
 
 interface CartDrawerProps {
   isOpen: boolean;
@@ -53,6 +54,19 @@ export default function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
         currency: item.price.currencyCode || 'ILS'
       }));
       trackBeginCheckout(gtmItems, total, 'ILS');
+
+      // Track begin_checkout with GA4
+      trackGA4BeginCheckout(
+        gtmItems.map(({ item_id, item_name, item_variant, price, quantity }) => ({
+          item_id,
+          item_name,
+          item_variant,
+          price,
+          quantity,
+        })),
+        total,
+        'ILS'
+      );
       
       // Format URL with channel parameter and open in new tab
       const formattedUrl = formatCheckoutUrl(checkoutUrl);

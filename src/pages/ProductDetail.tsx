@@ -11,6 +11,7 @@ import CartDrawer from '@/components/CartDrawer';
 import AccessibilityWidget from '@/components/AccessibilityWidget';
 import { trackViewContent, trackAddToCart } from '@/lib/fbPixel';
 import { trackViewItem, trackAddToCart as gtmTrackAddToCart } from '@/lib/gtm';
+import { trackGA4AddToCart, trackGA4ViewItem } from '@/lib/ga4';
 import {
   Accordion,
   AccordionContent,
@@ -58,21 +59,27 @@ export default function ProductDetail() {
         const price = parseFloat(foundProduct.node.priceRange.minVariantPrice.amount);
         trackViewContent(productId, foundProduct.node.title, price);
         
+        const currency = foundProduct.node.priceRange.minVariantPrice.currencyCode || 'ILS';
+
         // Track view_item with GTM
-        gtmTrackAddToCart({
-          item_id: productId,
-          item_name: foundProduct.node.title,
-          price: price,
-          quantity: 1,
-          currency: foundProduct.node.priceRange.minVariantPrice.currencyCode || 'ILS'
-        });
         trackViewItem({
           item_id: productId,
           item_name: foundProduct.node.title,
           price: price,
           quantity: 1,
-          currency: foundProduct.node.priceRange.minVariantPrice.currencyCode || 'ILS'
+          currency
         });
+
+        // Track view_item with GA4
+        trackGA4ViewItem(
+          {
+            item_id: productId,
+            item_name: foundProduct.node.title,
+            price,
+            quantity: 1,
+          },
+          currency
+        );
       }
       setIsLoading(false);
     };
@@ -120,6 +127,18 @@ export default function ProductDetail() {
         quantity: quantity,
         currency: variant.price.currencyCode || 'ILS'
       });
+
+      // Track add_to_cart with GA4
+      trackGA4AddToCart(
+        {
+          item_id: productId,
+          item_name: product.node.title,
+          item_variant: variant.title !== 'Default Title' ? variant.title : undefined,
+          price: parseFloat(variant.price.amount),
+          quantity,
+        },
+        variant.price.currencyCode || 'ILS'
+      );
       
       setIsCartOpen(true);
       toast.success(`${product.node.title} נוסף לעגלה`);
