@@ -5,3 +5,9 @@ verify_jwt = false
 
 [functions.shopify-proxy]
 verify_jwt = false
+
+[functions.facebook-catalog-feed]
+verify_jwt = false
+
+[functions.flashy-catalog-feed]
+verify_jwt = false
