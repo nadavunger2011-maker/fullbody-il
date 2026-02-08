@@ -224,12 +224,12 @@ export default function BlogPost() {
                     style={{ animationDelay: `${index * 0.1}s` }}
                   >
                     <Link to={`/product/${product.node.handle}`} className="block">
-                      <div className="aspect-square overflow-hidden bg-secondary">
+                      <div className="aspect-square overflow-hidden bg-secondary/30 flex items-center justify-center p-4">
                         {product.node.images?.edges?.[0]?.node && (
                           <img 
                             src={product.node.images.edges[0].node.url}
                             alt={product.node.title}
-                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                            className="max-w-[75%] max-h-[75%] object-contain group-hover:scale-105 transition-transform duration-500"
                             loading="lazy"
                           />
                         )}

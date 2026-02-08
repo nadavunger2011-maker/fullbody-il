@@ -431,12 +431,12 @@ export default function ProductDetail() {
                     to={`/product/${relatedProduct.node.handle}`}
                     className="group bg-card rounded-xl overflow-hidden hover:shadow-hover transition-all duration-300 border border-border"
                   >
-                    <div className="aspect-square bg-secondary overflow-hidden">
+                    <div className="aspect-square bg-secondary/30 overflow-hidden flex items-center justify-center p-4">
                       {relatedProduct.node.images.edges[0]?.node && (
                         <img 
                           src={relatedProduct.node.images.edges[0].node.url}
                           alt={relatedProduct.node.title}
-                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                          className="max-w-[75%] max-h-[75%] object-contain group-hover:scale-105 transition-transform duration-500"
                         />
                       )}
                     </div>
