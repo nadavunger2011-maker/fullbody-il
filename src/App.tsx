@@ -23,6 +23,7 @@ import Accessibility from "./pages/Accessibility";
 import ProductDetail from "./pages/ProductDetail";
 import Products from "./pages/Products";
 import WhatsAppButton from "./components/WhatsAppButton";
+import { LegacyProductRedirect } from "./components/LegacyProductRedirect";
 
 const queryClient = new QueryClient();
 
@@ -54,6 +55,7 @@ function AppContent() {
       <Routes>
         <Route path="/" element={<Index />} />
         <Route path="/product/:handle" element={<ProductDetail />} />
+        <Route path="/products/:handle" element={<LegacyProductRedirect />} />
         <Route path="/products" element={<Products />} />
         <Route path="/blog" element={<Blog />} />
         <Route path="/blog/:slug" element={<BlogPost />} />
