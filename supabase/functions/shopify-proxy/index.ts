@@ -5,7 +5,7 @@ const corsHeaders = {
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 };
 
-const SHOPIFY_STORE_DOMAIN = 'fullbody-il.myshopify.com';
+const SHOPIFY_STORE_DOMAIN = 'fullbody-new.myshopify.com';
 const SHOPIFY_API_VERSION = '2025-07';
 const SHOPIFY_STOREFRONT_URL = `https://${SHOPIFY_STORE_DOMAIN}/api/${SHOPIFY_API_VERSION}/graphql.json`;
 
