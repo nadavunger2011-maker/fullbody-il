@@ -3,7 +3,7 @@ import { supabase } from "@/integrations/supabase/client";
 
 // Shopify API Configuration
 const SHOPIFY_API_VERSION = '2025-07';
-const SHOPIFY_STORE_PERMANENT_DOMAIN = 'fullbody-il.myshopify.com';
+const SHOPIFY_STORE_PERMANENT_DOMAIN = 'fullbody-new.myshopify.com';
 const SHOPIFY_STOREFRONT_URL = `https://${SHOPIFY_STORE_PERMANENT_DOMAIN}/api/${SHOPIFY_API_VERSION}/graphql.json`;
 
 // Shopify Types
