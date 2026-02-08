@@ -251,12 +251,12 @@ export default function ProductDetail() {
             {/* Image Gallery */}
             <div className="space-y-4">
               {/* Main Image */}
-              <div className="aspect-square bg-secondary rounded-2xl overflow-hidden shadow-lg">
+              <div className="aspect-square bg-secondary/30 rounded-2xl overflow-hidden shadow-lg flex items-center justify-center p-6">
                 {currentImage && (
                   <img 
                     src={currentImage.url} 
                     alt={currentImage.altText || product.node.title}
-                    className="w-full h-full object-cover"
+                    className="max-w-[80%] max-h-[80%] object-contain"
                   />
                 )}
               </div>
@@ -275,7 +275,7 @@ export default function ProductDetail() {
                       <img 
                         src={image.node.url} 
                         alt={image.node.altText || `תמונה ${index + 1}`}
-                        className="w-full h-full object-cover"
+                        className="w-full h-full object-contain p-1"
                       />
                     </button>
                   ))}

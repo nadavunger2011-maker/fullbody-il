@@ -589,14 +589,14 @@ export default function FullBody() {
                     className="group bg-card rounded-xl overflow-hidden hover:shadow-hover transition-all duration-300 border border-border flex flex-col animate-fade-in"
                     style={{ animationDelay: `${index * 0.05}s` }}
                   >
-                    <Link to={`/product/${product.node.handle}`} className="relative overflow-hidden aspect-square bg-secondary/30 block cursor-pointer flex items-center justify-center p-4">
+                    <Link to={`/product/${product.node.handle}`} className="relative overflow-hidden aspect-square bg-secondary/30 block cursor-pointer flex items-center justify-center p-6">
                       {product.node.images?.edges?.[0]?.node ? (
                         <img 
                           src={product.node.images.edges[0].node.url} 
                           alt={product.node.title}
                           loading="lazy"
                           decoding="async"
-                          className="max-w-[85%] max-h-[85%] object-contain transform group-hover:scale-105 transition-transform duration-500" 
+                          className="max-w-[75%] max-h-[75%] object-contain transform group-hover:scale-105 transition-transform duration-500" 
                         />
                       ) : (
                         <div className="w-full h-full flex items-center justify-center bg-muted">
