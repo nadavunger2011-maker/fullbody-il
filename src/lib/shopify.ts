@@ -288,6 +288,10 @@ export function formatCheckoutUrl(checkoutUrl: string): string {
   try {
     const url = new URL(checkoutUrl);
     url.searchParams.set('channel', 'online_store');
+    // After checkout, redirect back to our thank-you page so purchase tracking fires
+    const siteOrigin = typeof window !== 'undefined' ? window.location.origin : 'https://fullbody-il.lovable.app';
+    const returnUrl = `${siteOrigin}/thank-you`;
+    url.searchParams.set('return_to', returnUrl);
     return url.toString();
   } catch {
     return checkoutUrl;
