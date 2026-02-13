@@ -31,7 +31,7 @@ export default function SleepGuide() {
     setLoading(false);
   };
 
-  const EmailForm = ({ btnText = "שלחו לי את המדריך" }: { btnText?: string }) => (
+  const renderEmailForm = (btnText = "שלחו לי את המדריך") => (
     <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-3 w-full max-w-md">
       <Input
         type="email"
@@ -96,7 +96,7 @@ export default function SleepGuide() {
                 הורד עכשיו את מדריך ה-FullBody לשינה עמוקה וקבל את הצ'קליסט האינטראקטיבי שיעזור לך לקום רענן, ממוקד וחזק יותר בכל בוקר.
               </p>
 
-              <EmailForm />
+              {renderEmailForm()}
 
               <p className="text-xs text-muted-foreground mt-3 flex items-center gap-1.5">
                 <Lock className="w-3.5 h-3.5" />
@@ -195,7 +195,7 @@ export default function SleepGuide() {
             הצטרפו למאות לקוחות FullBody שכבר משדרגים את איכות החיים שלהם בכל לילה.
           </p>
           <div className="flex justify-center">
-            <EmailForm btnText="אני רוצה את המדריך!" />
+            {renderEmailForm("אני רוצה את המדריך!")}
           </div>
         </div>
       </section>
