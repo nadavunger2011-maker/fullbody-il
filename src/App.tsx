@@ -22,6 +22,7 @@ import About from "./pages/About";
 import Accessibility from "./pages/Accessibility";
 import ProductDetail from "./pages/ProductDetail";
 import Products from "./pages/Products";
+import SleepGuide from "./pages/SleepGuide";
 import WhatsAppButton from "./components/WhatsAppButton";
 import { LegacyProductRedirect } from "./components/LegacyProductRedirect";
 
@@ -68,6 +69,7 @@ function AppContent() {
         <Route path="/contact" element={<Contact />} />
         <Route path="/about" element={<About />} />
         <Route path="/accessibility" element={<Accessibility />} />
+        <Route path="/sleep-guide" element={<SleepGuide />} />
         {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
         <Route path="*" element={<NotFound />} />
       </Routes>
