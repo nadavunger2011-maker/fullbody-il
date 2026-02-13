@@ -5,15 +5,30 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import logo from "@/assets/logo.png";
 
+const FLASHY_LIST_ID = 34516;
+
 export default function SleepGuide() {
   const [email, setEmail] = useState("");
   const [submitted, setSubmitted] = useState(false);
+  const [loading, setLoading] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!email) return;
-    // TODO: connect to email service
+    if (!email || loading) return;
+    setLoading(true);
+    try {
+      if (typeof window !== "undefined" && window.flashy?.contacts) {
+        window.flashy.contacts.createOrUpdate({
+          email,
+          lists: { [FLASHY_LIST_ID]: true },
+        });
+        window.flashy("CustomEvent", { event_name: "sleep_guide_download" });
+      }
+    } catch {
+      // silent – form still shows success
+    }
     setSubmitted(true);
+    setLoading(false);
   };
 
   const EmailForm = ({ btnText = "שלחו לי את המדריך" }: { btnText?: string }) => (
@@ -27,8 +42,8 @@ export default function SleepGuide() {
         className="h-12 text-base bg-card border-border text-foreground placeholder:text-muted-foreground"
         dir="ltr"
       />
-      <Button type="submit" size="lg" className="h-12 px-8 shadow-cta whitespace-nowrap font-bold">
-        {btnText}
+      <Button type="submit" size="lg" disabled={loading} className="h-12 px-8 shadow-cta whitespace-nowrap font-bold">
+        {loading ? "שולח..." : btnText}
       </Button>
     </form>
   );
