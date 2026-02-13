@@ -73,6 +73,7 @@ export default function SleepGuide() {
       <Helmet>
         <title>המדריך לשינה עמוקה והתאוששות - FullBody</title>
         <meta name="description" content="הורד בחינם את מדריך FullBody לשינה עמוקה וקבל צ'קליסט אינטראקטיבי שיעזור לך להתעורר רענן בכל בוקר." />
+        <style>{`flashy-popup { display: none !important; }`}</style>
       </Helmet>
 
       {/* Hero Section */}
