@@ -1,53 +1,12 @@
 import { useState } from "react";
 import { Helmet } from "react-helmet-async";
 import { Moon, CheckSquare, Sparkles, Gift, Star, Lock, ArrowDown } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import logo from "@/assets/logo.png";
 import sleepGuideCover from "@/assets/sleep-guide-cover.jpg";
-
-const FLASHY_LIST_ID = 34516;
+import SleepGuideEmailForm from "@/components/SleepGuideEmailForm";
 
 export default function SleepGuide() {
-  const [email, setEmail] = useState("");
   const [submitted, setSubmitted] = useState(false);
-  const [loading, setLoading] = useState(false);
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!email || loading) return;
-    setLoading(true);
-    try {
-      if (typeof window !== "undefined" && window.flashy?.contacts) {
-        window.flashy.contacts.createOrUpdate({
-          email,
-          lists: { [FLASHY_LIST_ID]: true },
-        });
-        window.flashy("CustomEvent", { event_name: "sleep_guide_download" });
-      }
-    } catch {
-      // silent – form still shows success
-    }
-    setSubmitted(true);
-    setLoading(false);
-  };
-
-  const renderEmailForm = (btnText = "שלחו לי את המדריך") => (
-    <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-3 w-full max-w-md">
-      <Input
-        type="email"
-        required
-        placeholder="הכנסו את כתובת המייל שלכם"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-        className="h-12 text-base bg-card border-border text-foreground placeholder:text-muted-foreground"
-        dir="ltr"
-      />
-      <Button type="submit" size="lg" disabled={loading} className="h-12 px-8 shadow-cta whitespace-nowrap font-bold">
-        {loading ? "שולח..." : btnText}
-      </Button>
-    </form>
-  );
 
   if (submitted) {
     return (
@@ -97,7 +56,7 @@ export default function SleepGuide() {
                 הורד עכשיו את מדריך ה-FullBody לשינה עמוקה וקבל את הצ'קליסט האינטראקטיבי שיעזור לך לקום רענן, ממוקד וחזק יותר בכל בוקר.
               </p>
 
-              {renderEmailForm()}
+              <SleepGuideEmailForm onSuccess={() => setSubmitted(true)} />
 
               <p className="text-xs text-muted-foreground mt-3 flex items-center gap-1.5">
                 <Lock className="w-3.5 h-3.5" />
@@ -196,7 +155,7 @@ export default function SleepGuide() {
             הצטרפו למאות לקוחות FullBody שכבר משדרגים את איכות החיים שלהם בכל לילה.
           </p>
           <div className="flex justify-center">
-            {renderEmailForm("אני רוצה את המדריך!")}
+            <SleepGuideEmailForm btnText="אני רוצה את המדריך!" onSuccess={() => setSubmitted(true)} />
           </div>
         </div>
       </section>
