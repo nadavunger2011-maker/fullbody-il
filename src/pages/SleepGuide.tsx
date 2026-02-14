@@ -4,6 +4,7 @@ import { Moon, CheckSquare, Sparkles, Gift, Star, Lock, ArrowDown } from "lucide
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import logo from "@/assets/logo.png";
+import sleepGuideCover from "@/assets/sleep-guide-cover.jpg";
 
 const FLASHY_LIST_ID = 34516;
 
@@ -107,11 +108,11 @@ export default function SleepGuide() {
             {/* Visual Side */}
             <div className="flex justify-center">
               <div className="relative">
-                <div className="w-64 h-80 md:w-72 md:h-96 rounded-2xl bg-gradient-to-br from-primary to-accent shadow-2xl flex flex-col items-center justify-center text-primary-foreground p-8">
-                  <Moon className="w-16 h-16 mb-4 opacity-80" />
-                  <p className="text-2xl font-bold text-center mb-2">המדריך לשינה עמוקה</p>
-                  <p className="text-sm opacity-80 text-center">FullBody</p>
-                </div>
+                <img
+                  src={sleepGuideCover}
+                  alt="המדריך לשינה עמוקה - FullBody"
+                  className="w-64 h-80 md:w-72 md:h-96 rounded-2xl shadow-2xl object-cover"
+                />
                 <div className="absolute -bottom-4 -right-4 w-32 h-32 rounded-xl bg-card shadow-card-hover border border-border flex flex-col items-center justify-center p-3">
                   <CheckSquare className="w-8 h-8 text-primary mb-1" />
                   <p className="text-xs font-bold text-foreground text-center">צ'קליסט אינטראקטיבי</p>
