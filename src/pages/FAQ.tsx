@@ -21,8 +21,8 @@ const faqItems = [
     answer: 'כן! משלוח חינם בקנייה מעל ₪299. מתחת לסכום זה עלות המשלוח היא ₪25.',
   },
   {
-    question: 'האם המוצרים כשרים?',
-    answer: 'כן, כל המוצרים שלנו כשרים למהדרין תחת השגחת הרבנות הראשית.',
+    question: 'האם המוצרים שלכם באיכות גבוהה?',
+    answer: 'כן, כל המוצרים שלנו עוברים בדיקות איכות מחמירות ומגיעים ממותגים מובילים בתחום.',
   },
   {
     question: 'מה מדיניות ההחזרות?',
@@ -53,7 +53,7 @@ const FAQ: React.FC = () => {
     <div dir="rtl" className="bg-background min-h-screen font-sans text-foreground">
       <Helmet>
         <title>שאלות נפוצות | FullBody - תוספי תזונה</title>
-        <meta name="description" content="תשובות לשאלות נפוצות על משלוחים, החזרות, כשרות ועוד. משלוח חינם מעל ₪299, מוצרים כשרים למהדרין, והחזרה תוך 14 יום." />
+        <meta name="description" content="תשובות לשאלות נפוצות על משלוחים, החזרות ועוד. משלוח חינם מעל ₪299, מוצרים באיכות פרימיום, והחזרה תוך 14 יום." />
         <link rel="canonical" href="https://fullbody.co.il/faq" />
       </Helmet>
       {/* Header */}

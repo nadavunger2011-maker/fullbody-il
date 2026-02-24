@@ -345,10 +345,10 @@ export default function FullBody() {
     <div dir="rtl" className="font-sans text-foreground bg-background min-h-screen">
       <Helmet>
         <title>FullBody - תוספי תזונה איכותיים | משלוח חינם מעל ₪299</title>
-        <meta name="description" content="חנות תוספי התזונה המובילה בישראל. אבקות חלבון, ויטמינים, פרה-וורקאאוט ועוד. מוצרים כשרים למהדרין, משלוח מהיר לכל הארץ. פועלים מאז 2018." />
+        <meta name="description" content="חנות תוספי התזונה המובילה בישראל. אבקות חלבון, ויטמינים, פרה-וורקאאוט ועוד. מוצרים באיכות פרימיום, משלוח מהיר לכל הארץ. פועלים מאז 2018." />
         <link rel="canonical" href="https://fullbody.co.il/" />
         <meta property="og:title" content="FullBody - תוספי תזונה איכותיים" />
-        <meta property="og:description" content="חנות תוספי התזונה המובילה בישראל. אבקות חלבון, ויטמינים, פרה-וורקאאוט ועוד. כשר למהדרין." />
+        <meta property="og:description" content="חנות תוספי התזונה המובילה בישראל. אבקות חלבון, ויטמינים, פרה-וורקאאוט ועוד. איכות מובטחת." />
         <meta property="og:type" content="website" />
         <meta property="og:url" content="https://fullbody.co.il/" />
         <meta property="og:image" content="https://fullbody.co.il/og-image.jpg" />
@@ -363,7 +363,7 @@ export default function FullBody() {
       
       {/* Announcement Bar */}
       <div className="bg-primary text-primary-foreground text-center py-2.5 text-sm font-medium">
-        משלוח חינם בקנייה מעל ₪299 | כשר למהדרין
+        משלוח חינם בקנייה מעל ₪299 | איכות ללא פשרות
       </div>
 
       {/* Header */}
@@ -512,7 +512,7 @@ export default function FullBody() {
             {[
               { icon: Truck, title: "משלוח מהיר", text: "עד 3 ימי עסקים לכל הארץ" },
               { icon: ShieldCheck, title: "תשלום מאובטח", text: "תקן אבטחה מחמיר SSL" },
-              { icon: CheckCircle, title: "כשרות מהודרת", text: "כל המוצרים כשרים" },
+              { icon: CheckCircle, title: "מוצרים מוכחים", text: "מותגים מובילים בלבד" },
               { icon: HeartPulse, title: "איכות מובטחת", text: "רכיבים טבעיים בלבד" }
             ].map((item, index) => (
               <div key={index} className="flex flex-col items-center gap-3 group">
@@ -767,7 +767,7 @@ export default function FullBody() {
               </div>
               <div className="text-center">
                 <CountUpNumber target={100} suffix="%" />
-                <div className="text-sm text-primary-foreground/60">כשרות למהדרין</div>
+                <div className="text-sm text-primary-foreground/60">שביעות רצון</div>
               </div>
             </div>
           </div>

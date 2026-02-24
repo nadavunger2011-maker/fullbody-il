@@ -11,7 +11,7 @@ export default function Footer() {
             {[
               { icon: ShieldCheck, title: "תשלום מאובטח", text: "הצפנת SSL 256-bit" },
               { icon: Truck, title: "משלוח מהיר", text: "עד 3 ימי עסקים" },
-              { icon: Award, title: "כשרות למהדרין", text: "תעודת כשרות מקורית" },
+              { icon: Award, title: "מותגים מובילים", text: "איכות ללא פשרות" },
               { icon: CreditCard, title: "אפשרויות תשלום", text: "כרטיסי אשראי ופייפאל" },
             ].map((item, index) => (
               <div key={index} className="flex flex-col items-center gap-2">
@@ -98,7 +98,7 @@ export default function Footer() {
               <div className="flex items-center gap-4 text-xs text-primary-foreground/60">
                 <span>אבטחת תשלום על ידי SSL</span>
                 <span>•</span>
-                <span>כשר למהדרין</span>
+                <span>איכות מובטחת</span>
                 <span>•</span>
                 <span>משלוח לכל הארץ</span>
               </div>
