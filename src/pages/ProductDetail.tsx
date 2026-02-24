@@ -173,7 +173,7 @@ export default function ProductDetail() {
 
   const trustFactors = [
     { icon: Truck, text: 'משלוח חינם מעל ₪299' },
-    { icon: ShieldCheck, text: 'כשרות למהדרין' },
+    { icon: ShieldCheck, text: 'מותגים מובילים' },
     { icon: Clock, text: 'אספקה תוך 3-5 ימי עסקים' },
     { icon: Award, text: 'מוצרים באיכות פרימיום' },
     { icon: RefreshCw, text: 'החזרה עד 14 יום' },

@@ -124,7 +124,7 @@ export default function Blog() {
       </Helmet>
       {/* Announcement Bar */}
       <div className="bg-primary text-primary-foreground text-center py-2.5 text-sm font-medium">
-        משלוח חינם בקנייה מעל ₪299 | כשר למהדרין
+        משלוח חינם בקנייה מעל ₪299 | איכות ללא פשרות
       </div>
 
       {/* Header */}
