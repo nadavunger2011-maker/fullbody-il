@@ -218,10 +218,10 @@ export default function ProductDetail() {
             <span className="text-foreground/70 truncate max-w-[200px]">{product.node.title}</span>
           </nav>
 
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16">
-            {/* Image Gallery - Clean & Minimal */}
-            <div className="space-y-3">
-              <div className="aspect-square bg-muted/20 rounded-2xl overflow-hidden flex items-center justify-center p-8 lg:p-12">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-14 items-start">
+            {/* Image Gallery */}
+            <div className="space-y-3 animate-fade-in" style={{ animationDuration: '0.6s' }}>
+              <div className="aspect-square bg-muted/15 rounded-2xl overflow-hidden flex items-center justify-center p-8 lg:p-14 border border-border/30">
                 {currentImage && (
                   <img 
                     src={currentImage.url} 
@@ -254,39 +254,44 @@ export default function ProductDetail() {
               )}
             </div>
 
-            {/* Product Info - Streamlined */}
-            <div className="flex flex-col">
-              {/* Title */}
-              <h1 className="text-2xl md:text-3xl font-bold text-foreground leading-tight mb-3">
-                {product.node.title}
-              </h1>
-
-              {/* Price - prominent */}
+            {/* Product Info */}
+            <div className="flex flex-col animate-fade-in" style={{ animationDuration: '0.6s', animationDelay: '0.2s', animationFillMode: 'backwards' }}>
+              
+              {/* Title + Price - grouped together */}
               <div className="mb-5">
-                <span className="text-3xl font-black text-accent">
-                  ₪{parseFloat(selectedVariant?.price.amount || '0').toFixed(0)}
-                </span>
+                <h1 className="text-2xl md:text-3xl font-bold text-foreground leading-tight">
+                  {product.node.title}
+                </h1>
+                <div className="mt-3">
+                  <span className="text-3xl font-black text-accent">
+                    ₪{parseFloat(selectedVariant?.price.amount || '0').toFixed(0)}
+                  </span>
+                </div>
               </div>
 
-              {/* Quick trust strip */}
-              <div className="flex items-center gap-4 mb-6 pb-6 border-b border-border/50">
+              {/* Trust badges - pill chips */}
+              <div className="flex flex-wrap items-center gap-2 mb-5">
                 {trustFactors.map((item, index) => (
-                  <div key={index} className="flex items-center gap-1.5 text-xs text-muted-foreground">
-                    <item.icon className="w-3.5 h-3.5 text-accent" />
+                  <div key={index} className="flex items-center gap-1.5 text-xs text-muted-foreground bg-muted/40 rounded-full px-3 py-1.5">
+                    <item.icon className="w-3.5 h-3.5 text-accent flex-shrink-0" />
                     <span>{item.text}</span>
                   </div>
                 ))}
               </div>
 
-              {/* Description - compact */}
-              <p className="text-sm text-muted-foreground leading-relaxed mb-6">
-                {product.node.description}
-              </p>
+              {/* Description - in a subtle card */}
+              {product.node.description && (
+                <div className="bg-muted/15 rounded-xl p-4 mb-6 border border-border/20">
+                  <p className="text-sm text-muted-foreground leading-relaxed">
+                    {product.node.description}
+                  </p>
+                </div>
+              )}
 
               {/* Variant Selection */}
               {product.node.variants.edges.length > 1 && (
                 <div className="mb-5">
-                  <label className="text-sm font-semibold text-foreground mb-2 block">בחר אפשרות</label>
+                  <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-2.5 block">בחר אפשרות</label>
                   <div className="flex flex-wrap gap-2">
                     {product.node.variants.edges.map((variant, index) => (
                       <button
@@ -308,9 +313,9 @@ export default function ProductDetail() {
                 </div>
               )}
 
-              {/* Quantity + Add to Cart - unified row */}
-              <div className="flex items-center gap-3 mb-6">
-                <div className="flex items-center border border-border rounded-full overflow-hidden">
+              {/* Quantity + Add to Cart */}
+              <div className="flex items-center gap-3 mb-8">
+                <div className="flex items-center border border-border rounded-full overflow-hidden bg-muted/20">
                   <button
                     onClick={() => setQuantity(Math.max(1, quantity - 1))}
                     className="w-10 h-10 flex items-center justify-center hover:bg-muted/50 transition-colors"
@@ -329,7 +334,7 @@ export default function ProductDetail() {
                 <button
                   onClick={handleAddToCart}
                   disabled={isAddingToCart || !isSelectedVariantAvailable}
-                  className="flex-1 bg-accent text-accent-foreground font-bold py-3 rounded-full text-sm transition-all duration-200 flex justify-center items-center gap-2 hover:opacity-90 active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="flex-1 bg-accent text-accent-foreground font-bold py-3 rounded-full text-sm transition-all duration-200 flex justify-center items-center gap-2 hover:opacity-90 active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed shadow-sm"
                 >
                   {isAddingToCart ? (
                     <>
@@ -347,54 +352,57 @@ export default function ProductDetail() {
                 </button>
               </div>
 
-              {/* Accordion - subtle */}
-              <Accordion type="single" collapsible className="w-full">
-                <AccordionItem value="ingredients" className="border-border/50">
-                  <AccordionTrigger className="py-3 text-sm hover:no-underline text-right font-medium">
-                    מרכיבים
-                  </AccordionTrigger>
-                  <AccordionContent className="text-sm text-muted-foreground leading-relaxed pb-4">
-                    המוצר מכיל מרכיבים טבעיים באיכות הגבוהה ביותר. לפרטים מלאים על הרכב המוצר, עיין באריזה או פנה לשירות הלקוחות שלנו.
-                  </AccordionContent>
-                </AccordionItem>
-                <AccordionItem value="usage" className="border-border/50">
-                  <AccordionTrigger className="py-3 text-sm hover:no-underline text-right font-medium">
-                    אופן השימוש
-                  </AccordionTrigger>
-                  <AccordionContent className="text-sm text-muted-foreground leading-relaxed pb-4">
-                    יש לפעול לפי הוראות היצרן המופיעות על האריזה. מומלץ להתייעץ עם רופא או דיאטנית לפני השימוש. שמור במקום קריר ויבש.
-                  </AccordionContent>
-                </AccordionItem>
-                <AccordionItem value="warnings" className="border-border/50">
-                  <AccordionTrigger className="py-3 text-sm hover:no-underline text-right font-medium">
-                    אזהרות
-                  </AccordionTrigger>
-                  <AccordionContent className="text-sm text-muted-foreground leading-relaxed pb-4">
-                    אין לחרוג מהמנה היומית המומלצת. תוסף תזונה אינו תחליף לתזונה מאוזנת ולאורח חיים בריא. יש לשמור הרחק מהישג ידם של ילדים.
-                  </AccordionContent>
-                </AccordionItem>
-                <AccordionItem value="shipping" className="border-0">
-                  <AccordionTrigger className="py-3 text-sm hover:no-underline text-right font-medium">
-                    משלוחים והחזרות
-                  </AccordionTrigger>
-                  <AccordionContent className="text-sm text-muted-foreground leading-relaxed pb-4">
-                    משלוח חינם בהזמנות מעל ₪299. זמן אספקה: 3-5 ימי עסקים. ניתן להחזיר מוצרים תוך 14 יום מיום הקבלה.
-                  </AccordionContent>
-                </AccordionItem>
-              </Accordion>
+              {/* Accordion - in a card */}
+              <div className="bg-muted/15 rounded-xl border border-border/30 overflow-hidden">
+                <Accordion type="single" collapsible className="w-full">
+                  <AccordionItem value="ingredients" className="border-border/30">
+                    <AccordionTrigger className="px-4 py-3.5 text-sm hover:no-underline text-right font-medium hover:bg-muted/20 transition-colors">
+                      מרכיבים
+                    </AccordionTrigger>
+                    <AccordionContent className="px-4 text-sm text-muted-foreground leading-relaxed pb-4">
+                      המוצר מכיל מרכיבים טבעיים באיכות הגבוהה ביותר. לפרטים מלאים על הרכב המוצר, עיין באריזה או פנה לשירות הלקוחות שלנו.
+                    </AccordionContent>
+                  </AccordionItem>
+                  <AccordionItem value="usage" className="border-border/30">
+                    <AccordionTrigger className="px-4 py-3.5 text-sm hover:no-underline text-right font-medium hover:bg-muted/20 transition-colors">
+                      אופן השימוש
+                    </AccordionTrigger>
+                    <AccordionContent className="px-4 text-sm text-muted-foreground leading-relaxed pb-4">
+                      יש לפעול לפי הוראות היצרן המופיעות על האריזה. מומלץ להתייעץ עם רופא או דיאטנית לפני השימוש. שמור במקום קריר ויבש.
+                    </AccordionContent>
+                  </AccordionItem>
+                  <AccordionItem value="warnings" className="border-border/30">
+                    <AccordionTrigger className="px-4 py-3.5 text-sm hover:no-underline text-right font-medium hover:bg-muted/20 transition-colors">
+                      אזהרות
+                    </AccordionTrigger>
+                    <AccordionContent className="px-4 text-sm text-muted-foreground leading-relaxed pb-4">
+                      אין לחרוג מהמנה היומית המומלצת. תוסף תזונה אינו תחליף לתזונה מאוזנת ולאורח חיים בריא. יש לשמור הרחק מהישג ידם של ילדים.
+                    </AccordionContent>
+                  </AccordionItem>
+                  <AccordionItem value="shipping" className="border-0">
+                    <AccordionTrigger className="px-4 py-3.5 text-sm hover:no-underline text-right font-medium hover:bg-muted/20 transition-colors">
+                      משלוחים והחזרות
+                    </AccordionTrigger>
+                    <AccordionContent className="px-4 text-sm text-muted-foreground leading-relaxed pb-4">
+                      משלוח חינם בהזמנות מעל ₪299. זמן אספקה: 3-5 ימי עסקים. ניתן להחזיר מוצרים תוך 14 יום מיום הקבלה.
+                    </AccordionContent>
+                  </AccordionItem>
+                </Accordion>
+              </div>
             </div>
           </div>
 
           {/* Related Products */}
           {relatedProducts.length > 0 && (
-            <section className="mt-16 pt-8 border-t border-border/30">
+            <section className="mt-16 pt-8 border-t border-border/30 animate-fade-in" style={{ animationDuration: '0.6s', animationDelay: '0.4s', animationFillMode: 'backwards' }}>
               <h2 className="text-xl font-bold text-foreground mb-6">מוצרים נוספים</h2>
               <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
-                {relatedProducts.map((relatedProduct) => (
+                {relatedProducts.map((relatedProduct, i) => (
                   <Link
                     key={relatedProduct.node.id}
                     to={`/product/${relatedProduct.node.handle}`}
-                    className="group bg-card rounded-xl overflow-hidden hover:shadow-md transition-all duration-300 border border-border/50"
+                    className="group bg-card rounded-xl overflow-hidden hover:shadow-md transition-all duration-300 border border-border/50 animate-fade-in"
+                    style={{ animationDuration: '0.4s', animationDelay: `${0.5 + i * 0.1}s`, animationFillMode: 'backwards' }}
                   >
                     <div className="aspect-square bg-muted/20 overflow-hidden flex items-center justify-center p-6">
                       {relatedProduct.node.images.edges[0]?.node && (
