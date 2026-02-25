@@ -257,7 +257,7 @@ export default function ProductDetail() {
             {/* Product Info */}
             <div className="flex flex-col animate-fade-in" style={{ animationDuration: '0.6s', animationDelay: '0.2s', animationFillMode: 'backwards' }}>
               
-              {/* Title + Price - grouped together */}
+              {/* Title + Price */}
               <div className="mb-5">
                 <h1 className="text-2xl md:text-3xl font-bold text-foreground leading-tight">
                   {product.node.title}
@@ -278,15 +278,6 @@ export default function ProductDetail() {
                   </div>
                 ))}
               </div>
-
-              {/* Description - in a subtle card */}
-              {product.node.description && (
-                <div className="bg-muted/15 rounded-xl p-4 mb-6 border border-border/20">
-                  <p className="text-sm text-muted-foreground leading-relaxed">
-                    {product.node.description}
-                  </p>
-                </div>
-              )}
 
               {/* Variant Selection */}
               {product.node.variants.edges.length > 1 && (
@@ -314,7 +305,7 @@ export default function ProductDetail() {
               )}
 
               {/* Quantity + Add to Cart */}
-              <div className="flex items-center gap-3 mb-8">
+              <div className="flex items-center gap-3 mb-6">
                 <div className="flex items-center border border-border rounded-full overflow-hidden bg-muted/20">
                   <button
                     onClick={() => setQuantity(Math.max(1, quantity - 1))}
@@ -352,39 +343,48 @@ export default function ProductDetail() {
                 </button>
               </div>
 
-              {/* Accordion - in a card */}
-              <div className="bg-muted/15 rounded-xl border border-border/30 overflow-hidden">
+              {/* Product Description - rendered as HTML from Shopify */}
+              {(product.node.descriptionHtml || product.node.description) && (
+                <div className="mb-6 animate-fade-in" style={{ animationDuration: '0.5s', animationDelay: '0.35s', animationFillMode: 'backwards' }}>
+                  <Accordion type="single" collapsible defaultValue="description" className="w-full">
+                    <AccordionItem value="description" className="border border-border/30 rounded-xl overflow-hidden bg-muted/10">
+                      <AccordionTrigger className="px-4 py-3.5 text-sm hover:no-underline text-right font-semibold hover:bg-muted/20 transition-colors">
+                        תיאור המוצר
+                      </AccordionTrigger>
+                      <AccordionContent className="px-4 pb-4">
+                        {product.node.descriptionHtml ? (
+                          <div
+                            className="product-description text-sm text-muted-foreground leading-relaxed"
+                            dangerouslySetInnerHTML={{ __html: product.node.descriptionHtml }}
+                          />
+                        ) : (
+                          <p className="text-sm text-muted-foreground leading-relaxed whitespace-pre-line">
+                            {product.node.description}
+                          </p>
+                        )}
+                      </AccordionContent>
+                    </AccordionItem>
+                  </Accordion>
+                </div>
+              )}
+
+              {/* Info Accordion */}
+              <div className="bg-muted/10 rounded-xl border border-border/30 overflow-hidden animate-fade-in" style={{ animationDuration: '0.5s', animationDelay: '0.45s', animationFillMode: 'backwards' }}>
                 <Accordion type="single" collapsible className="w-full">
-                  <AccordionItem value="ingredients" className="border-border/30">
-                    <AccordionTrigger className="px-4 py-3.5 text-sm hover:no-underline text-right font-medium hover:bg-muted/20 transition-colors">
-                      מרכיבים
-                    </AccordionTrigger>
-                    <AccordionContent className="px-4 text-sm text-muted-foreground leading-relaxed pb-4">
-                      המוצר מכיל מרכיבים טבעיים באיכות הגבוהה ביותר. לפרטים מלאים על הרכב המוצר, עיין באריזה או פנה לשירות הלקוחות שלנו.
-                    </AccordionContent>
-                  </AccordionItem>
-                  <AccordionItem value="usage" className="border-border/30">
-                    <AccordionTrigger className="px-4 py-3.5 text-sm hover:no-underline text-right font-medium hover:bg-muted/20 transition-colors">
-                      אופן השימוש
-                    </AccordionTrigger>
-                    <AccordionContent className="px-4 text-sm text-muted-foreground leading-relaxed pb-4">
-                      יש לפעול לפי הוראות היצרן המופיעות על האריזה. מומלץ להתייעץ עם רופא או דיאטנית לפני השימוש. שמור במקום קריר ויבש.
-                    </AccordionContent>
-                  </AccordionItem>
-                  <AccordionItem value="warnings" className="border-border/30">
-                    <AccordionTrigger className="px-4 py-3.5 text-sm hover:no-underline text-right font-medium hover:bg-muted/20 transition-colors">
-                      אזהרות
-                    </AccordionTrigger>
-                    <AccordionContent className="px-4 text-sm text-muted-foreground leading-relaxed pb-4">
-                      אין לחרוג מהמנה היומית המומלצת. תוסף תזונה אינו תחליף לתזונה מאוזנת ולאורח חיים בריא. יש לשמור הרחק מהישג ידם של ילדים.
-                    </AccordionContent>
-                  </AccordionItem>
-                  <AccordionItem value="shipping" className="border-0">
+                  <AccordionItem value="shipping" className="border-border/30">
                     <AccordionTrigger className="px-4 py-3.5 text-sm hover:no-underline text-right font-medium hover:bg-muted/20 transition-colors">
                       משלוחים והחזרות
                     </AccordionTrigger>
                     <AccordionContent className="px-4 text-sm text-muted-foreground leading-relaxed pb-4">
                       משלוח חינם בהזמנות מעל ₪299. זמן אספקה: 3-5 ימי עסקים. ניתן להחזיר מוצרים תוך 14 יום מיום הקבלה.
+                    </AccordionContent>
+                  </AccordionItem>
+                  <AccordionItem value="warnings" className="border-0">
+                    <AccordionTrigger className="px-4 py-3.5 text-sm hover:no-underline text-right font-medium hover:bg-muted/20 transition-colors">
+                      אזהרות
+                    </AccordionTrigger>
+                    <AccordionContent className="px-4 text-sm text-muted-foreground leading-relaxed pb-4">
+                      אין לחרוג מהמנה היומית המומלצת. תוסף תזונה אינו תחליף לתזונה מאוזנת ולאורח חיים בריא. יש לשמור הרחק מהישג ידם של ילדים.
                     </AccordionContent>
                   </AccordionItem>
                 </Accordion>
