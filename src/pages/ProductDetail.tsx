@@ -177,7 +177,7 @@ export default function ProductDetail() {
         <AccessibilityWidget />
         
         {/* Minimal Header */}
-        <header className="sticky top-0 z-40 bg-background/80 backdrop-blur-md border-b border-border/50">
+        <header className="sticky top-0 z-40 bg-background/70 backdrop-blur-xl border-b border-border/30 shadow-[0_1px_10px_-3px_hsl(var(--foreground)/0.05)]">
           <div className="container mx-auto px-4 h-14 flex items-center justify-between">
             <button 
               onClick={() => navigate(-1)}
@@ -219,14 +219,14 @@ export default function ProductDetail() {
           </nav>
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-14 items-start">
-            {/* Image Gallery */}
-            <div className="space-y-3 animate-fade-in" style={{ animationDuration: '0.6s' }}>
-              <div className="aspect-square bg-muted/15 rounded-2xl overflow-hidden flex items-center justify-center p-8 lg:p-14 border border-border/30">
+            {/* Image Gallery - sticky on desktop */}
+            <div className="space-y-3 animate-fade-in lg:sticky lg:top-20" style={{ animationDuration: '0.6s' }}>
+              <div className="aspect-square bg-gradient-to-br from-muted/20 to-muted/5 rounded-2xl overflow-hidden flex items-center justify-center p-8 lg:p-14 border border-border/20 shadow-[0_4px_30px_-8px_hsl(var(--foreground)/0.06)]">
                 {currentImage && (
                   <img 
                     src={currentImage.url} 
                     alt={currentImage.altText || product.node.title}
-                    className="max-w-full max-h-full object-contain transition-transform duration-500 hover:scale-105"
+                    className="max-w-full max-h-full object-contain transition-transform duration-700 hover:scale-105"
                   />
                 )}
               </div>
@@ -237,10 +237,10 @@ export default function ProductDetail() {
                     <button
                       key={index}
                       onClick={() => setSelectedImageIndex(index)}
-                      className={`w-16 h-16 rounded-lg overflow-hidden flex-shrink-0 transition-all ${
+                      className={`w-16 h-16 rounded-xl overflow-hidden flex-shrink-0 transition-all border ${
                         selectedImageIndex === index 
-                          ? 'ring-2 ring-accent ring-offset-2 ring-offset-background' 
-                          : 'opacity-60 hover:opacity-100'
+                          ? 'ring-2 ring-accent ring-offset-2 ring-offset-background border-accent/30' 
+                          : 'opacity-60 hover:opacity-100 border-border/20'
                       }`}
                     >
                       <img 
@@ -258,21 +258,25 @@ export default function ProductDetail() {
             <div className="flex flex-col animate-fade-in" style={{ animationDuration: '0.6s', animationDelay: '0.2s', animationFillMode: 'backwards' }}>
               
               {/* Title + Price */}
-              <div className="mb-5">
-                <h1 className="text-2xl md:text-3xl font-bold text-foreground leading-tight">
+              <div className="mb-6">
+                <h1 className="text-2xl md:text-3xl font-bold text-foreground leading-tight tracking-tight">
                   {product.node.title}
                 </h1>
-                <div className="mt-3">
-                  <span className="text-3xl font-black text-accent">
+                <div className="mt-3 flex items-baseline gap-2">
+                  <span className="text-3xl font-black text-accent tracking-tight">
                     ₪{parseFloat(selectedVariant?.price.amount || '0').toFixed(0)}
                   </span>
+                  <span className="text-xs text-muted-foreground">כולל מע״מ</span>
                 </div>
               </div>
 
-              {/* Trust badges - pill chips */}
-              <div className="flex flex-wrap items-center gap-2 mb-5">
+              {/* Divider */}
+              <div className="h-px bg-gradient-to-l from-transparent via-border/60 to-transparent mb-5" />
+
+              {/* Trust badges - premium pills */}
+              <div className="flex flex-wrap items-center gap-2 mb-6">
                 {trustFactors.map((item, index) => (
-                  <div key={index} className="flex items-center gap-1.5 text-xs text-muted-foreground bg-muted/40 rounded-full px-3 py-1.5">
+                  <div key={index} className="flex items-center gap-1.5 text-xs text-muted-foreground bg-muted/30 backdrop-blur-sm rounded-full px-3.5 py-2 border border-border/20">
                     <item.icon className="w-3.5 h-3.5 text-accent flex-shrink-0" />
                     <span>{item.text}</span>
                   </div>
@@ -325,7 +329,7 @@ export default function ProductDetail() {
                 <button
                   onClick={handleAddToCart}
                   disabled={isAddingToCart || !isSelectedVariantAvailable}
-                  className="flex-1 bg-accent text-accent-foreground font-bold py-3 rounded-full text-sm transition-all duration-200 flex justify-center items-center gap-2 hover:opacity-90 active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed shadow-sm"
+                  className="flex-1 bg-accent text-accent-foreground font-bold py-3.5 rounded-full text-sm transition-all duration-300 flex justify-center items-center gap-2 hover:shadow-[0_6px_20px_-4px_hsl(var(--accent)/0.5)] hover:brightness-105 active:scale-[0.97] disabled:opacity-50 disabled:cursor-not-allowed shadow-md"
                 >
                   {isAddingToCart ? (
                     <>
