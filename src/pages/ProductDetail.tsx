@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
-import { ChevronRight, ShoppingBag, Truck, ShieldCheck, ArrowLeft, Clock, Award, RefreshCw, HeartHandshake, Loader2 } from 'lucide-react';
+import { ChevronRight, ShoppingBag, Truck, ShieldCheck, ArrowRight, Clock, Award, RefreshCw, HeartHandshake, Loader2, Minus, Plus, Check } from 'lucide-react';
 import { fetchShopifyProducts, ShopifyProduct, CartItem as ShopifyCartItem } from '@/lib/shopify';
 import { useCartStore } from '@/stores/cartStore';
 import { toast } from 'sonner';
@@ -42,44 +42,21 @@ export default function ProductDetail() {
       
       if (foundProduct) {
         setProduct(foundProduct);
-        // Get related products (exclude current product)
         const related = products.filter(p => p.node.handle !== handle).slice(0, 4);
         setRelatedProducts(related);
         
-        // Track ViewContent with Flashy
         if (typeof window !== 'undefined' && window.flashy) {
           const productId = foundProduct.node.id.replace('gid://shopify/Product/', '');
-          window.flashy('ViewContent', {
-            content_ids: [productId]
-          });
+          window.flashy('ViewContent', { content_ids: [productId] });
         }
         
-        // Track ViewContent with Facebook Pixel
         const productId = foundProduct.node.id.replace('gid://shopify/Product/', '');
         const price = parseFloat(foundProduct.node.priceRange.minVariantPrice.amount);
         trackViewContent(productId, foundProduct.node.title, price);
         
         const currency = foundProduct.node.priceRange.minVariantPrice.currencyCode || 'ILS';
-
-        // Track view_item with GTM
-        trackViewItem({
-          item_id: productId,
-          item_name: foundProduct.node.title,
-          price: price,
-          quantity: 1,
-          currency
-        });
-
-        // Track view_item with GA4
-        trackGA4ViewItem(
-          {
-            item_id: productId,
-            item_name: foundProduct.node.title,
-            price,
-            quantity: 1,
-          },
-          currency
-        );
+        trackViewItem({ item_id: productId, item_name: foundProduct.node.title, price, quantity: 1, currency });
+        trackGA4ViewItem({ item_id: productId, item_name: foundProduct.node.title, price, quantity: 1 }, currency);
       }
       setIsLoading(false);
     };
@@ -113,12 +90,10 @@ export default function ProductDetail() {
         return;
       }
       
-      // Track AddToCart with Facebook Pixel
       const productId = product.node.id.replace('gid://shopify/Product/', '');
       const itemValue = parseFloat(variant.price.amount) * quantity;
       trackAddToCart(productId, product.node.title, itemValue);
       
-      // Track add_to_cart with GTM
       gtmTrackAddToCart({
         item_id: productId,
         item_name: product.node.title,
@@ -128,7 +103,6 @@ export default function ProductDetail() {
         currency: variant.price.currencyCode || 'ILS'
       });
 
-      // Track add_to_cart with GA4
       trackGA4AddToCart(
         {
           item_id: productId,
@@ -173,11 +147,8 @@ export default function ProductDetail() {
 
   const trustFactors = [
     { icon: Truck, text: 'משלוח חינם מעל ₪299' },
-    { icon: ShieldCheck, text: 'מותגים מובילים' },
-    { icon: Clock, text: 'אספקה תוך 3-5 ימי עסקים' },
-    { icon: Award, text: 'מוצרים באיכות פרימיום' },
+    { icon: Clock, text: '3-5 ימי עסקים' },
     { icon: RefreshCw, text: 'החזרה עד 14 יום' },
-    { icon: HeartHandshake, text: 'שירות לקוחות אישי' },
   ];
 
   return (
@@ -205,29 +176,29 @@ export default function ProductDetail() {
       <div dir="rtl" className="font-sans text-foreground bg-background min-h-screen">
         <AccessibilityWidget />
         
-        {/* Header */}
-        <header className="sticky top-0 z-40 bg-card shadow-card border-b border-border">
-          <div className="container mx-auto px-4 h-16 flex items-center justify-between">
+        {/* Minimal Header */}
+        <header className="sticky top-0 z-40 bg-background/80 backdrop-blur-md border-b border-border/50">
+          <div className="container mx-auto px-4 h-14 flex items-center justify-between">
             <button 
               onClick={() => navigate(-1)}
-              className="p-2 text-muted-foreground hover:text-accent transition-colors flex items-center gap-1"
+              className="p-2 text-muted-foreground hover:text-foreground transition-colors flex items-center gap-1 text-sm"
             >
-              <ArrowLeft className="w-5 h-5" />
+              <ArrowRight className="w-4 h-4" />
               <span className="hidden sm:inline">חזרה</span>
             </button>
             
             <Link to="/" className="flex items-center">
-              <img src={logoImage} alt="FullBody" className="h-10 w-auto" />
+              <img src={logoImage} alt="FullBody" className="h-8 w-auto" />
             </Link>
 
             <button 
               onClick={() => setIsCartOpen(true)}
-              className="p-2 text-muted-foreground hover:text-accent transition-colors relative"
+              className="p-2 text-muted-foreground hover:text-foreground transition-colors relative"
               aria-label="עגלת קניות"
             >
-              <ShoppingBag className="w-6 h-6" />
+              <ShoppingBag className="w-5 h-5" />
               {cartCount > 0 && (
-                <span className="absolute top-0 right-0 bg-accent text-accent-foreground text-[10px] w-5 h-5 flex items-center justify-center rounded-full font-bold">
+                <span className="absolute -top-0.5 -left-0.5 bg-accent text-accent-foreground text-[10px] w-4 h-4 flex items-center justify-center rounded-full font-bold">
                   {cartCount}
                 </span>
               )}
@@ -237,39 +208,39 @@ export default function ProductDetail() {
 
         <CartDrawer isOpen={isCartOpen} onClose={() => setIsCartOpen(false)} />
 
-        <main className="container mx-auto px-4 py-8">
+        <main className="container mx-auto px-4 py-6 max-w-6xl">
           {/* Breadcrumb */}
-          <nav className="flex items-center gap-2 text-sm text-muted-foreground mb-8">
-            <Link to="/" className="hover:text-accent transition-colors">ראשי</Link>
-            <ChevronRight className="w-4 h-4" />
-            <Link to="/#products" className="hover:text-accent transition-colors">חנות</Link>
-            <ChevronRight className="w-4 h-4" />
-            <span className="text-foreground font-medium">{product.node.title}</span>
+          <nav className="flex items-center gap-1.5 text-xs text-muted-foreground mb-6">
+            <Link to="/" className="hover:text-foreground transition-colors">ראשי</Link>
+            <ChevronRight className="w-3 h-3" />
+            <Link to="/#products" className="hover:text-foreground transition-colors">חנות</Link>
+            <ChevronRight className="w-3 h-3" />
+            <span className="text-foreground/70 truncate max-w-[200px]">{product.node.title}</span>
           </nav>
 
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-            {/* Image Gallery */}
-            <div className="space-y-4">
-              {/* Main Image */}
-              <div className="aspect-square bg-secondary/30 rounded-2xl overflow-hidden shadow-lg flex items-center justify-center p-6">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16">
+            {/* Image Gallery - Clean & Minimal */}
+            <div className="space-y-3">
+              <div className="aspect-square bg-muted/20 rounded-2xl overflow-hidden flex items-center justify-center p-8 lg:p-12">
                 {currentImage && (
                   <img 
                     src={currentImage.url} 
                     alt={currentImage.altText || product.node.title}
-                    className="max-w-[80%] max-h-[80%] object-contain"
+                    className="max-w-full max-h-full object-contain transition-transform duration-500 hover:scale-105"
                   />
                 )}
               </div>
               
-              {/* Thumbnail Images */}
               {images.length > 1 && (
-                <div className="flex gap-3 overflow-x-auto pb-2">
+                <div className="flex gap-2 overflow-x-auto pb-1">
                   {images.map((image, index) => (
                     <button
                       key={index}
                       onClick={() => setSelectedImageIndex(index)}
-                      className={`w-20 h-20 rounded-lg overflow-hidden flex-shrink-0 border-2 transition-all ${
-                        selectedImageIndex === index ? 'border-accent ring-2 ring-accent/30' : 'border-transparent hover:border-muted-foreground/30'
+                      className={`w-16 h-16 rounded-lg overflow-hidden flex-shrink-0 transition-all ${
+                        selectedImageIndex === index 
+                          ? 'ring-2 ring-accent ring-offset-2 ring-offset-background' 
+                          : 'opacity-60 hover:opacity-100'
                       }`}
                     >
                       <img 
@@ -283,41 +254,51 @@ export default function ProductDetail() {
               )}
             </div>
 
-            {/* Product Info */}
-            <div className="space-y-6">
-              {/* Title & Description */}
-              <div className="bg-card/50 rounded-2xl p-6 border border-border/50">
-                <h1 className="text-3xl md:text-4xl font-black text-foreground mb-4 leading-tight">
-                  {product.node.title}
-                </h1>
-                <p className="text-muted-foreground leading-relaxed text-base">
-                  {product.node.description}
-                </p>
-              </div>
+            {/* Product Info - Streamlined */}
+            <div className="flex flex-col">
+              {/* Title */}
+              <h1 className="text-2xl md:text-3xl font-bold text-foreground leading-tight mb-3">
+                {product.node.title}
+              </h1>
 
-              {/* Price */}
-              <div className="flex items-baseline gap-3">
-                <span className="text-4xl font-black text-accent">
+              {/* Price - prominent */}
+              <div className="mb-5">
+                <span className="text-3xl font-black text-accent">
                   ₪{parseFloat(selectedVariant?.price.amount || '0').toFixed(0)}
                 </span>
               </div>
 
+              {/* Quick trust strip */}
+              <div className="flex items-center gap-4 mb-6 pb-6 border-b border-border/50">
+                {trustFactors.map((item, index) => (
+                  <div key={index} className="flex items-center gap-1.5 text-xs text-muted-foreground">
+                    <item.icon className="w-3.5 h-3.5 text-accent" />
+                    <span>{item.text}</span>
+                  </div>
+                ))}
+              </div>
+
+              {/* Description - compact */}
+              <p className="text-sm text-muted-foreground leading-relaxed mb-6">
+                {product.node.description}
+              </p>
+
               {/* Variant Selection */}
               {product.node.variants.edges.length > 1 && (
-                <div className="space-y-3">
-                  <label className="font-bold text-foreground">בחר אפשרות:</label>
+                <div className="mb-5">
+                  <label className="text-sm font-semibold text-foreground mb-2 block">בחר אפשרות</label>
                   <div className="flex flex-wrap gap-2">
                     {product.node.variants.edges.map((variant, index) => (
                       <button
                         key={variant.node.id}
                         onClick={() => setSelectedVariantIndex(index)}
                         disabled={!variant.node.availableForSale}
-                        className={`px-5 py-2.5 rounded-xl border-2 font-bold transition-all ${
+                        className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
                           selectedVariantIndex === index
-                            ? 'border-accent bg-accent text-accent-foreground shadow-md'
+                            ? 'bg-accent text-accent-foreground shadow-sm'
                             : variant.node.availableForSale
-                              ? 'border-border hover:border-accent hover:bg-accent/5'
-                              : 'border-border opacity-50 cursor-not-allowed line-through'
+                              ? 'bg-muted/50 text-foreground hover:bg-muted'
+                              : 'bg-muted/30 text-muted-foreground/50 cursor-not-allowed line-through'
                         }`}
                       >
                         {variant.node.title}
@@ -327,111 +308,95 @@ export default function ProductDetail() {
                 </div>
               )}
 
-              {/* Quantity */}
-              <div className="space-y-3">
-                <label className="font-bold text-foreground">כמות:</label>
-                <div className="flex items-center gap-3">
+              {/* Quantity + Add to Cart - unified row */}
+              <div className="flex items-center gap-3 mb-6">
+                <div className="flex items-center border border-border rounded-full overflow-hidden">
                   <button
                     onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                    className="w-12 h-12 rounded-xl border-2 border-border flex items-center justify-center hover:border-accent hover:bg-accent/5 transition-all text-lg font-bold"
+                    className="w-10 h-10 flex items-center justify-center hover:bg-muted/50 transition-colors"
                   >
-                    -
+                    <Minus className="w-3.5 h-3.5" />
                   </button>
-                  <span className="w-14 text-center font-black text-xl">{quantity}</span>
+                  <span className="w-10 text-center font-semibold text-sm select-none">{quantity}</span>
                   <button
                     onClick={() => setQuantity(quantity + 1)}
-                    className="w-12 h-12 rounded-xl border-2 border-border flex items-center justify-center hover:border-accent hover:bg-accent/5 transition-all text-lg font-bold"
+                    className="w-10 h-10 flex items-center justify-center hover:bg-muted/50 transition-colors"
                   >
-                    +
+                    <Plus className="w-3.5 h-3.5" />
                   </button>
                 </div>
+
+                <button
+                  onClick={handleAddToCart}
+                  disabled={isAddingToCart || !isSelectedVariantAvailable}
+                  className="flex-1 bg-accent text-accent-foreground font-bold py-3 rounded-full text-sm transition-all duration-200 flex justify-center items-center gap-2 hover:opacity-90 active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  {isAddingToCart ? (
+                    <>
+                      <Loader2 className="w-4 h-4 animate-spin" />
+                      מוסיף...
+                    </>
+                  ) : !isSelectedVariantAvailable ? (
+                    'אזל מהמלאי'
+                  ) : (
+                    <>
+                      <ShoppingBag className="w-4 h-4" />
+                      הוסף לעגלה · ₪{(parseFloat(selectedVariant?.price.amount || '0') * quantity).toFixed(0)}
+                    </>
+                  )}
+                </button>
               </div>
 
-              {/* Add to Cart Button */}
-              <button
-                onClick={handleAddToCart}
-                disabled={isAddingToCart || !isSelectedVariantAvailable}
-                className="w-full bg-accent text-accent-foreground font-bold py-4 text-lg rounded-xl shadow-cta transition-all duration-300 flex justify-center items-center gap-3 hover:bg-accent/90 hover:shadow-lg active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed"
-              >
-                {isAddingToCart ? (
-                  <>
-                    <Loader2 className="w-5 h-5 animate-spin" />
-                    מוסיף לעגלה...
-                  </>
-                ) : !isSelectedVariantAvailable ? (
-                  <>אזל מהמלאי</>
-                ) : (
-                  <>
-                    <ShoppingBag className="w-5 h-5" />
-                    הוסף לעגלה - ₪{(parseFloat(selectedVariant?.price.amount || '0') * quantity).toFixed(0)}
-                  </>
-                )}
-              </button>
-
-              {/* Product Information Accordion */}
-              <Accordion type="single" collapsible className="w-full border border-border rounded-xl overflow-hidden">
-                <AccordionItem value="ingredients" className="border-b border-border">
-                  <AccordionTrigger className="px-4 py-3 hover:bg-muted/50 text-right font-bold">
+              {/* Accordion - subtle */}
+              <Accordion type="single" collapsible className="w-full">
+                <AccordionItem value="ingredients" className="border-border/50">
+                  <AccordionTrigger className="py-3 text-sm hover:no-underline text-right font-medium">
                     מרכיבים
                   </AccordionTrigger>
-                  <AccordionContent className="px-4 pb-4 text-muted-foreground leading-relaxed">
+                  <AccordionContent className="text-sm text-muted-foreground leading-relaxed pb-4">
                     המוצר מכיל מרכיבים טבעיים באיכות הגבוהה ביותר. לפרטים מלאים על הרכב המוצר, עיין באריזה או פנה לשירות הלקוחות שלנו.
                   </AccordionContent>
                 </AccordionItem>
-                <AccordionItem value="usage" className="border-b border-border">
-                  <AccordionTrigger className="px-4 py-3 hover:bg-muted/50 text-right font-bold">
+                <AccordionItem value="usage" className="border-border/50">
+                  <AccordionTrigger className="py-3 text-sm hover:no-underline text-right font-medium">
                     אופן השימוש
                   </AccordionTrigger>
-                  <AccordionContent className="px-4 pb-4 text-muted-foreground leading-relaxed">
+                  <AccordionContent className="text-sm text-muted-foreground leading-relaxed pb-4">
                     יש לפעול לפי הוראות היצרן המופיעות על האריזה. מומלץ להתייעץ עם רופא או דיאטנית לפני השימוש. שמור במקום קריר ויבש.
                   </AccordionContent>
                 </AccordionItem>
-                <AccordionItem value="warnings" className="border-b border-border">
-                  <AccordionTrigger className="px-4 py-3 hover:bg-muted/50 text-right font-bold">
+                <AccordionItem value="warnings" className="border-border/50">
+                  <AccordionTrigger className="py-3 text-sm hover:no-underline text-right font-medium">
                     אזהרות
                   </AccordionTrigger>
-                  <AccordionContent className="px-4 pb-4 text-muted-foreground leading-relaxed">
-                    אין לחרוג מהמנה היומית המומלצת. תוסף תזונה אינו תחליף לתזונה מאוזנת ולאורח חיים בריא. יש לשמור הרחק מהישג ידם של ילדים. נשים בהיריון או מניקות - יש להתייעץ עם רופא.
+                  <AccordionContent className="text-sm text-muted-foreground leading-relaxed pb-4">
+                    אין לחרוג מהמנה היומית המומלצת. תוסף תזונה אינו תחליף לתזונה מאוזנת ולאורח חיים בריא. יש לשמור הרחק מהישג ידם של ילדים.
                   </AccordionContent>
                 </AccordionItem>
-                <AccordionItem value="shipping" className="border-none">
-                  <AccordionTrigger className="px-4 py-3 hover:bg-muted/50 text-right font-bold">
+                <AccordionItem value="shipping" className="border-0">
+                  <AccordionTrigger className="py-3 text-sm hover:no-underline text-right font-medium">
                     משלוחים והחזרות
                   </AccordionTrigger>
-                  <AccordionContent className="px-4 pb-4 text-muted-foreground leading-relaxed">
-                    משלוח חינם בהזמנות מעל ₪299. זמן אספקה: 3-5 ימי עסקים. ניתן להחזיר מוצרים תוך 14 יום מיום הקבלה בכפוף למדיניות ההחזרות שלנו.
+                  <AccordionContent className="text-sm text-muted-foreground leading-relaxed pb-4">
+                    משלוח חינם בהזמנות מעל ₪299. זמן אספקה: 3-5 ימי עסקים. ניתן להחזיר מוצרים תוך 14 יום מיום הקבלה.
                   </AccordionContent>
                 </AccordionItem>
               </Accordion>
-
-              {/* Trust Factors */}
-              <div className="bg-muted/30 rounded-2xl p-5 border border-border/50">
-                <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-                  {trustFactors.map((item, index) => (
-                    <div key={index} className="flex items-center gap-3 text-sm">
-                      <div className="w-10 h-10 rounded-xl bg-accent/10 flex items-center justify-center flex-shrink-0">
-                        <item.icon className="w-5 h-5 text-accent" />
-                      </div>
-                      <span className="text-foreground font-medium">{item.text}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
             </div>
           </div>
 
           {/* Related Products */}
           {relatedProducts.length > 0 && (
-            <section className="mt-20">
-              <h2 className="text-2xl font-black text-foreground mb-8">מוצרים נוספים</h2>
-              <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+            <section className="mt-16 pt-8 border-t border-border/30">
+              <h2 className="text-xl font-bold text-foreground mb-6">מוצרים נוספים</h2>
+              <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
                 {relatedProducts.map((relatedProduct) => (
                   <Link
                     key={relatedProduct.node.id}
                     to={`/product/${relatedProduct.node.handle}`}
-                    className="group bg-card rounded-xl overflow-hidden hover:shadow-hover transition-all duration-300 border border-border"
+                    className="group bg-card rounded-xl overflow-hidden hover:shadow-md transition-all duration-300 border border-border/50"
                   >
-                    <div className="aspect-square bg-secondary/30 overflow-hidden flex items-center justify-center p-4">
+                    <div className="aspect-square bg-muted/20 overflow-hidden flex items-center justify-center p-6">
                       {relatedProduct.node.images.edges[0]?.node && (
                         <img 
                           src={relatedProduct.node.images.edges[0].node.url}
@@ -440,11 +405,11 @@ export default function ProductDetail() {
                         />
                       )}
                     </div>
-                    <div className="p-4">
-                      <h3 className="font-bold text-foreground group-hover:text-accent transition-colors line-clamp-2">
+                    <div className="p-3 sm:p-4">
+                      <h3 className="text-sm font-semibold text-foreground group-hover:text-accent transition-colors line-clamp-2 leading-snug">
                         {relatedProduct.node.title}
                       </h3>
-                      <p className="text-lg font-black text-foreground mt-2">
+                      <p className="text-base font-bold text-foreground mt-1.5">
                         ₪{parseFloat(relatedProduct.node.priceRange.minVariantPrice.amount).toFixed(0)}
                       </p>
                     </div>
