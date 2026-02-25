@@ -33,6 +33,15 @@ export default function ProductDetail() {
 
   const { addItem, items: cartItems } = useCartStore();
   const cartCount = cartItems.reduce((sum, item) => sum + item.quantity, 0);
+  const [showStickyBar, setShowStickyBar] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setShowStickyBar(window.scrollY > 500);
+    };
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   useEffect(() => {
     const loadProduct = async () => {
@@ -433,6 +442,30 @@ export default function ProductDetail() {
         </main>
 
         <Footer />
+
+        {/* Floating Add to Cart Bar */}
+        {product && showStickyBar && (
+          <div className="fixed bottom-0 inset-x-0 z-50 bg-background/90 backdrop-blur-xl border-t border-border/40 shadow-[0_-4px_20px_-4px_hsl(var(--foreground)/0.1)] transition-transform duration-300 animate-slide-up" style={{ animationDuration: '0.3s' }}>
+            <div className="container mx-auto px-4 py-3 flex items-center gap-3 max-w-6xl">
+              <div className="flex-1 min-w-0">
+                <p className="text-sm font-bold text-foreground truncate">{product.node.title}</p>
+                <p className="text-lg font-black text-accent">₪{parseFloat(selectedVariant?.price.amount || '0').toFixed(0)}</p>
+              </div>
+              <button
+                onClick={handleAddToCart}
+                disabled={isAddingToCart || !isSelectedVariantAvailable}
+                className="bg-accent text-accent-foreground font-bold py-3 px-6 rounded-full text-sm transition-all duration-300 flex items-center gap-2 hover:shadow-[0_6px_20px_-4px_hsl(var(--accent)/0.5)] hover:brightness-105 active:scale-[0.97] disabled:opacity-50 disabled:cursor-not-allowed shadow-md whitespace-nowrap"
+              >
+                {isAddingToCart ? (
+                  <Loader2 className="w-4 h-4 animate-spin" />
+                ) : (
+                  <ShoppingBag className="w-4 h-4" />
+                )}
+                {isAddingToCart ? 'מוסיף...' : !isSelectedVariantAvailable ? 'אזל' : 'הוסף לעגלה'}
+              </button>
+            </div>
+          </div>
+        )}
       </div>
     </>
   );
