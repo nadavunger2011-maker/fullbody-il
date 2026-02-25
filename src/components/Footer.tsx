@@ -15,7 +15,7 @@ export default function Footer() {
               { icon: CreditCard, title: "אפשרויות תשלום", text: "כרטיסי אשראי ופייפאל" },
             ].map((item, index) => (
               <div key={index} className="flex flex-col items-center gap-2">
-                <item.icon className="w-6 h-6 text-accent" />
+                <item.icon className="w-6 h-6 text-primary-foreground" />
                 <h3 className="font-bold text-sm">{item.title}</h3>
                 <p className="text-xs text-primary-foreground/70">{item.text}</p>
               </div>
@@ -69,15 +69,15 @@ export default function Footer() {
               <h4 className="font-bold mb-4">יצירת קשר</h4>
               <ul className="space-y-3 text-sm text-primary-foreground/80">
                 <li className="flex items-center gap-2">
-                  <Phone className="w-4 h-4 text-accent" />
+                  <Phone className="w-4 h-4 text-primary-foreground/80" />
                   <a href="tel:0524487537" className="hover:text-primary-foreground transition">052-4487537</a>
                 </li>
                 <li className="flex items-center gap-2">
-                  <Mail className="w-4 h-4 text-accent" />
+                  <Mail className="w-4 h-4 text-primary-foreground/80" />
                   <a href="mailto:info@fullbody.co.il" className="hover:text-primary-foreground transition">info@fullbody.co.il</a>
                 </li>
                 <li className="flex items-start gap-2">
-                  <MapPin className="w-4 h-4 text-accent mt-0.5" />
+                  <MapPin className="w-4 h-4 text-primary-foreground/80 mt-0.5" />
                   <span>רחוב זרחין 1, רעננה</span>
                 </li>
               </ul>
