@@ -124,6 +124,12 @@ export default function ProductDetail() {
         },
         variant.price.currencyCode || 'ILS'
       );
+      // Track in our analytics DB
+      trackAddToCartEvent({
+        handle: product.node.handle, title: product.node.title,
+        id: productId, variantId: variant.id, variantTitle: variant.title,
+        price: parseFloat(variant.price.amount), quantity,
+      });
       
       setIsCartOpen(true);
       toast.success(`${product.node.title} נוסף לעגלה`);
