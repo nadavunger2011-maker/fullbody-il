@@ -12,7 +12,7 @@ import AccessibilityWidget from '@/components/AccessibilityWidget';
 import { trackViewContent, trackAddToCart } from '@/lib/fbPixel';
 import { trackViewItem, trackAddToCart as gtmTrackAddToCart } from '@/lib/gtm';
 import { trackGA4AddToCart, trackGA4ViewItem } from '@/lib/ga4';
-import { trackProductView, trackAddToCartEvent } from '@/lib/analytics';
+import { trackProductView, trackAddToCartEvent, trackProductDuration } from '@/lib/analytics';
 import {
   Accordion,
   AccordionContent,
@@ -73,6 +73,20 @@ export default function ProductDetail() {
     };
     loadProduct();
   }, [handle]);
+
+  // Track time spent on product page
+  useEffect(() => {
+    if (!product) return;
+    const startTime = Date.now();
+    const productId = product.node.id.replace('gid://shopify/Product/', '');
+    return () => {
+      const durationSeconds = Math.round((Date.now() - startTime) / 1000);
+      trackProductDuration(
+        { handle: product.node.handle, title: product.node.title, id: productId },
+        durationSeconds
+      );
+    };
+  }, [product]);
 
   const handleAddToCart = async () => {
     if (!product || isAddingToCart) return;

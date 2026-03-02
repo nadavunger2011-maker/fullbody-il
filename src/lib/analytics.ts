@@ -85,6 +85,18 @@ export function trackProductView(product: { handle: string; title: string; id: s
   });
 }
 
+// Track time spent on a product page
+export function trackProductDuration(product: { handle: string; title: string; id: string }, durationSeconds: number) {
+  if (durationSeconds < 2 || durationSeconds > 3600) return; // ignore very short or very long
+  trackEvent({
+    event_type: 'view_item',
+    product_handle: product.handle,
+    product_title: product.title,
+    product_id: product.id,
+    duration_seconds: durationSeconds,
+  } as any);
+}
+
 export function trackAddToCartEvent(product: {
   handle: string; title: string; id: string;
   variantId: string; variantTitle: string;
