@@ -52,7 +52,9 @@ export default function AdminDashboard() {
   const [adSpend, setAdSpend] = useState<AdSpendRow[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [dateRange, setDateRange] = useState<DateRange>('30d');
-  const [activeTab, setActiveTab] = useState<'overview' | 'products' | 'traffic' | 'adspend'>('overview');
+  const [activeTab, setActiveTab] = useState<'overview' | 'products' | 'traffic' | 'adspend' | 'ai'>('overview');
+  const [aiAnalysis, setAiAnalysis] = useState<string>('');
+  const [isAiLoading, setIsAiLoading] = useState(false);
 
   // Ad spend form
   const [newSpend, setNewSpend] = useState({ date: new Date().toISOString().split('T')[0], source: 'google_ads', campaign: '', spend: '', impressions: '', clicks: '', notes: '' });
