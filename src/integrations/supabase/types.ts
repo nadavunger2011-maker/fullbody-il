@@ -14,7 +14,126 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      ad_spend: {
+        Row: {
+          campaign: string | null
+          clicks: number | null
+          created_at: string
+          currency: string | null
+          date: string
+          id: string
+          impressions: number | null
+          notes: string | null
+          source: string
+          spend: number
+          updated_at: string
+        }
+        Insert: {
+          campaign?: string | null
+          clicks?: number | null
+          created_at?: string
+          currency?: string | null
+          date: string
+          id?: string
+          impressions?: number | null
+          notes?: string | null
+          source: string
+          spend?: number
+          updated_at?: string
+        }
+        Update: {
+          campaign?: string | null
+          clicks?: number | null
+          created_at?: string
+          currency?: string | null
+          date?: string
+          id?: string
+          impressions?: number | null
+          notes?: string | null
+          source?: string
+          spend?: number
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      analytics_events: {
+        Row: {
+          created_at: string
+          currency: string | null
+          event_type: string
+          id: string
+          order_id: string | null
+          order_total: number | null
+          page_path: string | null
+          price: number | null
+          product_handle: string | null
+          product_id: string | null
+          product_title: string | null
+          quantity: number | null
+          referrer: string | null
+          screen_width: number | null
+          session_id: string | null
+          user_agent: string | null
+          utm_campaign: string | null
+          utm_content: string | null
+          utm_medium: string | null
+          utm_source: string | null
+          utm_term: string | null
+          variant_id: string | null
+          variant_title: string | null
+        }
+        Insert: {
+          created_at?: string
+          currency?: string | null
+          event_type: string
+          id?: string
+          order_id?: string | null
+          order_total?: number | null
+          page_path?: string | null
+          price?: number | null
+          product_handle?: string | null
+          product_id?: string | null
+          product_title?: string | null
+          quantity?: number | null
+          referrer?: string | null
+          screen_width?: number | null
+          session_id?: string | null
+          user_agent?: string | null
+          utm_campaign?: string | null
+          utm_content?: string | null
+          utm_medium?: string | null
+          utm_source?: string | null
+          utm_term?: string | null
+          variant_id?: string | null
+          variant_title?: string | null
+        }
+        Update: {
+          created_at?: string
+          currency?: string | null
+          event_type?: string
+          id?: string
+          order_id?: string | null
+          order_total?: number | null
+          page_path?: string | null
+          price?: number | null
+          product_handle?: string | null
+          product_id?: string | null
+          product_title?: string | null
+          quantity?: number | null
+          referrer?: string | null
+          screen_width?: number | null
+          session_id?: string | null
+          user_agent?: string | null
+          utm_campaign?: string | null
+          utm_content?: string | null
+          utm_medium?: string | null
+          utm_source?: string | null
+          utm_term?: string | null
+          variant_id?: string | null
+          variant_title?: string | null
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never

@@ -12,6 +12,7 @@ import AccessibilityWidget from '@/components/AccessibilityWidget';
 import { trackViewContent, trackAddToCart } from '@/lib/fbPixel';
 import { trackViewItem, trackAddToCart as gtmTrackAddToCart } from '@/lib/gtm';
 import { trackGA4AddToCart, trackGA4ViewItem } from '@/lib/ga4';
+import { trackProductView, trackAddToCartEvent } from '@/lib/analytics';
 import {
   Accordion,
   AccordionContent,
@@ -66,6 +67,7 @@ export default function ProductDetail() {
         const currency = foundProduct.node.priceRange.minVariantPrice.currencyCode || 'ILS';
         trackViewItem({ item_id: productId, item_name: foundProduct.node.title, price, quantity: 1, currency });
         trackGA4ViewItem({ item_id: productId, item_name: foundProduct.node.title, price, quantity: 1 }, currency);
+        trackProductView({ handle: foundProduct.node.handle, title: foundProduct.node.title, id: productId, price });
       }
       setIsLoading(false);
     };
@@ -122,6 +124,12 @@ export default function ProductDetail() {
         },
         variant.price.currencyCode || 'ILS'
       );
+      // Track in our analytics DB
+      trackAddToCartEvent({
+        handle: product.node.handle, title: product.node.title,
+        id: productId, variantId: variant.id, variantTitle: variant.title,
+        price: parseFloat(variant.price.amount), quantity,
+      });
       
       setIsCartOpen(true);
       toast.success(`${product.node.title} נוסף לעגלה`);

@@ -6,6 +6,7 @@ import { trackPurchase } from '@/lib/gtm';
 import { trackPurchase as trackFBPurchase } from '@/lib/fbPixel';
 import { trackGA4Purchase } from '@/lib/ga4';
 import { useCartStore } from '@/stores/cartStore';
+import { trackPurchaseEvent } from '@/lib/analytics';
 
 const ThankYou = () => {
   const [searchParams] = useSearchParams();
@@ -78,6 +79,15 @@ const ThankYou = () => {
       );
       const numItems = items.reduce((sum, item) => sum + item.quantity, 0);
       trackFBPurchase(fbContentIds, total, numItems);
+
+      // Track purchase in our analytics DB
+      trackPurchaseEvent(transactionId, total, items.map(item => ({
+        handle: item.product.node.handle,
+        title: item.product.node.title,
+        id: item.product.node.id.replace('gid://shopify/Product/', ''),
+        price: parseFloat(item.price.amount),
+        quantity: item.quantity,
+      })));
 
       // Clear the cart after tracking
       clearCart();
