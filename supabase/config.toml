@@ -11,3 +11,6 @@ verify_jwt = false
 
 [functions.flashy-catalog-feed]
 verify_jwt = false
+
+[functions.analytics-ai]
+verify_jwt = false
