@@ -60,6 +60,7 @@ export type Database = {
         Row: {
           created_at: string
           currency: string | null
+          duration_seconds: number | null
           event_type: string
           id: string
           order_id: string | null
@@ -85,6 +86,7 @@ export type Database = {
         Insert: {
           created_at?: string
           currency?: string | null
+          duration_seconds?: number | null
           event_type: string
           id?: string
           order_id?: string | null
@@ -110,6 +112,7 @@ export type Database = {
         Update: {
           created_at?: string
           currency?: string | null
+          duration_seconds?: number | null
           event_type?: string
           id?: string
           order_id?: string | null
