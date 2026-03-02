@@ -501,6 +501,48 @@ export default function AdminDashboard() {
               </div>
             </div>
           )}
+
+          {/* AI Analysis Tab */}
+          {activeTab === 'ai' && (
+            <div className="space-y-6">
+              <div className="bg-white/[0.03] border border-white/5 rounded-xl p-6">
+                <div className="flex items-center justify-between mb-6">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-xl bg-purple-500/10 flex items-center justify-center">
+                      <Sparkles className="w-5 h-5 text-purple-400" />
+                    </div>
+                    <div>
+                      <h3 className="text-sm font-bold">ניתוח AI חכם</h3>
+                      <p className="text-xs text-gray-500">תובנות והמלצות מבוססות נתונים</p>
+                    </div>
+                  </div>
+                  <button
+                    onClick={fetchAiAnalysis}
+                    disabled={isAiLoading}
+                    className="bg-purple-500 hover:bg-purple-600 disabled:opacity-50 text-white font-medium py-2.5 px-5 rounded-lg text-sm transition flex items-center gap-2"
+                  >
+                    {isAiLoading ? (
+                      <><Loader2 className="w-4 h-4 animate-spin" /> מנתח...</>
+                    ) : (
+                      <><Brain className="w-4 h-4" /> נתח עכשיו</>
+                    )}
+                  </button>
+                </div>
+
+                {aiAnalysis ? (
+                  <div className="prose prose-sm prose-invert max-w-none bg-white/[0.02] rounded-xl p-5 border border-white/5">
+                    <ReactMarkdown>{aiAnalysis}</ReactMarkdown>
+                  </div>
+                ) : (
+                  <div className="text-center py-16 text-gray-500">
+                    <Brain className="w-12 h-12 mx-auto mb-4 opacity-30" />
+                    <p className="text-sm">לחץ על "נתח עכשיו" כדי לקבל תובנות AI על הביצועים שלך</p>
+                    <p className="text-xs mt-1 text-gray-600">הניתוח מבוסס על כל הנתונים בטווח התאריכים הנבחר</p>
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </>
