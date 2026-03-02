@@ -222,7 +222,39 @@ export default function AdminDashboard() {
     { id: 'products' as const, label: 'מוצרים', icon: Package },
     { id: 'traffic' as const, label: 'מקורות תנועה', icon: Globe },
     { id: 'adspend' as const, label: 'הוצאות פרסום', icon: DollarSign },
+    { id: 'ai' as const, label: 'ניתוח AI', icon: Brain },
   ];
+
+  async function fetchAiAnalysis() {
+    setIsAiLoading(true);
+    try {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session) return;
+      
+      const response = await fetch(`${import.meta.env.VITE_SUPABASE_URL}/functions/v1/analytics-ai`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${session.access_token}`,
+          'apikey': import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY,
+        },
+        body: JSON.stringify({ dateRange }),
+      });
+      
+      if (!response.ok) {
+        const err = await response.json().catch(() => ({}));
+        setAiAnalysis(`❌ שגיאה: ${err.error || 'לא הצלחתי לנתח'}`);
+        return;
+      }
+      
+      const data = await response.json();
+      setAiAnalysis(data.analysis);
+    } catch (e) {
+      setAiAnalysis('❌ שגיאה בחיבור ל-AI');
+    } finally {
+      setIsAiLoading(false);
+    }
+  }
 
   return (
     <>
