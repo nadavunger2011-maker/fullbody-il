@@ -6,6 +6,7 @@ import { trackPurchase } from '@/lib/gtm';
 import { trackPurchase as trackFBPurchase } from '@/lib/fbPixel';
 import { trackGA4Purchase } from '@/lib/ga4';
 import { useCartStore } from '@/stores/cartStore';
+import { trackPurchaseEvent } from '@/lib/analytics';
 
 const ThankYou = () => {
   const [searchParams] = useSearchParams();
