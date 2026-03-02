@@ -43,7 +43,13 @@ function AnalyticsListener() {
   useEffect(() => {
     // Let Helmet update the title before we send the page_view
     const path = `${location.pathname}${location.search}`;
-    const t = window.setTimeout(() => trackGA4PageView(path), 0);
+    const t = window.setTimeout(() => {
+      trackGA4PageView(path);
+      // Track page view in our analytics DB (skip admin pages)
+      if (!path.startsWith('/admin')) {
+        trackPageView(path);
+      }
+    }, 0);
     return () => window.clearTimeout(t);
   }, [location.pathname, location.search]);
 
