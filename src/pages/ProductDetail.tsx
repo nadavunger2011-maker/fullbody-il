@@ -12,6 +12,7 @@ import AccessibilityWidget from '@/components/AccessibilityWidget';
 import { trackViewContent, trackAddToCart } from '@/lib/fbPixel';
 import { trackViewItem, trackAddToCart as gtmTrackAddToCart } from '@/lib/gtm';
 import { trackGA4AddToCart, trackGA4ViewItem } from '@/lib/ga4';
+import { trackProductView, trackAddToCartEvent } from '@/lib/analytics';
 import {
   Accordion,
   AccordionContent,
