@@ -67,6 +67,7 @@ export default function ProductDetail() {
         const currency = foundProduct.node.priceRange.minVariantPrice.currencyCode || 'ILS';
         trackViewItem({ item_id: productId, item_name: foundProduct.node.title, price, quantity: 1, currency });
         trackGA4ViewItem({ item_id: productId, item_name: foundProduct.node.title, price, quantity: 1 }, currency);
+        trackProductView({ handle: foundProduct.node.handle, title: foundProduct.node.title, id: productId, price });
       }
       setIsLoading(false);
     };
