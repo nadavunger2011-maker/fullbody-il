@@ -5,12 +5,13 @@ import { supabase } from '@/integrations/supabase/client';
 import { 
   BarChart3, Eye, ShoppingCart, CreditCard, TrendingUp, Users, 
   LogOut, Loader2, Calendar, Plus, Trash2, DollarSign, MousePointer,
-  Globe, ArrowUpRight, ArrowDownRight, Package
+  Globe, ArrowUpRight, ArrowDownRight, Package, Brain, Sparkles, Clock
 } from 'lucide-react';
 import {
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
   PieChart, Pie, Cell, LineChart, Line, Area, AreaChart
 } from 'recharts';
+import ReactMarkdown from 'react-markdown';
 
 type DateRange = '7d' | '30d' | '90d' | 'all';
 
