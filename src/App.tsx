@@ -25,6 +25,9 @@ import Products from "./pages/Products";
 import SleepGuide from "./pages/SleepGuide";
 import WhatsAppButton from "./components/WhatsAppButton";
 import { LegacyProductRedirect } from "./components/LegacyProductRedirect";
+import AdminLogin from "./pages/AdminLogin";
+import AdminDashboard from "./pages/AdminDashboard";
+import { trackPageView } from "@/lib/analytics";
 
 const queryClient = new QueryClient();
 
