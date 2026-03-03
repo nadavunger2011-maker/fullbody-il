@@ -484,7 +484,7 @@ export default function ProductDetail() {
         <Footer />
 
         {/* Floating Add to Cart Bar */}
-        {product && showStickyBar && (
+        {product && showStickyBar && !isCartOpen && (
           <div className="fixed bottom-0 inset-x-0 z-50 bg-background/90 backdrop-blur-xl border-t border-border/40 shadow-[0_-4px_20px_-4px_hsl(var(--foreground)/0.1)] transition-transform duration-300 animate-slide-up" style={{ animationDuration: '0.3s' }}>
             <div className="container mx-auto px-4 py-3 flex items-center gap-3 max-w-6xl">
               <div className="flex-1 min-w-0">
