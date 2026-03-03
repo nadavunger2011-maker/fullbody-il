@@ -450,6 +450,157 @@ export default function AdminDashboard() {
             </div>
           )}
 
+          {/* Funnel & Abandonment Tab */}
+          {activeTab === 'funnel' && (
+            <div className="space-y-6">
+              {/* Full Funnel */}
+              <div className="bg-white/[0.03] border border-white/5 rounded-xl p-5">
+                <h3 className="text-sm font-semibold mb-4 flex items-center gap-2">
+                  <Users className="w-4 h-4 text-blue-400" /> משפך המרה מלא — מהצפייה ועד הרכישה
+                </h3>
+                <div className="flex items-end gap-2 justify-center h-56">
+                  {funnelData.funnelSteps.map((step, i) => {
+                    const maxVal = Math.max(funnelData.funnelSteps[0]?.total || 1, 1);
+                    const h = Math.max((step.total / maxVal) * 200, 12);
+                    const colors = ['bg-blue-500', 'bg-purple-500', 'bg-amber-500', 'bg-orange-500', 'bg-emerald-500'];
+                    const prevTotal = i > 0 ? funnelData.funnelSteps[i - 1].total : step.total;
+                    const dropRate = prevTotal > 0 ? ((prevTotal - step.total) / prevTotal * 100).toFixed(0) : '0';
+                    return (
+                      <div key={i} className="flex flex-col items-center gap-1 flex-1">
+                        <span className="text-xs font-bold">{step.total.toLocaleString()}</span>
+                        {i > 0 && <span className="text-[9px] text-red-400">-{dropRate}%</span>}
+                        <div className={`${colors[i]} rounded-t-lg w-full max-w-[60px] relative`} style={{ height: h }}>
+                          {step.returning > 0 && (
+                            <div className="absolute bottom-0 left-0 right-0 bg-white/20 rounded-t-sm" style={{ height: Math.max((step.returning / step.total) * h, 2) }} />
+                          )}
+                        </div>
+                        <span className="text-[10px] text-gray-500 text-center">{step.label}</span>
+                      </div>
+                    );
+                  })}
+                </div>
+                <div className="flex items-center gap-4 mt-3 text-[10px] text-gray-500 justify-center">
+                  <span className="flex items-center gap-1"><span className="w-2 h-2 rounded-full bg-blue-500 inline-block" /> צבע מלא = חדשים</span>
+                  <span className="flex items-center gap-1"><span className="w-2 h-2 rounded-full bg-blue-500/40 inline-block" /> בהיר = חוזרים</span>
+                </div>
+              </div>
+
+              {/* Drop-off table */}
+              <div className="bg-white/[0.03] border border-white/5 rounded-xl overflow-hidden">
+                <div className="p-4 border-b border-white/5">
+                  <h3 className="text-sm font-semibold flex items-center gap-2"><ArrowDownRight className="w-4 h-4 text-red-400" /> נקודות נטישה</h3>
+                </div>
+                <table className="w-full text-sm">
+                  <thead>
+                    <tr className="border-b border-white/5">
+                      <th className="text-right px-4 py-3 text-xs text-gray-500">מ-</th>
+                      <th className="text-right px-4 py-3 text-xs text-gray-500">אל</th>
+                      <th className="text-center px-4 py-3 text-xs text-gray-500">נטשו</th>
+                      <th className="text-center px-4 py-3 text-xs text-gray-500">שיעור נטישה</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {funnelData.dropoffs.map((d, i) => (
+                      <tr key={i} className="border-b border-white/5 hover:bg-white/[0.02]">
+                        <td className="px-4 py-3">{d.from}</td>
+                        <td className="px-4 py-3">{d.to}</td>
+                        <td className="text-center px-4 py-3 text-red-400">{d.dropped.toLocaleString()}</td>
+                        <td className="text-center px-4 py-3">
+                          <span className={`px-2 py-0.5 rounded-full text-xs ${d.rate > 70 ? 'bg-red-500/20 text-red-400' : d.rate > 40 ? 'bg-amber-500/20 text-amber-400' : 'bg-emerald-500/20 text-emerald-400'}`}>
+                            {d.rate.toFixed(1)}%
+                          </span>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                {/* Exit destinations */}
+                <div className="bg-white/[0.03] border border-white/5 rounded-xl p-5">
+                  <h3 className="text-sm font-semibold mb-4 flex items-center gap-2">
+                    <ArrowUpRight className="w-4 h-4 text-orange-400" /> לאן נטשו מדף מוצר?
+                  </h3>
+                  {funnelData.exitData.length === 0 ? (
+                    <p className="text-center py-8 text-gray-500 text-xs">אין נתוני נטישה עדיין — ייאספו בקרוב</p>
+                  ) : (
+                    <div className="space-y-2">
+                      {funnelData.exitData.map((ex, i) => {
+                        const maxCount = funnelData.exitData[0]?.count || 1;
+                        return (
+                          <div key={i} className="flex items-center gap-3">
+                            <span className="text-xs text-gray-400 w-24 text-right">{ex.destination}</span>
+                            <div className="flex-1 bg-white/5 rounded-full h-5 overflow-hidden">
+                              <div className="h-full bg-orange-500/60 rounded-full flex items-center justify-end px-2" style={{ width: `${(ex.count / maxCount) * 100}%` }}>
+                                <span className="text-[10px] font-bold">{ex.count}</span>
+                              </div>
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  )}
+                </div>
+
+                {/* New vs Returning */}
+                <div className="bg-white/[0.03] border border-white/5 rounded-xl p-5">
+                  <h3 className="text-sm font-semibold mb-4 flex items-center gap-2">
+                    <Users className="w-4 h-4 text-cyan-400" /> לקוחות חדשים מול חוזרים
+                  </h3>
+                  <div className="flex items-center gap-6 justify-center mb-4">
+                    <div className="text-center">
+                      <p className="text-2xl font-bold text-cyan-400">{funnelData.newSessions}</p>
+                      <p className="text-xs text-gray-500">חדשים</p>
+                    </div>
+                    <div className="text-center">
+                      <p className="text-2xl font-bold text-purple-400">{funnelData.returningSessions}</p>
+                      <p className="text-xs text-gray-500">חוזרים</p>
+                    </div>
+                  </div>
+                  {funnelData.totalSessions > 0 && (
+                    <div className="flex h-4 rounded-full overflow-hidden bg-white/5">
+                      <div className="bg-cyan-500 h-full" style={{ width: `${(funnelData.newSessions / funnelData.totalSessions) * 100}%` }} />
+                      <div className="bg-purple-500 h-full" style={{ width: `${(funnelData.returningSessions / funnelData.totalSessions) * 100}%` }} />
+                    </div>
+                  )}
+                  <div className="flex justify-between text-[10px] text-gray-500 mt-1">
+                    <span>{funnelData.totalSessions > 0 ? ((funnelData.newSessions / funnelData.totalSessions) * 100).toFixed(0) : 0}% חדשים</span>
+                    <span>{funnelData.totalSessions > 0 ? ((funnelData.returningSessions / funnelData.totalSessions) * 100).toFixed(0) : 0}% חוזרים</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Average dwell time per product */}
+              <div className="bg-white/[0.03] border border-white/5 rounded-xl overflow-hidden">
+                <div className="p-4 border-b border-white/5 flex items-center justify-between">
+                  <h3 className="text-sm font-semibold flex items-center gap-2"><Clock className="w-4 h-4 text-blue-400" /> זמן שהייה ממוצע בדף מוצר</h3>
+                  <span className="text-xs text-gray-500">ממוצע כללי: {funnelData.avgDuration > 0 ? `${funnelData.avgDuration.toFixed(0)} שניות` : '—'}</span>
+                </div>
+                <table className="w-full text-sm">
+                  <thead>
+                    <tr className="border-b border-white/5">
+                      <th className="text-right px-4 py-3 text-xs text-gray-500">מוצר</th>
+                      <th className="text-center px-4 py-3 text-xs text-gray-500">ממוצע שהייה</th>
+                      <th className="text-center px-4 py-3 text-xs text-gray-500">מספר צפיות</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {funnelData.productDurationList.length === 0 ? (
+                      <tr><td colSpan={3} className="text-center py-8 text-gray-500 text-xs">אין נתוני זמן שהייה עדיין</td></tr>
+                    ) : funnelData.productDurationList.map(p => (
+                      <tr key={p.handle} className="border-b border-white/5 hover:bg-white/[0.02]">
+                        <td className="px-4 py-3 font-medium">{p.title}</td>
+                        <td className="text-center px-4 py-3">{p.avgDuration.toFixed(0)} שניות</td>
+                        <td className="text-center px-4 py-3">{p.count}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          )}
+
           {/* Products Tab */}
           {activeTab === 'products' && (
             <div className="bg-white/[0.03] border border-white/5 rounded-xl overflow-hidden">
