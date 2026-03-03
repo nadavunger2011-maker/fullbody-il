@@ -306,6 +306,7 @@ export default function AdminDashboard() {
 
   const tabs = [
     { id: 'overview' as const, label: 'סקירה כללית', icon: BarChart3 },
+    { id: 'funnel' as const, label: 'משפך ונטישה', icon: Users },
     { id: 'products' as const, label: 'מוצרים', icon: Package },
     { id: 'traffic' as const, label: 'מקורות תנועה', icon: Globe },
     { id: 'adspend' as const, label: 'הוצאות פרסום', icon: DollarSign },
