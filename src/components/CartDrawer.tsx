@@ -69,6 +69,9 @@ export default function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
         'ILS'
       );
       
+      // Track checkout_started in our analytics DB
+      trackCheckoutStarted();
+      
       // Format URL with channel parameter and open in new tab
       const formattedUrl = formatCheckoutUrl(checkoutUrl);
       window.open(formattedUrl, '_blank');
