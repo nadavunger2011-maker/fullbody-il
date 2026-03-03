@@ -202,7 +202,7 @@ export default function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
 
           {/* Footer */}
           {items.length > 0 && (
-            <div className="border-t border-border p-4 space-y-4">
+            <div className="border-t border-border p-4 pb-[calc(1rem+env(safe-area-inset-bottom))] space-y-3 bg-card shadow-[0_-4px_12px_rgba(0,0,0,0.1)]">
               <div className="flex items-center justify-between font-bold text-lg">
                 <span>סה"כ:</span>
                 <span className="text-accent">₪{total.toFixed(0)}</span>
@@ -210,7 +210,7 @@ export default function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
               
               <Button 
                 onClick={handleCheckout}
-                className="w-full py-6 text-lg font-bold bg-accent hover:bg-accent/90"
+                className="w-full py-7 text-lg font-bold bg-accent hover:bg-accent/90 rounded-xl shadow-lg"
               >
                 לתשלום
               </Button>
