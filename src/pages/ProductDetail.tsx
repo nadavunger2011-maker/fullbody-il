@@ -74,16 +74,34 @@ export default function ProductDetail() {
     loadProduct();
   }, [handle]);
 
-  // Track time spent on product page
+  // Track time spent on product page + exit destination
   useEffect(() => {
     if (!product) return;
     const startTime = Date.now();
     const productId = product.node.id.replace('gid://shopify/Product/', '');
-    return () => {
+    
+    const handleBeforeUnload = () => {
       const durationSeconds = Math.round((Date.now() - startTime) / 1000);
       trackProductDuration(
         { handle: product.node.handle, title: product.node.title, id: productId },
-        durationSeconds
+        durationSeconds,
+        'site_exit'
+      );
+    };
+    window.addEventListener('beforeunload', handleBeforeUnload);
+
+    return () => {
+      window.removeEventListener('beforeunload', handleBeforeUnload);
+      const durationSeconds = Math.round((Date.now() - startTime) / 1000);
+      // Determine exit destination from current path
+      const currentPath = window.location.pathname;
+      let exitDest = 'other_page';
+      if (currentPath.includes('/product/')) exitDest = 'another_product';
+      
+      trackProductDuration(
+        { handle: product.node.handle, title: product.node.title, id: productId },
+        durationSeconds,
+        exitDest
       );
     };
   }, [product]);
