@@ -30,6 +30,9 @@ interface EventRow {
   order_id: string | null;
   session_id: string | null;
   page_path: string | null;
+  exit_destination: string | null;
+  is_returning_visitor: boolean | null;
+  duration_seconds: number | null;
 }
 
 interface AdSpendRow {
