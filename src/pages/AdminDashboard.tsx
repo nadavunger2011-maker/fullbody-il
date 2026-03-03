@@ -55,7 +55,7 @@ export default function AdminDashboard() {
   const [adSpend, setAdSpend] = useState<AdSpendRow[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [dateRange, setDateRange] = useState<DateRange>('30d');
-  const [activeTab, setActiveTab] = useState<'overview' | 'products' | 'traffic' | 'adspend' | 'ai'>('overview');
+  const [activeTab, setActiveTab] = useState<'overview' | 'products' | 'traffic' | 'funnel' | 'adspend' | 'ai'>('overview');
   const [aiAnalysis, setAiAnalysis] = useState<string>('');
   const [isAiLoading, setIsAiLoading] = useState(false);
 
