@@ -6,6 +6,7 @@ import { trackInitiateCheckout } from '@/lib/fbPixel';
 import { formatCheckoutUrl, getVariantById } from '@/lib/shopify';
 import { trackBeginCheckout, trackRemoveFromCart, type GTMItem } from '@/lib/gtm';
 import { trackGA4BeginCheckout } from '@/lib/ga4';
+import { trackCheckoutStarted } from '@/lib/analytics';
 
 interface CartDrawerProps {
   isOpen: boolean;
