@@ -176,6 +176,90 @@ export default function AdminDashboard() {
     return [...map.entries()].sort(([a], [b]) => a.localeCompare(b)).map(([, v]) => v);
   }, [events]);
 
+  // Funnel analysis data
+  const funnelData = useMemo(() => {
+    // Session-level funnel: track highest stage reached per session
+    const sessionStages = new Map<string, { maxStage: number; isReturning: boolean }>();
+    events.forEach(e => {
+      if (!e.session_id) return;
+      const current = sessionStages.get(e.session_id) || { maxStage: 0, isReturning: e.is_returning_visitor || false };
+      if (e.event_type === 'page_view' && current.maxStage < 1) current.maxStage = 1;
+      if (e.event_type === 'view_item' && current.maxStage < 2) current.maxStage = 2;
+      if (e.event_type === 'add_to_cart' && current.maxStage < 3) current.maxStage = 3;
+      if (e.event_type === 'checkout_started' && current.maxStage < 4) current.maxStage = 4;
+      if (e.event_type === 'purchase' && current.maxStage < 5) current.maxStage = 5;
+      if (e.is_returning_visitor) current.isReturning = true;
+      sessionStages.set(e.session_id, current);
+    });
+
+    const stages = [
+      { label: 'סשנים', stage: 1 },
+      { label: 'צפייה במוצר', stage: 2 },
+      { label: 'הוספה לסל', stage: 3 },
+      { label: 'התחלת צ׳קאאוט', stage: 4 },
+      { label: 'רכישה', stage: 5 },
+    ];
+
+    const funnelSteps = stages.map(s => {
+      const total = [...sessionStages.values()].filter(v => v.maxStage >= s.stage).length;
+      const returning = [...sessionStages.values()].filter(v => v.maxStage >= s.stage && v.isReturning).length;
+      const newVisitors = total - returning;
+      return { ...s, total, returning, new: newVisitors };
+    });
+
+    // Exit analysis: where do product page visitors go?
+    const exitCounts = new Map<string, number>();
+    events.filter(e => (e.event_type === 'product_duration' || e.event_type === 'product_exit') && e.exit_destination)
+      .forEach(e => {
+        const dest = e.exit_destination!;
+        exitCounts.set(dest, (exitCounts.get(dest) || 0) + 1);
+      });
+    const exitLabels: Record<string, string> = {
+      'site_exit': 'עזיבת האתר',
+      'another_product': 'מוצר אחר',
+      'other_page': 'עמוד אחר',
+      'cart': 'עגלה',
+      'checkout': 'צ׳קאאוט',
+    };
+    const exitData = [...exitCounts.entries()]
+      .map(([dest, count]) => ({ destination: exitLabels[dest] || dest, count }))
+      .sort((a, b) => b.count - a.count);
+
+    // Average time on product pages
+    const durationEvents = events.filter(e => e.event_type === 'product_duration' && e.duration_seconds != null && e.duration_seconds > 0);
+    const avgDuration = durationEvents.length > 0
+      ? durationEvents.reduce((sum, e) => sum + (e.duration_seconds || 0), 0) / durationEvents.length
+      : 0;
+
+    // Per-product duration
+    const productDurations = new Map<string, { handle: string; title: string; totalDuration: number; count: number }>();
+    durationEvents.forEach(e => {
+      if (!e.product_handle) return;
+      const p = productDurations.get(e.product_handle) || { handle: e.product_handle, title: e.product_title || e.product_handle, totalDuration: 0, count: 0 };
+      p.totalDuration += e.duration_seconds || 0;
+      p.count++;
+      productDurations.set(e.product_handle, p);
+    });
+    const productDurationList = [...productDurations.values()]
+      .map(p => ({ ...p, avgDuration: p.totalDuration / p.count }))
+      .sort((a, b) => b.avgDuration - a.avgDuration);
+
+    // New vs returning overall
+    const totalSessions = sessionStages.size;
+    const returningSessions = [...sessionStages.values()].filter(v => v.isReturning).length;
+    const newSessions = totalSessions - returningSessions;
+
+    // Drop-off between stages
+    const dropoffs = funnelSteps.slice(0, -1).map((step, i) => {
+      const next = funnelSteps[i + 1];
+      const dropped = step.total - next.total;
+      const rate = step.total > 0 ? (dropped / step.total) * 100 : 0;
+      return { from: step.label, to: next.label, dropped, rate };
+    });
+
+    return { funnelSteps, exitData, avgDuration, productDurationList, totalSessions, returningSessions, newSessions, dropoffs };
+  }, [events]);
+
   async function handleAddSpend(e: React.FormEvent) {
     e.preventDefault();
     await (supabase as any).from('ad_spend').insert({
