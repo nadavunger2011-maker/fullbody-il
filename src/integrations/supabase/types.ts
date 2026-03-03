@@ -62,7 +62,9 @@ export type Database = {
           currency: string | null
           duration_seconds: number | null
           event_type: string
+          exit_destination: string | null
           id: string
+          is_returning_visitor: boolean | null
           order_id: string | null
           order_total: number | null
           page_path: string | null
@@ -88,7 +90,9 @@ export type Database = {
           currency?: string | null
           duration_seconds?: number | null
           event_type: string
+          exit_destination?: string | null
           id?: string
+          is_returning_visitor?: boolean | null
           order_id?: string | null
           order_total?: number | null
           page_path?: string | null
@@ -114,7 +118,9 @@ export type Database = {
           currency?: string | null
           duration_seconds?: number | null
           event_type?: string
+          exit_destination?: string | null
           id?: string
+          is_returning_visitor?: boolean | null
           order_id?: string | null
           order_total?: number | null
           page_path?: string | null
