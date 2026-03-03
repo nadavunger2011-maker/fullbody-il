@@ -30,6 +30,9 @@ interface EventRow {
   order_id: string | null;
   session_id: string | null;
   page_path: string | null;
+  exit_destination: string | null;
+  is_returning_visitor: boolean | null;
+  duration_seconds: number | null;
 }
 
 interface AdSpendRow {
@@ -52,7 +55,7 @@ export default function AdminDashboard() {
   const [adSpend, setAdSpend] = useState<AdSpendRow[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [dateRange, setDateRange] = useState<DateRange>('30d');
-  const [activeTab, setActiveTab] = useState<'overview' | 'products' | 'traffic' | 'adspend' | 'ai'>('overview');
+  const [activeTab, setActiveTab] = useState<'overview' | 'products' | 'traffic' | 'funnel' | 'adspend' | 'ai'>('overview');
   const [aiAnalysis, setAiAnalysis] = useState<string>('');
   const [isAiLoading, setIsAiLoading] = useState(false);
 
@@ -173,6 +176,90 @@ export default function AdminDashboard() {
     return [...map.entries()].sort(([a], [b]) => a.localeCompare(b)).map(([, v]) => v);
   }, [events]);
 
+  // Funnel analysis data
+  const funnelData = useMemo(() => {
+    // Session-level funnel: track highest stage reached per session
+    const sessionStages = new Map<string, { maxStage: number; isReturning: boolean }>();
+    events.forEach(e => {
+      if (!e.session_id) return;
+      const current = sessionStages.get(e.session_id) || { maxStage: 0, isReturning: e.is_returning_visitor || false };
+      if (e.event_type === 'page_view' && current.maxStage < 1) current.maxStage = 1;
+      if (e.event_type === 'view_item' && current.maxStage < 2) current.maxStage = 2;
+      if (e.event_type === 'add_to_cart' && current.maxStage < 3) current.maxStage = 3;
+      if (e.event_type === 'checkout_started' && current.maxStage < 4) current.maxStage = 4;
+      if (e.event_type === 'purchase' && current.maxStage < 5) current.maxStage = 5;
+      if (e.is_returning_visitor) current.isReturning = true;
+      sessionStages.set(e.session_id, current);
+    });
+
+    const stages = [
+      { label: 'סשנים', stage: 1 },
+      { label: 'צפייה במוצר', stage: 2 },
+      { label: 'הוספה לסל', stage: 3 },
+      { label: 'התחלת צ׳קאאוט', stage: 4 },
+      { label: 'רכישה', stage: 5 },
+    ];
+
+    const funnelSteps = stages.map(s => {
+      const total = [...sessionStages.values()].filter(v => v.maxStage >= s.stage).length;
+      const returning = [...sessionStages.values()].filter(v => v.maxStage >= s.stage && v.isReturning).length;
+      const newVisitors = total - returning;
+      return { ...s, total, returning, new: newVisitors };
+    });
+
+    // Exit analysis: where do product page visitors go?
+    const exitCounts = new Map<string, number>();
+    events.filter(e => (e.event_type === 'product_duration' || e.event_type === 'product_exit') && e.exit_destination)
+      .forEach(e => {
+        const dest = e.exit_destination!;
+        exitCounts.set(dest, (exitCounts.get(dest) || 0) + 1);
+      });
+    const exitLabels: Record<string, string> = {
+      'site_exit': 'עזיבת האתר',
+      'another_product': 'מוצר אחר',
+      'other_page': 'עמוד אחר',
+      'cart': 'עגלה',
+      'checkout': 'צ׳קאאוט',
+    };
+    const exitData = [...exitCounts.entries()]
+      .map(([dest, count]) => ({ destination: exitLabels[dest] || dest, count }))
+      .sort((a, b) => b.count - a.count);
+
+    // Average time on product pages
+    const durationEvents = events.filter(e => e.event_type === 'product_duration' && e.duration_seconds != null && e.duration_seconds > 0);
+    const avgDuration = durationEvents.length > 0
+      ? durationEvents.reduce((sum, e) => sum + (e.duration_seconds || 0), 0) / durationEvents.length
+      : 0;
+
+    // Per-product duration
+    const productDurations = new Map<string, { handle: string; title: string; totalDuration: number; count: number }>();
+    durationEvents.forEach(e => {
+      if (!e.product_handle) return;
+      const p = productDurations.get(e.product_handle) || { handle: e.product_handle, title: e.product_title || e.product_handle, totalDuration: 0, count: 0 };
+      p.totalDuration += e.duration_seconds || 0;
+      p.count++;
+      productDurations.set(e.product_handle, p);
+    });
+    const productDurationList = [...productDurations.values()]
+      .map(p => ({ ...p, avgDuration: p.totalDuration / p.count }))
+      .sort((a, b) => b.avgDuration - a.avgDuration);
+
+    // New vs returning overall
+    const totalSessions = sessionStages.size;
+    const returningSessions = [...sessionStages.values()].filter(v => v.isReturning).length;
+    const newSessions = totalSessions - returningSessions;
+
+    // Drop-off between stages
+    const dropoffs = funnelSteps.slice(0, -1).map((step, i) => {
+      const next = funnelSteps[i + 1];
+      const dropped = step.total - next.total;
+      const rate = step.total > 0 ? (dropped / step.total) * 100 : 0;
+      return { from: step.label, to: next.label, dropped, rate };
+    });
+
+    return { funnelSteps, exitData, avgDuration, productDurationList, totalSessions, returningSessions, newSessions, dropoffs };
+  }, [events]);
+
   async function handleAddSpend(e: React.FormEvent) {
     e.preventDefault();
     await (supabase as any).from('ad_spend').insert({
@@ -219,6 +306,7 @@ export default function AdminDashboard() {
 
   const tabs = [
     { id: 'overview' as const, label: 'סקירה כללית', icon: BarChart3 },
+    { id: 'funnel' as const, label: 'משפך ונטישה', icon: Users },
     { id: 'products' as const, label: 'מוצרים', icon: Package },
     { id: 'traffic' as const, label: 'מקורות תנועה', icon: Globe },
     { id: 'adspend' as const, label: 'הוצאות פרסום', icon: DollarSign },
@@ -358,6 +446,157 @@ export default function AdminDashboard() {
                     );
                   })}
                 </div>
+              </div>
+            </div>
+          )}
+
+          {/* Funnel & Abandonment Tab */}
+          {activeTab === 'funnel' && (
+            <div className="space-y-6">
+              {/* Full Funnel */}
+              <div className="bg-white/[0.03] border border-white/5 rounded-xl p-5">
+                <h3 className="text-sm font-semibold mb-4 flex items-center gap-2">
+                  <Users className="w-4 h-4 text-blue-400" /> משפך המרה מלא — מהצפייה ועד הרכישה
+                </h3>
+                <div className="flex items-end gap-2 justify-center h-56">
+                  {funnelData.funnelSteps.map((step, i) => {
+                    const maxVal = Math.max(funnelData.funnelSteps[0]?.total || 1, 1);
+                    const h = Math.max((step.total / maxVal) * 200, 12);
+                    const colors = ['bg-blue-500', 'bg-purple-500', 'bg-amber-500', 'bg-orange-500', 'bg-emerald-500'];
+                    const prevTotal = i > 0 ? funnelData.funnelSteps[i - 1].total : step.total;
+                    const dropRate = prevTotal > 0 ? ((prevTotal - step.total) / prevTotal * 100).toFixed(0) : '0';
+                    return (
+                      <div key={i} className="flex flex-col items-center gap-1 flex-1">
+                        <span className="text-xs font-bold">{step.total.toLocaleString()}</span>
+                        {i > 0 && <span className="text-[9px] text-red-400">-{dropRate}%</span>}
+                        <div className={`${colors[i]} rounded-t-lg w-full max-w-[60px] relative`} style={{ height: h }}>
+                          {step.returning > 0 && (
+                            <div className="absolute bottom-0 left-0 right-0 bg-white/20 rounded-t-sm" style={{ height: Math.max((step.returning / step.total) * h, 2) }} />
+                          )}
+                        </div>
+                        <span className="text-[10px] text-gray-500 text-center">{step.label}</span>
+                      </div>
+                    );
+                  })}
+                </div>
+                <div className="flex items-center gap-4 mt-3 text-[10px] text-gray-500 justify-center">
+                  <span className="flex items-center gap-1"><span className="w-2 h-2 rounded-full bg-blue-500 inline-block" /> צבע מלא = חדשים</span>
+                  <span className="flex items-center gap-1"><span className="w-2 h-2 rounded-full bg-blue-500/40 inline-block" /> בהיר = חוזרים</span>
+                </div>
+              </div>
+
+              {/* Drop-off table */}
+              <div className="bg-white/[0.03] border border-white/5 rounded-xl overflow-hidden">
+                <div className="p-4 border-b border-white/5">
+                  <h3 className="text-sm font-semibold flex items-center gap-2"><ArrowDownRight className="w-4 h-4 text-red-400" /> נקודות נטישה</h3>
+                </div>
+                <table className="w-full text-sm">
+                  <thead>
+                    <tr className="border-b border-white/5">
+                      <th className="text-right px-4 py-3 text-xs text-gray-500">מ-</th>
+                      <th className="text-right px-4 py-3 text-xs text-gray-500">אל</th>
+                      <th className="text-center px-4 py-3 text-xs text-gray-500">נטשו</th>
+                      <th className="text-center px-4 py-3 text-xs text-gray-500">שיעור נטישה</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {funnelData.dropoffs.map((d, i) => (
+                      <tr key={i} className="border-b border-white/5 hover:bg-white/[0.02]">
+                        <td className="px-4 py-3">{d.from}</td>
+                        <td className="px-4 py-3">{d.to}</td>
+                        <td className="text-center px-4 py-3 text-red-400">{d.dropped.toLocaleString()}</td>
+                        <td className="text-center px-4 py-3">
+                          <span className={`px-2 py-0.5 rounded-full text-xs ${d.rate > 70 ? 'bg-red-500/20 text-red-400' : d.rate > 40 ? 'bg-amber-500/20 text-amber-400' : 'bg-emerald-500/20 text-emerald-400'}`}>
+                            {d.rate.toFixed(1)}%
+                          </span>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                {/* Exit destinations */}
+                <div className="bg-white/[0.03] border border-white/5 rounded-xl p-5">
+                  <h3 className="text-sm font-semibold mb-4 flex items-center gap-2">
+                    <ArrowUpRight className="w-4 h-4 text-orange-400" /> לאן נטשו מדף מוצר?
+                  </h3>
+                  {funnelData.exitData.length === 0 ? (
+                    <p className="text-center py-8 text-gray-500 text-xs">אין נתוני נטישה עדיין — ייאספו בקרוב</p>
+                  ) : (
+                    <div className="space-y-2">
+                      {funnelData.exitData.map((ex, i) => {
+                        const maxCount = funnelData.exitData[0]?.count || 1;
+                        return (
+                          <div key={i} className="flex items-center gap-3">
+                            <span className="text-xs text-gray-400 w-24 text-right">{ex.destination}</span>
+                            <div className="flex-1 bg-white/5 rounded-full h-5 overflow-hidden">
+                              <div className="h-full bg-orange-500/60 rounded-full flex items-center justify-end px-2" style={{ width: `${(ex.count / maxCount) * 100}%` }}>
+                                <span className="text-[10px] font-bold">{ex.count}</span>
+                              </div>
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  )}
+                </div>
+
+                {/* New vs Returning */}
+                <div className="bg-white/[0.03] border border-white/5 rounded-xl p-5">
+                  <h3 className="text-sm font-semibold mb-4 flex items-center gap-2">
+                    <Users className="w-4 h-4 text-cyan-400" /> לקוחות חדשים מול חוזרים
+                  </h3>
+                  <div className="flex items-center gap-6 justify-center mb-4">
+                    <div className="text-center">
+                      <p className="text-2xl font-bold text-cyan-400">{funnelData.newSessions}</p>
+                      <p className="text-xs text-gray-500">חדשים</p>
+                    </div>
+                    <div className="text-center">
+                      <p className="text-2xl font-bold text-purple-400">{funnelData.returningSessions}</p>
+                      <p className="text-xs text-gray-500">חוזרים</p>
+                    </div>
+                  </div>
+                  {funnelData.totalSessions > 0 && (
+                    <div className="flex h-4 rounded-full overflow-hidden bg-white/5">
+                      <div className="bg-cyan-500 h-full" style={{ width: `${(funnelData.newSessions / funnelData.totalSessions) * 100}%` }} />
+                      <div className="bg-purple-500 h-full" style={{ width: `${(funnelData.returningSessions / funnelData.totalSessions) * 100}%` }} />
+                    </div>
+                  )}
+                  <div className="flex justify-between text-[10px] text-gray-500 mt-1">
+                    <span>{funnelData.totalSessions > 0 ? ((funnelData.newSessions / funnelData.totalSessions) * 100).toFixed(0) : 0}% חדשים</span>
+                    <span>{funnelData.totalSessions > 0 ? ((funnelData.returningSessions / funnelData.totalSessions) * 100).toFixed(0) : 0}% חוזרים</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Average dwell time per product */}
+              <div className="bg-white/[0.03] border border-white/5 rounded-xl overflow-hidden">
+                <div className="p-4 border-b border-white/5 flex items-center justify-between">
+                  <h3 className="text-sm font-semibold flex items-center gap-2"><Clock className="w-4 h-4 text-blue-400" /> זמן שהייה ממוצע בדף מוצר</h3>
+                  <span className="text-xs text-gray-500">ממוצע כללי: {funnelData.avgDuration > 0 ? `${funnelData.avgDuration.toFixed(0)} שניות` : '—'}</span>
+                </div>
+                <table className="w-full text-sm">
+                  <thead>
+                    <tr className="border-b border-white/5">
+                      <th className="text-right px-4 py-3 text-xs text-gray-500">מוצר</th>
+                      <th className="text-center px-4 py-3 text-xs text-gray-500">ממוצע שהייה</th>
+                      <th className="text-center px-4 py-3 text-xs text-gray-500">מספר צפיות</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {funnelData.productDurationList.length === 0 ? (
+                      <tr><td colSpan={3} className="text-center py-8 text-gray-500 text-xs">אין נתוני זמן שהייה עדיין</td></tr>
+                    ) : funnelData.productDurationList.map(p => (
+                      <tr key={p.handle} className="border-b border-white/5 hover:bg-white/[0.02]">
+                        <td className="px-4 py-3 font-medium">{p.title}</td>
+                        <td className="text-center px-4 py-3">{p.avgDuration.toFixed(0)} שניות</td>
+                        <td className="text-center px-4 py-3">{p.count}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
               </div>
             </div>
           )}

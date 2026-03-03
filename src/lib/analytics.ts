@@ -38,6 +38,15 @@ function getStoredUtm() {
   return storedUtm!;
 }
 
+// Returning visitor detection
+function isReturningVisitor(): boolean {
+  const key = 'analytics_visited_before';
+  const visited = localStorage.getItem(key);
+  if (visited) return true;
+  localStorage.setItem(key, '1');
+  return false;
+}
+
 interface TrackEventParams {
   event_type: string;
   page_path?: string;
@@ -51,6 +60,8 @@ interface TrackEventParams {
   currency?: string;
   order_id?: string;
   order_total?: number;
+  exit_destination?: string;
+  duration_seconds?: number;
 }
 
 export async function trackEvent(params: TrackEventParams) {
@@ -62,10 +73,10 @@ export async function trackEvent(params: TrackEventParams) {
       referrer: document.referrer || undefined,
       user_agent: navigator.userAgent,
       screen_width: window.innerWidth,
+      is_returning_visitor: isReturningVisitor(),
       ...utm,
     } as any);
   } catch (e) {
-    // Silent fail - don't break user experience
     console.error('Analytics tracking error:', e);
   }
 }
@@ -85,16 +96,38 @@ export function trackProductView(product: { handle: string; title: string; id: s
   });
 }
 
-// Track time spent on a product page
-export function trackProductDuration(product: { handle: string; title: string; id: string }, durationSeconds: number) {
-  if (durationSeconds < 2 || durationSeconds > 3600) return; // ignore very short or very long
+// Track time spent on a product page + optional exit destination
+export function trackProductDuration(product: { handle: string; title: string; id: string }, durationSeconds: number, exitDestination?: string) {
+  if (durationSeconds < 2 || durationSeconds > 3600) return;
   trackEvent({
-    event_type: 'view_item',
+    event_type: 'product_duration',
     product_handle: product.handle,
     product_title: product.title,
     product_id: product.id,
     duration_seconds: durationSeconds,
-  } as any);
+    exit_destination: exitDestination,
+  });
+}
+
+// Track exit from product page (where did they go)
+export function trackProductExit(product: { handle: string; title: string; id: string }, exitDestination: string) {
+  trackEvent({
+    event_type: 'product_exit',
+    product_handle: product.handle,
+    product_title: product.title,
+    product_id: product.id,
+    exit_destination: exitDestination,
+  });
+}
+
+// Track checkout initiation  
+export function trackCheckoutStarted() {
+  trackEvent({ event_type: 'checkout_started', page_path: '/checkout' });
+}
+
+// Track cart abandonment (user left cart without checkout)
+export function trackCartAbandonment() {
+  trackEvent({ event_type: 'cart_abandonment' });
 }
 
 export function trackAddToCartEvent(product: {

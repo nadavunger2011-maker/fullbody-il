@@ -6,6 +6,7 @@ import { trackInitiateCheckout } from '@/lib/fbPixel';
 import { formatCheckoutUrl, getVariantById } from '@/lib/shopify';
 import { trackBeginCheckout, trackRemoveFromCart, type GTMItem } from '@/lib/gtm';
 import { trackGA4BeginCheckout } from '@/lib/ga4';
+import { trackCheckoutStarted } from '@/lib/analytics';
 
 interface CartDrawerProps {
   isOpen: boolean;
@@ -67,6 +68,9 @@ export default function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
         total,
         'ILS'
       );
+      
+      // Track checkout_started in our analytics DB
+      trackCheckoutStarted();
       
       // Format URL with channel parameter and open in new tab
       const formattedUrl = formatCheckoutUrl(checkoutUrl);
