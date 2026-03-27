@@ -228,8 +228,8 @@ export default function ProBody() {
       <section className="relative h-[600px] flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0 z-0">
           <img
-            src="https://images.unsplash.com/photo-1490645935967-10de6ba17061?ixlib=rb-1.2.1&auto=format&fit=crop&w=1200&q=75&fm=webp"
-            alt="Healthy Nutrition"
+            src="https://images.unsplash.com/photo-1517836357463-d25dfeac3438?ixlib=rb-1.2.1&auto=format&fit=crop&w=1200&q=75&fm=webp"
+            alt="Gym Background"
             className="w-full h-full object-cover"
             loading="eager"
           />
