@@ -178,9 +178,8 @@ export default function ProBody() {
             <Menu className="w-6 h-6" />
           </button>
 
-          <Link to="/pro" className="flex items-center gap-2">
-            <span className="text-2xl font-black text-foreground">FullBody</span>
-            <span className="text-sm font-bold px-2 py-0.5 rounded bg-[hsl(142,70%,35%)] text-white">PRO</span>
+          <Link to="/pro" className="flex items-center">
+            <img src="https://fullbody.co.il/assets/logo-C2aje_0c.png" alt="FullBody Pro" className="h-14 md:h-16 w-auto" />
           </Link>
 
           <nav className="hidden lg:flex items-center gap-8 font-bold text-muted-foreground">
