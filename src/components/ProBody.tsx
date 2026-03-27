@@ -4,9 +4,10 @@ import { Helmet } from 'react-helmet-async';
 import { 
   Menu, X, ShoppingBag, Search, 
   Truck, ShieldCheck, CheckCircle, HeartPulse, 
-  ChevronDown, Leaf, Dumbbell, Zap
+  ChevronDown, Leaf, Dumbbell, Zap, ArrowRight
 } from 'lucide-react';
 import { fetchShopifyProducts, ShopifyProduct, getFirstAvailableVariant, isProductAvailableForSale } from '@/lib/shopify';
+import { herbalifeProducts, PRO_PRODUCT_CATEGORIES, HerbalifeProduct } from '@/data/herbalifeProducts';
 import { useCartStore } from '@/stores/cartStore';
 import { toast } from 'sonner';
 
@@ -279,7 +280,7 @@ export default function ProBody() {
         </div>
       </section>
 
-      {/* Products Section */}
+      {/* Local Herbalife Catalog */}
       <section id="products" className="py-20 bg-background">
         <div className="container mx-auto px-4">
           <div className="text-center mb-8">
@@ -288,8 +289,8 @@ export default function ProBody() {
           </div>
 
           {/* Category Filter */}
-          <div className="flex flex-wrap justify-center gap-2 sm:gap-3 mb-8">
-            {PRO_CATEGORIES.map((category) => (
+          <div className="flex flex-wrap justify-center gap-2 sm:gap-3 mb-10">
+            {PRO_PRODUCT_CATEGORIES.map((category) => (
               <button
                 key={category.id}
                 onClick={() => setSelectedCategory(category.id)}
@@ -304,69 +305,43 @@ export default function ProBody() {
             ))}
           </div>
 
-          {/* Sort */}
-          <div className="flex justify-between items-center mb-8">
-            <p className="text-muted-foreground text-sm">{filteredProducts.length} מוצרים</p>
-            <select
-              value={sortBy}
-              onChange={(e) => setSortBy(e.target.value as SortOption)}
-              className="appearance-none bg-card border border-border rounded-lg px-4 py-2.5 pr-10 font-bold text-sm text-foreground cursor-pointer focus:outline-none focus:ring-2 focus:ring-[hsl(142,70%,35%)]/50"
-            >
-              <option value="default">מיון: ברירת מחדל</option>
-              <option value="price-asc">מחיר: מהנמוך לגבוה</option>
-              <option value="price-desc">מחיר: מהגבוה לנמוך</option>
-            </select>
-          </div>
-
-          {/* Products Grid */}
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-8">
-            {isLoading ? (
-              [...Array(8)].map((_, index) => <ProductSkeleton key={index} index={index} />)
-            ) : filteredProducts.length === 0 ? (
-              <div className="col-span-full text-center py-20">
-                <ShoppingBag className="w-16 h-16 mx-auto mb-4 text-muted-foreground opacity-20" />
-                <p className="text-xl font-bold text-foreground mb-2">לא נמצאו מוצרים</p>
-                <p className="text-muted-foreground">מוצרי Herbalife יתווספו בקרוב</p>
-              </div>
-            ) : (
-              filteredProducts.map((product, index) => (
-                <div key={product.node.id} className="group bg-card rounded-xl overflow-hidden hover:shadow-hover transition-all duration-300 border border-border flex flex-col animate-fade-in" style={{ animationDelay: `${index * 0.05}s` }}>
-                  <Link to={`/pro/product/${product.node.handle}`} className="relative overflow-hidden aspect-square bg-secondary/30 block flex items-center justify-center p-6">
-                    {product.node.images?.edges?.[0]?.node ? (
-                      <img src={product.node.images.edges[0].node.url} alt={product.node.title} loading="lazy" className="max-w-[75%] max-h-[75%] object-contain transform group-hover:scale-105 transition-transform duration-500" />
-                    ) : (
-                      <div className="w-full h-full flex items-center justify-center bg-muted">
-                        <ShoppingBag className="w-12 h-12 text-muted-foreground opacity-30" />
-                      </div>
-                    )}
-                  </Link>
-                  <div className="p-3 sm:p-5 flex-1 flex flex-col">
-                    <Link to={`/pro/product/${product.node.handle}`} className="font-bold text-sm sm:text-lg text-foreground mb-1 sm:mb-2 group-hover:text-[hsl(142,70%,35%)] transition-colors hover:underline">
-                      <span className="sm:hidden">{product.node.title.length > 25 ? product.node.title.slice(0, 25) + '...' : product.node.title}</span>
-                      <span className="hidden sm:inline">{product.node.title}</span>
-                    </Link>
-                    <p className="text-xs sm:text-sm text-muted-foreground line-clamp-2 mb-2 sm:mb-4">
-                      <span className="sm:hidden">{product.node.description.length > 60 ? product.node.description.slice(0, 60) + '...' : product.node.description}</span>
-                      <span className="hidden sm:inline">{product.node.description}</span>
-                    </p>
-                    <div className="mt-auto flex items-center justify-between mb-2 sm:mb-4">
-                      <span className="font-black text-lg sm:text-xl text-foreground">
-                        {product.node.priceRange.minVariantPrice.currencyCode === 'ILS' ? '₪' : product.node.priceRange.minVariantPrice.currencyCode}
-                        {parseFloat(product.node.priceRange.minVariantPrice.amount).toFixed(0)}
-                      </span>
-                    </div>
-                    <button
-                      onClick={() => handleAddToCart(product)}
-                      disabled={!isProductAvailableForSale(product)}
-                      className="w-full bg-[hsl(142,70%,35%)] text-white font-bold py-2 sm:py-3 text-sm sm:text-base rounded-lg shadow-cta transition-all duration-300 flex justify-center items-center gap-2 hover:bg-[hsl(142,70%,30%)] active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed"
-                    >
-                      {isProductAvailableForSale(product) ? 'הוסף לעגלה' : 'אזל מהמלאי'}
-                      <ShoppingBag className="w-4 h-4" />
-                    </button>
-                  </div>
+          {/* Products Grid - Local Catalog */}
+          <div className="grid grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-8">
+            {herbalifeProducts
+              .filter(p => selectedCategory === 'all' || p.categoryId === selectedCategory)
+              .filter(p => !searchQuery.trim() || p.title.includes(searchQuery) || p.description.includes(searchQuery))
+              .map((product, index) => (
+              <Link
+                key={product.sku}
+                to={`/pro/product/${product.handle}`}
+                className="group bg-card rounded-xl overflow-hidden hover:shadow-hover transition-all duration-300 border border-border flex flex-col animate-fade-in"
+                style={{ animationDelay: `${index * 0.05}s` }}
+              >
+                <div className="relative overflow-hidden aspect-square bg-secondary/20 flex items-center justify-center p-6">
+                  <img
+                    src={product.image}
+                    alt={product.title}
+                    loading="lazy"
+                    className="max-w-[75%] max-h-[75%] object-contain transform group-hover:scale-105 transition-transform duration-500"
+                  />
+                  <span className="absolute top-3 right-3 bg-[hsl(142,70%,35%)] text-white text-[10px] font-bold px-2.5 py-1 rounded-full">
+                    {product.category}
+                  </span>
                 </div>
-              ))
-            )}
+                <div className="p-3 sm:p-5 flex-1 flex flex-col">
+                  <h3 className="font-bold text-sm sm:text-lg text-foreground mb-1 sm:mb-2 group-hover:text-[hsl(142,70%,35%)] transition-colors">
+                    <span className="sm:hidden">{product.title.length > 25 ? product.title.slice(0, 25) + '...' : product.title}</span>
+                    <span className="hidden sm:inline">{product.title}</span>
+                  </h3>
+                  <p className="text-xs sm:text-sm text-muted-foreground line-clamp-2 mb-3">
+                    {product.shortHook}
+                  </p>
+                  <span className="mt-auto text-[hsl(142,70%,35%)] font-bold text-sm flex items-center gap-1">
+                    לפרטים נוספים <ArrowRight className="w-4 h-4" />
+                  </span>
+                </div>
+              </Link>
+            ))}
           </div>
         </div>
       </section>

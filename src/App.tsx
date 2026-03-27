@@ -28,6 +28,7 @@ import { LegacyProductRedirect } from "./components/LegacyProductRedirect";
 import AdminLogin from "./pages/AdminLogin";
 import AdminDashboard from "./pages/AdminDashboard";
 import ProIndex from "./pages/ProIndex";
+import ProProductDetail from "./pages/ProProductDetail";
 import { trackPageView } from "@/lib/analytics";
 
 const queryClient = new QueryClient();
@@ -83,7 +84,7 @@ function AppContent() {
         <Route path="/admin" element={<AdminLogin />} />
         <Route path="/admin/dashboard" element={<AdminDashboard />} />
         <Route path="/pro" element={<ProIndex />} />
-        <Route path="/pro/product/:handle" element={<ProductDetail />} />
+        <Route path="/pro/product/:handle" element={<ProProductDetail />} />
         {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
         <Route path="*" element={<NotFound />} />
       </Routes>
