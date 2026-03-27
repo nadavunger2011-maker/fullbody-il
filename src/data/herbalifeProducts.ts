@@ -1,3 +1,13 @@
+import herbalifeF1Vanilla from '@/assets/herbalife-f1-vanilla.jpg';
+import herbalifeF1Chocolate from '@/assets/herbalife-f1-chocolate.jpg';
+import herbalifeF1Kosher from '@/assets/herbalife-f1-kosher.jpg';
+import herbalifeNiteworks from '@/assets/herbalife-niteworks.jpg';
+import herbalifeAloeNatural from '@/assets/herbalife-aloe-natural.jpg';
+import herbalifeAloeMango from '@/assets/herbalife-aloe-mango.jpg';
+import herbalifePdm from '@/assets/herbalife-pdm.jpg';
+import herbalifeH24Rebuild from '@/assets/herbalife-h24-rebuild.jpg';
+import herbalifeCookbook from '@/assets/herbalife-cookbook.jpg';
+
 export interface HerbalifeNutrition {
   label: string;
   value: string;
@@ -12,12 +22,14 @@ export interface HerbalifeFAQ {
 export interface HerbalifeProduct {
   sku: string;
   handle: string;
+  shopifyHandle: string; // The actual Shopify handle for cart operations
   title: string;
   metaDescription: string;
   category: string;
   categoryId: string;
   shortHook: string;
   image: string;
+  price: number;
   benefits: string[];
   nutrition: HerbalifeNutrition[];
   faq: HerbalifeFAQ[];
@@ -29,12 +41,14 @@ export const herbalifeProducts: HerbalifeProduct[] = [
   {
     sku: '403K',
     handle: 'herbalife-cookbook',
+    shopifyHandle: 'ספר-המתכונים-של-הרבלייף-לבשל-בריא',
     title: 'ספר המתכונים של הרבלייף - לבשל בריא',
     metaDescription: 'מתכונים בריאים וקלים המשלבים את מוצרי הרבלייף לארוחות חלבון וקינוחים.',
     category: 'לייף סטייל',
     categoryId: 'lifestyle',
     shortHook: 'מתכונים מעוררי השראה לאורח חיים בריא. למדו לבשל ארוחות מזינות ומאוזנות עם מוצרי הרבלייף.',
-    image: 'https://images.unsplash.com/photo-1466637574441-749b8f19452f?w=600&q=80',
+    image: herbalifeCookbook,
+    price: 89,
     benefits: [
       'מעל 50 מתכונים בריאים ומאוזנים',
       'שילוב ייחודי של מוצרי Herbalife במנות יומיומיות',
@@ -56,12 +70,14 @@ export const herbalifeProducts: HerbalifeProduct[] = [
   {
     sku: '0258',
     handle: 'formula-1-vanilla',
+    shopifyHandle: 'אבקת-פורמולה-1-וניל-550-גרם',
     title: 'אבקת פורמולה 1 - וניל (550 גרם)',
     metaDescription: 'תחליף ארוחה מאוזן בטעם וניל עם ויטמינים וחלבון איכותי לניהול משקל.',
     category: 'ניהול משקל',
     categoryId: 'weight',
     shortHook: 'שייק חלבון מאוזן בטעם וניל קלאסי. תחליף ארוחה מושלם עם 21 ויטמינים ומינרלים.',
-    image: 'https://assets.herbalifenutrition.com/content/dam/regional/emea/en_gb/consumable_content/product-catalog-assets/images/2024/01-Jan/0258_formula_1_vanilla.png',
+    image: herbalifeF1Vanilla,
+    price: 259,
     benefits: [
       'כ-220 קלוריות למנה (עם חלב דל שומן)',
       '18 גרם חלבון סויה ומי גבינה למנה',
@@ -93,12 +109,14 @@ export const herbalifeProducts: HerbalifeProduct[] = [
   {
     sku: '0260',
     handle: 'formula-1-chocolate',
+    shopifyHandle: 'אבקת-פורמולה-1-שוקולד-550-גרם',
     title: 'אבקת פורמולה 1 - שוקולד (550 גרם)',
     metaDescription: 'שייק פורמולה 1 בטעם שוקולד עשיר. ארוחה מזינה במינימום קלוריות ומקסימום חלבון.',
     category: 'ניהול משקל',
     categoryId: 'weight',
     shortHook: 'שייק שוקולד עשיר ומפנק בלי הרגשת אשמה. תחליף ארוחה מאוזן עם מקסימום חלבון ומינימום קלוריות.',
-    image: 'https://assets.herbalifenutrition.com/content/dam/regional/emea/en_gb/consumable_content/product-catalog-assets/images/2024/01-Jan/0260_formula_1_chocolate.png',
+    image: herbalifeF1Chocolate,
+    price: 259,
     benefits: [
       'טעם שוקולד עשיר ומפנק',
       '18 גרם חלבון איכותי למנה',
@@ -129,12 +147,14 @@ export const herbalifeProducts: HerbalifeProduct[] = [
   {
     sku: '0242',
     handle: 'formula-1-kosher',
+    shopifyHandle: 'פורמולה-1-וניל-כשר-למהדרין',
     title: 'פורמולה 1 וניל כשר למהדרין',
     metaDescription: 'שייק חלבון בטעם וניל בפיקוח כשרות מהודר. כל הערכים התזונתיים בארוחה אחת.',
     category: 'ניהול משקל',
     categoryId: 'weight',
     shortHook: 'שייק הפורמולה 1 האהוב — עכשיו בכשרות מהדרין. כל הערכים התזונתיים שאתם צריכים, עם פיקוח כשרות ללא פשרות.',
-    image: 'https://assets.herbalifenutrition.com/content/dam/regional/emea/en_gb/consumable_content/product-catalog-assets/images/2024/01-Jan/0242_formula_1_kosher.png',
+    image: herbalifeF1Kosher,
+    price: 279,
     benefits: [
       'כשר למהדרין בפיקוח הרבנות',
       '18 גרם חלבון איכותי למנה',
@@ -164,12 +184,14 @@ export const herbalifeProducts: HerbalifeProduct[] = [
   {
     sku: '2600',
     handle: 'niteworks',
+    shopifyHandle: 'נייטוורקס-niteworks-תמיכה-בלב',
     title: 'נייטוורקס (Niteworks) - תמיכה בלב',
     metaDescription: 'תוסף תזונה המבוסס על מחקר זוכה פרס נובל לתמיכה בזרימת הדם ובבריאות הלב.',
     category: 'ספורט ואנרגיה',
     categoryId: 'sport',
     shortHook: 'פותח על בסיס מחקר זוכה פרס נובל. נייטוורקס תומך בזרימת דם תקינה ובבריאות הלב וכלי הדם.',
-    image: 'https://assets.herbalifenutrition.com/content/dam/regional/emea/en_gb/consumable_content/product-catalog-assets/images/2024/01-Jan/2600_niteworks.png',
+    image: herbalifeNiteworks,
+    price: 349,
     benefits: [
       'מבוסס על מחקר זוכה פרס נובל ברפואה',
       'L-Arginine ו-L-Citrulline לייצור תחמוצת חנקן',
@@ -200,12 +222,14 @@ export const herbalifeProducts: HerbalifeProduct[] = [
   {
     sku: '0145',
     handle: 'aloe-natural',
+    shopifyHandle: 'תרכיז-אלוורה-צמחי-טעם-טבעי',
     title: 'תרכיז אלוורה צמחי - טעם טבעי',
     metaDescription: 'תרכיז אלוורה איכותי לסיוע בעיכול, ניקוי רעלים ורענון הגוף ללא תוספת סוכר.',
     category: 'עיכול והידרציה',
     categoryId: 'digestion',
     shortHook: 'תרכיז אלוורה טבעי שמרענן ומסייע לעיכול. הוסיפו כמה כפיות למים ותיהנו ממשקה מרענן ובריא.',
-    image: 'https://assets.herbalifenutrition.com/content/dam/regional/emea/en_gb/consumable_content/product-catalog-assets/images/2024/01-Jan/0145_aloe_original.png',
+    image: herbalifeAloeNatural,
+    price: 169,
     benefits: [
       'מסייע בתהליכי עיכול בריאים',
       'מעודד שתיית מים ולחות',
@@ -234,12 +258,14 @@ export const herbalifeProducts: HerbalifeProduct[] = [
   {
     sku: '0146',
     handle: 'aloe-mango',
+    shopifyHandle: 'תרכיז-אלוורה-טעם-מנגו-מרענן',
     title: 'תרכיז אלוורה - טעם מנגו מרענן',
     metaDescription: 'תרכיז אלוורה מרענן בטעם מנגו לסיוע למערכת העיכול ועידוד שתיית מים.',
     category: 'עיכול והידרציה',
     categoryId: 'digestion',
     shortHook: 'אלוורה בטעם מנגו טרופי ומרענן. הדרך הכי טעימה לדאוג לעיכול בריא ולשתות יותר מים.',
-    image: 'https://assets.herbalifenutrition.com/content/dam/regional/emea/en_gb/consumable_content/product-catalog-assets/images/2024/01-Jan/0146_aloe_mango.png',
+    image: herbalifeAloeMango,
+    price: 169,
     benefits: [
       'טעם מנגו טרופי ומרענן',
       'מסייע בעיכול בריא',
@@ -267,12 +293,14 @@ export const herbalifeProducts: HerbalifeProduct[] = [
   {
     sku: '2793',
     handle: 'pdm-protein',
+    shopifyHandle: 'אבקת-חלבון-pdm-תוספת-חלבון-לשייק',
     title: 'אבקת חלבון PDM - תוספת חלבון לשייק',
     metaDescription: 'Protein Drink Mix להעלאת כמות החלבון היומית בשייק או כמשקה מרענן.',
     category: 'ניהול משקל',
     categoryId: 'weight',
     shortHook: 'תוספת חלבון מושלמת לשייק הפורמולה 1 שלכם. PDM מעלה את החלבון ומגביר שובע.',
-    image: 'https://assets.herbalifenutrition.com/content/dam/regional/emea/en_gb/consumable_content/product-catalog-assets/images/2024/01-Jan/2793_pdm.png',
+    image: herbalifePdm,
+    price: 229,
     benefits: [
       '15 גרם חלבון מי גבינה למנה',
       'רק 80 קלוריות למנה',
@@ -301,12 +329,14 @@ export const herbalifeProducts: HerbalifeProduct[] = [
   {
     sku: '4468',
     handle: 'h24-rebuild-strength',
+    shopifyHandle: 'h24-rebuild-strength-שוקולד-1-קג',
     title: 'H24 Rebuild Strength - שוקולד (1 ק"ג)',
     metaDescription: '25 גרם חלבון לבניית שריר והתאוששות מהירה לאחר אימון. מאושר לספורטאים.',
     category: 'ספורט (H24)',
     categoryId: 'sport',
     shortHook: 'חלבון מקצועי לספורטאים רציניים. 25 גרם חלבון למנה להתאוששות מהירה ובניית שריר לאחר אימון.',
-    image: 'https://assets.herbalifenutrition.com/content/dam/regional/emea/en_gb/consumable_content/product-catalog-assets/images/2024/01-Jan/4468_h24_rebuild_strength.png',
+    image: herbalifeH24Rebuild,
+    price: 299,
     benefits: [
       '25 גרם חלבון למנה (קזאין ומי גבינה)',
       'ברזל, חומצות אמינו מסועפות (BCAA)',
@@ -337,7 +367,6 @@ export const herbalifeProducts: HerbalifeProduct[] = [
   },
 ];
 
-// Categories for the Pro section
 export const PRO_PRODUCT_CATEGORIES = [
   { id: 'all', name: 'הכל' },
   { id: 'weight', name: 'ניהול משקל' },
