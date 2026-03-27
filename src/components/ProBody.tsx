@@ -4,9 +4,10 @@ import { Helmet } from 'react-helmet-async';
 import { 
   Menu, X, ShoppingBag, Search, 
   Truck, ShieldCheck, CheckCircle, HeartPulse, 
-  ChevronDown, Leaf, Dumbbell, Zap
+  ChevronDown, Leaf, Dumbbell, Zap, ArrowRight
 } from 'lucide-react';
 import { fetchShopifyProducts, ShopifyProduct, getFirstAvailableVariant, isProductAvailableForSale } from '@/lib/shopify';
+import { herbalifeProducts, PRO_PRODUCT_CATEGORIES, HerbalifeProduct } from '@/data/herbalifeProducts';
 import { useCartStore } from '@/stores/cartStore';
 import { toast } from 'sonner';
 
