@@ -44,11 +44,9 @@ function AnalyticsListener() {
   }, []);
 
   useEffect(() => {
-    // Let Helmet update the title before we send the page_view
     const path = `${location.pathname}${location.search}`;
     const t = window.setTimeout(() => {
       trackGA4PageView(path);
-      // Track page view in our analytics DB (skip admin pages)
       if (!path.startsWith('/admin')) {
         trackPageView(path);
       }
@@ -66,27 +64,33 @@ function AppContent() {
     <>
       <AnalyticsListener />
       <Routes>
-        <Route path="/" element={<Index />} />
-        <Route path="/product/:handle" element={<ProductDetail />} />
-        <Route path="/products/:handle" element={<LegacyProductRedirect />} />
-        <Route path="/products" element={<Products />} />
-        <Route path="/blog" element={<Blog />} />
-        <Route path="/blog/:slug" element={<BlogPost />} />
-        <Route path="/thank-you" element={<ThankYou />} />
-        <Route path="/terms" element={<Terms />} />
-        <Route path="/shipping" element={<Shipping />} />
-        <Route path="/returns" element={<Returns />} />
-        <Route path="/privacy" element={<Privacy />} />
-        <Route path="/faq" element={<FAQ />} />
-        <Route path="/contact" element={<Contact />} />
-        <Route path="/about" element={<About />} />
-        <Route path="/accessibility" element={<Accessibility />} />
-        <Route path="/sleep-guide" element={<SleepGuide />} />
+        {/* PRO (Herbalife) — root site */}
+        <Route path="/" element={<ProIndex />} />
+        <Route path="/product/:handle" element={<ProProductDetail />} />
+        <Route path="/contact" element={<ProContact />} />
+
+        {/* NAVA — original FullBody site */}
+        <Route path="/nava" element={<Index />} />
+        <Route path="/nava/product/:handle" element={<ProductDetail />} />
+        <Route path="/nava/products/:handle" element={<LegacyProductRedirect />} />
+        <Route path="/nava/products" element={<Products />} />
+        <Route path="/nava/blog" element={<Blog />} />
+        <Route path="/nava/blog/:slug" element={<BlogPost />} />
+        <Route path="/nava/thank-you" element={<ThankYou />} />
+        <Route path="/nava/terms" element={<Terms />} />
+        <Route path="/nava/shipping" element={<Shipping />} />
+        <Route path="/nava/returns" element={<Returns />} />
+        <Route path="/nava/privacy" element={<Privacy />} />
+        <Route path="/nava/faq" element={<FAQ />} />
+        <Route path="/nava/contact" element={<Contact />} />
+        <Route path="/nava/about" element={<About />} />
+        <Route path="/nava/accessibility" element={<Accessibility />} />
+        <Route path="/nava/sleep-guide" element={<SleepGuide />} />
+
+        {/* Admin */}
         <Route path="/admin" element={<AdminLogin />} />
         <Route path="/admin/dashboard" element={<AdminDashboard />} />
-        <Route path="/pro" element={<ProIndex />} />
-        <Route path="/pro/product/:handle" element={<ProProductDetail />} />
-        <Route path="/pro/contact" element={<ProContact />} />
+
         {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
         <Route path="*" element={<NotFound />} />
       </Routes>
