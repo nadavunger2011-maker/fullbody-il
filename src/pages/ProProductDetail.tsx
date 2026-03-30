@@ -148,7 +148,7 @@ export default function ProProductDetail() {
           </Link>
           <nav className="hidden lg:flex items-center gap-8 font-bold text-muted-foreground">
             <Link to="/" className="hover:text-[hsl(142,70%,35%)] transition-colors">ראשי</Link>
-            <Link to="/pro#products" className="hover:text-[hsl(142,70%,35%)] transition-colors">מוצרים</Link>
+            <Link to="/#products" className="hover:text-[hsl(142,70%,35%)] transition-colors">מוצרים</Link>
             <Link to="/contact" className="hover:text-[hsl(142,70%,35%)] transition-colors">צור קשר</Link>
           </nav>
           <button onClick={() => setIsCartOpen(true)} className="p-2 text-muted-foreground relative">
@@ -167,7 +167,7 @@ export default function ProProductDetail() {
         <nav className="flex items-center gap-2 text-sm text-muted-foreground">
           <Link to="/" className="hover:text-[hsl(142,70%,35%)]">ראשי</Link>
           <span>/</span>
-          <Link to="/pro#products" className="hover:text-[hsl(142,70%,35%)]">מוצרים</Link>
+          <Link to="/#products" className="hover:text-[hsl(142,70%,35%)]">מוצרים</Link>
           <span>/</span>
           <span className="text-foreground font-medium truncate max-w-[200px]">{product.title}</span>
         </nav>
