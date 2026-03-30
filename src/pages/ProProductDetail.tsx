@@ -9,7 +9,7 @@ import {
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { getProductByHandle, getRelatedProducts } from '@/data/herbalifeProducts';
 import { fetchProductByHandle, ShopifyProduct, getFirstAvailableVariant } from '@/lib/shopify';
-import Footer from '@/components/Footer';
+import ProFooter from '@/components/ProFooter';
 import CartDrawer from '@/components/CartDrawer';
 import { useCartStore } from '@/stores/cartStore';
 import { toast } from 'sonner';
