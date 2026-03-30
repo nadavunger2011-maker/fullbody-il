@@ -33,7 +33,7 @@ export default function ProContact() {
       <header className="sticky top-0 z-40 bg-card shadow-card border-b border-border">
         <div className="container mx-auto px-4 h-20 flex items-center justify-between">
           <Link to="/" className="flex items-center gap-2">
-            <img src="https://fullbody.co.il/assets/logo-C2aje_0c.png" alt="FullBody Pro" className="h-10" />
+            <img src={greenLogo} alt="FullBody Pro" className="h-10" />
             <div className="flex items-center gap-1">
               <Leaf className="w-5 h-5 text-accent" />
               <span className="text-sm font-bold text-accent">PRO</span>
