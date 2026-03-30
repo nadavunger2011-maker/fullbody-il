@@ -149,7 +149,7 @@ export default function ProProductDetail() {
           <nav className="hidden lg:flex items-center gap-8 font-bold text-muted-foreground">
             <Link to="/pro" className="hover:text-[hsl(142,70%,35%)] transition-colors">ראשי</Link>
             <Link to="/pro#products" className="hover:text-[hsl(142,70%,35%)] transition-colors">מוצרים</Link>
-            <Link to="/contact" className="hover:text-[hsl(142,70%,35%)] transition-colors">צור קשר</Link>
+            <Link to="/pro/contact" className="hover:text-[hsl(142,70%,35%)] transition-colors">צור קשר</Link>
           </nav>
           <button onClick={() => setIsCartOpen(true)} className="p-2 text-muted-foreground relative">
             <ShoppingBag className="w-6 h-6" />
