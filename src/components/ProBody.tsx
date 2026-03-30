@@ -154,11 +154,11 @@ export default function ProBody() {
       <Helmet>
         <title>FullBody Pro - מוצרי Herbalife | תזונה וכושר</title>
         <meta name="description" content="מוצרי Herbalife לתזונה, כושר ואורח חיים בריא. שייקים, חלבונים, ויטמינים ותוספי ספורט. משלוח מהיר לכל הארץ." />
-        <link rel="canonical" href="https://pro.fullbody.co.il/" />
+        <link rel="canonical" href="https://fullbody.co.il/" />
         <meta property="og:title" content="FullBody Pro - מוצרי Herbalife" />
         <meta property="og:description" content="מוצרי Herbalife לתזונה, כושר ואורח חיים בריא." />
         <meta property="og:type" content="website" />
-        <meta property="og:url" content="https://pro.fullbody.co.il/" />
+        <meta property="og:url" content="https://fullbody.co.il/" />
         <meta property="og:locale" content="he_IL" />
         <meta name="robots" content="noindex, nofollow" />
       </Helmet>

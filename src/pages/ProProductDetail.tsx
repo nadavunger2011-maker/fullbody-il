@@ -96,7 +96,7 @@ export default function ProProductDetail() {
     "category": product.category,
     "offers": {
       "@type": "Offer",
-      "url": `https://pro.fullbody.co.il/product/${product.handle}`,
+      "url": `https://fullbody.co.il/product/${product.handle}`,
       "availability": "https://schema.org/InStock",
       "priceCurrency": "ILS",
       "price": product.price,
@@ -118,7 +118,7 @@ export default function ProProductDetail() {
       <Helmet>
         <title>{product.title} | FullBody Pro</title>
         <meta name="description" content={product.metaDescription} />
-        <link rel="canonical" href={`https://pro.fullbody.co.il/product/${product.handle}`} />
+        <link rel="canonical" href={`https://fullbody.co.il/product/${product.handle}`} />
         <meta property="og:title" content={product.title} />
         <meta property="og:description" content={product.metaDescription} />
         <meta property="og:type" content="product" />
