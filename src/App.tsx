@@ -29,6 +29,7 @@ import AdminLogin from "./pages/AdminLogin";
 import AdminDashboard from "./pages/AdminDashboard";
 import ProIndex from "./pages/ProIndex";
 import ProProductDetail from "./pages/ProProductDetail";
+import ProContact from "./pages/ProContact";
 import { trackPageView } from "@/lib/analytics";
 
 const queryClient = new QueryClient();
@@ -85,6 +86,7 @@ function AppContent() {
         <Route path="/admin/dashboard" element={<AdminDashboard />} />
         <Route path="/pro" element={<ProIndex />} />
         <Route path="/pro/product/:handle" element={<ProProductDetail />} />
+        <Route path="/pro/contact" element={<ProContact />} />
         {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
         <Route path="*" element={<NotFound />} />
       </Routes>
