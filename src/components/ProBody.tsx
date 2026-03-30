@@ -313,7 +313,7 @@ export default function ProBody() {
               .map((product, index) => (
               <Link
                 key={product.sku}
-                to={`/pro/product/${product.handle}`}
+                to={`/product/${product.handle}`}
                 className="group bg-card rounded-xl overflow-hidden hover:shadow-hover transition-all duration-300 border border-border flex flex-col animate-fade-in"
                 style={{ animationDelay: `${index * 0.05}s` }}
               >
@@ -407,7 +407,7 @@ export default function ProBody() {
             {searchQuery && (
               <div className="mt-4 max-h-60 overflow-y-auto">
                 {filteredProducts.length > 0 ? filteredProducts.slice(0, 5).map(p => (
-                  <Link key={p.node.id} to={`/pro/product/${p.node.handle}`} onClick={() => setIsSearchOpen(false)} className="flex items-center gap-3 py-3 hover:bg-secondary/50 rounded-lg px-2 transition-colors">
+                  <Link key={p.node.id} to={`/product/${p.node.handle}`} onClick={() => setIsSearchOpen(false)} className="flex items-center gap-3 py-3 hover:bg-secondary/50 rounded-lg px-2 transition-colors">
                     {p.node.images?.edges?.[0]?.node && <img src={p.node.images.edges[0].node.url} alt="" className="w-10 h-10 object-contain rounded" />}
                     <div>
                       <p className="font-bold text-foreground text-sm">{p.node.title}</p>

@@ -96,7 +96,7 @@ export default function ProProductDetail() {
     "category": product.category,
     "offers": {
       "@type": "Offer",
-      "url": `https://pro.fullbody.co.il/pro/product/${product.handle}`,
+      "url": `https://pro.fullbody.co.il/product/${product.handle}`,
       "availability": "https://schema.org/InStock",
       "priceCurrency": "ILS",
       "price": product.price,
@@ -118,7 +118,7 @@ export default function ProProductDetail() {
       <Helmet>
         <title>{product.title} | FullBody Pro</title>
         <meta name="description" content={product.metaDescription} />
-        <link rel="canonical" href={`https://pro.fullbody.co.il/pro/product/${product.handle}`} />
+        <link rel="canonical" href={`https://pro.fullbody.co.il/product/${product.handle}`} />
         <meta property="og:title" content={product.title} />
         <meta property="og:description" content={product.metaDescription} />
         <meta property="og:type" content="product" />
@@ -400,7 +400,7 @@ export default function ProProductDetail() {
               {related.map((rp) => (
                 <Link
                   key={rp.handle}
-                  to={`/pro/product/${rp.handle}`}
+                  to={`/product/${rp.handle}`}
                   className="group bg-card rounded-xl overflow-hidden border border-border hover:shadow-hover transition-all duration-300 flex flex-col"
                 >
                   <div className="aspect-square bg-secondary/20 flex items-center justify-center p-6">
