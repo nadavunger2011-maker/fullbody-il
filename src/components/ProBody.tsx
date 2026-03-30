@@ -12,7 +12,7 @@ import { useCartStore } from '@/stores/cartStore';
 import { toast } from 'sonner';
 
 import CartDrawer from './CartDrawer';
-import Footer from './Footer';
+import ProFooter from './ProFooter';
 
 type SortOption = 'default' | 'price-asc' | 'price-desc';
 
@@ -69,7 +69,7 @@ const ProMobileMenu = ({ isOpen, onClose, categories, onCategorySelect }: {
       </div>
       
       <Link to="/pro/about" onClick={onClose} className="py-4 border-b border-border text-lg font-bold hover:text-accent transition-colors">אודות</Link>
-      <Link to="/contact" onClick={onClose} className="py-4 border-b border-border text-lg font-bold hover:text-accent transition-colors">צור קשר</Link>
+      <Link to="/pro/contact" onClick={onClose} className="py-4 border-b border-border text-lg font-bold hover:text-accent transition-colors">צור קשר</Link>
     </div>
   );
 };
