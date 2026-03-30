@@ -44,7 +44,7 @@ export default function Footer() {
             <div>
               <h4 className="font-bold mb-4">קישורים מהירים</h4>
               <ul className="space-y-2 text-sm text-primary-foreground/80">
-                <li><Link to="/" className="hover:text-primary-foreground transition">ראשי</Link></li>
+                <li><Link to="/nava" className="hover:text-primary-foreground transition">ראשי</Link></li>
                 <li><Link to="/nava/products" className="hover:text-primary-foreground transition">מוצרים</Link></li>
                 <li><Link to="/nava/about" className="hover:text-primary-foreground transition">אודות</Link></li>
                 <li><Link to="/nava/faq" className="hover:text-primary-foreground transition">שאלות נפוצות</Link></li>

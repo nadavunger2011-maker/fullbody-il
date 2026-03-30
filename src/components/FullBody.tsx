@@ -107,7 +107,7 @@ const MobileMenu = ({ isOpen, onClose, categories, onCategorySelect }: MobileMen
         <X className="w-6 h-6" />
       </button>
       
-      <Link to="/" onClick={onClose} className="py-4 border-b border-border text-lg font-bold hover:text-accent transition-colors">
+      <Link to="/nava" onClick={onClose} className="py-4 border-b border-border text-lg font-bold hover:text-accent transition-colors">
         ראשי
       </Link>
       
@@ -379,13 +379,13 @@ export default function FullBody() {
           </button>
 
           {/* Logo */}
-          <Link to="/" className="flex items-center">
+          <Link to="/nava" className="flex items-center">
             <img src={logoImage} alt="FullBody - תוספי תזונה פרימיום" className="h-14 md:h-16 w-auto" />
           </Link>
 
           {/* Desktop Nav */}
           <nav className="hidden lg:flex items-center gap-8 font-bold text-muted-foreground">
-            <Link to="/" className="hover:text-accent transition-colors">ראשי</Link>
+            <Link to="/nava" className="hover:text-accent transition-colors">ראשי</Link>
             
             {/* Shop Dropdown */}
             <div className="relative group">
