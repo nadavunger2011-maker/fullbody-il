@@ -384,7 +384,7 @@ export default function ProBody() {
         </div>
       </section>
 
-      <Footer />
+      <ProFooter />
 
       {/* Search Popup */}
       {isSearchOpen && (
