@@ -146,13 +146,13 @@ const MobileMenu = ({ isOpen, onClose, categories, onCategorySelect }: MobileMen
         </div>
       </div>
       
-      <Link to="/blog" onClick={onClose} className="py-4 border-b border-border text-lg font-bold hover:text-accent transition-colors">
+      <Link to="/nava/blog" onClick={onClose} className="py-4 border-b border-border text-lg font-bold hover:text-accent transition-colors">
         מאמרים
       </Link>
-      <Link to="/about" onClick={onClose} className="py-4 border-b border-border text-lg font-bold hover:text-accent transition-colors">
+      <Link to="/nava/about" onClick={onClose} className="py-4 border-b border-border text-lg font-bold hover:text-accent transition-colors">
         אודות
       </Link>
-      <Link to="/contact" onClick={onClose} className="py-4 border-b border-border text-lg font-bold hover:text-accent transition-colors">
+      <Link to="/nava/contact" onClick={onClose} className="py-4 border-b border-border text-lg font-bold hover:text-accent transition-colors">
         צור קשר
       </Link>
     </div>
@@ -419,9 +419,9 @@ export default function FullBody() {
               </div>
             </div>
             
-            <Link to="/blog" className="hover:text-accent transition-colors">מאמרים</Link>
-            <Link to="/about" className="hover:text-accent transition-colors">אודות</Link>
-            <Link to="/contact" className="hover:text-accent transition-colors">צור קשר</Link>
+            <Link to="/nava/blog" className="hover:text-accent transition-colors">מאמרים</Link>
+            <Link to="/nava/about" className="hover:text-accent transition-colors">אודות</Link>
+            <Link to="/nava/contact" className="hover:text-accent transition-colors">צור קשר</Link>
           </nav>
 
           {/* Icons */}
@@ -638,7 +638,7 @@ export default function FullBody() {
           {!isLoading && filteredProducts.length > 8 && (
             <div className="text-center mt-10">
               <Link 
-                to="/products"
+                to="/nava/products"
                 className="inline-flex items-center gap-2 bg-primary text-primary-foreground font-bold py-3 px-8 rounded-lg shadow-lg hover:bg-primary/90 transition-all duration-300 active:scale-95"
               >
                 צפייה בכל המוצרים ({filteredProducts.length})
@@ -738,7 +738,7 @@ export default function FullBody() {
 
           <div className="text-center mt-10">
             <Link 
-              to="/blog"
+              to="/nava/blog"
               className="inline-flex items-center gap-2 bg-primary text-primary-foreground font-bold py-3 px-8 rounded-lg shadow-lg hover:bg-primary/90 transition-all duration-300 active:scale-95"
             >
               לכל המאמרים

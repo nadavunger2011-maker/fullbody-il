@@ -45,10 +45,10 @@ export default function Footer() {
               <h4 className="font-bold mb-4">קישורים מהירים</h4>
               <ul className="space-y-2 text-sm text-primary-foreground/80">
                 <li><Link to="/" className="hover:text-primary-foreground transition">ראשי</Link></li>
-                <li><Link to="/products" className="hover:text-primary-foreground transition">מוצרים</Link></li>
-                <li><Link to="/about" className="hover:text-primary-foreground transition">אודות</Link></li>
-                <li><Link to="/faq" className="hover:text-primary-foreground transition">שאלות נפוצות</Link></li>
-                <li><Link to="/contact" className="hover:text-primary-foreground transition">צור קשר</Link></li>
+                <li><Link to="/nava/products" className="hover:text-primary-foreground transition">מוצרים</Link></li>
+                <li><Link to="/nava/about" className="hover:text-primary-foreground transition">אודות</Link></li>
+                <li><Link to="/nava/faq" className="hover:text-primary-foreground transition">שאלות נפוצות</Link></li>
+                <li><Link to="/nava/contact" className="hover:text-primary-foreground transition">צור קשר</Link></li>
               </ul>
             </div>
             
@@ -56,11 +56,11 @@ export default function Footer() {
             <div>
               <h4 className="font-bold mb-4">מדיניות ותקנון</h4>
               <ul className="space-y-2 text-sm text-primary-foreground/80">
-                <li><Link to="/shipping" className="hover:text-primary-foreground transition">מדיניות משלוחים</Link></li>
-                <li><Link to="/returns" className="hover:text-primary-foreground transition">מדיניות החזרות</Link></li>
-                <li><Link to="/terms" className="hover:text-primary-foreground transition">תנאי שימוש</Link></li>
-                <li><Link to="/privacy" className="hover:text-primary-foreground transition">מדיניות פרטיות</Link></li>
-                <li><Link to="/accessibility" className="hover:text-primary-foreground transition">הצהרת נגישות</Link></li>
+                <li><Link to="/nava/shipping" className="hover:text-primary-foreground transition">מדיניות משלוחים</Link></li>
+                <li><Link to="/nava/returns" className="hover:text-primary-foreground transition">מדיניות החזרות</Link></li>
+                <li><Link to="/nava/terms" className="hover:text-primary-foreground transition">תנאי שימוש</Link></li>
+                <li><Link to="/nava/privacy" className="hover:text-primary-foreground transition">מדיניות פרטיות</Link></li>
+                <li><Link to="/nava/accessibility" className="hover:text-primary-foreground transition">הצהרת נגישות</Link></li>
               </ul>
             </div>
             
