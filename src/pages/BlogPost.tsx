@@ -96,23 +96,23 @@ export default function BlogPost() {
             <Menu className="w-6 h-6" />
           </button>
 
-          <Link to="/" className="flex items-center">
+          <Link to="/nava" className="flex items-center">
             <span className="text-2xl font-black text-primary">FullBody</span>
           </Link>
 
           <nav className="hidden lg:flex items-center gap-8 font-bold text-muted-foreground">
-            <Link to="/" className="hover:text-accent transition-colors">ראשי</Link>
-            <Link to="/" className="hover:text-accent transition-colors">חנות</Link>
-            <Link to="/blog" className="text-accent transition-colors">מאמרים</Link>
-            <Link to="/faq" className="hover:text-accent transition-colors">שאלות נפוצות</Link>
-            <Link to="/contact" className="hover:text-accent transition-colors">צור קשר</Link>
+            <Link to="/nava" className="hover:text-accent transition-colors">ראשי</Link>
+            <Link to="/nava" className="hover:text-accent transition-colors">חנות</Link>
+            <Link to="/nava/blog" className="text-accent transition-colors">מאמרים</Link>
+            <Link to="/nava/faq" className="hover:text-accent transition-colors">שאלות נפוצות</Link>
+            <Link to="/nava/contact" className="hover:text-accent transition-colors">צור קשר</Link>
           </nav>
 
           <div className="flex items-center gap-4">
             <button className="p-2 text-muted-foreground hover:text-accent transition-colors">
               <Search className="w-5 h-5" />
             </button>
-            <Link to="/" className="p-2 text-muted-foreground hover:text-accent transition-colors">
+            <Link to="/nava" className="p-2 text-muted-foreground hover:text-accent transition-colors">
               <ShoppingBag className="w-6 h-6" />
             </Link>
           </div>
@@ -127,11 +127,11 @@ export default function BlogPost() {
         >
           <X className="w-6 h-6" />
         </button>
-        <Link to="/" className="py-4 border-b border-border text-lg font-bold hover:text-accent transition-colors">ראשי</Link>
-        <Link to="/" className="py-4 border-b border-border text-lg font-bold hover:text-accent transition-colors">חנות</Link>
-        <Link to="/blog" className="py-4 border-b border-border text-lg font-bold text-accent transition-colors">מאמרים</Link>
-        <Link to="/faq" className="py-4 border-b border-border text-lg font-bold hover:text-accent transition-colors">שאלות נפוצות</Link>
-        <Link to="/contact" className="py-4 border-b border-border text-lg font-bold hover:text-accent transition-colors">צור קשר</Link>
+        <Link to="/nava" className="py-4 border-b border-border text-lg font-bold hover:text-accent transition-colors">ראשי</Link>
+        <Link to="/nava" className="py-4 border-b border-border text-lg font-bold hover:text-accent transition-colors">חנות</Link>
+        <Link to="/nava/blog" className="py-4 border-b border-border text-lg font-bold text-accent transition-colors">מאמרים</Link>
+        <Link to="/nava/faq" className="py-4 border-b border-border text-lg font-bold hover:text-accent transition-colors">שאלות נפוצות</Link>
+        <Link to="/nava/contact" className="py-4 border-b border-border text-lg font-bold hover:text-accent transition-colors">צור קשר</Link>
       </div>
 
       {/* Overlay */}
@@ -146,9 +146,9 @@ export default function BlogPost() {
       <div className="bg-secondary border-b border-border">
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center gap-2 text-sm text-muted-foreground">
-            <Link to="/" className="hover:text-accent transition-colors">ראשי</Link>
+            <Link to="/nava" className="hover:text-accent transition-colors">ראשי</Link>
             <ArrowRight className="w-4 h-4" />
-            <Link to="/blog" className="hover:text-accent transition-colors">בלוג</Link>
+            <Link to="/nava/blog" className="hover:text-accent transition-colors">בלוג</Link>
             <ArrowRight className="w-4 h-4" />
             <span className="text-foreground font-medium truncate max-w-[200px]">{post.title}</span>
           </div>
@@ -223,7 +223,7 @@ export default function BlogPost() {
                     className="group bg-card rounded-xl overflow-hidden border border-border hover:shadow-hover transition-all duration-300 animate-fade-in"
                     style={{ animationDelay: `${index * 0.1}s` }}
                   >
-                    <Link to={`/product/${product.node.handle}`} className="block">
+                    <Link to={`/nava/product/${product.node.handle}`} className="block">
                       <div className="aspect-square overflow-hidden bg-secondary/30 flex items-center justify-center p-4">
                         {product.node.images?.edges?.[0]?.node && (
                           <img 
@@ -237,7 +237,7 @@ export default function BlogPost() {
                     </Link>
                     
                     <div className="p-3 sm:p-4">
-                      <Link to={`/product/${product.node.handle}`}>
+                      <Link to={`/nava/product/${product.node.handle}`}>
                         <h3 className="font-bold text-sm text-foreground mb-2 group-hover:text-accent transition-colors line-clamp-2">
                           {product.node.title}
                         </h3>
@@ -270,7 +270,7 @@ export default function BlogPost() {
       <section className="py-8">
         <div className="container mx-auto px-4 text-center">
           <Link 
-            to="/blog" 
+            to="/nava/blog" 
             className="inline-flex items-center gap-2 text-accent font-bold hover:gap-3 transition-all"
           >
             <ArrowRight className="w-5 h-5" />

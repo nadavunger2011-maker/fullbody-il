@@ -184,7 +184,7 @@ export default function ProductDetail() {
     return (
       <div dir="rtl" className="min-h-screen bg-background flex flex-col items-center justify-center">
         <h1 className="text-2xl font-bold text-foreground mb-4">מוצר לא נמצא</h1>
-        <Link to="/" className="text-accent hover:underline">חזרה לדף הבית</Link>
+        <Link to="/nava" className="text-accent hover:underline">חזרה לדף הבית</Link>
       </div>
     );
   }
@@ -236,7 +236,7 @@ export default function ProductDetail() {
               <span className="hidden sm:inline">חזרה</span>
             </button>
             
-            <Link to="/" className="flex items-center">
+            <Link to="/nava" className="flex items-center">
               <img src={logoImage} alt="FullBody" className="h-8 w-auto" />
             </Link>
 
@@ -260,7 +260,7 @@ export default function ProductDetail() {
         <main className="container mx-auto px-4 py-6 max-w-6xl">
           {/* Breadcrumb */}
           <nav className="flex items-center gap-1.5 text-xs text-muted-foreground mb-6">
-            <Link to="/" className="hover:text-foreground transition-colors">ראשי</Link>
+            <Link to="/nava" className="hover:text-foreground transition-colors">ראשי</Link>
             <ChevronRight className="w-3 h-3" />
             <Link to="/#products" className="hover:text-foreground transition-colors">חנות</Link>
             <ChevronRight className="w-3 h-3" />
@@ -453,7 +453,7 @@ export default function ProductDetail() {
                 {relatedProducts.map((relatedProduct, i) => (
                   <Link
                     key={relatedProduct.node.id}
-                    to={`/product/${relatedProduct.node.handle}`}
+                    to={`/nava/product/${relatedProduct.node.handle}`}
                     className="group bg-card rounded-xl overflow-hidden hover:shadow-md transition-all duration-300 border border-border/50 animate-fade-in"
                     style={{ animationDuration: '0.4s', animationDelay: `${0.5 + i * 0.1}s`, animationFillMode: 'backwards' }}
                   >

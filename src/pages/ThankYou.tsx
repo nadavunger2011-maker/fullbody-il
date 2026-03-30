@@ -130,7 +130,7 @@ const ThankYou = () => {
         </div>
 
         <div className="pt-4">
-          <Link to="/">
+          <Link to="/nava">
             <Button className="gap-2">
               המשך לקנות
               <ArrowRight className="w-4 h-4" />

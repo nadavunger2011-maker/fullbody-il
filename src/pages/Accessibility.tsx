@@ -13,11 +13,11 @@ const Accessibility = () => {
       {/* Header */}
       <header className="sticky top-0 z-40 bg-card shadow-card border-b border-border">
         <div className="container mx-auto px-4 h-16 flex items-center justify-between">
-          <Link to="/" className="text-xl font-black tracking-tighter text-primary flex items-center gap-2">
+          <Link to="/nava" className="text-xl font-black tracking-tighter text-primary flex items-center gap-2">
             <Zap className="w-5 h-5 text-accent fill-current" />
             FULL<span className="text-accent">BODY</span>
           </Link>
-          <Link to="/" className="text-sm font-medium text-muted-foreground hover:text-accent transition-colors flex items-center gap-2">
+          <Link to="/nava" className="text-sm font-medium text-muted-foreground hover:text-accent transition-colors flex items-center gap-2">
             <ArrowLeft className="w-4 h-4" />
             חזרה לחנות
           </Link>

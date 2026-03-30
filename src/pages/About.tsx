@@ -14,11 +14,11 @@ export default function About() {
       {/* Header */}
       <header className="sticky top-0 z-40 bg-card shadow-card border-b border-border">
         <div className="container mx-auto px-4 h-20 flex items-center justify-between">
-          <Link to="/" className="text-2xl font-black tracking-tighter text-primary flex items-center gap-2">
+          <Link to="/nava" className="text-2xl font-black tracking-tighter text-primary flex items-center gap-2">
             <Zap className="w-6 h-6 text-accent fill-current" />
             FULL<span className="text-accent">BODY</span>
           </Link>
-          <Link to="/" className="text-accent font-bold flex items-center gap-2 hover:underline">
+          <Link to="/nava" className="text-accent font-bold flex items-center gap-2 hover:underline">
             חזרה לחנות
             <ArrowRight className="w-4 h-4" />
           </Link>
@@ -97,7 +97,7 @@ export default function About() {
           <h2 className="text-3xl font-black text-primary mb-4">מוכנים להתחיל?</h2>
           <p className="text-muted-foreground mb-8">גלו את מגוון המוצרים שלנו והתחילו את המסע לגוף בריא יותר</p>
           <Link 
-            to="/" 
+            to="/nava" 
             className="inline-block bg-accent hover:bg-accent/90 text-accent-foreground font-bold py-4 px-8 rounded-lg shadow-cta transition-all"
           >
             לחנות

@@ -28,11 +28,11 @@ export default function Contact() {
       {/* Header */}
       <header className="sticky top-0 z-40 bg-card shadow-card border-b border-border">
         <div className="container mx-auto px-4 h-20 flex items-center justify-between">
-          <Link to="/" className="text-2xl font-black tracking-tighter text-primary flex items-center gap-2">
+          <Link to="/nava" className="text-2xl font-black tracking-tighter text-primary flex items-center gap-2">
             <Zap className="w-6 h-6 text-accent fill-current" />
             FULL<span className="text-accent">BODY</span>
           </Link>
-          <Link to="/" className="text-accent font-bold flex items-center gap-2 hover:underline">
+          <Link to="/nava" className="text-accent font-bold flex items-center gap-2 hover:underline">
             חזרה לחנות
             <ArrowRight className="w-4 h-4" />
           </Link>

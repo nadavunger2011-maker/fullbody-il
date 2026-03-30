@@ -14,7 +14,7 @@ export function LegacyProductRedirect() {
     if (handle) {
       // Replace the current history entry with the new URL
       // This mimics a 301 redirect behavior
-      navigate(`/product/${handle}`, { replace: true });
+      navigate(`/nava/product/${handle}`, { replace: true });
     }
   }, [handle, navigate]);
 
