@@ -1,3 +1,4 @@
+import greenLogo from '@/assets/logo-green.png';
 import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
@@ -77,7 +78,7 @@ export default function ProProductDetail() {
         <div className="text-center">
           <ShoppingBag className="w-16 h-16 mx-auto mb-4 text-muted-foreground/30" />
           <h1 className="text-2xl font-bold mb-2">המוצר לא נמצא</h1>
-          <Link to="/pro" className="text-[hsl(142,70%,35%)] hover:underline font-bold">חזרה לחנות</Link>
+          <Link to="/" className="text-[hsl(142,70%,35%)] hover:underline font-bold">חזרה לחנות</Link>
         </div>
       </div>
     );
@@ -96,7 +97,7 @@ export default function ProProductDetail() {
     "category": product.category,
     "offers": {
       "@type": "Offer",
-      "url": `https://pro.fullbody.co.il/pro/product/${product.handle}`,
+      "url": `https://fullbody.co.il/product/${product.handle}`,
       "availability": "https://schema.org/InStock",
       "priceCurrency": "ILS",
       "price": product.price,
@@ -118,7 +119,7 @@ export default function ProProductDetail() {
       <Helmet>
         <title>{product.title} | FullBody Pro</title>
         <meta name="description" content={product.metaDescription} />
-        <link rel="canonical" href={`https://pro.fullbody.co.il/pro/product/${product.handle}`} />
+        <link rel="canonical" href={`https://fullbody.co.il/product/${product.handle}`} />
         <meta property="og:title" content={product.title} />
         <meta property="og:description" content={product.metaDescription} />
         <meta property="og:type" content="product" />
@@ -143,13 +144,13 @@ export default function ProProductDetail() {
           <button onClick={() => setMobileMenuOpen(!mobileMenuOpen)} className="lg:hidden p-2 text-muted-foreground">
             {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
           </button>
-          <Link to="/pro" className="flex items-center">
-            <img src="https://fullbody.co.il/assets/logo-C2aje_0c.png" alt="FullBody Pro" className="h-14 md:h-16 w-auto" />
+          <Link to="/" className="flex items-center">
+            <img src={greenLogo} alt="FullBody Pro" className="h-14 md:h-16 w-auto" />
           </Link>
           <nav className="hidden lg:flex items-center gap-8 font-bold text-muted-foreground">
-            <Link to="/pro" className="hover:text-[hsl(142,70%,35%)] transition-colors">ראשי</Link>
-            <Link to="/pro#products" className="hover:text-[hsl(142,70%,35%)] transition-colors">מוצרים</Link>
-            <Link to="/pro/contact" className="hover:text-[hsl(142,70%,35%)] transition-colors">צור קשר</Link>
+            <Link to="/" className="hover:text-[hsl(142,70%,35%)] transition-colors">ראשי</Link>
+            <Link to="/#products" className="hover:text-[hsl(142,70%,35%)] transition-colors">מוצרים</Link>
+            <Link to="/contact" className="hover:text-[hsl(142,70%,35%)] transition-colors">צור קשר</Link>
           </nav>
           <button onClick={() => setIsCartOpen(true)} className="p-2 text-muted-foreground relative">
             <ShoppingBag className="w-6 h-6" />
@@ -165,9 +166,9 @@ export default function ProProductDetail() {
       {/* Breadcrumbs */}
       <div className="container mx-auto px-4 py-4">
         <nav className="flex items-center gap-2 text-sm text-muted-foreground">
-          <Link to="/pro" className="hover:text-[hsl(142,70%,35%)]">ראשי</Link>
+          <Link to="/" className="hover:text-[hsl(142,70%,35%)]">ראשי</Link>
           <span>/</span>
-          <Link to="/pro#products" className="hover:text-[hsl(142,70%,35%)]">מוצרים</Link>
+          <Link to="/#products" className="hover:text-[hsl(142,70%,35%)]">מוצרים</Link>
           <span>/</span>
           <span className="text-foreground font-medium truncate max-w-[200px]">{product.title}</span>
         </nav>
@@ -400,7 +401,7 @@ export default function ProProductDetail() {
               {related.map((rp) => (
                 <Link
                   key={rp.handle}
-                  to={`/pro/product/${rp.handle}`}
+                  to={`/product/${rp.handle}`}
                   className="group bg-card rounded-xl overflow-hidden border border-border hover:shadow-hover transition-all duration-300 flex flex-col"
                 >
                   <div className="aspect-square bg-secondary/20 flex items-center justify-center p-6">

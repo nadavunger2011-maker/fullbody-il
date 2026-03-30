@@ -107,7 +107,7 @@ const MobileMenu = ({ isOpen, onClose, categories, onCategorySelect }: MobileMen
         <X className="w-6 h-6" />
       </button>
       
-      <Link to="/" onClick={onClose} className="py-4 border-b border-border text-lg font-bold hover:text-accent transition-colors">
+      <Link to="/nava" onClick={onClose} className="py-4 border-b border-border text-lg font-bold hover:text-accent transition-colors">
         ראשי
       </Link>
       
@@ -146,13 +146,13 @@ const MobileMenu = ({ isOpen, onClose, categories, onCategorySelect }: MobileMen
         </div>
       </div>
       
-      <Link to="/blog" onClick={onClose} className="py-4 border-b border-border text-lg font-bold hover:text-accent transition-colors">
+      <Link to="/nava/blog" onClick={onClose} className="py-4 border-b border-border text-lg font-bold hover:text-accent transition-colors">
         מאמרים
       </Link>
-      <Link to="/about" onClick={onClose} className="py-4 border-b border-border text-lg font-bold hover:text-accent transition-colors">
+      <Link to="/nava/about" onClick={onClose} className="py-4 border-b border-border text-lg font-bold hover:text-accent transition-colors">
         אודות
       </Link>
-      <Link to="/contact" onClick={onClose} className="py-4 border-b border-border text-lg font-bold hover:text-accent transition-colors">
+      <Link to="/nava/contact" onClick={onClose} className="py-4 border-b border-border text-lg font-bold hover:text-accent transition-colors">
         צור קשר
       </Link>
     </div>
@@ -379,13 +379,13 @@ export default function FullBody() {
           </button>
 
           {/* Logo */}
-          <Link to="/" className="flex items-center">
+          <Link to="/nava" className="flex items-center">
             <img src={logoImage} alt="FullBody - תוספי תזונה פרימיום" className="h-14 md:h-16 w-auto" />
           </Link>
 
           {/* Desktop Nav */}
           <nav className="hidden lg:flex items-center gap-8 font-bold text-muted-foreground">
-            <Link to="/" className="hover:text-accent transition-colors">ראשי</Link>
+            <Link to="/nava" className="hover:text-accent transition-colors">ראשי</Link>
             
             {/* Shop Dropdown */}
             <div className="relative group">
@@ -419,9 +419,9 @@ export default function FullBody() {
               </div>
             </div>
             
-            <Link to="/blog" className="hover:text-accent transition-colors">מאמרים</Link>
-            <Link to="/about" className="hover:text-accent transition-colors">אודות</Link>
-            <Link to="/contact" className="hover:text-accent transition-colors">צור קשר</Link>
+            <Link to="/nava/blog" className="hover:text-accent transition-colors">מאמרים</Link>
+            <Link to="/nava/about" className="hover:text-accent transition-colors">אודות</Link>
+            <Link to="/nava/contact" className="hover:text-accent transition-colors">צור קשר</Link>
           </nav>
 
           {/* Icons */}
@@ -589,7 +589,7 @@ export default function FullBody() {
                     className="group bg-card rounded-xl overflow-hidden hover:shadow-hover transition-all duration-300 border border-border flex flex-col animate-fade-in"
                     style={{ animationDelay: `${index * 0.05}s` }}
                   >
-                    <Link to={`/product/${product.node.handle}`} className="relative overflow-hidden aspect-square bg-secondary/30 block cursor-pointer flex items-center justify-center p-6">
+                    <Link to={`/nava/product/${product.node.handle}`} className="relative overflow-hidden aspect-square bg-secondary/30 block cursor-pointer flex items-center justify-center p-6">
                       {product.node.images?.edges?.[0]?.node ? (
                         <img 
                           src={product.node.images.edges[0].node.url} 
@@ -605,7 +605,7 @@ export default function FullBody() {
                       )}
                     </Link>
                     <div className="p-3 sm:p-5 flex-1 flex flex-col">
-                      <Link to={`/product/${product.node.handle}`} className="font-bold text-sm sm:text-lg text-foreground mb-1 sm:mb-2 group-hover:text-accent transition-colors hover:underline">
+                      <Link to={`/nava/product/${product.node.handle}`} className="font-bold text-sm sm:text-lg text-foreground mb-1 sm:mb-2 group-hover:text-accent transition-colors hover:underline">
                         <span className="sm:hidden">{product.node.title.length > 25 ? product.node.title.slice(0, 25) + '...' : product.node.title}</span>
                         <span className="hidden sm:inline">{product.node.title}</span>
                       </Link>
@@ -638,7 +638,7 @@ export default function FullBody() {
           {!isLoading && filteredProducts.length > 8 && (
             <div className="text-center mt-10">
               <Link 
-                to="/products"
+                to="/nava/products"
                 className="inline-flex items-center gap-2 bg-primary text-primary-foreground font-bold py-3 px-8 rounded-lg shadow-lg hover:bg-primary/90 transition-all duration-300 active:scale-95"
               >
                 צפייה בכל המוצרים ({filteredProducts.length})
@@ -738,7 +738,7 @@ export default function FullBody() {
 
           <div className="text-center mt-10">
             <Link 
-              to="/blog"
+              to="/nava/blog"
               className="inline-flex items-center gap-2 bg-primary text-primary-foreground font-bold py-3 px-8 rounded-lg shadow-lg hover:bg-primary/90 transition-all duration-300 active:scale-95"
             >
               לכל המאמרים
@@ -811,7 +811,7 @@ export default function FullBody() {
                       {filteredProducts.slice(0, 5).map(product => (
                         <Link 
                           key={product.node.id}
-                          to={`/product/${product.node.handle}`}
+                          to={`/nava/product/${product.node.handle}`}
                           onClick={() => { setIsSearchOpen(false); setSearchQuery(''); }}
                           className="flex items-center gap-4 p-3 rounded-lg hover:bg-secondary transition-colors"
                         >

@@ -1,3 +1,4 @@
+import greenLogo from '@/assets/logo-green.png';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
@@ -32,14 +33,14 @@ export default function ProContact() {
       {/* Header */}
       <header className="sticky top-0 z-40 bg-card shadow-card border-b border-border">
         <div className="container mx-auto px-4 h-20 flex items-center justify-between">
-          <Link to="/pro" className="flex items-center gap-2">
-            <img src="https://fullbody.co.il/assets/logo-C2aje_0c.png" alt="FullBody Pro" className="h-10" />
+          <Link to="/" className="flex items-center gap-2">
+            <img src={greenLogo} alt="FullBody Pro" className="h-10" />
             <div className="flex items-center gap-1">
               <Leaf className="w-5 h-5 text-accent" />
               <span className="text-sm font-bold text-accent">PRO</span>
             </div>
           </Link>
-          <Link to="/pro" className="text-accent font-bold flex items-center gap-2 hover:underline">
+          <Link to="/" className="text-accent font-bold flex items-center gap-2 hover:underline">
             חזרה לחנות
             <ArrowRight className="w-4 h-4" />
           </Link>

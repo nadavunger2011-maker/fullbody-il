@@ -67,18 +67,18 @@ const FAQ: React.FC = () => {
             {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
           </button>
 
-          <Link to="/" className="text-2xl font-black tracking-tighter text-primary flex items-center gap-2">
+          <Link to="/nava" className="text-2xl font-black tracking-tighter text-primary flex items-center gap-2">
             <Zap className="w-6 h-6 text-accent fill-current" />
             FULL<span className="text-accent">BODY</span>
           </Link>
 
           <nav className="hidden lg:flex items-center gap-8 font-bold text-muted-foreground">
-            <Link to="/" className="hover:text-accent transition-colors">ראשי</Link>
-            <Link to="/" className="hover:text-accent transition-colors">חנות</Link>
-            <Link to="/blog" className="hover:text-accent transition-colors">מאמרים</Link>
-            <Link to="/about" className="hover:text-accent transition-colors">אודות</Link>
-            <Link to="/contact" className="hover:text-accent transition-colors">צור קשר</Link>
-            <Link to="/faq" className="text-accent transition-colors">שאלות נפוצות</Link>
+            <Link to="/nava" className="hover:text-accent transition-colors">ראשי</Link>
+            <Link to="/nava" className="hover:text-accent transition-colors">חנות</Link>
+            <Link to="/nava/blog" className="hover:text-accent transition-colors">מאמרים</Link>
+            <Link to="/nava/about" className="hover:text-accent transition-colors">אודות</Link>
+            <Link to="/nava/contact" className="hover:text-accent transition-colors">צור קשר</Link>
+            <Link to="/nava/faq" className="text-accent transition-colors">שאלות נפוצות</Link>
           </nav>
 
           <div className="w-10 lg:hidden" />
@@ -87,12 +87,12 @@ const FAQ: React.FC = () => {
         {mobileMenuOpen && (
           <div className="lg:hidden bg-card border-t border-border py-4">
             <nav className="container mx-auto px-4 flex flex-col gap-4 font-bold text-muted-foreground">
-              <Link to="/" className="hover:text-accent transition-colors py-2">ראשי</Link>
-              <Link to="/" className="hover:text-accent transition-colors py-2">חנות</Link>
-              <Link to="/blog" className="hover:text-accent transition-colors py-2">מאמרים</Link>
-              <Link to="/about" className="hover:text-accent transition-colors py-2">אודות</Link>
-              <Link to="/contact" className="hover:text-accent transition-colors py-2">צור קשר</Link>
-              <Link to="/faq" className="text-accent transition-colors py-2">שאלות נפוצות</Link>
+              <Link to="/nava" className="hover:text-accent transition-colors py-2">ראשי</Link>
+              <Link to="/nava" className="hover:text-accent transition-colors py-2">חנות</Link>
+              <Link to="/nava/blog" className="hover:text-accent transition-colors py-2">מאמרים</Link>
+              <Link to="/nava/about" className="hover:text-accent transition-colors py-2">אודות</Link>
+              <Link to="/nava/contact" className="hover:text-accent transition-colors py-2">צור קשר</Link>
+              <Link to="/nava/faq" className="text-accent transition-colors py-2">שאלות נפוצות</Link>
             </nav>
           </div>
         )}
@@ -100,7 +100,7 @@ const FAQ: React.FC = () => {
 
       {/* Breadcrumbs */}
       <div className="container mx-auto px-4 py-6 text-sm font-medium text-muted-foreground">
-        <Link to="/" className="hover:text-accent transition">ראשי</Link>
+        <Link to="/nava" className="hover:text-accent transition">ראשי</Link>
         <span className="mx-2">/</span>
         <span className="text-foreground font-bold">שאלות נפוצות</span>
       </div>
@@ -141,7 +141,7 @@ const FAQ: React.FC = () => {
               צוות התמיכה שלנו ישמח לעזור לכם בכל שאלה
             </p>
             <Link
-              to="/contact"
+              to="/nava/contact"
               className="inline-block bg-accent hover:bg-accent/90 text-accent-foreground font-bold py-4 px-8 rounded-xl transition-all shadow-cta"
             >
               צור קשר

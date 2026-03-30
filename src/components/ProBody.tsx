@@ -1,3 +1,4 @@
+import greenLogo from '@/assets/logo-green.png';
 import React, { useState, useEffect, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
@@ -53,7 +54,7 @@ const ProMobileMenu = ({ isOpen, onClose, categories, onCategorySelect }: {
         <X className="w-6 h-6" />
       </button>
       
-      <Link to="/pro" onClick={onClose} className="py-4 border-b border-border text-lg font-bold hover:text-accent transition-colors">ראשי</Link>
+      <Link to="/" onClick={onClose} className="py-4 border-b border-border text-lg font-bold hover:text-accent transition-colors">ראשי</Link>
       
       <div className="border-b border-border">
         <button onClick={() => setIsShopExpanded(!isShopExpanded)} className="w-full py-4 text-lg font-bold hover:text-accent transition-colors flex items-center justify-between">
@@ -68,8 +69,8 @@ const ProMobileMenu = ({ isOpen, onClose, categories, onCategorySelect }: {
         </div>
       </div>
       
-      <Link to="/pro/about" onClick={onClose} className="py-4 border-b border-border text-lg font-bold hover:text-accent transition-colors">אודות</Link>
-      <Link to="/pro/contact" onClick={onClose} className="py-4 border-b border-border text-lg font-bold hover:text-accent transition-colors">צור קשר</Link>
+      <Link to="/about" onClick={onClose} className="py-4 border-b border-border text-lg font-bold hover:text-accent transition-colors">אודות</Link>
+      <Link to="/contact" onClick={onClose} className="py-4 border-b border-border text-lg font-bold hover:text-accent transition-colors">צור קשר</Link>
     </div>
   );
 };
@@ -154,11 +155,11 @@ export default function ProBody() {
       <Helmet>
         <title>FullBody Pro - מוצרי Herbalife | תזונה וכושר</title>
         <meta name="description" content="מוצרי Herbalife לתזונה, כושר ואורח חיים בריא. שייקים, חלבונים, ויטמינים ותוספי ספורט. משלוח מהיר לכל הארץ." />
-        <link rel="canonical" href="https://pro.fullbody.co.il/" />
+        <link rel="canonical" href="https://fullbody.co.il/" />
         <meta property="og:title" content="FullBody Pro - מוצרי Herbalife" />
         <meta property="og:description" content="מוצרי Herbalife לתזונה, כושר ואורח חיים בריא." />
         <meta property="og:type" content="website" />
-        <meta property="og:url" content="https://pro.fullbody.co.il/" />
+        <meta property="og:url" content="https://fullbody.co.il/" />
         <meta property="og:locale" content="he_IL" />
         <meta name="robots" content="noindex, nofollow" />
       </Helmet>
@@ -179,12 +180,12 @@ export default function ProBody() {
             <Menu className="w-6 h-6" />
           </button>
 
-          <Link to="/pro" className="flex items-center">
-            <img src="https://fullbody.co.il/assets/logo-C2aje_0c.png" alt="FullBody Pro" className="h-14 md:h-16 w-auto" />
+          <Link to="/" className="flex items-center">
+            <img src={greenLogo} alt="FullBody Pro" className="h-14 md:h-16 w-auto" />
           </Link>
 
           <nav className="hidden lg:flex items-center gap-8 font-bold text-muted-foreground">
-            <Link to="/pro" className="hover:text-accent transition-colors">ראשי</Link>
+            <Link to="/" className="hover:text-accent transition-colors">ראשי</Link>
             <div className="relative group">
               <a href="#products" className="hover:text-accent transition-colors flex items-center gap-1">
                 מוצרים
@@ -199,7 +200,7 @@ export default function ProBody() {
                 </div>
               </div>
             </div>
-            <Link to="/pro/contact" className="hover:text-accent transition-colors">צור קשר</Link>
+            <Link to="/contact" className="hover:text-accent transition-colors">צור קשר</Link>
           </nav>
 
           <div className="flex items-center gap-4">
@@ -250,7 +251,7 @@ export default function ProBody() {
               <a href="#products" className="bg-[hsl(142,70%,35%)] hover:bg-[hsl(142,70%,30%)] text-white font-bold py-4 px-8 rounded-lg text-center transition-all shadow-cta">
                 לכל המוצרים
               </a>
-              <Link to="/pro/contact" className="bg-primary-foreground/10 hover:bg-primary-foreground/20 backdrop-blur-sm border border-primary-foreground/30 text-primary-foreground font-bold py-4 px-8 rounded-lg text-center transition-all">
+              <Link to="/contact" className="bg-primary-foreground/10 hover:bg-primary-foreground/20 backdrop-blur-sm border border-primary-foreground/30 text-primary-foreground font-bold py-4 px-8 rounded-lg text-center transition-all">
                 ייעוץ אישי
               </Link>
             </div>
@@ -313,7 +314,7 @@ export default function ProBody() {
               .map((product, index) => (
               <Link
                 key={product.sku}
-                to={`/pro/product/${product.handle}`}
+                to={`/product/${product.handle}`}
                 className="group bg-card rounded-xl overflow-hidden hover:shadow-hover transition-all duration-300 border border-border flex flex-col animate-fade-in"
                 style={{ animationDelay: `${index * 0.05}s` }}
               >
@@ -378,7 +379,7 @@ export default function ProBody() {
         <div className="container mx-auto px-4 text-center">
           <h2 className="text-3xl md:text-4xl font-black text-white mb-4">מוכנים להתחיל?</h2>
           <p className="text-xl text-white/80 mb-8 max-w-2xl mx-auto">צרו קשר לייעוץ תזונה אישי ותוכנית מותאמת אישית</p>
-          <Link to="/pro/contact" className="inline-block bg-white text-[hsl(142,70%,35%)] font-bold py-4 px-8 rounded-lg shadow-lg hover:bg-white/90 transition-all">
+          <Link to="/contact" className="inline-block bg-white text-[hsl(142,70%,35%)] font-bold py-4 px-8 rounded-lg shadow-lg hover:bg-white/90 transition-all">
             צרו קשר לייעוץ
           </Link>
         </div>
@@ -407,7 +408,7 @@ export default function ProBody() {
             {searchQuery && (
               <div className="mt-4 max-h-60 overflow-y-auto">
                 {filteredProducts.length > 0 ? filteredProducts.slice(0, 5).map(p => (
-                  <Link key={p.node.id} to={`/pro/product/${p.node.handle}`} onClick={() => setIsSearchOpen(false)} className="flex items-center gap-3 py-3 hover:bg-secondary/50 rounded-lg px-2 transition-colors">
+                  <Link key={p.node.id} to={`/product/${p.node.handle}`} onClick={() => setIsSearchOpen(false)} className="flex items-center gap-3 py-3 hover:bg-secondary/50 rounded-lg px-2 transition-colors">
                     {p.node.images?.edges?.[0]?.node && <img src={p.node.images.edges[0].node.url} alt="" className="w-10 h-10 object-contain rounded" />}
                     <div>
                       <p className="font-bold text-foreground text-sm">{p.node.title}</p>

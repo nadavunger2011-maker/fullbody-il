@@ -111,7 +111,7 @@ export default function Products() {
       {/* Header */}
       <header className="sticky top-0 z-50 bg-background/95 backdrop-blur-sm border-b border-border">
         <div className="container mx-auto px-4 py-4 flex items-center justify-between">
-          <Link to="/" className="flex items-center gap-2 text-accent hover:underline">
+          <Link to="/nava" className="flex items-center gap-2 text-accent hover:underline">
             <ArrowRight className="w-5 h-5" />
             <span className="font-bold">חזרה לדף הבית</span>
           </Link>
@@ -184,7 +184,7 @@ export default function Products() {
                   className="group bg-card rounded-xl overflow-hidden hover:shadow-hover transition-all duration-300 border border-border flex flex-col animate-fade-in"
                   style={{ animationDelay: `${index * 0.05}s` }}
                 >
-                  <Link to={`/product/${product.node.handle}`} className="relative overflow-hidden aspect-square bg-secondary/30 block cursor-pointer flex items-center justify-center p-6">
+                  <Link to={`/nava/product/${product.node.handle}`} className="relative overflow-hidden aspect-square bg-secondary/30 block cursor-pointer flex items-center justify-center p-6">
                     {product.node.images?.edges?.[0]?.node ? (
                       <img 
                         src={product.node.images.edges[0].node.url} 
@@ -200,7 +200,7 @@ export default function Products() {
                     )}
                   </Link>
                    <div className="p-3 sm:p-5 flex-1 flex flex-col">
-                    <Link to={`/product/${product.node.handle}`} className="font-bold text-sm sm:text-lg text-foreground mb-1 sm:mb-2 group-hover:text-accent transition-colors hover:underline">
+                    <Link to={`/nava/product/${product.node.handle}`} className="font-bold text-sm sm:text-lg text-foreground mb-1 sm:mb-2 group-hover:text-accent transition-colors hover:underline">
                       <span className="sm:hidden">{product.node.title.length > 25 ? product.node.title.slice(0, 25) + '...' : product.node.title}</span>
                       <span className="hidden sm:inline">{product.node.title}</span>
                     </Link>

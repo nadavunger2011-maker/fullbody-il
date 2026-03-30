@@ -137,23 +137,23 @@ export default function Blog() {
             <Menu className="w-6 h-6" />
           </button>
 
-          <Link to="/" className="flex items-center">
+          <Link to="/nava" className="flex items-center">
             <span className="text-2xl font-black text-primary">FullBody</span>
           </Link>
 
           <nav className="hidden lg:flex items-center gap-8 font-bold text-muted-foreground">
-            <Link to="/" className="hover:text-accent transition-colors">ראשי</Link>
-            <Link to="/" className="hover:text-accent transition-colors">חנות</Link>
-            <Link to="/blog" className="text-accent transition-colors">מאמרים</Link>
-            <Link to="/faq" className="hover:text-accent transition-colors">שאלות נפוצות</Link>
-            <Link to="/contact" className="hover:text-accent transition-colors">צור קשר</Link>
+            <Link to="/nava" className="hover:text-accent transition-colors">ראשי</Link>
+            <Link to="/nava" className="hover:text-accent transition-colors">חנות</Link>
+            <Link to="/nava/blog" className="text-accent transition-colors">מאמרים</Link>
+            <Link to="/nava/faq" className="hover:text-accent transition-colors">שאלות נפוצות</Link>
+            <Link to="/nava/contact" className="hover:text-accent transition-colors">צור קשר</Link>
           </nav>
 
           <div className="flex items-center gap-4">
             <button className="p-2 text-muted-foreground hover:text-accent transition-colors">
               <Search className="w-5 h-5" />
             </button>
-            <Link to="/" className="p-2 text-muted-foreground hover:text-accent transition-colors">
+            <Link to="/nava" className="p-2 text-muted-foreground hover:text-accent transition-colors">
               <ShoppingBag className="w-6 h-6" />
             </Link>
           </div>
@@ -175,10 +175,10 @@ export default function Blog() {
               <X className="w-6 h-6" />
             </button>
             <nav className="mt-12 space-y-4">
-              <Link to="/" className="block py-3 text-lg font-bold hover:text-accent">ראשי</Link>
-              <Link to="/" className="block py-3 text-lg font-bold hover:text-accent">חנות</Link>
-              <Link to="/blog" className="block py-3 text-lg font-bold text-accent">מאמרים</Link>
-              <Link to="/faq" className="block py-3 text-lg font-bold hover:text-accent">שאלות נפוצות</Link>
+              <Link to="/nava" className="block py-3 text-lg font-bold hover:text-accent">ראשי</Link>
+              <Link to="/nava" className="block py-3 text-lg font-bold hover:text-accent">חנות</Link>
+              <Link to="/nava/blog" className="block py-3 text-lg font-bold text-accent">מאמרים</Link>
+              <Link to="/nava/faq" className="block py-3 text-lg font-bold hover:text-accent">שאלות נפוצות</Link>
             </nav>
           </div>
         </>
