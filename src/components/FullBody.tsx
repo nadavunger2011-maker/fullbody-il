@@ -589,7 +589,7 @@ export default function FullBody() {
                     className="group bg-card rounded-xl overflow-hidden hover:shadow-hover transition-all duration-300 border border-border flex flex-col animate-fade-in"
                     style={{ animationDelay: `${index * 0.05}s` }}
                   >
-                    <Link to={`/product/${product.node.handle}`} className="relative overflow-hidden aspect-square bg-secondary/30 block cursor-pointer flex items-center justify-center p-6">
+                    <Link to={`/nava/product/${product.node.handle}`} className="relative overflow-hidden aspect-square bg-secondary/30 block cursor-pointer flex items-center justify-center p-6">
                       {product.node.images?.edges?.[0]?.node ? (
                         <img 
                           src={product.node.images.edges[0].node.url} 
@@ -605,7 +605,7 @@ export default function FullBody() {
                       )}
                     </Link>
                     <div className="p-3 sm:p-5 flex-1 flex flex-col">
-                      <Link to={`/product/${product.node.handle}`} className="font-bold text-sm sm:text-lg text-foreground mb-1 sm:mb-2 group-hover:text-accent transition-colors hover:underline">
+                      <Link to={`/nava/product/${product.node.handle}`} className="font-bold text-sm sm:text-lg text-foreground mb-1 sm:mb-2 group-hover:text-accent transition-colors hover:underline">
                         <span className="sm:hidden">{product.node.title.length > 25 ? product.node.title.slice(0, 25) + '...' : product.node.title}</span>
                         <span className="hidden sm:inline">{product.node.title}</span>
                       </Link>
@@ -811,7 +811,7 @@ export default function FullBody() {
                       {filteredProducts.slice(0, 5).map(product => (
                         <Link 
                           key={product.node.id}
-                          to={`/product/${product.node.handle}`}
+                          to={`/nava/product/${product.node.handle}`}
                           onClick={() => { setIsSearchOpen(false); setSearchQuery(''); }}
                           className="flex items-center gap-4 p-3 rounded-lg hover:bg-secondary transition-colors"
                         >
