@@ -441,7 +441,7 @@ export default function ProProductDetail() {
         </div>
       </section>
 
-      <Footer />
+      <ProFooter />
     </div>
   );
 }
