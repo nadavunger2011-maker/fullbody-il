@@ -2,11 +2,13 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { Calendar, Clock, ArrowRight, Tag, Menu, X, ShoppingBag, Search } from 'lucide-react';
-import { proBlogPosts, proBlogCategories } from '@/data/proBlogPosts';
+import { proBlogCategories } from '@/data/proBlogPosts';
+import { useAllBlogPosts, useAllBlogCategories } from '@/hooks/useBlogPosts';
 import greenLogo from '@/assets/logo-green.png';
 import ProFooter from '@/components/ProFooter';
 import { useCartStore } from '@/stores/cartStore';
 import CartDrawer from '@/components/CartDrawer';
+import { Skeleton } from '@/components/ui/skeleton';
 
 export default function ProBlog() {
   const [selectedCategory, setSelectedCategory] = useState('all');
@@ -15,9 +17,12 @@ export default function ProBlog() {
   const { items: cartItems } = useCartStore();
   const cartCount = cartItems.reduce((sum, i) => sum + i.quantity, 0);
 
+  const { posts: allPosts, isLoading } = useAllBlogPosts();
+  const activeCategories = useAllBlogCategories(allPosts);
+
   const filteredPosts = selectedCategory === 'all'
-    ? proBlogPosts
-    : proBlogPosts.filter(p => p.categoryId === selectedCategory);
+    ? allPosts
+    : allPosts.filter(p => p.categoryId === selectedCategory);
 
   return (
     <div dir="rtl" className="font-sans text-foreground bg-background min-h-screen">
