@@ -9,6 +9,8 @@ import {
 } from 'lucide-react';
 import { fetchShopifyProducts, ShopifyProduct, getFirstAvailableVariant, isProductAvailableForSale } from '@/lib/shopify';
 import { herbalifeProducts, PRO_PRODUCT_CATEGORIES, HerbalifeProduct } from '@/data/herbalifeProducts';
+import { proBlogPosts } from '@/data/proBlogPosts';
+import { Calendar, Clock, Tag } from 'lucide-react';
 import { useCartStore } from '@/stores/cartStore';
 import { toast } from 'sonner';
 
@@ -71,7 +73,7 @@ const ProMobileMenu = ({ isOpen, onClose, categories, onCategorySelect }: {
         </div>
       </div>
       
-      <Link to="/about" onClick={onClose} className="py-4 border-b border-border text-lg font-bold hover:text-accent transition-colors">אודות</Link>
+      <Link to="/blog" onClick={onClose} className="py-4 border-b border-border text-lg font-bold hover:text-accent transition-colors">מאמרים</Link>
       <Link to="/contact" onClick={onClose} className="py-4 border-b border-border text-lg font-bold hover:text-accent transition-colors">צור קשר</Link>
     </div>
   );
@@ -205,6 +207,7 @@ export default function ProBody() {
                 </div>
               </div>
             </div>
+            <Link to="/blog" className="hover:text-accent transition-colors">מאמרים</Link>
             <Link to="/contact" className="hover:text-accent transition-colors">צור קשר</Link>
           </nav>
 
@@ -405,6 +408,42 @@ export default function ProBody() {
                 <p className="text-muted-foreground">{item.text}</p>
               </div>
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Blog Section */}
+      <section className="py-16 bg-secondary/30">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-10">
+            <h2 className="text-3xl md:text-4xl font-black text-foreground mb-3">מאמרים ומדריכים</h2>
+            <p className="text-muted-foreground text-lg max-w-2xl mx-auto">טיפים, מדריכים ומידע מקצועי בנושאי תזונה, כושר ואורח חיים בריא</p>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {proBlogPosts.slice(0, 3).map((post, i) => (
+              <Link key={post.id} to={`/blog/${post.slug}`} className="group bg-card rounded-xl overflow-hidden border border-border hover:shadow-hover transition-all animate-fade-in" style={{ animationDelay: `${i * 0.05}s` }}>
+                <div className="aspect-[16/9] overflow-hidden">
+                  <img src={post.image} alt={post.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy" />
+                </div>
+                <div className="p-5">
+                  <div className="flex items-center gap-3 mb-3 text-xs text-muted-foreground">
+                    <span className="bg-[hsl(142,70%,35%)]/10 text-[hsl(142,70%,35%)] font-bold px-2.5 py-1 rounded-full flex items-center gap-1">
+                      <Tag className="w-3 h-3" />{post.category}
+                    </span>
+                    <span className="flex items-center gap-1"><Calendar className="w-3 h-3" />{new Date(post.date).toLocaleDateString('he-IL')}</span>
+                    <span className="flex items-center gap-1"><Clock className="w-3 h-3" />{post.readTime} דק'</span>
+                  </div>
+                  <h3 className="font-bold text-lg text-foreground mb-2 group-hover:text-[hsl(142,70%,35%)] transition-colors line-clamp-2">{post.title}</h3>
+                  <p className="text-sm text-muted-foreground line-clamp-2">{post.excerpt}</p>
+                </div>
+              </Link>
+            ))}
+          </div>
+          <div className="text-center mt-8">
+            <Link to="/blog" className="inline-flex items-center gap-2 bg-[hsl(142,70%,35%)] text-white font-bold py-3 px-8 rounded-lg hover:bg-[hsl(142,70%,30%)] transition-all">
+              לכל המאמרים
+              <ArrowRight className="w-5 h-5" />
+            </Link>
           </div>
         </div>
       </section>
