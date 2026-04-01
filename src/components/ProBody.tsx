@@ -207,6 +207,7 @@ export default function ProBody() {
                 </div>
               </div>
             </div>
+            <Link to="/blog" className="hover:text-accent transition-colors">מאמרים</Link>
             <Link to="/contact" className="hover:text-accent transition-colors">צור קשר</Link>
           </nav>
 
