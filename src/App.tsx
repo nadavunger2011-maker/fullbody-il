@@ -30,6 +30,8 @@ import AdminDashboard from "./pages/AdminDashboard";
 import ProIndex from "./pages/ProIndex";
 import ProProductDetail from "./pages/ProProductDetail";
 import ProContact from "./pages/ProContact";
+import ProBlog from "./pages/ProBlog";
+import ProBlogPost from "./pages/ProBlogPost";
 import { trackPageView } from "@/lib/analytics";
 
 const queryClient = new QueryClient();
@@ -67,6 +69,8 @@ function AppContent() {
         {/* PRO (Herbalife) — root site */}
         <Route path="/" element={<ProIndex />} />
         <Route path="/product/:handle" element={<ProProductDetail />} />
+        <Route path="/blog" element={<ProBlog />} />
+        <Route path="/blog/:slug" element={<ProBlogPost />} />
         <Route path="/contact" element={<ProContact />} />
 
         {/* NAVA — original FullBody site */}

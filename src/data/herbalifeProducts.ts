@@ -22,7 +22,7 @@ export interface HerbalifeFAQ {
 export interface HerbalifeProduct {
   sku: string;
   handle: string;
-  shopifyHandle: string; // The actual Shopify handle for cart operations
+  shopifyHandle: string;
   title: string;
   metaDescription: string;
   category: string;
@@ -35,6 +35,14 @@ export interface HerbalifeProduct {
   faq: HerbalifeFAQ[];
   description: string;
   usage: string;
+  // Filter fields
+  proteinType?: string[];    // e.g. ['whey','casein','soy']
+  absorption?: 'fast' | 'slow' | 'mixed';
+  flavors?: string[];
+  goals?: string[];          // e.g. ['weight-loss','muscle','energy','digestion']
+  isKosherMehadrin?: boolean;
+  proteinPerServing?: number; // grams
+  caloriesPerServing?: number;
 }
 
 export const herbalifeProducts: HerbalifeProduct[] = [
@@ -66,6 +74,7 @@ export const herbalifeProducts: HerbalifeProduct[] = [
     ],
     description: 'ספר המתכונים של הרבלייף מציע מגוון רחב של מתכונים בריאים וטעימים המשלבים את מוצרי Herbalife. הספר כולל ארוחות מאוזנות לכל שעה ביום — משייקים ופנקייקים בבוקר ועד קינוחי חלבון לסיום הארוחה.',
     usage: 'עיינו בספר, בחרו מתכון ועקבו אחרי ההוראות. מומלץ לשלב מתכונים שונים לגיוון התפריט היומי.',
+    goals: ['weight-loss', 'general-health'],
   },
   {
     sku: '0258',
@@ -105,6 +114,12 @@ export const herbalifeProducts: HerbalifeProduct[] = [
     ],
     description: 'פורמולה 1 של הרבלייף היא שייק חלבון מאוזן המספק תזונה מלאה בטעם וניל קלאסי ועשיר. מתאים כתחליף ארוחה לשליטה במשקל או כארוחה מהירה ומזינה. עשיר ב-21 ויטמינים ומינרלים, חלבון סויה ומי גבינה, וסיבים תזונתיים.',
     usage: 'מערבבים 2 כפות (26 גרם) עם 250 מ"ל חלב דל שומן או משקה צמחי. ניתן להוסיף פירות, קרח או PDM להגברת החלבון.',
+    proteinType: ['soy', 'whey'],
+    absorption: 'mixed',
+    flavors: ['וניל'],
+    goals: ['weight-loss', 'meal-replacement'],
+    proteinPerServing: 18,
+    caloriesPerServing: 220,
   },
   {
     sku: '0260',
@@ -141,18 +156,24 @@ export const herbalifeProducts: HerbalifeProduct[] = [
       { question: 'מתי הכי טוב לשתות?', answer: 'כתחליף ארוחת בוקר או ארוחת ערב. ניתן גם כארוחת ביניים מזינה.' },
       { question: 'האם המוצר כשר?', answer: 'כן, המוצר בפיקוח כשרות. לגרסת מהדרין ראו פורמולה 1 כשר למהדרין.' },
     ],
-    description: 'פורמולה 1 שוקולד מציעה טעם שוקולד עשיר ומפנק בשייק מאוזן עם חלבון, ויטמינים וסיבים תזונתיים. הפתרון המושלם למי שרוצה ליהנות מטעם מתוק ועדיין לשמור על תזונה בריאה ומאוזנת.',
+    description: 'פורמולה 1 שוקולד מציעה טעם שוקולד עשיר ומפנק בשייק מאוזן עם חלבון, ויטמינים וסיבים תזונתיים.',
     usage: 'מערבבים 2 כפות (26 גרם) עם 250 מ"ל חלב דל שומן. ניתן להוסיף בננה, חמאת בוטנים או קרח.',
+    proteinType: ['soy', 'whey'],
+    absorption: 'mixed',
+    flavors: ['שוקולד'],
+    goals: ['weight-loss', 'meal-replacement'],
+    proteinPerServing: 18,
+    caloriesPerServing: 220,
   },
   {
     sku: '0242',
     handle: 'formula-1-kosher',
     shopifyHandle: 'פורמולה-1-וניל-כשר-למהדרין',
     title: 'פורמולה 1 וניל כשר למהדרין',
-    metaDescription: 'שייק חלבון בטעם וניל בפיקוח כשרות מהודר. כל הערכים התזונתיים בארוחה אחת.',
+    metaDescription: 'שייק חלבון בטעם וניל בפיקוח כשרות מהודר.',
     category: 'ניהול משקל',
     categoryId: 'weight',
-    shortHook: 'שייק הפורמולה 1 האהוב — עכשיו בכשרות מהדרין. כל הערכים התזונתיים שאתם צריכים, עם פיקוח כשרות ללא פשרות.',
+    shortHook: 'שייק הפורמולה 1 האהוב — עכשיו בכשרות מהדרין.',
     image: herbalifeF1Kosher,
     price: 279,
     benefits: [
@@ -172,14 +193,21 @@ export const herbalifeProducts: HerbalifeProduct[] = [
       { label: 'סידן', value: '500', unit: 'mg' },
     ],
     faq: [
-      { question: 'מה ההבדל בין הפורמולה הרגילה לכשר למהדרין?', answer: 'ההבדל העיקרי הוא בפיקוח הכשרות. גרסת המהדרין מיוצרת תחת פיקוח כשרות מחמיר יותר.' },
+      { question: 'מה ההבדל בין הפורמולה הרגילה לכשר למהדרין?', answer: 'ההבדל העיקרי הוא בפיקוח הכשרות.' },
       { question: 'באיזה הכשר מדובר?', answer: 'המוצר בפיקוח כשרות מהדרין ישראלי.' },
-      { question: 'האם הטעם זהה לגרסה הרגילה?', answer: 'כן, טעם הוניל זהה. ההבדל הוא אך ורק בתהליך הייצור והפיקוח.' },
+      { question: 'האם הטעם זהה לגרסה הרגילה?', answer: 'כן, טעם הוניל זהה.' },
       { question: 'האם מתאים לדיאטה?', answer: 'בהחלט, הפורמולה מאוזנת ומתאימה כתחליף ארוחה בתהליך ניהול משקל.' },
       { question: 'מהם הרכיבים העיקריים?', answer: 'חלבון סויה, חלבון מי גבינה, סיבים תזונתיים, ויטמינים ומינרלים.' },
     ],
-    description: 'פורמולה 1 כשר למהדרין מאפשרת לשומרי כשרות ליהנות מאותם ערכים תזונתיים מעולים של פורמולה 1 הקלאסית. שייק חלבון מאוזן בטעם וניל עם 21 ויטמינים ומינרלים, תחת פיקוח כשרות מהדרין.',
-    usage: 'מערבבים 2 כפות (26 גרם) עם 250 מ"ל חלב דל שומן. ניתן להוסיף פירות או קרח.',
+    description: 'פורמולה 1 כשר למהדרין מאפשרת לשומרי כשרות ליהנות מאותם ערכים תזונתיים מעולים.',
+    usage: 'מערבבים 2 כפות (26 גרם) עם 250 מ"ל חלב דל שומן.',
+    proteinType: ['soy', 'whey'],
+    absorption: 'mixed',
+    flavors: ['וניל'],
+    goals: ['weight-loss', 'meal-replacement'],
+    isKosherMehadrin: true,
+    proteinPerServing: 18,
+    caloriesPerServing: 220,
   },
   {
     sku: '2600',
@@ -189,7 +217,7 @@ export const herbalifeProducts: HerbalifeProduct[] = [
     metaDescription: 'תוסף תזונה המבוסס על מחקר זוכה פרס נובל לתמיכה בזרימת הדם ובבריאות הלב.',
     category: 'ספורט ואנרגיה',
     categoryId: 'sport',
-    shortHook: 'פותח על בסיס מחקר זוכה פרס נובל. נייטוורקס תומך בזרימת דם תקינה ובבריאות הלב וכלי הדם.',
+    shortHook: 'פותח על בסיס מחקר זוכה פרס נובל. נייטוורקס תומך בזרימת דם תקינה ובבריאות הלב.',
     image: herbalifeNiteworks,
     price: 349,
     benefits: [
@@ -209,25 +237,28 @@ export const herbalifeProducts: HerbalifeProduct[] = [
       { label: 'קלוריות', value: '25', unit: 'kcal' },
     ],
     faq: [
-      { question: 'מתי הכי טוב לקחת נייטוורקס?', answer: 'מומלץ לפני השינה, כי הגוף מייצר תחמוצת חנקן בעיקר בשעות הלילה.' },
-      { question: 'מה זה תחמוצת חנקן ולמה זה חשוב?', answer: 'תחמוצת חנקן (NO) היא מולקולה שמסייעת להרחבת כלי הדם ולזרימת דם תקינה.' },
-      { question: 'האם מתאים לספורטאים?', answer: 'כן, ספורטאים רבים משתמשים בנייטוורקס לתמיכה במחזור הדם ובהתאוששות.' },
+      { question: 'מתי הכי טוב לקחת נייטוורקס?', answer: 'מומלץ לפני השינה.' },
+      { question: 'מה זה תחמוצת חנקן ולמה זה חשוב?', answer: 'תחמוצת חנקן (NO) מסייעת להרחבת כלי הדם ולזרימת דם תקינה.' },
+      { question: 'האם מתאים לספורטאים?', answer: 'כן, ספורטאים רבים משתמשים בנייטוורקס לתמיכה במחזור הדם.' },
       { question: 'מי פיתח את הפורמולה?', answer: 'הפורמולה פותחה בשיתוף עם ד"ר לואיס איגנרו, זוכה פרס נובל ברפואה 1998.' },
       { question: 'האם יש תופעות לוואי?', answer: 'המוצר הוא תוסף תזונה. יש להתייעץ עם רופא אם נוטלים תרופות לחץ דם.' },
       { question: 'כמה מנות באריזה?', answer: 'כ-15 מנות באריזה של 150 גרם.' },
     ],
-    description: 'נייטוורקס של הרבלייף פותח בשיתוף עם ד"ר לואיס איגנרו, זוכה פרס נובל ברפואה 1998, ומכיל שילוב ייחודי של L-Arginine, L-Citrulline ו-L-Taurine לתמיכה בייצור תחמוצת חנקן (NO) בגוף, המסייעת בהרחבת כלי הדם ובזרימת דם תקינה.',
+    description: 'נייטוורקס של הרבלייף פותח בשיתוף עם ד"ר לואיס איגנרו, זוכה פרס נובל ברפואה 1998.',
     usage: 'מערבבים כפית אחת (10 גרם) עם 250 מ"ל מים. מומלץ לשתות לפני השינה.',
+    flavors: ['לימון'],
+    goals: ['heart-health', 'energy'],
+    caloriesPerServing: 25,
   },
   {
     sku: '0145',
     handle: 'aloe-natural',
     shopifyHandle: 'תרכיז-אלוורה-צמחי-טעם-טבעי',
     title: 'תרכיז אלוורה צמחי - טעם טבעי',
-    metaDescription: 'תרכיז אלוורה איכותי לסיוע בעיכול, ניקוי רעלים ורענון הגוף ללא תוספת סוכר.',
+    metaDescription: 'תרכיז אלוורה איכותי לסיוע בעיכול, ניקוי רעלים ורענון הגוף.',
     category: 'עיכול והידרציה',
     categoryId: 'digestion',
-    shortHook: 'תרכיז אלוורה טבעי שמרענן ומסייע לעיכול. הוסיפו כמה כפיות למים ותיהנו ממשקה מרענן ובריא.',
+    shortHook: 'תרכיז אלוורה טבעי שמרענן ומסייע לעיכול.',
     image: herbalifeAloeNatural,
     price: 169,
     benefits: [
@@ -245,25 +276,28 @@ export const herbalifeProducts: HerbalifeProduct[] = [
       { label: 'חלבון', value: '0', unit: 'g' },
     ],
     faq: [
-      { question: 'כמה אלוורה צריך לשים?', answer: '3 כפיות (15 מ"ל) ב-250 מ"ל מים. ניתן לשתות מספר פעמים ביום.' },
-      { question: 'מתי מומלץ לשתות אלוורה?', answer: 'בכל שעה ביום, ובמיוחד בבוקר או לפני ארוחות לתמיכה בעיכול.' },
-      { question: 'מה ההבדל בין הטעם הטבעי למנגו?', answer: 'שניהם מכילים את אותו ג\'ל אלוורה. ההבדל הוא בטעם בלבד — טבעי או מנגו.' },
-      { question: 'האם מתאים לילדים?', answer: 'מומלץ להתייעץ עם רופא ילדים לפני שימוש בתוספי תזונה לילדים.' },
-      { question: 'כמה זמן מחזיקה בקבוק?', answer: 'בקבוק 473 מ"ל מספיק לכ-31 מנות בשימוש רגיל.' },
+      { question: 'כמה אלוורה צריך לשים?', answer: '3 כפיות (15 מ"ל) ב-250 מ"ל מים.' },
+      { question: 'מתי מומלץ לשתות אלוורה?', answer: 'בכל שעה ביום, במיוחד בבוקר או לפני ארוחות.' },
+      { question: 'מה ההבדל בין הטעם הטבעי למנגו?', answer: 'שניהם מכילים את אותו ג\'ל אלוורה. ההבדל הוא בטעם בלבד.' },
+      { question: 'האם מתאים לילדים?', answer: 'מומלץ להתייעץ עם רופא ילדים.' },
+      { question: 'כמה זמן מחזיקה בקבוק?', answer: 'בקבוק 473 מ"ל מספיק לכ-31 מנות.' },
       { question: 'האם צריך לשמור במקרר?', answer: 'מומלץ לשמור במקרר לאחר פתיחה.' },
     ],
-    description: 'תרכיז אלוורה צמחי של הרבלייף מכיל 40% ג\'ל אלוורה איכותי. משקה מרענן שמסייע בתהליכי עיכול בריאים ומעודד שתיית מים. ללא תוספת סוכר, נוח להכנה ומתאים לשתייה יומיומית.',
-    usage: 'מערבבים 3 כפיות (15 מ"ל) ב-250 מ"ל מים. ניתן להוסיף לתה צמחים או לשייק.',
+    description: 'תרכיז אלוורה צמחי של הרבלייף מכיל 40% ג\'ל אלוורה איכותי.',
+    usage: 'מערבבים 3 כפיות (15 מ"ל) ב-250 מ"ל מים.',
+    flavors: ['טבעי'],
+    goals: ['digestion', 'hydration'],
+    caloriesPerServing: 5,
   },
   {
     sku: '0146',
     handle: 'aloe-mango',
     shopifyHandle: 'תרכיז-אלוורה-טעם-מנגו-מרענן',
     title: 'תרכיז אלוורה - טעם מנגו מרענן',
-    metaDescription: 'תרכיז אלוורה מרענן בטעם מנגו לסיוע למערכת העיכול ועידוד שתיית מים.',
+    metaDescription: 'תרכיז אלוורה מרענן בטעם מנגו לסיוע למערכת העיכול.',
     category: 'עיכול והידרציה',
     categoryId: 'digestion',
-    shortHook: 'אלוורה בטעם מנגו טרופי ומרענן. הדרך הכי טעימה לדאוג לעיכול בריא ולשתות יותר מים.',
+    shortHook: 'אלוורה בטעם מנגו טרופי ומרענן.',
     image: herbalifeAloeMango,
     price: 169,
     benefits: [
@@ -281,24 +315,27 @@ export const herbalifeProducts: HerbalifeProduct[] = [
       { label: 'חלבון', value: '0', unit: 'g' },
     ],
     faq: [
-      { question: 'האם טעם המנגו טבעי?', answer: 'הטעם מבוסס על ארומה של מנגו. הג\'ל הפעיל הוא אלוורה טבעית.' },
-      { question: 'ניתן לשלב עם מוצרים אחרים?', answer: 'כן, ניתן לשלב עם תה הרבלייף או להוסיף לשייק פורמולה 1.' },
-      { question: 'מה היתרון על מיץ רגיל?', answer: 'תרכיז אלוורה כמעט ללא קלוריות, ללא סוכר, ומכיל ג\'ל אלוורה התומך בעיכול.' },
-      { question: 'האם מתאים לנשים בהריון?', answer: 'מומלץ להתייעץ עם רופא לפני נטילת כל תוסף תזונה במהלך ההריון.' },
-      { question: 'כמה פעמים ביום ניתן לשתות?', answer: 'ניתן לשתות 2-3 פעמים ביום. כ-15 מ"ל בכל פעם.' },
+      { question: 'האם טעם המנגו טבעי?', answer: 'הטעם מבוסס על ארומה של מנגו.' },
+      { question: 'ניתן לשלב עם מוצרים אחרים?', answer: 'כן, ניתן לשלב עם תה הרבלייף או שייק פורמולה 1.' },
+      { question: 'מה היתרון על מיץ רגיל?', answer: 'כמעט ללא קלוריות, ללא סוכר, ומכיל ג\'ל אלוורה.' },
+      { question: 'האם מתאים לנשים בהריון?', answer: 'מומלץ להתייעץ עם רופא.' },
+      { question: 'כמה פעמים ביום ניתן לשתות?', answer: '2-3 פעמים ביום, כ-15 מ"ל בכל פעם.' },
     ],
-    description: 'תרכיז אלוורה בטעם מנגו טרופי ומרענן מהרבלייף. מכיל 40% ג\'ל אלוורה לתמיכה בעיכול בריא. הדרך הטעימה ביותר לעודד את עצמכם לשתות יותר מים במהלך היום.',
-    usage: 'מערבבים 3 כפיות (15 מ"ל) ב-250 מ"ל מים קרים. מעולה גם עם קרח.',
+    description: 'תרכיז אלוורה בטעם מנגו טרופי ומרענן מהרבלייף.',
+    usage: 'מערבבים 3 כפיות (15 מ"ל) ב-250 מ"ל מים קרים.',
+    flavors: ['מנגו'],
+    goals: ['digestion', 'hydration'],
+    caloriesPerServing: 5,
   },
   {
     sku: '2793',
     handle: 'pdm-protein',
     shopifyHandle: 'אבקת-חלבון-pdm-תוספת-חלבון-לשייק',
     title: 'אבקת חלבון PDM - תוספת חלבון לשייק',
-    metaDescription: 'Protein Drink Mix להעלאת כמות החלבון היומית בשייק או כמשקה מרענן.',
+    metaDescription: 'Protein Drink Mix להעלאת כמות החלבון היומית.',
     category: 'ניהול משקל',
     categoryId: 'weight',
-    shortHook: 'תוספת חלבון מושלמת לשייק הפורמולה 1 שלכם. PDM מעלה את החלבון ומגביר שובע.',
+    shortHook: 'תוספת חלבון מושלמת לשייק הפורמולה 1 שלכם.',
     image: herbalifePdm,
     price: 229,
     benefits: [
@@ -317,24 +354,30 @@ export const herbalifeProducts: HerbalifeProduct[] = [
       { label: 'סידן', value: '200', unit: 'mg' },
     ],
     faq: [
-      { question: 'מה ההבדל בין PDM לפורמולה 1?', answer: 'פורמולה 1 היא תחליף ארוחה מלא. PDM הוא תוספת חלבון שנועדה להגביר את כמות החלבון.' },
-      { question: 'כמה PDM להוסיף לשייק?', answer: 'כף אחת (24 גרם) מוסיפה 15 גרם חלבון. ניתן להוסיף עד 2 כפות.' },
-      { question: 'האם ניתן לשתות PDM בנפרד?', answer: 'כן, ניתן לערבב עם מים או חלב כמשקה חלבון עצמאי.' },
-      { question: 'מאיזה סוג חלבון עשוי PDM?', answer: 'חלבון מי גבינה (Whey Protein) — חלבון איכותי עם ספיגה מהירה.' },
+      { question: 'מה ההבדל בין PDM לפורמולה 1?', answer: 'פורמולה 1 היא תחליף ארוחה מלא. PDM הוא תוספת חלבון.' },
+      { question: 'כמה PDM להוסיף לשייק?', answer: 'כף אחת (24 גרם) מוסיפה 15 גרם חלבון.' },
+      { question: 'האם ניתן לשתות PDM בנפרד?', answer: 'כן, ניתן לערבב עם מים או חלב.' },
+      { question: 'מאיזה סוג חלבון עשוי PDM?', answer: 'חלבון מי גבינה (Whey Protein) — ספיגה מהירה.' },
       { question: 'האם מתאים לאחר אימון?', answer: 'כן, PDM מתאים גם לצריכת חלבון לאחר אימון.' },
     ],
-    description: 'Protein Drink Mix (PDM) של הרבלייף מספק 15 גרם חלבון מי גבינה איכותי בכל מנה. מושלם כתוספת לשייק פורמולה 1 להגברת כמות החלבון, או כמשקה חלבון עצמאי ומרענן.',
-    usage: 'מערבבים כף אחת (24 גרם) עם מים, חלב, או הוסיפו ישירות לשייק הפורמולה 1.',
+    description: 'Protein Drink Mix (PDM) של הרבלייף מספק 15 גרם חלבון מי גבינה איכותי.',
+    usage: 'מערבבים כף אחת (24 גרם) עם מים, חלב, או הוסיפו ישירות לשייק.',
+    proteinType: ['whey'],
+    absorption: 'fast',
+    flavors: ['וניל'],
+    goals: ['muscle', 'weight-loss'],
+    proteinPerServing: 15,
+    caloriesPerServing: 80,
   },
   {
     sku: '4468',
     handle: 'h24-rebuild-strength',
     shopifyHandle: 'h24-rebuild-strength-שוקולד-1-קג',
     title: 'H24 Rebuild Strength - שוקולד (1 ק"ג)',
-    metaDescription: '25 גרם חלבון לבניית שריר והתאוששות מהירה לאחר אימון. מאושר לספורטאים.',
+    metaDescription: '25 גרם חלבון לבניית שריר והתאוששות מהירה לאחר אימון.',
     category: 'ספורט (H24)',
     categoryId: 'sport',
-    shortHook: 'חלבון מקצועי לספורטאים רציניים. 25 גרם חלבון למנה להתאוששות מהירה ובניית שריר לאחר אימון.',
+    shortHook: 'חלבון מקצועי לספורטאים רציניים. 25 גרם חלבון למנה.',
     image: herbalifeH24Rebuild,
     price: 299,
     benefits: [
@@ -354,16 +397,22 @@ export const herbalifeProducts: HerbalifeProduct[] = [
       { label: 'L-Glutamine', value: '3', unit: 'g' },
     ],
     faq: [
-      { question: 'מה ההבדל בין H24 לפורמולה 1?', answer: 'H24 Rebuild Strength מיועד להתאוששות לאחר אימון ומכיל יותר חלבון ו-BCAA. פורמולה 1 היא תחליף ארוחה יומיומי.' },
-      { question: 'מתי לשתות Rebuild Strength?', answer: 'מיד לאחר אימון, תוך 30 דקות, להתאוששות מיטבית ובניית שריר.' },
-      { question: 'מה זה Informed-Sport?', answer: 'תקן בינלאומי המאשר שהמוצר אינו מכיל חומרים אסורים בספורט תחרותי.' },
-      { question: 'האם מתאים לנשים?', answer: 'בהחלט, המוצר מתאים לגברים ולנשים המתאמנים ורוצים לשפר התאוששות.' },
-      { question: 'מאילו סוגי חלבון עשוי?', answer: 'שילוב של חלבון מי גבינה (ספיגה מהירה) וחלבון קזאין (ספיגה איטית) לשחרור מתמשך.' },
-      { question: 'כמה מנות באריזה?', answer: 'אריזה של 1 ק"ג מכילה כ-20 מנות.' },
-      { question: 'האם ניתן לשלב עם PDM?', answer: 'ניתן, אך Rebuild Strength כבר מכיל 25 גרם חלבון למנה.' },
+      { question: 'מה ההבדל בין H24 לפורמולה 1?', answer: 'H24 מיועד להתאוששות לאחר אימון ומכיל יותר חלבון ו-BCAA.' },
+      { question: 'מתי לשתות Rebuild Strength?', answer: 'מיד לאחר אימון, תוך 30 דקות.' },
+      { question: 'מה זה Informed-Sport?', answer: 'תקן בינלאומי המאשר שהמוצר אינו מכיל חומרים אסורים בספורט.' },
+      { question: 'האם מתאים לנשים?', answer: 'בהחלט, המוצר מתאים לגברים ולנשים.' },
+      { question: 'מאילו סוגי חלבון עשוי?', answer: 'שילוב של חלבון מי גבינה (מהיר) וקזאין (איטי).' },
+      { question: 'כמה מנות באריזה?', answer: 'אריזה של 1 ק"ג — כ-20 מנות.' },
+      { question: 'האם ניתן לשלב עם PDM?', answer: 'ניתן, אך Rebuild כבר מכיל 25 גרם חלבון למנה.' },
     ],
-    description: 'H24 Rebuild Strength הוא חלבון מקצועי מקו ה-H24 לספורטאים של הרבלייף. מכיל 25 גרם חלבון קזאין ומי גבינה, חומצות אמינו מסועפות (BCAA) ו-L-Glutamine להתאוששות מהירה ובניית שריר. מאושר Informed-Sport — ללא חומרים אסורים.',
+    description: 'H24 Rebuild Strength הוא חלבון מקצועי מקו ה-H24 לספורטאים של הרבלייף.',
     usage: 'מערבבים 2 כפות (50 גרם) עם 300 מ"ל מים או חלב מיד לאחר האימון.',
+    proteinType: ['whey', 'casein'],
+    absorption: 'mixed',
+    flavors: ['שוקולד'],
+    goals: ['muscle', 'recovery'],
+    proteinPerServing: 25,
+    caloriesPerServing: 190,
   },
 ];
 
@@ -373,6 +422,40 @@ export const PRO_PRODUCT_CATEGORIES = [
   { id: 'sport', name: 'ספורט ואנרגיה' },
   { id: 'digestion', name: 'עיכול והידרציה' },
   { id: 'lifestyle', name: 'לייף סטייל' },
+];
+
+// Filter option lists derived from product data
+export const PROTEIN_TYPES = [
+  { id: 'whey', name: 'מי גבינה (Whey)' },
+  { id: 'casein', name: 'קזאין (Casein)' },
+  { id: 'soy', name: 'סויה (Soy)' },
+];
+
+export const ABSORPTION_OPTIONS = [
+  { id: 'fast', name: 'ספיגה מהירה' },
+  { id: 'slow', name: 'ספיגה איטית' },
+  { id: 'mixed', name: 'ספיגה משולבת' },
+];
+
+export const GOAL_OPTIONS = [
+  { id: 'weight-loss', name: 'ירידה במשקל' },
+  { id: 'muscle', name: 'בניית שריר' },
+  { id: 'recovery', name: 'התאוששות' },
+  { id: 'meal-replacement', name: 'תחליף ארוחה' },
+  { id: 'digestion', name: 'עיכול' },
+  { id: 'hydration', name: 'הידרציה' },
+  { id: 'energy', name: 'אנרגיה' },
+  { id: 'heart-health', name: 'בריאות הלב' },
+  { id: 'general-health', name: 'בריאות כללית' },
+];
+
+export const FLAVOR_OPTIONS = ['וניל', 'שוקולד', 'לימון', 'מנגו', 'טבעי'];
+
+export const PRICE_RANGES = [
+  { id: 'under-100', name: 'עד ₪100', min: 0, max: 100 },
+  { id: '100-200', name: '₪100 - ₪200', min: 100, max: 200 },
+  { id: '200-300', name: '₪200 - ₪300', min: 200, max: 300 },
+  { id: 'over-300', name: 'מעל ₪300', min: 300, max: Infinity },
 ];
 
 export function getProductByHandle(handle: string): HerbalifeProduct | undefined {
@@ -385,4 +468,8 @@ export function getRelatedProducts(handle: string, limit = 4): HerbalifeProduct[
   const sameCategory = herbalifeProducts.filter(p => p.handle !== handle && p.categoryId === current.categoryId);
   const others = herbalifeProducts.filter(p => p.handle !== handle && p.categoryId !== current.categoryId);
   return [...sameCategory, ...others].slice(0, limit);
+}
+
+export function getProductsByGoal(goal: string, limit = 4): HerbalifeProduct[] {
+  return herbalifeProducts.filter(p => p.goals?.includes(goal)).slice(0, limit);
 }

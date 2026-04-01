@@ -14,6 +14,8 @@ import { toast } from 'sonner';
 
 import CartDrawer from './CartDrawer';
 import ProFooter from './ProFooter';
+import ProProductFilters, { type ActiveFilters } from './ProProductFilters';
+import { PRICE_RANGES } from '@/data/herbalifeProducts';
 
 type SortOption = 'default' | 'price-asc' | 'price-desc';
 
@@ -99,6 +101,9 @@ export default function ProBody() {
   const [isLoading, setIsLoading] = useState(true);
   const [products, setProducts] = useState<ShopifyProduct[]>([]);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [advancedFilters, setAdvancedFilters] = useState<ActiveFilters>({
+    proteinTypes: [], absorption: [], goals: [], flavors: [], priceRange: null,
+  });
 
   const { items: cartItems, addItem } = useCartStore();
 
@@ -306,11 +311,28 @@ export default function ProBody() {
             ))}
           </div>
 
-          {/* Products Grid - Local Catalog */}
-          <div className="grid grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-8">
+          {/* Filters + Products Grid */}
+          <div className="flex gap-8">
+            <div className="w-full lg:w-64 lg:flex-shrink-0">
+              <ProProductFilters filters={advancedFilters} onChange={setAdvancedFilters} />
+            </div>
+            <div className="flex-1">
+          <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-8">
             {herbalifeProducts
               .filter(p => selectedCategory === 'all' || p.categoryId === selectedCategory)
               .filter(p => !searchQuery.trim() || p.title.includes(searchQuery) || p.description.includes(searchQuery))
+              .filter(p => {
+                const f = advancedFilters;
+                if (f.proteinTypes.length && (!p.proteinType || !f.proteinTypes.some(t => p.proteinType!.includes(t)))) return false;
+                if (f.absorption.length && (!p.absorption || !f.absorption.includes(p.absorption))) return false;
+                if (f.goals.length && (!p.goals || !f.goals.some(g => p.goals!.includes(g)))) return false;
+                if (f.flavors.length && (!p.flavors || !f.flavors.some(fl => p.flavors!.includes(fl)))) return false;
+                if (f.priceRange) {
+                  const range = PRICE_RANGES.find(r => r.id === f.priceRange);
+                  if (range && (p.price < range.min || p.price >= range.max)) return false;
+                }
+                return true;
+              })
               .map((product, index) => (
               <Link
                 key={product.sku}
@@ -344,6 +366,19 @@ export default function ProBody() {
               </Link>
             ))}
           </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Blog Teaser */}
+      <section className="py-16 bg-card border-b border-border">
+        <div className="container mx-auto px-4 text-center">
+          <h2 className="text-3xl font-black text-foreground mb-4">מאמרים ומדריכים</h2>
+          <p className="text-muted-foreground mb-6 max-w-2xl mx-auto">טיפים, מתכונים ומדריכים בנושאי תזונה, כושר ואורח חיים בריא</p>
+          <Link to="/blog" className="inline-flex items-center gap-2 bg-[hsl(142,70%,35%)] text-white font-bold py-3 px-6 rounded-lg hover:opacity-90 transition-all">
+            לכל המאמרים <ArrowRight className="w-5 h-5" />
+          </Link>
         </div>
       </section>
 
