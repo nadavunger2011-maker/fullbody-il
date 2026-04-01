@@ -299,7 +299,9 @@ export default function ProBody() {
 
           {/* Category Filter */}
           <div className="flex flex-wrap justify-center gap-2 sm:gap-3 mb-10">
-            {PRO_PRODUCT_CATEGORIES.map((category) => (
+            {PRO_PRODUCT_CATEGORIES.filter(category =>
+              category.id === 'all' || herbalifeProducts.some(p => p.categoryId === category.id)
+            ).map((category) => (
               <button
                 key={category.id}
                 onClick={() => setSelectedCategory(category.id)}
