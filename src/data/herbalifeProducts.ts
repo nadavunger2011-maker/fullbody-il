@@ -5,7 +5,7 @@ import herbalifeNiteworks from '@/assets/herbalife-niteworks.jpg';
 import herbalifeAloeNatural from '@/assets/herbalife-aloe-natural.jpg';
 import herbalifeAloeMango from '@/assets/herbalife-aloe-mango.jpg';
 import herbalifePdm from '@/assets/herbalife-pdm.jpg';
-import herbalifeH24Rebuild from '@/assets/herbalife-h24-rebuild.jpg';
+import herbalifeH24Rebuild from '@/assets/h24-rebuild-strength.jpg';
 import herbalifeCookbook from '@/assets/herbalife-cookbook.jpg';
 
 export interface HerbalifeNutrition {
