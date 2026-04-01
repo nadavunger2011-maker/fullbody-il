@@ -69,6 +69,8 @@ function AppContent() {
         {/* PRO (Herbalife) — root site */}
         <Route path="/" element={<ProIndex />} />
         <Route path="/product/:handle" element={<ProProductDetail />} />
+        <Route path="/blog" element={<ProBlog />} />
+        <Route path="/blog/:slug" element={<ProBlogPost />} />
         <Route path="/contact" element={<ProContact />} />
 
         {/* NAVA — original FullBody site */}
