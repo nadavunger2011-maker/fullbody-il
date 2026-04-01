@@ -9,6 +9,8 @@ import {
 } from 'lucide-react';
 import { fetchShopifyProducts, ShopifyProduct, getFirstAvailableVariant, isProductAvailableForSale } from '@/lib/shopify';
 import { herbalifeProducts, PRO_PRODUCT_CATEGORIES, HerbalifeProduct } from '@/data/herbalifeProducts';
+import { proBlogPosts } from '@/data/proBlogPosts';
+import { Calendar, Clock, Tag } from 'lucide-react';
 import { useCartStore } from '@/stores/cartStore';
 import { toast } from 'sonner';
 
