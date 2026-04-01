@@ -366,6 +366,19 @@ export default function ProBody() {
               </Link>
             ))}
           </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Blog Teaser */}
+      <section className="py-16 bg-card border-b border-border">
+        <div className="container mx-auto px-4 text-center">
+          <h2 className="text-3xl font-black text-foreground mb-4">מאמרים ומדריכים</h2>
+          <p className="text-muted-foreground mb-6 max-w-2xl mx-auto">טיפים, מתכונים ומדריכים בנושאי תזונה, כושר ואורח חיים בריא</p>
+          <Link to="/blog" className="inline-flex items-center gap-2 bg-[hsl(142,70%,35%)] text-white font-bold py-3 px-6 rounded-lg hover:opacity-90 transition-all">
+            לכל המאמרים <ArrowRight className="w-5 h-5" />
+          </Link>
         </div>
       </section>
 
