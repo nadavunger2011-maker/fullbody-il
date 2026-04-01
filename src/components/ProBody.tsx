@@ -44,11 +44,12 @@ const getProCategory = (title: string): string => {
 };
 
 // Mobile Menu
-const ProMobileMenu = ({ isOpen, onClose, categories, onCategorySelect }: {
+const ProMobileMenu = ({ isOpen, onClose, categories, onCategorySelect, products }: {
   isOpen: boolean;
   onClose: () => void;
   categories: typeof PRO_CATEGORIES;
   onCategorySelect: (id: string) => void;
+  products: ShopifyProduct[];
 }) => {
   const [isShopExpanded, setIsShopExpanded] = useState(false);
 
