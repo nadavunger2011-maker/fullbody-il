@@ -68,7 +68,7 @@ const ProMobileMenu = ({ isOpen, onClose, categories, onCategorySelect, products
         </button>
         <div className={`overflow-hidden transition-all duration-300 ${isShopExpanded ? 'max-h-96' : 'max-h-0'}`}>
           <a href="#products" onClick={() => { onCategorySelect('all'); }} className="block py-3 pr-4 text-base font-medium hover:text-accent transition-colors border-t border-border/50">כל המוצרים</a>
-          {categories.filter(c => c.id !== 'all').map(category => (
+          {categories.filter(c => c.id !== 'all' && products.some(p => getProCategory(p.node.title) === c.id)).map(category => (
             <a key={category.id} href="#products" onClick={() => { onCategorySelect(category.id); }} className="block py-3 pr-4 text-base hover:text-accent transition-colors border-t border-border/50">{category.name}</a>
           ))}
         </div>
