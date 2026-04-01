@@ -312,8 +312,8 @@ export default function ProBody() {
           </div>
 
           {/* Filters + Products Grid */}
-          <div className="flex gap-8">
-            <div className="w-full lg:w-64 lg:flex-shrink-0">
+          <div className="flex flex-col lg:flex-row gap-8">
+            <div className="lg:w-64 lg:flex-shrink-0">
               <ProProductFilters filters={advancedFilters} onChange={setAdvancedFilters} />
             </div>
             <div className="flex-1">
