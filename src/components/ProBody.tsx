@@ -44,11 +44,12 @@ const getProCategory = (title: string): string => {
 };
 
 // Mobile Menu
-const ProMobileMenu = ({ isOpen, onClose, categories, onCategorySelect }: {
+const ProMobileMenu = ({ isOpen, onClose, categories, onCategorySelect, products }: {
   isOpen: boolean;
   onClose: () => void;
   categories: typeof PRO_CATEGORIES;
   onCategorySelect: (id: string) => void;
+  products: ShopifyProduct[];
 }) => {
   const [isShopExpanded, setIsShopExpanded] = useState(false);
 
@@ -67,7 +68,7 @@ const ProMobileMenu = ({ isOpen, onClose, categories, onCategorySelect }: {
         </button>
         <div className={`overflow-hidden transition-all duration-300 ${isShopExpanded ? 'max-h-96' : 'max-h-0'}`}>
           <a href="#products" onClick={() => { onCategorySelect('all'); }} className="block py-3 pr-4 text-base font-medium hover:text-accent transition-colors border-t border-border/50">כל המוצרים</a>
-          {categories.filter(c => c.id !== 'all').map(category => (
+          {categories.filter(c => c.id !== 'all' && products.some(p => getProCategory(p.node.title) === c.id)).map(category => (
             <a key={category.id} href="#products" onClick={() => { onCategorySelect(category.id); }} className="block py-3 pr-4 text-base hover:text-accent transition-colors border-t border-border/50">{category.name}</a>
           ))}
         </div>
@@ -201,7 +202,7 @@ export default function ProBody() {
               <div className="absolute top-full right-0 pt-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
                 <div className="bg-card border border-border rounded-lg shadow-hover py-2 min-w-[200px]">
                   <a href="#products" onClick={() => setSelectedCategory('all')} className="block px-4 py-2.5 hover:bg-secondary hover:text-accent transition-colors font-medium">כל המוצרים</a>
-                  {PRO_CATEGORIES.filter(c => c.id !== 'all').map(category => (
+                  {PRO_CATEGORIES.filter(c => c.id !== 'all' && products.some(p => getProCategory(p.node.title) === c.id)).map(category => (
                     <a key={category.id} href="#products" onClick={() => setSelectedCategory(category.id)} className="block px-4 py-2.5 hover:bg-secondary hover:text-accent transition-colors">{category.name}</a>
                   ))}
                 </div>
@@ -225,7 +226,7 @@ export default function ProBody() {
         </div>
       </header>
 
-      <ProMobileMenu isOpen={isMobileMenuOpen} onClose={() => setIsMobileMenuOpen(false)} categories={PRO_CATEGORIES} onCategorySelect={(id) => { setSelectedCategory(id); setIsMobileMenuOpen(false); }} />
+      <ProMobileMenu isOpen={isMobileMenuOpen} onClose={() => setIsMobileMenuOpen(false)} categories={PRO_CATEGORIES} onCategorySelect={(id) => { setSelectedCategory(id); setIsMobileMenuOpen(false); }} products={products} />
 
       {isMobileMenuOpen && (
         <div onClick={() => setIsMobileMenuOpen(false)} className="fixed inset-0 bg-foreground/50 z-40 transition-opacity duration-300 animate-fade-in" />
@@ -299,7 +300,9 @@ export default function ProBody() {
 
           {/* Category Filter */}
           <div className="flex flex-wrap justify-center gap-2 sm:gap-3 mb-10">
-            {PRO_PRODUCT_CATEGORIES.map((category) => (
+            {PRO_PRODUCT_CATEGORIES.filter(category =>
+              category.id === 'all' || herbalifeProducts.some(p => p.categoryId === category.id)
+            ).map((category) => (
               <button
                 key={category.id}
                 onClick={() => setSelectedCategory(category.id)}
