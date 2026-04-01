@@ -78,7 +78,7 @@ export default function ProBlog() {
             <button onClick={() => setSelectedCategory('all')} className={`px-4 py-2 rounded-full text-sm font-bold transition-all ${selectedCategory === 'all' ? 'bg-[hsl(142,70%,35%)] text-white' : 'bg-secondary text-muted-foreground hover:text-[hsl(142,70%,35%)]'}`}>
               הכל
             </button>
-            {proBlogCategories.map(cat => (
+            {proBlogCategories.filter(cat => proBlogPosts.some(p => p.categoryId === cat.id)).map(cat => (
               <button key={cat.id} onClick={() => setSelectedCategory(cat.id)} className={`px-4 py-2 rounded-full text-sm font-bold transition-all ${selectedCategory === cat.id ? 'bg-[hsl(142,70%,35%)] text-white' : 'bg-secondary text-muted-foreground hover:text-[hsl(142,70%,35%)]'}`}>
                 {cat.name}
               </button>
