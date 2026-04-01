@@ -226,7 +226,7 @@ export default function ProBody() {
         </div>
       </header>
 
-      <ProMobileMenu isOpen={isMobileMenuOpen} onClose={() => setIsMobileMenuOpen(false)} categories={PRO_CATEGORIES} onCategorySelect={(id) => { setSelectedCategory(id); setIsMobileMenuOpen(false); }} />
+      <ProMobileMenu isOpen={isMobileMenuOpen} onClose={() => setIsMobileMenuOpen(false)} categories={PRO_CATEGORIES} onCategorySelect={(id) => { setSelectedCategory(id); setIsMobileMenuOpen(false); }} products={products} />
 
       {isMobileMenuOpen && (
         <div onClick={() => setIsMobileMenuOpen(false)} className="fixed inset-0 bg-foreground/50 z-40 transition-opacity duration-300 animate-fade-in" />
