@@ -201,7 +201,7 @@ export default function ProBody() {
               <div className="absolute top-full right-0 pt-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
                 <div className="bg-card border border-border rounded-lg shadow-hover py-2 min-w-[200px]">
                   <a href="#products" onClick={() => setSelectedCategory('all')} className="block px-4 py-2.5 hover:bg-secondary hover:text-accent transition-colors font-medium">כל המוצרים</a>
-                  {PRO_CATEGORIES.filter(c => c.id !== 'all').map(category => (
+                  {PRO_CATEGORIES.filter(c => c.id !== 'all' && products.some(p => getProCategory(p.node.title) === c.id)).map(category => (
                     <a key={category.id} href="#products" onClick={() => setSelectedCategory(category.id)} className="block px-4 py-2.5 hover:bg-secondary hover:text-accent transition-colors">{category.name}</a>
                   ))}
                 </div>
