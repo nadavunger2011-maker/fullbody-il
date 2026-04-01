@@ -2,11 +2,13 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { Calendar, Clock, ArrowRight, Tag, Menu, X, ShoppingBag, Search } from 'lucide-react';
-import { proBlogPosts, proBlogCategories } from '@/data/proBlogPosts';
+import { proBlogCategories } from '@/data/proBlogPosts';
+import { useAllBlogPosts, useAllBlogCategories } from '@/hooks/useBlogPosts';
 import greenLogo from '@/assets/logo-green.png';
 import ProFooter from '@/components/ProFooter';
 import { useCartStore } from '@/stores/cartStore';
 import CartDrawer from '@/components/CartDrawer';
+import { Skeleton } from '@/components/ui/skeleton';
 
 export default function ProBlog() {
   const [selectedCategory, setSelectedCategory] = useState('all');
@@ -15,9 +17,12 @@ export default function ProBlog() {
   const { items: cartItems } = useCartStore();
   const cartCount = cartItems.reduce((sum, i) => sum + i.quantity, 0);
 
+  const { posts: allPosts, isLoading } = useAllBlogPosts();
+  const activeCategories = useAllBlogCategories(allPosts);
+
   const filteredPosts = selectedCategory === 'all'
-    ? proBlogPosts
-    : proBlogPosts.filter(p => p.categoryId === selectedCategory);
+    ? allPosts
+    : allPosts.filter(p => p.categoryId === selectedCategory);
 
   return (
     <div dir="rtl" className="font-sans text-foreground bg-background min-h-screen">
@@ -78,7 +83,7 @@ export default function ProBlog() {
             <button onClick={() => setSelectedCategory('all')} className={`px-4 py-2 rounded-full text-sm font-bold transition-all ${selectedCategory === 'all' ? 'bg-[hsl(142,70%,35%)] text-white' : 'bg-secondary text-muted-foreground hover:text-[hsl(142,70%,35%)]'}`}>
               הכל
             </button>
-            {proBlogCategories.filter(cat => proBlogPosts.some(p => p.categoryId === cat.id)).map(cat => (
+            {activeCategories.map(cat => (
               <button key={cat.id} onClick={() => setSelectedCategory(cat.id)} className={`px-4 py-2 rounded-full text-sm font-bold transition-all ${selectedCategory === cat.id ? 'bg-[hsl(142,70%,35%)] text-white' : 'bg-secondary text-muted-foreground hover:text-[hsl(142,70%,35%)]'}`}>
                 {cat.name}
               </button>
@@ -91,6 +96,16 @@ export default function ProBlog() {
       <section className="py-12">
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {isLoading && Array.from({ length: 6 }).map((_, i) => (
+              <div key={i} className="bg-card rounded-xl overflow-hidden border border-border">
+                <Skeleton className="aspect-[16/9] w-full" />
+                <div className="p-5 space-y-3">
+                  <Skeleton className="h-4 w-24" />
+                  <Skeleton className="h-6 w-full" />
+                  <Skeleton className="h-4 w-3/4" />
+                </div>
+              </div>
+            ))}
             {filteredPosts.map((post, i) => (
               <Link key={post.id} to={`/blog/${post.slug}`} className="group bg-card rounded-xl overflow-hidden border border-border hover:shadow-hover transition-all animate-fade-in" style={{ animationDelay: `${i * 0.05}s` }}>
                 <div className="aspect-[16/9] overflow-hidden">

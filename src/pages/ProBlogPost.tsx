@@ -2,7 +2,8 @@ import { useEffect } from 'react';
 import { Link, useParams, useNavigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { Calendar, Clock, ArrowRight, Tag, Menu, X, ShoppingBag } from 'lucide-react';
-import { getProBlogPostBySlug, proBlogCategories } from '@/data/proBlogPosts';
+import { proBlogCategories } from '@/data/proBlogPosts';
+import { useBlogPostBySlug } from '@/hooks/useBlogPosts';
 import { getProductByHandle, HerbalifeProduct } from '@/data/herbalifeProducts';
 import greenLogo from '@/assets/logo-green.png';
 import ProFooter from '@/components/ProFooter';
@@ -11,6 +12,7 @@ import CartDrawer from '@/components/CartDrawer';
 import { useState } from 'react';
 import { fetchProductByHandle, getFirstAvailableVariant } from '@/lib/shopify';
 import { toast } from 'sonner';
+import { Skeleton } from '@/components/ui/skeleton';
 
 export default function ProBlogPost() {
   const { slug } = useParams();
@@ -20,12 +22,13 @@ export default function ProBlogPost() {
   const { items: cartItems, addItem } = useCartStore();
   const cartCount = cartItems.reduce((s, i) => s + i.quantity, 0);
 
-  const post = slug ? getProBlogPostBySlug(slug) : undefined;
+  const { post, isLoading } = useBlogPostBySlug(slug);
 
   useEffect(() => {
-    if (!post) navigate('/blog');
-  }, [post, navigate]);
+    if (!isLoading && !post) navigate('/blog');
+  }, [post, isLoading, navigate]);
 
+  if (isLoading) return <div className="min-h-screen bg-background flex items-center justify-center"><Skeleton className="w-32 h-8" /></div>;
   if (!post) return null;
 
   const category = proBlogCategories.find(c => c.id === post.categoryId);
