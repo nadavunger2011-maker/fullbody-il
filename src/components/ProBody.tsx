@@ -311,11 +311,28 @@ export default function ProBody() {
             ))}
           </div>
 
-          {/* Products Grid - Local Catalog */}
-          <div className="grid grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-8">
+          {/* Filters + Products Grid */}
+          <div className="flex gap-8">
+            <div className="w-full lg:w-64 lg:flex-shrink-0">
+              <ProProductFilters filters={advancedFilters} onChange={setAdvancedFilters} />
+            </div>
+            <div className="flex-1">
+          <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-8">
             {herbalifeProducts
               .filter(p => selectedCategory === 'all' || p.categoryId === selectedCategory)
               .filter(p => !searchQuery.trim() || p.title.includes(searchQuery) || p.description.includes(searchQuery))
+              .filter(p => {
+                const f = advancedFilters;
+                if (f.proteinTypes.length && (!p.proteinType || !f.proteinTypes.some(t => p.proteinType!.includes(t)))) return false;
+                if (f.absorption.length && (!p.absorption || !f.absorption.includes(p.absorption))) return false;
+                if (f.goals.length && (!p.goals || !f.goals.some(g => p.goals!.includes(g)))) return false;
+                if (f.flavors.length && (!p.flavors || !f.flavors.some(fl => p.flavors!.includes(fl)))) return false;
+                if (f.priceRange) {
+                  const range = PRICE_RANGES.find(r => r.id === f.priceRange);
+                  if (range && (p.price < range.min || p.price >= range.max)) return false;
+                }
+                return true;
+              })
               .map((product, index) => (
               <Link
                 key={product.sku}
