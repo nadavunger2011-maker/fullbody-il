@@ -73,7 +73,7 @@ const ProMobileMenu = ({ isOpen, onClose, categories, onCategorySelect }: {
         </div>
       </div>
       
-      <Link to="/about" onClick={onClose} className="py-4 border-b border-border text-lg font-bold hover:text-accent transition-colors">אודות</Link>
+      <Link to="/blog" onClick={onClose} className="py-4 border-b border-border text-lg font-bold hover:text-accent transition-colors">מאמרים</Link>
       <Link to="/contact" onClick={onClose} className="py-4 border-b border-border text-lg font-bold hover:text-accent transition-colors">צור קשר</Link>
     </div>
   );
