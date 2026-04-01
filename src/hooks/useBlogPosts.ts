@@ -18,7 +18,7 @@ interface DbBlogPost {
   meta_description: string;
 }
 
-function dbToProBlogPost(db: DbBlogPost): ProBlogPost {
+function dbToProBlogPost(db: any): ProBlogPost {
   return {
     id: db.id,
     slug: db.slug,
