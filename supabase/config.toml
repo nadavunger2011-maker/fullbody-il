@@ -17,3 +17,6 @@ verify_jwt = false
 
 [functions.generate-blog-posts]
 verify_jwt = false
+
+[functions.sitemap]
+verify_jwt = false
