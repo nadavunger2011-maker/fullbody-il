@@ -101,6 +101,9 @@ export default function ProBody() {
   const [isLoading, setIsLoading] = useState(true);
   const [products, setProducts] = useState<ShopifyProduct[]>([]);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [advancedFilters, setAdvancedFilters] = useState<ActiveFilters>({
+    proteinTypes: [], absorption: [], goals: [], flavors: [], priceRange: null,
+  });
 
   const { items: cartItems, addItem } = useCartStore();
 
