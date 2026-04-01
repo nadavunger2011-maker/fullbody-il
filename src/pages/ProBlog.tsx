@@ -96,6 +96,16 @@ export default function ProBlog() {
       <section className="py-12">
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {isLoading && Array.from({ length: 6 }).map((_, i) => (
+              <div key={i} className="bg-card rounded-xl overflow-hidden border border-border">
+                <Skeleton className="aspect-[16/9] w-full" />
+                <div className="p-5 space-y-3">
+                  <Skeleton className="h-4 w-24" />
+                  <Skeleton className="h-6 w-full" />
+                  <Skeleton className="h-4 w-3/4" />
+                </div>
+              </div>
+            ))}
             {filteredPosts.map((post, i) => (
               <Link key={post.id} to={`/blog/${post.slug}`} className="group bg-card rounded-xl overflow-hidden border border-border hover:shadow-hover transition-all animate-fade-in" style={{ animationDelay: `${i * 0.05}s` }}>
                 <div className="aspect-[16/9] overflow-hidden">
