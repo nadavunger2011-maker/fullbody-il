@@ -358,9 +358,8 @@ export default function ProBody() {
                   </span>
                 </div>
                 <div className="p-3 sm:p-5 flex-1 flex flex-col">
-                  <h3 className="font-bold text-sm sm:text-lg text-foreground mb-1 sm:mb-2 group-hover:text-[hsl(142,70%,35%)] transition-colors">
-                    <span className="sm:hidden">{product.title.length > 25 ? product.title.slice(0, 25) + '...' : product.title}</span>
-                    <span className="hidden sm:inline">{product.title}</span>
+                  <h3 className="font-bold text-sm sm:text-lg text-foreground mb-1 sm:mb-2 group-hover:text-[hsl(142,70%,35%)] transition-colors line-clamp-2">
+                    {product.title}
                   </h3>
                   <p className="text-xs sm:text-sm text-muted-foreground line-clamp-2 mb-3">
                     {product.shortHook}
