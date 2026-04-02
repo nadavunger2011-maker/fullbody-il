@@ -489,7 +489,7 @@ export default function ProBody() {
               <div className="mt-4 max-h-60 overflow-y-auto">
                 {filteredProducts.length > 0 ? filteredProducts.slice(0, 5).map(p => (
                   <Link key={p.node.id} to={`/product/${p.node.handle}`} onClick={() => setIsSearchOpen(false)} className="flex items-center gap-3 py-3 hover:bg-secondary/50 rounded-lg px-2 transition-colors">
-                    {p.node.images?.edges?.[0]?.node && <img src={p.node.images.edges[0].node.url} alt="" className="w-10 h-10 object-contain rounded" />}
+                    {p.node.images?.edges?.[0]?.node && <img src={p.node.images.edges[0].node.url} alt={`תמונה של ${p.node.title}`} className="w-10 h-10 object-contain rounded" loading="lazy" />}
                     <div>
                       <p className="font-bold text-foreground text-sm">{p.node.title}</p>
                       <p className="text-xs text-muted-foreground">₪{parseFloat(p.node.priceRange.minVariantPrice.amount).toFixed(0)}</p>
