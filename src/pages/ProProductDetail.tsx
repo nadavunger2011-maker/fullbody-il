@@ -14,6 +14,10 @@ import ProFooter from '@/components/ProFooter';
 import CartDrawer from '@/components/CartDrawer';
 import { useCartStore } from '@/stores/cartStore';
 import { toast } from 'sonner';
+import { trackViewItem, trackAddToCart as gtmTrackAddToCart } from '@/lib/gtm';
+import { trackViewContent, trackAddToCart as fbTrackAddToCart } from '@/lib/fbPixel';
+import { trackGA4ViewItem, trackGA4AddToCart } from '@/lib/ga4';
+import { trackProductView, trackAddToCartEvent } from '@/lib/analytics';
 
 export default function ProProductDetail() {
   const { handle } = useParams<{ handle: string }>();
@@ -38,6 +42,17 @@ export default function ProProductDetail() {
       setIsLoadingShopify(false);
     });
   }, [product?.shopifyHandle]);
+
+  // Track product view
+  useEffect(() => {
+    if (!product) return;
+    const productId = product.sku || product.handle;
+    const price = product.price;
+    trackViewItem({ item_id: productId, item_name: product.title, price, quantity: 1, currency: 'ILS' });
+    trackGA4ViewItem({ item_id: productId, item_name: product.title, price, quantity: 1 }, 'ILS');
+    trackViewContent(productId, product.title, price);
+    trackProductView({ handle: product.handle, title: product.title, id: productId, price });
+  }, [product?.handle]);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -70,6 +85,18 @@ export default function ProProductDetail() {
     }
     setIsCartOpen(true);
     toast.success(`${product!.title} נוסף לעגלה`);
+
+    // Track add to cart across all platforms
+    const productId = product!.sku || product!.handle;
+    const itemPrice = parseFloat(variant.price.amount);
+    gtmTrackAddToCart({ item_id: productId, item_name: product!.title, price: itemPrice, quantity, currency: 'ILS' });
+    trackGA4AddToCart({ item_id: productId, item_name: product!.title, price: itemPrice, quantity }, 'ILS');
+    fbTrackAddToCart(productId, product!.title, itemPrice * quantity);
+    trackAddToCartEvent({
+      handle: product!.handle, title: product!.title, id: productId,
+      variantId: variant.id, variantTitle: variant.title,
+      price: itemPrice, quantity,
+    });
   };
 
   if (!product) {
