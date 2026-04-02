@@ -161,15 +161,19 @@ export default function ProBody() {
   return (
     <div dir="rtl" className="font-sans text-foreground bg-background min-h-screen">
       <Helmet>
-        <title>FullBody Pro - מוצרי Herbalife | תזונה וכושר</title>
-        <meta name="description" content="מוצרי Herbalife לתזונה, כושר ואורח חיים בריא. שייקים, חלבונים, ויטמינים ותוספי ספורט. משלוח מהיר לכל הארץ." />
+        <title>FullBody - מוצרי Herbalife מקוריים בישראל</title>
+        <meta name="description" content="מפיץ מורשה של Herbalife בישראל. שייקי חלבון, ויטמינים ותוספי תזונה לכושר ובריאות. משלוח חינם מעל ₪299." />
         <link rel="canonical" href="https://fullbody.co.il/" />
-        <meta property="og:title" content="FullBody Pro - מוצרי Herbalife" />
-        <meta property="og:description" content="מוצרי Herbalife לתזונה, כושר ואורח חיים בריא." />
+        <meta property="og:title" content="FullBody - מוצרי Herbalife מקוריים בישראל" />
+        <meta property="og:description" content="מפיץ מורשה של Herbalife. שייקי חלבון, ויטמינים ותוספי תזונה. משלוח חינם מעל ₪299." />
         <meta property="og:type" content="website" />
         <meta property="og:url" content="https://fullbody.co.il/" />
         <meta property="og:locale" content="he_IL" />
-        <meta name="robots" content="noindex, nofollow" />
+        <meta property="og:image" content="https://fullbody.co.il/og-image.jpg" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="FullBody - מוצרי Herbalife מקוריים בישראל" />
+        <meta name="twitter:description" content="מפיץ מורשה של Herbalife. שייקי חלבון, ויטמינים ותוספי תזונה." />
+        <meta name="twitter:image" content="https://fullbody.co.il/og-image.jpg" />
       </Helmet>
 
       {/* Announcement Bar */}
@@ -485,7 +489,7 @@ export default function ProBody() {
               <div className="mt-4 max-h-60 overflow-y-auto">
                 {filteredProducts.length > 0 ? filteredProducts.slice(0, 5).map(p => (
                   <Link key={p.node.id} to={`/product/${p.node.handle}`} onClick={() => setIsSearchOpen(false)} className="flex items-center gap-3 py-3 hover:bg-secondary/50 rounded-lg px-2 transition-colors">
-                    {p.node.images?.edges?.[0]?.node && <img src={p.node.images.edges[0].node.url} alt="" className="w-10 h-10 object-contain rounded" />}
+                    {p.node.images?.edges?.[0]?.node && <img src={p.node.images.edges[0].node.url} alt={`תמונה של ${p.node.title}`} className="w-10 h-10 object-contain rounded" loading="lazy" />}
                     <div>
                       <p className="font-bold text-foreground text-sm">{p.node.title}</p>
                       <p className="text-xs text-muted-foreground">₪{parseFloat(p.node.priceRange.minVariantPrice.amount).toFixed(0)}</p>

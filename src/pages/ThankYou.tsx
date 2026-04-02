@@ -1,5 +1,6 @@
 import { useEffect, useMemo } from 'react';
 import { useSearchParams, Link } from 'react-router-dom';
+import { Helmet } from 'react-helmet-async';
 import { CheckCircle, Package, ArrowRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { trackPurchase } from '@/lib/gtm';
@@ -12,11 +13,9 @@ const ThankYou = () => {
   const [searchParams] = useSearchParams();
   const { items, clearCart } = useCartStore();
   
-  // Get order details from URL params (passed from Shopify checkout)
   const orderId = searchParams.get('order_id') || searchParams.get('checkout_token') || '';
   const totalParam = searchParams.get('total');
   
-  // Calculate total from cart items if not provided
   const calculatedTotal = useMemo(() => {
     return items.reduce((sum, item) => sum + (parseFloat(item.price.amount) * item.quantity), 0);
   }, [items]);
@@ -24,11 +23,9 @@ const ThankYou = () => {
   const total = totalParam ? parseFloat(totalParam) : calculatedTotal;
 
   useEffect(() => {
-    // Only fire if we have items or an order ID (to prevent duplicate fires)
     if ((items.length > 0 || orderId) && total > 0) {
       const transactionId = orderId || `order_${Date.now()}`;
 
-      // Convert cart items to GTM format
       const gtmItems = items.map(item => ({
         item_id: item.variantId,
         item_name: item.product.node.title,
@@ -38,15 +35,8 @@ const ThankYou = () => {
         currency: 'ILS'
       }));
 
-      // Fire purchase event
-      trackPurchase(
-        transactionId,
-        gtmItems,
-        total,
-        'ILS'
-      );
+      trackPurchase(transactionId, gtmItems, total, 'ILS');
 
-      // Track purchase with GA4
       trackGA4Purchase(
         transactionId,
         items.map((item) => ({
@@ -60,7 +50,6 @@ const ThankYou = () => {
         'ILS'
       );
 
-      // Track purchase with Flashy (using correct format from docs)
       if (typeof window !== 'undefined' && window.flashy) {
         const contentIds = items.map(item => 
           item.product.node.id.replace('gid://shopify/Product/', '')
@@ -73,14 +62,12 @@ const ThankYou = () => {
         });
       }
 
-      // Track purchase with Facebook Pixel
       const fbContentIds = items.map(item => 
         item.product.node.id.replace('gid://shopify/Product/', '')
       );
       const numItems = items.reduce((sum, item) => sum + item.quantity, 0);
       trackFBPurchase(fbContentIds, total, numItems);
 
-      // Track purchase in our analytics DB
       trackPurchaseEvent(transactionId, total, items.map(item => ({
         handle: item.product.node.handle,
         title: item.product.node.title,
@@ -89,17 +76,21 @@ const ThankYou = () => {
         quantity: item.quantity,
       })));
 
-      // Clear the cart after tracking
       clearCart();
     }
-  }, []); // Run only once on mount
+  }, []);
 
   return (
     <div className="min-h-screen bg-background flex items-center justify-center p-4" dir="rtl">
+      <Helmet>
+        <title>תודה על הזמנתך | FullBody</title>
+        <meta name="description" content="ההזמנה שלך התקבלה בהצלחה. תודה שבחרת FullBody לתוספי תזונה איכותיים." />
+        <meta name="robots" content="noindex, nofollow" />
+      </Helmet>
       <div className="max-w-md w-full text-center space-y-6">
         <div className="flex justify-center">
           <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center">
-            <CheckCircle className="w-12 h-12 text-green-600" />
+            <CheckCircle className="w-12 h-12 text-green-600" aria-hidden="true" />
           </div>
         </div>
         
@@ -125,15 +116,15 @@ const ThankYou = () => {
         )}
 
         <div className="flex items-center justify-center gap-2 text-muted-foreground">
-          <Package className="w-5 h-5" />
+          <Package className="w-5 h-5" aria-hidden="true" />
           <span>אישור הזמנה נשלח למייל שלך</span>
         </div>
 
         <div className="pt-4">
-          <Link to="/nava">
+          <Link to="/">
             <Button className="gap-2">
               המשך לקנות
-              <ArrowRight className="w-4 h-4" />
+              <ArrowRight className="w-4 h-4" aria-hidden="true" />
             </Button>
           </Link>
         </div>

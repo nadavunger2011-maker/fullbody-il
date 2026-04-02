@@ -117,14 +117,21 @@ export default function ProProductDetail() {
   return (
     <div dir="rtl" className="font-sans text-foreground bg-background min-h-screen">
       <Helmet>
-        <title>{product.title} | FullBody Pro</title>
+        <title>{product.title} | FullBody - קנה עכשיו</title>
         <meta name="description" content={product.metaDescription} />
         <link rel="canonical" href={`https://fullbody.co.il/product/${product.handle}`} />
-        <meta property="og:title" content={product.title} />
+        <meta property="og:title" content={`${product.title} | FullBody`} />
         <meta property="og:description" content={product.metaDescription} />
         <meta property="og:type" content="product" />
         <meta property="og:image" content={product.image} />
+        <meta property="og:url" content={`https://fullbody.co.il/product/${product.handle}`} />
         <meta property="og:locale" content="he_IL" />
+        <meta property="product:price:amount" content={String(product.price)} />
+        <meta property="product:price:currency" content="ILS" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content={`${product.title} | FullBody`} />
+        <meta name="twitter:description" content={product.metaDescription} />
+        <meta name="twitter:image" content={product.image} />
         <script type="application/ld+json">{JSON.stringify(productJsonLd)}</script>
         <script type="application/ld+json">{JSON.stringify(faqJsonLd)}</script>
       </Helmet>

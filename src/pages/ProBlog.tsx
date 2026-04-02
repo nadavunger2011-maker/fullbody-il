@@ -27,9 +27,19 @@ export default function ProBlog() {
   return (
     <div dir="rtl" className="font-sans text-foreground bg-background min-h-screen">
       <Helmet>
-        <title>בלוג | FullBody Pro - מדריכי תזונה וכושר</title>
-        <meta name="description" content="מאמרים ומדריכים בנושאי תזונה, כושר, ניהול משקל ואורח חיים בריא עם מוצרי Herbalife." />
+        <title>בלוג תזונה וכושר | FullBody - מדריכים מקצועיים</title>
+        <meta name="description" content="מאמרים מקצועיים בנושאי תזונה, חלבון, כושר וניהול משקל. טיפים מומחים של שי, יועץ תזונה מרעננה." />
         <link rel="canonical" href="https://fullbody.co.il/blog" />
+        <meta property="og:title" content="בלוג תזונה וכושר | FullBody" />
+        <meta property="og:description" content="מאמרים מקצועיים בנושאי תזונה, חלבון, כושר וניהול משקל. טיפים מומחים." />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://fullbody.co.il/blog" />
+        <meta property="og:locale" content="he_IL" />
+        <meta property="og:image" content="https://fullbody.co.il/og-image.jpg" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="בלוג תזונה וכושר | FullBody" />
+        <meta name="twitter:description" content="מאמרים מקצועיים בנושאי תזונה, חלבון, כושר וניהול משקל." />
+        <meta name="twitter:image" content="https://fullbody.co.il/og-image.jpg" />
       </Helmet>
 
       {/* Announcement */}
