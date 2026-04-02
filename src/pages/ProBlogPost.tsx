@@ -124,6 +124,7 @@ export default function ProBlogPost() {
       <div className={`fixed inset-y-0 right-0 w-72 bg-card shadow-hover z-50 flex flex-col pt-20 px-6 transform transition-transform duration-300 ${isMobileMenuOpen ? 'translate-x-0' : 'translate-x-full'}`}>
         <button onClick={() => setIsMobileMenuOpen(false)} className="absolute top-5 left-5"><X className="w-6 h-6" /></button>
         <Link to="/" onClick={() => setIsMobileMenuOpen(false)} className="py-4 border-b border-border text-lg font-bold">ראשי</Link>
+        <a href="/#products" onClick={() => setIsMobileMenuOpen(false)} className="py-4 border-b border-border text-lg font-bold">מוצרים</a>
         <Link to="/blog" onClick={() => setIsMobileMenuOpen(false)} className="py-4 border-b border-border text-lg font-bold text-[hsl(142,70%,35%)]">מאמרים</Link>
         <Link to="/contact" onClick={() => setIsMobileMenuOpen(false)} className="py-4 border-b border-border text-lg font-bold">צור קשר</Link>
       </div>
