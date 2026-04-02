@@ -1,4 +1,8 @@
 import greenLogo from '@/assets/logo-green.png';
+import { trackAddToCart as gtmTrackAddToCart } from '@/lib/gtm';
+import { trackAddToCart as fbTrackAddToCart } from '@/lib/fbPixel';
+import { trackGA4AddToCart } from '@/lib/ga4';
+import { trackAddToCartEvent } from '@/lib/analytics';
 import React, { useState, useEffect, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
