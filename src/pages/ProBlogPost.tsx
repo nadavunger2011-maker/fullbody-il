@@ -13,6 +13,10 @@ import { useState } from 'react';
 import { fetchProductByHandle, getFirstAvailableVariant } from '@/lib/shopify';
 import { toast } from 'sonner';
 import { Skeleton } from '@/components/ui/skeleton';
+import { trackAddToCart as gtmTrackAddToCart } from '@/lib/gtm';
+import { trackAddToCart as fbTrackAddToCart } from '@/lib/fbPixel';
+import { trackGA4AddToCart } from '@/lib/ga4';
+import { trackAddToCartEvent } from '@/lib/analytics';
 
 export default function ProBlogPost() {
   const { slug } = useParams();
@@ -46,6 +50,16 @@ export default function ProBlogPost() {
     if (!ok) { toast.error('לא ניתן להוסיף לעגלה'); return; }
     setIsCartOpen(true);
     toast.success(`${product.title} נוסף לעגלה`);
+
+    const productId = product.sku || product.handle;
+    const price = parseFloat(variant.price.amount);
+    gtmTrackAddToCart({ item_id: productId, item_name: product.title, price, quantity: 1, currency: 'ILS' });
+    trackGA4AddToCart({ item_id: productId, item_name: product.title, price, quantity: 1 }, 'ILS');
+    fbTrackAddToCart(productId, product.title, price);
+    trackAddToCartEvent({
+      handle: product.handle, title: product.title, id: productId,
+      variantId: variant.id, variantTitle: variant.title, price, quantity: 1,
+    });
   };
 
   // Schema.org - Article + FAQPage
