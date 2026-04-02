@@ -131,7 +131,7 @@ serve(async (req) => {
         title: article.title,
         excerpt: article.excerpt,
         content: article.content,
-        image: `https://images.unsplash.com/photo-${1540000000000 + Math.floor(Math.random() * 100000000)}-placeholder?w=800&h=450&fit=crop`,
+        image: getCategoryImage(category.id),
         category: category.name,
         category_id: category.id,
         read_time: article.readTime || 5,
