@@ -31,8 +31,17 @@ export default function SleepGuide() {
   return (
     <div className="min-h-screen bg-background" dir="rtl">
       <Helmet>
-        <title>המדריך לשינה עמוקה והתאוששות - FullBody</title>
-        <meta name="description" content="הורד בחינם את מדריך FullBody לשינה עמוקה וקבל צ'קליסט אינטראקטיבי שיעזור לך להתעורר רענן בכל בוקר." />
+        <title>מדריך שינה עמוקה חינם | FullBody</title>
+        <meta name="description" content="הורד בחינם את מדריך FullBody לשינה עמוקה עם צ'קליסט אינטראקטיבי. 6 שלבים להתעורר רענן כל בוקר." />
+        <link rel="canonical" href="https://fullbody.co.il/nava/sleep-guide" />
+        <meta property="og:title" content="מדריך שינה עמוקה חינם | FullBody" />
+        <meta property="og:description" content="הורד בחינם את מדריך FullBody לשינה עמוקה עם צ'קליסט אינטראקטיבי." />
+        <meta property="og:type" content="website" />
+        <meta property="og:locale" content="he_IL" />
+        <meta property="og:image" content="https://fullbody.co.il/og-image.jpg" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="מדריך שינה עמוקה חינם | FullBody" />
+        <meta name="twitter:image" content="https://fullbody.co.il/og-image.jpg" />
         <style>{`flashy-popup { display: none !important; }`}</style>
       </Helmet>
 

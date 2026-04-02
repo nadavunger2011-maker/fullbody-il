@@ -85,13 +85,20 @@ export default function ProBlogPost() {
   return (
     <div dir="rtl" className="font-sans text-foreground bg-background min-h-screen">
       <Helmet>
-        <title>{post.title} | FullBody Pro</title>
+        <title>{post.title} | FullBody</title>
         <meta name="description" content={post.metaDescription} />
         <link rel="canonical" href={`https://fullbody.co.il/blog/${post.slug}`} />
         <meta property="og:title" content={post.title} />
         <meta property="og:description" content={post.metaDescription} />
-        <meta property="og:image" content={post.image} />
+        <meta property="og:image" content={post.image || 'https://fullbody.co.il/og-image.jpg'} />
         <meta property="og:type" content="article" />
+        <meta property="og:url" content={`https://fullbody.co.il/blog/${post.slug}`} />
+        <meta property="og:locale" content="he_IL" />
+        <meta property="article:published_time" content={post.date} />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content={post.title} />
+        <meta name="twitter:description" content={post.metaDescription} />
+        <meta name="twitter:image" content={post.image || 'https://fullbody.co.il/og-image.jpg'} />
         <script type="application/ld+json">{JSON.stringify(articleSchema)}</script>
         <script type="application/ld+json">{JSON.stringify(faqSchema)}</script>
         <script type="application/ld+json">{JSON.stringify(breadcrumbSchema)}</script>

@@ -161,15 +161,19 @@ export default function ProBody() {
   return (
     <div dir="rtl" className="font-sans text-foreground bg-background min-h-screen">
       <Helmet>
-        <title>FullBody Pro - מוצרי Herbalife | תזונה וכושר</title>
-        <meta name="description" content="מוצרי Herbalife לתזונה, כושר ואורח חיים בריא. שייקים, חלבונים, ויטמינים ותוספי ספורט. משלוח מהיר לכל הארץ." />
+        <title>FullBody - מוצרי Herbalife מקוריים בישראל</title>
+        <meta name="description" content="מפיץ מורשה של Herbalife בישראל. שייקי חלבון, ויטמינים ותוספי תזונה לכושר ובריאות. משלוח חינם מעל ₪299." />
         <link rel="canonical" href="https://fullbody.co.il/" />
-        <meta property="og:title" content="FullBody Pro - מוצרי Herbalife" />
-        <meta property="og:description" content="מוצרי Herbalife לתזונה, כושר ואורח חיים בריא." />
+        <meta property="og:title" content="FullBody - מוצרי Herbalife מקוריים בישראל" />
+        <meta property="og:description" content="מפיץ מורשה של Herbalife. שייקי חלבון, ויטמינים ותוספי תזונה. משלוח חינם מעל ₪299." />
         <meta property="og:type" content="website" />
         <meta property="og:url" content="https://fullbody.co.il/" />
         <meta property="og:locale" content="he_IL" />
-        <meta name="robots" content="noindex, nofollow" />
+        <meta property="og:image" content="https://fullbody.co.il/og-image.jpg" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="FullBody - מוצרי Herbalife מקוריים בישראל" />
+        <meta name="twitter:description" content="מפיץ מורשה של Herbalife. שייקי חלבון, ויטמינים ותוספי תזונה." />
+        <meta name="twitter:image" content="https://fullbody.co.il/og-image.jpg" />
       </Helmet>
 
       {/* Announcement Bar */}

@@ -25,9 +25,19 @@ export default function ProContact() {
   return (
     <div dir="rtl" className="font-sans text-foreground bg-background min-h-screen">
       <Helmet>
-        <title>צור קשר | FullBody Pro - Herbalife Nutrition</title>
-        <meta name="description" content="צרו קשר עם FullBody Pro בטלפון 052-4487537 או במייל info@fullbody.co.il. מפיץ מורשה של Herbalife Nutrition בישראל." />
-        <link rel="canonical" href="https://fullbody.co.il/pro/contact" />
+        <title>צור קשר | FullBody - ייעוץ תזונה חינם</title>
+        <meta name="description" content="צרו קשר עם FullBody בטלפון 052-4487537 או בוואטסאפ. ייעוץ תזונתי חינם ממומחי Herbalife. מענה תוך שעה." />
+        <link rel="canonical" href="https://fullbody.co.il/contact" />
+        <meta property="og:title" content="צור קשר | FullBody - ייעוץ תזונה חינם" />
+        <meta property="og:description" content="צרו קשר עם FullBody בטלפון או בוואטסאפ. ייעוץ תזונתי חינם ממומחי Herbalife." />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://fullbody.co.il/contact" />
+        <meta property="og:locale" content="he_IL" />
+        <meta property="og:image" content="https://fullbody.co.il/og-image.jpg" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="צור קשר | FullBody - ייעוץ תזונה חינם" />
+        <meta name="twitter:description" content="ייעוץ תזונתי חינם ממומחי Herbalife. מענה תוך שעה." />
+        <meta name="twitter:image" content="https://fullbody.co.il/og-image.jpg" />
       </Helmet>
 
       {/* Header */}
