@@ -24,6 +24,39 @@ function pickRandom<T>(arr: T[], n: number): T[] {
   return shuffled.slice(0, n);
 }
 
+const CATEGORY_IMAGES: Record<string, string[]> = {
+  fitness: [
+    "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=800&h=450&fit=crop",
+    "https://images.unsplash.com/photo-1517836357463-d25dfeac3438?w=800&h=450&fit=crop",
+    "https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?w=800&h=450&fit=crop",
+  ],
+  nutrition: [
+    "https://images.unsplash.com/photo-1490645935967-10de6ba17061?w=800&h=450&fit=crop",
+    "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=800&h=450&fit=crop",
+    "https://images.unsplash.com/photo-1498837167922-ddd27525d352?w=800&h=450&fit=crop",
+  ],
+  weight: [
+    "https://images.unsplash.com/photo-1538805060514-97d9cc17730c?w=800&h=450&fit=crop",
+    "https://images.unsplash.com/photo-1476480862126-209bfaa8edc8?w=800&h=450&fit=crop",
+    "https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=800&h=450&fit=crop",
+  ],
+  recipes: [
+    "https://images.unsplash.com/photo-1495521821757-a1efb6729352?w=800&h=450&fit=crop",
+    "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=800&h=450&fit=crop",
+    "https://images.unsplash.com/photo-1547592180-85f173990554?w=800&h=450&fit=crop",
+  ],
+  wellness: [
+    "https://images.unsplash.com/photo-1545205597-3d9d02c29597?w=800&h=450&fit=crop",
+    "https://images.unsplash.com/photo-1506126613408-eca07ce68773?w=800&h=450&fit=crop",
+    "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=800&h=450&fit=crop",
+  ],
+};
+
+function getCategoryImage(categoryId: string): string {
+  const images = CATEGORY_IMAGES[categoryId] || CATEGORY_IMAGES.fitness;
+  return images[Math.floor(Math.random() * images.length)];
+}
+
 function generateSlug(title: string): string {
   return title
     .replace(/[^\u0590-\u05FFa-zA-Z0-9\s-]/g, "")
