@@ -158,6 +158,17 @@ export default function ProBody() {
     if (!ok) { toast.error('לא ניתן להוסיף לעגלה כרגע'); return; }
     setIsCartOpen(true);
     toast.success(`${product.node.title} נוסף לעגלה`);
+
+    // Track across all platforms
+    const productId = product.node.id.replace('gid://shopify/Product/', '');
+    const price = parseFloat(variant.price.amount);
+    gtmTrackAddToCart({ item_id: productId, item_name: product.node.title, price, quantity: 1, currency: 'ILS' });
+    trackGA4AddToCart({ item_id: productId, item_name: product.node.title, price, quantity: 1 }, 'ILS');
+    fbTrackAddToCart(productId, product.node.title, price);
+    trackAddToCartEvent({
+      handle: product.node.handle, title: product.node.title, id: productId,
+      variantId: variant.id, variantTitle: variant.title, price, quantity: 1,
+    });
   };
 
   const cartCount = cartItems.reduce((sum, item) => sum + item.quantity, 0);
