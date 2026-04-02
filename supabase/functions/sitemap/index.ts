@@ -16,22 +16,30 @@ serve(async (req) => {
     { loc: "/", changefreq: "daily", priority: "1.0" },
     { loc: "/blog", changefreq: "daily", priority: "0.9" },
     { loc: "/contact", changefreq: "monthly", priority: "0.7" },
-    { loc: "/about", changefreq: "monthly", priority: "0.7" },
-    { loc: "/faq", changefreq: "monthly", priority: "0.6" },
-    { loc: "/shipping", changefreq: "monthly", priority: "0.5" },
-    { loc: "/returns", changefreq: "monthly", priority: "0.5" },
-    { loc: "/terms", changefreq: "yearly", priority: "0.3" },
-    { loc: "/privacy", changefreq: "yearly", priority: "0.3" },
-    { loc: "/accessibility", changefreq: "yearly", priority: "0.3" },
   ];
 
-  // Static blog posts from code
-  const staticBlogSlugs = [
-    "protein-shakes-complete-guide",
-    "herbalife-weight-management",
-    "morning-nutrition-routine",
-    "sports-nutrition-guide",
-    "healthy-smoothie-recipes",
+  // Known product handles for sitemap
+  const productHandles = [
+    "formula-1-healthy-meal-shake",
+    "protein-drink-mix-pdm",
+    "rebuild-strength-protein",
+    "herbalife-aloe-concentrate",
+    "herbal-tea-concentrate",
+    "multivitamin-complex",
+    "beta-heart",
+    "personalized-protein-powder",
+    "active-fiber-complex",
+    "cell-activator",
+    "herbalifeline-max",
+    "herbalife-skin-collagen",
+    "niteworks",
+    "total-control",
+    "cell-u-loss",
+    "prolessa-duo",
+    "formula-2-multivitamin",
+    "herbalife-24-cr7-drive",
+    "herbalife-24-hydrate",
+    "herbalife-24-rebuild-endurance",
   ];
 
   const today = new Date().toISOString().split("T")[0];
@@ -42,9 +50,9 @@ serve(async (req) => {
     xml += `  <url>\n    <loc>https://fullbody.co.il${page.loc}</loc>\n    <lastmod>${today}</lastmod>\n    <changefreq>${page.changefreq}</changefreq>\n    <priority>${page.priority}</priority>\n  </url>\n`;
   }
 
-  // Static blog posts
-  for (const slug of staticBlogSlugs) {
-    xml += `  <url>\n    <loc>https://fullbody.co.il/blog/${slug}</loc>\n    <lastmod>${today}</lastmod>\n    <changefreq>monthly</changefreq>\n    <priority>0.7</priority>\n  </url>\n`;
+  // Product pages
+  for (const handle of productHandles) {
+    xml += `  <url>\n    <loc>https://fullbody.co.il/product/${handle}</loc>\n    <lastmod>${today}</lastmod>\n    <changefreq>weekly</changefreq>\n    <priority>0.8</priority>\n  </url>\n`;
   }
 
   // Dynamic blog posts from DB
