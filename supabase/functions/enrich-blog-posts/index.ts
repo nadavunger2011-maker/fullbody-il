@@ -33,9 +33,9 @@ serve(async (req) => {
       });
     }
 
-    // Filter posts that don't have infographics yet
-    const postsToEnrich = posts.filter(p => !p.content.includes('class="infographic"'));
-    console.log(`Found ${postsToEnrich.length} posts without infographics out of ${posts.length} total`);
+    // Process ALL posts - remove existing infographics and re-insert in middle
+    const postsToEnrich = posts;
+    console.log(`Processing ${postsToEnrich.length} posts`);
 
     let updated = 0;
     const results: { id: string; title: string }[] = [];
@@ -99,14 +99,28 @@ d) יתרונות/חסרונות: <figure class="infographic" role="img" aria-la
 
         if (!parsed.infographics) continue;
 
-        // Insert infographics after the first H2 section (after intro)
-        let newContent = post.content;
-        const secondH2 = newContent.indexOf("<h2", newContent.indexOf("<h2") + 1);
-        if (secondH2 > 0) {
-          newContent = newContent.slice(0, secondH2) + parsed.infographics + newContent.slice(secondH2);
+        // Strip any existing infographics first
+        let newContent = post.content.replace(/<figure class=["']infographic["'][\s\S]*?<\/figure>/gi, "");
+        
+        // Find the middle of the content by counting all H2 tags and inserting before the middle one
+        const h2Matches = [...newContent.matchAll(/<h2/gi)];
+        if (h2Matches.length >= 3) {
+          const midIndex = Math.floor(h2Matches.length / 2);
+          const insertPos = h2Matches[midIndex].index!;
+          newContent = newContent.slice(0, insertPos) + parsed.infographics + newContent.slice(insertPos);
+        } else if (h2Matches.length >= 2) {
+          const insertPos = h2Matches[1].index!;
+          newContent = newContent.slice(0, insertPos) + parsed.infographics + newContent.slice(insertPos);
         } else {
-          // Fallback: add before closing
-          newContent = newContent + parsed.infographics;
+          // Fallback: insert roughly in the middle of the content
+          const midPoint = Math.floor(newContent.length / 2);
+          const nearestP = newContent.indexOf("</p>", midPoint);
+          if (nearestP > 0) {
+            const insertPos = nearestP + 4;
+            newContent = newContent.slice(0, insertPos) + parsed.infographics + newContent.slice(insertPos);
+          } else {
+            newContent = newContent + parsed.infographics;
+          }
         }
 
         const { error: updateError } = await supabase
