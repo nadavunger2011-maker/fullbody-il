@@ -110,6 +110,7 @@ const App = () => (
         <Toaster />
         <Sonner />
         <BrowserRouter>
+          <ScrollToTop />
           <AppContent />
           <WhatsAppButton />
         </BrowserRouter>
