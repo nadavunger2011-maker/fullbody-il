@@ -33,6 +33,7 @@ import ProContact from "./pages/ProContact";
 import ProBlog from "./pages/ProBlog";
 import ProBlogPost from "./pages/ProBlogPost";
 import { trackPageView } from "@/lib/analytics";
+import ScrollToTop from "@/components/ScrollToTop";
 
 const queryClient = new QueryClient();
 
