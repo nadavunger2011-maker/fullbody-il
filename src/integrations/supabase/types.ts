@@ -152,8 +152,11 @@ export type Database = {
           date: string
           excerpt: string
           faq: Json | null
+          fb_caption: string | null
           id: string
+          ig_caption: string | null
           image: string | null
+          li_caption: string | null
           meta_description: string
           published: boolean
           read_time: number
@@ -170,8 +173,11 @@ export type Database = {
           date?: string
           excerpt: string
           faq?: Json | null
+          fb_caption?: string | null
           id?: string
+          ig_caption?: string | null
           image?: string | null
+          li_caption?: string | null
           meta_description: string
           published?: boolean
           read_time?: number
@@ -188,8 +194,11 @@ export type Database = {
           date?: string
           excerpt?: string
           faq?: Json | null
+          fb_caption?: string | null
           id?: string
+          ig_caption?: string | null
           image?: string | null
+          li_caption?: string | null
           meta_description?: string
           published?: boolean
           read_time?: number
