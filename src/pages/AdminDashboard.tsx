@@ -58,6 +58,8 @@ export default function AdminDashboard() {
   const [activeTab, setActiveTab] = useState<'overview' | 'products' | 'traffic' | 'funnel' | 'adspend' | 'ai'>('overview');
   const [aiAnalysis, setAiAnalysis] = useState<string>('');
   const [isAiLoading, setIsAiLoading] = useState(false);
+  const [socialCaptionStatus, setSocialCaptionStatus] = useState<string>('');
+  const [isSocialLoading, setIsSocialLoading] = useState(false);
 
   // Ad spend form
   const [newSpend, setNewSpend] = useState({ date: new Date().toISOString().split('T')[0], source: 'google_ads', campaign: '', spend: '', impressions: '', clicks: '', notes: '' });
