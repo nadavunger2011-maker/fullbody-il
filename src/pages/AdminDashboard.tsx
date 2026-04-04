@@ -774,6 +774,36 @@ export default function AdminDashboard() {
           {/* AI Analysis Tab */}
           {activeTab === 'ai' && (
             <div className="space-y-6">
+              {/* Social Captions Tool */}
+              <div className="bg-white/[0.03] border border-white/5 rounded-xl p-6">
+                <div className="flex items-center justify-between mb-4">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-xl bg-pink-500/10 flex items-center justify-center">
+                      <Sparkles className="w-5 h-5 text-pink-400" />
+                    </div>
+                    <div>
+                      <h3 className="text-sm font-bold">כיתובים לרשתות חברתיות</h3>
+                      <p className="text-xs text-gray-500">יצירת כיתובי IG / FB / LinkedIn לכל המאמרים החסרים</p>
+                    </div>
+                  </div>
+                  <button
+                    onClick={generateSocialCaptions}
+                    disabled={isSocialLoading}
+                    className="bg-pink-500 hover:bg-pink-600 disabled:opacity-50 text-white font-medium py-2.5 px-5 rounded-lg text-sm transition flex items-center gap-2"
+                  >
+                    {isSocialLoading ? (
+                      <><Loader2 className="w-4 h-4 animate-spin" /> מעבד...</>
+                    ) : (
+                      <><Sparkles className="w-4 h-4" /> ייצר כיתובים</>
+                    )}
+                  </button>
+                </div>
+                {socialCaptionStatus && (
+                  <div className="bg-white/[0.02] rounded-lg p-3 border border-white/5 text-sm">{socialCaptionStatus}</div>
+                )}
+              </div>
+
+              {/* AI Analysis */}
               <div className="bg-white/[0.03] border border-white/5 rounded-xl p-6">
                 <div className="flex items-center justify-between mb-6">
                   <div className="flex items-center gap-3">
