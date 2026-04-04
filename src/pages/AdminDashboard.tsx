@@ -304,6 +304,36 @@ export default function AdminDashboard() {
     { label: 'שיעור המרה', value: `${stats.conversionRate.toFixed(1)}%`, icon: ArrowUpRight, color: 'text-cyan-400', bg: 'bg-cyan-500/10' },
   ];
 
+  const [socialCaptionStatus, setSocialCaptionStatus] = useState<string>('');
+  const [isSocialLoading, setIsSocialLoading] = useState(false);
+
+  async function generateSocialCaptions() {
+    setIsSocialLoading(true);
+    setSocialCaptionStatus('מתחיל לייצר כיתובים לרשתות חברתיות...');
+    try {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session) return;
+      const response = await fetch(`${import.meta.env.VITE_SUPABASE_URL}/functions/v1/generate-social-captions`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${session.access_token}`,
+          'apikey': import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY,
+        },
+      });
+      const data = await response.json();
+      if (data.error) {
+        setSocialCaptionStatus(`❌ שגיאה: ${data.error}`);
+      } else {
+        setSocialCaptionStatus(`✅ עודכנו ${data.updated} מתוך ${data.total} מאמרים`);
+      }
+    } catch (e) {
+      setSocialCaptionStatus('❌ שגיאה בחיבור');
+    } finally {
+      setIsSocialLoading(false);
+    }
+  }
+
   const tabs = [
     { id: 'overview' as const, label: 'סקירה כללית', icon: BarChart3 },
     { id: 'funnel' as const, label: 'משפך ונטישה', icon: Users },
