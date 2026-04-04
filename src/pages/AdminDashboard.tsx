@@ -833,6 +833,35 @@ export default function AdminDashboard() {
                 )}
               </div>
 
+              {/* FAQ Short Posts Generator */}
+              <div className="bg-white/[0.03] border border-white/5 rounded-xl p-6">
+                <div className="flex items-center justify-between mb-4">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-xl bg-teal-500/10 flex items-center justify-center">
+                      <Plus className="w-5 h-5 text-teal-400" />
+                    </div>
+                    <div>
+                      <h3 className="text-sm font-bold">פוסטים קצרים מבוססי שאלות</h3>
+                      <p className="text-xs text-gray-500">יצירת 5 מאמרים קצרים מבוססים על שאלות שאנשים שואלים באינטרנט</p>
+                    </div>
+                  </div>
+                  <button
+                    onClick={generateFaqPosts}
+                    disabled={isFaqGenLoading}
+                    className="bg-teal-500 hover:bg-teal-600 disabled:opacity-50 text-white font-medium py-2.5 px-5 rounded-lg text-sm transition flex items-center gap-2"
+                  >
+                    {isFaqGenLoading ? (
+                      <><Loader2 className="w-4 h-4 animate-spin" /> מייצר...</>
+                    ) : (
+                      <><Plus className="w-4 h-4" /> ייצר פוסטים</>
+                    )}
+                  </button>
+                </div>
+                {faqGenStatus && (
+                  <div className="bg-white/[0.02] rounded-lg p-3 border border-white/5 text-sm">{faqGenStatus}</div>
+                )}
+              </div>
+
               {/* AI Analysis */}
               <div className="bg-white/[0.03] border border-white/5 rounded-xl p-6">
                 <div className="flex items-center justify-between mb-6">
