@@ -109,6 +109,13 @@
   body {
     @apply bg-background text-foreground font-sans antialiased;
     font-family: 'Heebo', sans-serif;
+    overflow-y: auto !important;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  html {
+    overflow-y: auto !important;
+    -webkit-overflow-scrolling: touch;
   }
 }
 
