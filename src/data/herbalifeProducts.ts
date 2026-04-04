@@ -418,7 +418,7 @@ export const herbalifeProducts: HerbalifeProduct[] = [
 
 export const PRO_PRODUCT_CATEGORIES = [
   { id: 'all', name: 'הכל' },
-  { id: 'weight', name: 'ניהול משקל' },
+  { id: 'weight', name: 'אבקות חלבון' },
   { id: 'sport', name: 'ספורט ואנרגיה' },
   { id: 'digestion', name: 'עיכול והידרציה' },
   { id: 'lifestyle', name: 'לייף סטייל' },
