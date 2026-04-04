@@ -79,7 +79,6 @@ serve(async (req) => {
     const supabaseServiceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
     const supabase = createClient(supabaseUrl, supabaseServiceKey);
 
-    // Parse how many articles to generate (default 10)
     let count = 10;
     try {
       const body = await req.json();
@@ -105,40 +104,30 @@ serve(async (req) => {
 
 ## מבנה המאמר:
 1. **פתיחה**: הוק שמושך את הקורא ומבסס למה הנושא חשוב עכשיו.
-2. **"התובנה של שי"**: סקשן או טיפ ספציפי המיוחס לניסיון המעשי של המומחה. לדוגמא: "מהשיחות המקצועיות שלנו עם שי (מומחה תזונה מרעננה), אנחנו רואים ש..."
+2. **"התובנה של שי"**: סקשן או טיפ ספציפי המיוחס לניסיון המעשי של המומחה.
 3. **צלילה עמוקה**: התוכן המרכזי (ה-"איך עושים").
-4. **כלי מעשי**: טבלה (למשל השוואת מקורות חלבון) או צ'קליסט מעשי - חובה לפחות אחד בכל מאמר!
-5. **CTA רך**: חיבור הנושא למוצרי Full Body. לדוגמא: "כדי להגיע ליעדי החלבון שלכם כפי שדיברנו עם שי, בדקו את..."
-6. **קרדיט מחבר**: בסוף המאמר הוסף: "<p class='author-credit'><strong>המדריך נכתב בליווי מקצועי של שי, מומחה תזונה ויזם בריאות.</strong></p>"
+4. **כלי מעשי**: טבלה או צ'קליסט מעשי - חובה לפחות אחד בכל מאמר!
+5. **CTA רך**: חיבור הנושא למוצרי Full Body.
+6. **קרדיט מחבר**: בסוף המאמר.
 
 ## דרישות טכניות:
 - כותרת H1 מושכת ואופטימלית ל-SEO (עד 60 תווים)
 - כותרות H2/H3 ברורות כל 200-300 מילים
-- פסקאות קצרות ותכליתיות (מקסימום 3-4 שורות)
-- חובה לכלול לפחות טבלת HTML אחת (<table>) או רשימה ממוספרת/נקודות
+- פסקאות קצרות ותכליתיות
+- חובה לכלול לפחות טבלת HTML אחת
 - תוכן HTML מלא - לפחות 1500 מילים
 - תקציר של 2-3 משפטים (עד 160 תווים)
 - meta description אופטימלי ל-SEO (עד 160 תווים)
-- זמן קריאה מוערך (מספר בלבד)
 
 ## אינפוגרפיקות (חובה!):
 - כלול לפחות 1-2 אינפוגרפיקות HTML מעוצבות בתוך התוכן
-- השתמש ב-<figure class="infographic" role="img" aria-label="תיאור האינפוגרפיקה"> עם <figcaption> מתאים
-- סוגי אינפוגרפיקות אפשריים:
-  a) טבלת השוואה מעוצבת (<table class="info-table">) עם צבעים וסימנים (✅/❌/⭐)
-  b) תרשים שלבים (<div class="info-steps">) עם מספרים ואייקונים בעברית
-  c) כרטיסי סטטיסטיקה (<div class="info-stats">) עם מספרים גדולים ותיאורים
-  d) רשימת יתרונות/חסרונות (<div class="info-pros-cons">) עם ✅ ו-❌
-- לכל אינפוגרפיקה חובה aria-label מתאר בעברית (למשל: "השוואת מקורות חלבון לפי ערך תזונתי")
-- הוסף alt text מפורט ב-figcaption שמתאר את התוכן הוויזואלי
+- השתמש ב-<figure class="infographic" role="img" aria-label="תיאור"> עם <figcaption>
 
-## דרישות SEO:
-- קישור פנימי: שלב קישורים יחסיים למאמרים אחרים ב-fullbody.co.il (כמו <a href="/blog">המדריכים שלנו</a>)
-- סמכות חיצונית: ציין ש"מבוסס על מחקרים קליניים" או "מומלץ על ידי תזונאים"
-- מגע אנושי ומקומי: שלב ביטויים כמו "מניסיון שלנו בשטח..." או "מהשיחות המקצועיות שלנו עם שי..."
-
-## שאלות נפוצות:
-- 3-4 שאלות ותשובות רלוונטיות
+## כיתובים לרשתות חברתיות (חובה!):
+צור 3 כיתובים שונים למאמר:
+- **ig_caption**: אינסטגרם - עד 300 תווים, טון אישי וקליל, 5-8 האשטגים בעברית, אימוג'ים, CTA קצר
+- **fb_caption**: פייסבוק - עד 500 תווים, שואל שאלה, טון חם וקהילתי, מזמין לדיון
+- **li_caption**: לינקדאין - עד 400 תווים, טון מקצועי, תובנה מבוססת נתונים
 
 חשוב: אל תזכיר שאתה AI. השתמש בנתונים ומידע אמיתי ומבוסס.
 
@@ -149,7 +138,10 @@ serve(async (req) => {
   "content": "<h2>...</h2><p>...</p>...",
   "readTime": 5,
   "faq": [{"question": "...", "answer": "..."}],
-  "metaDescription": "..."
+  "metaDescription": "...",
+  "ig_caption": "...",
+  "fb_caption": "...",
+  "li_caption": "..."
 }`;
 
       const aiResponse = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
@@ -171,9 +163,8 @@ serve(async (req) => {
         const errText = await aiResponse.text();
         console.error(`AI error for article ${i + 1}:`, aiResponse.status, errText);
         if (aiResponse.status === 429) {
-          // Rate limited - wait and retry
           await new Promise(r => setTimeout(r, 10000));
-          i--; // retry
+          i--;
           continue;
         }
         continue;
@@ -181,8 +172,6 @@ serve(async (req) => {
 
       const aiData = await aiResponse.json();
       let rawContent = aiData.choices?.[0]?.message?.content || "";
-      
-      // Strip markdown code fences if present
       rawContent = rawContent.replace(/^```json?\s*/i, "").replace(/\s*```$/i, "").trim();
 
       let article;
@@ -208,6 +197,9 @@ serve(async (req) => {
         faq: article.faq || [],
         meta_description: article.metaDescription || article.excerpt,
         published: true,
+        ig_caption: article.ig_caption || null,
+        fb_caption: article.fb_caption || null,
+        li_caption: article.li_caption || null,
       });
 
       if (error) {
@@ -217,7 +209,6 @@ serve(async (req) => {
 
       results.push({ slug, title: article.title, category: category.name });
       
-      // Small delay between AI calls to avoid rate limiting
       if (i < count - 1) await new Promise(r => setTimeout(r, 3000));
     }
 

@@ -58,6 +58,8 @@ export default function AdminDashboard() {
   const [activeTab, setActiveTab] = useState<'overview' | 'products' | 'traffic' | 'funnel' | 'adspend' | 'ai'>('overview');
   const [aiAnalysis, setAiAnalysis] = useState<string>('');
   const [isAiLoading, setIsAiLoading] = useState(false);
+  const [socialCaptionStatus, setSocialCaptionStatus] = useState<string>('');
+  const [isSocialLoading, setIsSocialLoading] = useState(false);
 
   // Ad spend form
   const [newSpend, setNewSpend] = useState({ date: new Date().toISOString().split('T')[0], source: 'google_ads', campaign: '', spend: '', impressions: '', clicks: '', notes: '' });
@@ -303,6 +305,34 @@ export default function AdminDashboard() {
     { label: 'עלות פר לקוח (CAC)', value: stats.cac > 0 ? `₪${stats.cac.toFixed(0)}` : '—', icon: MousePointer, color: 'text-orange-400', bg: 'bg-orange-500/10' },
     { label: 'שיעור המרה', value: `${stats.conversionRate.toFixed(1)}%`, icon: ArrowUpRight, color: 'text-cyan-400', bg: 'bg-cyan-500/10' },
   ];
+
+
+  async function generateSocialCaptions() {
+    setIsSocialLoading(true);
+    setSocialCaptionStatus('מתחיל לייצר כיתובים לרשתות חברתיות...');
+    try {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session) return;
+      const response = await fetch(`${import.meta.env.VITE_SUPABASE_URL}/functions/v1/generate-social-captions`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${session.access_token}`,
+          'apikey': import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY,
+        },
+      });
+      const data = await response.json();
+      if (data.error) {
+        setSocialCaptionStatus(`❌ שגיאה: ${data.error}`);
+      } else {
+        setSocialCaptionStatus(`✅ עודכנו ${data.updated} מתוך ${data.total} מאמרים`);
+      }
+    } catch (e) {
+      setSocialCaptionStatus('❌ שגיאה בחיבור');
+    } finally {
+      setIsSocialLoading(false);
+    }
+  }
 
   const tabs = [
     { id: 'overview' as const, label: 'סקירה כללית', icon: BarChart3 },
@@ -744,6 +774,36 @@ export default function AdminDashboard() {
           {/* AI Analysis Tab */}
           {activeTab === 'ai' && (
             <div className="space-y-6">
+              {/* Social Captions Tool */}
+              <div className="bg-white/[0.03] border border-white/5 rounded-xl p-6">
+                <div className="flex items-center justify-between mb-4">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-xl bg-pink-500/10 flex items-center justify-center">
+                      <Sparkles className="w-5 h-5 text-pink-400" />
+                    </div>
+                    <div>
+                      <h3 className="text-sm font-bold">כיתובים לרשתות חברתיות</h3>
+                      <p className="text-xs text-gray-500">יצירת כיתובי IG / FB / LinkedIn לכל המאמרים החסרים</p>
+                    </div>
+                  </div>
+                  <button
+                    onClick={generateSocialCaptions}
+                    disabled={isSocialLoading}
+                    className="bg-pink-500 hover:bg-pink-600 disabled:opacity-50 text-white font-medium py-2.5 px-5 rounded-lg text-sm transition flex items-center gap-2"
+                  >
+                    {isSocialLoading ? (
+                      <><Loader2 className="w-4 h-4 animate-spin" /> מעבד...</>
+                    ) : (
+                      <><Sparkles className="w-4 h-4" /> ייצר כיתובים</>
+                    )}
+                  </button>
+                </div>
+                {socialCaptionStatus && (
+                  <div className="bg-white/[0.02] rounded-lg p-3 border border-white/5 text-sm">{socialCaptionStatus}</div>
+                )}
+              </div>
+
+              {/* AI Analysis */}
               <div className="bg-white/[0.03] border border-white/5 rounded-xl p-6">
                 <div className="flex items-center justify-between mb-6">
                   <div className="flex items-center gap-3">

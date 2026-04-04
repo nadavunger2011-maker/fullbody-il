@@ -1,0 +1,1 @@
+ALTER TABLE public.blog_posts ADD COLUMN ig_caption text, ADD COLUMN fb_caption text, ADD COLUMN li_caption text;
