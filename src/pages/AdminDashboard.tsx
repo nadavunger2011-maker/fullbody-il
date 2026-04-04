@@ -336,7 +336,35 @@ export default function AdminDashboard() {
     }
   }
 
-  const tabs = [
+  async function generateFaqPosts() {
+    setIsFaqGenLoading(true);
+    setFaqGenStatus('מייצר פוסטים קצרים מבוססי שאלות...');
+    try {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session) return;
+      const response = await fetch(`${import.meta.env.VITE_SUPABASE_URL}/functions/v1/generate-blog-posts`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${session.access_token}`,
+          'apikey': import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY,
+        },
+        body: JSON.stringify({ count: 5, mode: 'faq' }),
+      });
+      const data = await response.json();
+      if (data.error) {
+        setFaqGenStatus(`❌ שגיאה: ${data.error}`);
+      } else {
+        setFaqGenStatus(`✅ נוצרו ${data.generated} פוסטים קצרים מבוססי שאלות`);
+      }
+    } catch (e) {
+      setFaqGenStatus('❌ שגיאה בחיבור');
+    } finally {
+      setIsFaqGenLoading(false);
+    }
+  }
+
+
     { id: 'overview' as const, label: 'סקירה כללית', icon: BarChart3 },
     { id: 'funnel' as const, label: 'משפך ונטישה', icon: Users },
     { id: 'products' as const, label: 'מוצרים', icon: Package },
