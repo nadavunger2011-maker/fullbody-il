@@ -306,8 +306,6 @@ export default function AdminDashboard() {
     { label: 'שיעור המרה', value: `${stats.conversionRate.toFixed(1)}%`, icon: ArrowUpRight, color: 'text-cyan-400', bg: 'bg-cyan-500/10' },
   ];
 
-  const [socialCaptionStatus, setSocialCaptionStatus] = useState<string>('');
-  const [isSocialLoading, setIsSocialLoading] = useState(false);
 
   async function generateSocialCaptions() {
     setIsSocialLoading(true);
