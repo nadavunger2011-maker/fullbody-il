@@ -60,6 +60,8 @@ export default function AdminDashboard() {
   const [isAiLoading, setIsAiLoading] = useState(false);
   const [socialCaptionStatus, setSocialCaptionStatus] = useState<string>('');
   const [isSocialLoading, setIsSocialLoading] = useState(false);
+  const [faqGenStatus, setFaqGenStatus] = useState<string>('');
+  const [isFaqGenLoading, setIsFaqGenLoading] = useState(false);
 
   // Ad spend form
   const [newSpend, setNewSpend] = useState({ date: new Date().toISOString().split('T')[0], source: 'google_ads', campaign: '', spend: '', impressions: '', clicks: '', notes: '' });
@@ -331,6 +333,34 @@ export default function AdminDashboard() {
       setSocialCaptionStatus('❌ שגיאה בחיבור');
     } finally {
       setIsSocialLoading(false);
+    }
+  }
+
+  async function generateFaqPosts() {
+    setIsFaqGenLoading(true);
+    setFaqGenStatus('מייצר פוסטים קצרים מבוססי שאלות...');
+    try {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session) return;
+      const response = await fetch(`${import.meta.env.VITE_SUPABASE_URL}/functions/v1/generate-blog-posts`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${session.access_token}`,
+          'apikey': import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY,
+        },
+        body: JSON.stringify({ count: 5, mode: 'faq' }),
+      });
+      const data = await response.json();
+      if (data.error) {
+        setFaqGenStatus(`❌ שגיאה: ${data.error}`);
+      } else {
+        setFaqGenStatus(`✅ נוצרו ${data.generated} פוסטים קצרים מבוססי שאלות`);
+      }
+    } catch (e) {
+      setFaqGenStatus('❌ שגיאה בחיבור');
+    } finally {
+      setIsFaqGenLoading(false);
     }
   }
 
@@ -800,6 +830,35 @@ export default function AdminDashboard() {
                 </div>
                 {socialCaptionStatus && (
                   <div className="bg-white/[0.02] rounded-lg p-3 border border-white/5 text-sm">{socialCaptionStatus}</div>
+                )}
+              </div>
+
+              {/* FAQ Short Posts Generator */}
+              <div className="bg-white/[0.03] border border-white/5 rounded-xl p-6">
+                <div className="flex items-center justify-between mb-4">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-xl bg-teal-500/10 flex items-center justify-center">
+                      <Plus className="w-5 h-5 text-teal-400" />
+                    </div>
+                    <div>
+                      <h3 className="text-sm font-bold">פוסטים קצרים מבוססי שאלות</h3>
+                      <p className="text-xs text-gray-500">יצירת 5 מאמרים קצרים מבוססים על שאלות שאנשים שואלים באינטרנט</p>
+                    </div>
+                  </div>
+                  <button
+                    onClick={generateFaqPosts}
+                    disabled={isFaqGenLoading}
+                    className="bg-teal-500 hover:bg-teal-600 disabled:opacity-50 text-white font-medium py-2.5 px-5 rounded-lg text-sm transition flex items-center gap-2"
+                  >
+                    {isFaqGenLoading ? (
+                      <><Loader2 className="w-4 h-4 animate-spin" /> מייצר...</>
+                    ) : (
+                      <><Plus className="w-4 h-4" /> ייצר פוסטים</>
+                    )}
+                  </button>
+                </div>
+                {faqGenStatus && (
+                  <div className="bg-white/[0.02] rounded-lg p-3 border border-white/5 text-sm">{faqGenStatus}</div>
                 )}
               </div>
 
