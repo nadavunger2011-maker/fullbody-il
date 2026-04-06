@@ -32,7 +32,13 @@ export default function ProFooter() {
             <div>
               <h3 className="font-bold text-lg mb-4">FullBody Pro</h3>
               <p className="text-primary-foreground/80 text-sm mb-4">
-                מפיץ מורשה של Herbalife Nutrition בישראל. תוספי תזונה איכותיים לספורטאים ולאנשים הדואגים לבריאותם.
+                <strong>נדב אונגר - מפיץ עצמאי של הרבלייף (ID: 16Y0030013)</strong>
+              </p>
+              <p className="text-primary-foreground/70 text-xs mb-3 leading-relaxed">
+                כל ההתייחסויות לבקרת משקל קשורות לתוכנית בקרת המשקל של הרבלייף הכוללת, בין היתר, תזונה מאוזנת, פעילות גופנית קבועה, שתיית נוזלים מספקת, תוספי תזונה במידת הצורך ומנוחה נאותה. התוצאות הן אישיות ועשויות להשתנות.
+              </p>
+              <p className="text-primary-foreground/70 text-xs mb-3">
+                האתר אינו האתר הרשמי של חברת הרבלייף ישראל.
               </p>
               <div className="text-xs text-primary-foreground/60 space-y-1">
                 <p>ח.פ./עוסק מורשה: 516247890</p>
