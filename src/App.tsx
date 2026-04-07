@@ -32,6 +32,10 @@ import ProProductDetail from "./pages/ProProductDetail";
 import ProContact from "./pages/ProContact";
 import ProBlog from "./pages/ProBlog";
 import ProBlogPost from "./pages/ProBlogPost";
+import ProShippingPolicy from "./pages/ProShippingPolicy";
+import ProReturnPolicy from "./pages/ProReturnPolicy";
+import ProPrivacyPolicy from "./pages/ProPrivacyPolicy";
+import ProTerms from "./pages/ProTerms";
 import { trackPageView } from "@/lib/analytics";
 import ScrollToTop from "@/components/ScrollToTop";
 
