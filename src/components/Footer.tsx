@@ -35,7 +35,7 @@ export default function Footer() {
                 חנות תוספי תזונה איכותיים לספורטאים ולאנשים פעילים. פועלים מאז 2018 עם אלפי לקוחות מרוצים בכל רחבי ישראל.
               </p>
               <div className="text-xs text-primary-foreground/60 space-y-1">
-                <p>ח.פ./עוסק מורשה: 516247890</p>
+                <p>ח.פ./עוסק מורשה: 200353720</p>
                 <p>© {new Date().getFullYear()} FullBody בע"מ</p>
               </div>
             </div>
