@@ -3,7 +3,7 @@ import { ShieldCheck, Truck, Award, CreditCard, Phone, Mail, MapPin } from 'luci
 
 export default function ProFooter() {
   return (
-    <footer className="bg-primary text-primary-foreground">
+    <footer className="bg-black text-white">
       {/* Trust Indicators Bar */}
       <div className="border-b border-primary-foreground/20 py-8">
         <div className="container mx-auto px-4">
