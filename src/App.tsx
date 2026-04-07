@@ -81,6 +81,8 @@ function AppContent() {
         <Route path="/return-policy" element={<ProReturnPolicy />} />
         <Route path="/privacy-policy" element={<ProPrivacyPolicy />} />
         <Route path="/terms-of-use" element={<ProTerms />} />
+        {/* Legacy Shopify URLs without /nava prefix */}
+        <Route path="/products/:handle" element={<LegacyProductRedirect />} />
 
         {/* NAVA — original FullBody site */}
         <Route path="/nava" element={<Index />} />
