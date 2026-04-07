@@ -77,6 +77,10 @@ function AppContent() {
         <Route path="/blog" element={<ProBlog />} />
         <Route path="/blog/:slug" element={<ProBlogPost />} />
         <Route path="/contact" element={<ProContact />} />
+        <Route path="/shipping-policy" element={<ProShippingPolicy />} />
+        <Route path="/return-policy" element={<ProReturnPolicy />} />
+        <Route path="/privacy-policy" element={<ProPrivacyPolicy />} />
+        <Route path="/terms-of-use" element={<ProTerms />} />
 
         {/* NAVA — original FullBody site */}
         <Route path="/nava" element={<Index />} />
