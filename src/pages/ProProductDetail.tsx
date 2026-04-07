@@ -100,15 +100,8 @@ export default function ProProductDetail() {
   };
 
   if (!product) {
-    return (
-      <div dir="rtl" className="min-h-screen flex items-center justify-center bg-background">
-        <div className="text-center">
-          <ShoppingBag className="w-16 h-16 mx-auto mb-4 text-muted-foreground/30" />
-          <h1 className="text-2xl font-bold mb-2">המוצר לא נמצא</h1>
-          <Link to="/" className="text-[hsl(142,70%,35%)] hover:underline font-bold">חזרה לחנות</Link>
-        </div>
-      </div>
-    );
+    // Redirect non-Herbalife product handles to the Nava site
+    return <Navigate to={`/nava/product/${handle}`} replace />;
   }
 
   const whatsappLink = `https://wa.me/972547308826?text=${encodeURIComponent(`היי, אשמח לשמוע פרטים על ${product.title}`)}`;
