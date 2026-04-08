@@ -43,6 +43,7 @@ export interface HerbalifeProduct {
   isKosherMehadrin?: boolean;
   proteinPerServing?: number; // grams
   caloriesPerServing?: number;
+  catalogPage?: number; // page in the Herbalife catalog PDF
 }
 
 export const herbalifeProducts: HerbalifeProduct[] = [
