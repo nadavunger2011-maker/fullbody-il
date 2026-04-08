@@ -138,6 +138,8 @@ export const herbalifeProducts: HerbalifeProduct[] = [
     caloriesPerServing: 220,
     catalogPage: 19,
   },
+  {
+    sku: '0242',
     handle: 'formula-1-kosher',
     shopifyHandle: 'פורמולה-1-וניל-כשר-למהדרין',
     title: 'שייק חלבון פורמולה 1 וניל כשר למהדרין - הרבלייף',
@@ -181,6 +183,8 @@ export const herbalifeProducts: HerbalifeProduct[] = [
     caloriesPerServing: 220,
     catalogPage: 21,
   },
+  {
+    sku: '2793',
     handle: 'pdm-protein',
     shopifyHandle: 'אבקת-חלבון-pdm-תוספת-חלבון-לשייק',
     title: 'אבקת חלבון PDM - תוספת חלבון מי גבינה להרבלייף',
@@ -222,6 +226,8 @@ export const herbalifeProducts: HerbalifeProduct[] = [
     caloriesPerServing: 80,
     catalogPage: 20,
   },
+  {
+    sku: '4468',
     handle: 'h24-rebuild-strength',
     shopifyHandle: 'h24-rebuild-strength-שוקולד-1-קג',
     title: 'אבקת חלבון H24 Rebuild Strength שוקולד - הרבלייף (1 ק"ג)',
@@ -266,6 +272,8 @@ export const herbalifeProducts: HerbalifeProduct[] = [
     caloriesPerServing: 190,
     catalogPage: 47,
   },
+  {
+    sku: '0145',
     handle: 'aloe-natural',
     shopifyHandle: 'תרכיז-אלוורה-צמחי-טעם-טבעי',
     title: 'תרכיז אלוורה לעיכול - טעם טבעי | הרבלייף',
@@ -304,6 +312,8 @@ export const herbalifeProducts: HerbalifeProduct[] = [
     caloriesPerServing: 5,
     catalogPage: 41,
   },
+  {
+    sku: '0146',
     handle: 'aloe-mango',
     shopifyHandle: 'תרכיז-אלוורה-טעם-מנגו-מרענן',
     title: 'תרכיז אלוורה לעיכול - טעם מנגו | הרבלייף',
@@ -341,6 +351,8 @@ export const herbalifeProducts: HerbalifeProduct[] = [
     caloriesPerServing: 5,
     catalogPage: 40,
   },
+  {
+    sku: '2600',
     handle: 'niteworks',
     shopifyHandle: 'נייטוורקס-niteworks-תמיכה-בלב',
     title: 'נייטוורקס Niteworks - תוסף לבריאות הלב וזרימת הדם | הרבלייף',
@@ -381,6 +393,8 @@ export const herbalifeProducts: HerbalifeProduct[] = [
     caloriesPerServing: 25,
     catalogPage: 31,
   },
+  {
+    sku: '403K',
     handle: 'herbalife-cookbook',
     shopifyHandle: 'ספר-המתכונים-של-הרבלייף-לבשל-בריא',
     title: 'ספר מתכונים בריאים - הרבלייף | לבשל בריא',
