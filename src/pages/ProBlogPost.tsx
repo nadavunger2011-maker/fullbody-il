@@ -18,6 +18,15 @@ import { trackAddToCart as fbTrackAddToCart } from '@/lib/fbPixel';
 import { trackGA4AddToCart } from '@/lib/ga4';
 import { trackAddToCartEvent } from '@/lib/analytics';
 
+const BROKEN_INLINE_IMAGE_PATTERN = /<img\b[^>]*src=["'](?:https?:\/\/fullbody\.co\.il)?\/images\/[^"']+["'][^>]*>/gi;
+
+function normalizeBlogContent(html: string) {
+  return html
+    .replace(/^\s*<h1[^>]*>[\s\S]*?<\/h1>\s*/i, '')
+    .replace(BROKEN_INLINE_IMAGE_PATTERN, '')
+    .replace(/<figure([^>]*)>\s*<\/figure>/gi, '');
+}
+
 export default function ProBlogPost() {
   const { slug } = useParams();
   const navigate = useNavigate();
@@ -35,6 +44,8 @@ export default function ProBlogPost() {
   if (isLoading) return <div className="min-h-screen bg-background flex items-center justify-center"><Skeleton className="w-32 h-8" /></div>;
   if (!post) return null;
 
+  const normalizedContent = normalizeBlogContent(post.content);
+  const articleImage = post.image || '/placeholder.svg';
   const category = proBlogCategories.find(c => c.id === post.categoryId);
   const relatedProducts = post.relatedProductHandles.map(h => getProductByHandle(h)).filter(Boolean) as HerbalifeProduct[];
 
@@ -62,37 +73,36 @@ export default function ProBlogPost() {
     });
   };
 
-  // Schema.org - Article + FAQPage
   const articleSchema = {
-    "@context": "https://schema.org",
-    "@type": "Article",
-    "headline": post.title,
-    "description": post.metaDescription,
-    "image": post.image,
-    "datePublished": post.date,
-    "dateModified": post.date,
-    "author": { "@type": "Organization", "name": "FullBody Pro", "url": "https://fullbody.co.il" },
-    "publisher": { "@type": "Organization", "name": "FullBody Pro", "logo": { "@type": "ImageObject", "url": "https://fullbody.co.il/assets/logo-green.png" } },
-    "mainEntityOfPage": { "@type": "WebPage", "@id": `https://fullbody.co.il/blog/${post.slug}` },
+    '@context': 'https://schema.org',
+    '@type': 'Article',
+    headline: post.title,
+    description: post.metaDescription,
+    image: articleImage,
+    datePublished: post.date,
+    dateModified: post.date,
+    author: { '@type': 'Organization', name: 'FullBody Pro', url: 'https://fullbody.co.il' },
+    publisher: { '@type': 'Organization', name: 'FullBody Pro', logo: { '@type': 'ImageObject', url: 'https://fullbody.co.il/assets/logo-green.png' } },
+    mainEntityOfPage: { '@type': 'WebPage', '@id': `https://fullbody.co.il/blog/${post.slug}` },
   };
 
   const faqSchema = {
-    "@context": "https://schema.org",
-    "@type": "FAQPage",
-    "mainEntity": post.faq.map(f => ({
-      "@type": "Question",
-      "name": f.question,
-      "acceptedAnswer": { "@type": "Answer", "text": f.answer },
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: post.faq.map(f => ({
+      '@type': 'Question',
+      name: f.question,
+      acceptedAnswer: { '@type': 'Answer', text: f.answer },
     })),
   };
 
   const breadcrumbSchema = {
-    "@context": "https://schema.org",
-    "@type": "BreadcrumbList",
-    "itemListElement": [
-      { "@type": "ListItem", "position": 1, "name": "ראשי", "item": "https://fullbody.co.il/" },
-      { "@type": "ListItem", "position": 2, "name": "בלוג", "item": "https://fullbody.co.il/blog" },
-      { "@type": "ListItem", "position": 3, "name": post.title, "item": `https://fullbody.co.il/blog/${post.slug}` },
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'ראשי', item: 'https://fullbody.co.il/' },
+      { '@type': 'ListItem', position: 2, name: 'בלוג', item: 'https://fullbody.co.il/blog' },
+      { '@type': 'ListItem', position: 3, name: post.title, item: `https://fullbody.co.il/blog/${post.slug}` },
     ],
   };
 
@@ -104,7 +114,7 @@ export default function ProBlogPost() {
         <link rel="canonical" href={`https://fullbody.co.il/blog/${post.slug}`} />
         <meta property="og:title" content={post.title} />
         <meta property="og:description" content={post.metaDescription} />
-        <meta property="og:image" content={post.image || 'https://fullbody.co.il/og-image.jpg'} />
+        <meta property="og:image" content={articleImage} />
         <meta property="og:type" content="article" />
         <meta property="og:url" content={`https://fullbody.co.il/blog/${post.slug}`} />
         <meta property="og:locale" content="he_IL" />
@@ -112,18 +122,16 @@ export default function ProBlogPost() {
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content={post.title} />
         <meta name="twitter:description" content={post.metaDescription} />
-        <meta name="twitter:image" content={post.image || 'https://fullbody.co.il/og-image.jpg'} />
+        <meta name="twitter:image" content={articleImage} />
         <script type="application/ld+json">{JSON.stringify(articleSchema)}</script>
         <script type="application/ld+json">{JSON.stringify(faqSchema)}</script>
         <script type="application/ld+json">{JSON.stringify(breadcrumbSchema)}</script>
       </Helmet>
 
-      {/* Announcement */}
       <div className="bg-[hsl(142,70%,35%)] text-white text-center py-2.5 text-sm font-medium">
         מוצרי Herbalife מקוריים | משלוח חינם מעל ₪299
       </div>
 
-      {/* Header */}
       <header className="sticky top-0 z-40 bg-card shadow-card border-b border-border">
         <div className="container mx-auto px-4 h-20 flex items-center justify-between">
           <button onClick={() => setIsMobileMenuOpen(true)} className="lg:hidden p-2 text-muted-foreground"><Menu className="w-6 h-6" /></button>
@@ -152,7 +160,6 @@ export default function ProBlogPost() {
 
       <CartDrawer isOpen={isCartOpen} onClose={() => setIsCartOpen(false)} />
 
-      {/* Breadcrumb */}
       <div className="bg-secondary border-b border-border">
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center gap-2 text-sm text-muted-foreground">
@@ -165,10 +172,17 @@ export default function ProBlogPost() {
         </div>
       </div>
 
-      {/* Hero */}
       <section className="relative">
         <div className="aspect-[21/9] max-h-[400px] overflow-hidden">
-          <img src={post.image} alt={post.title} className="w-full h-full object-cover" />
+          <img
+            src={articleImage}
+            alt={post.title}
+            className="w-full h-full object-cover"
+            onError={(event) => {
+              event.currentTarget.onerror = null;
+              event.currentTarget.src = '/placeholder.svg';
+            }}
+          />
           <div className="absolute inset-0 bg-gradient-to-t from-foreground/80 to-transparent" />
         </div>
         <div className="container mx-auto px-4">
@@ -185,18 +199,17 @@ export default function ProBlogPost() {
         </div>
       </section>
 
-      {/* Content */}
       <article className="pb-16">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto bg-card rounded-b-2xl p-6 sm:p-10 -mt-1">
-            <div className="blog-content prose prose-lg max-w-none text-foreground prose-headings:text-foreground prose-headings:font-bold prose-h2:text-2xl prose-h2:mt-8 prose-h2:mb-4 prose-p:text-muted-foreground prose-p:leading-relaxed prose-ul:text-muted-foreground prose-li:my-1 prose-strong:text-foreground"
-              dangerouslySetInnerHTML={{ __html: post.content }}
+            <div
+              className="blog-content prose prose-lg max-w-none text-foreground prose-headings:text-foreground prose-headings:font-bold prose-h2:text-2xl prose-h2:mt-8 prose-h2:mb-4 prose-p:text-muted-foreground prose-p:leading-relaxed prose-ul:text-muted-foreground prose-li:my-1 prose-strong:text-foreground"
+              dangerouslySetInnerHTML={{ __html: normalizedContent }}
             />
           </div>
         </div>
       </article>
 
-      {/* FAQ Section */}
       {post.faq.length > 0 && (
         <section className="py-12 bg-secondary/30">
           <div className="container mx-auto px-4">
@@ -218,7 +231,6 @@ export default function ProBlogPost() {
         </section>
       )}
 
-      {/* Related Products (Silo) */}
       {relatedProducts.length > 0 && (
         <section className="py-12 bg-background">
           <div className="container mx-auto px-4">
@@ -251,7 +263,6 @@ export default function ProBlogPost() {
         </section>
       )}
 
-      {/* Back */}
       <section className="py-8">
         <div className="container mx-auto px-4 text-center">
           <Link to="/blog" className="inline-flex items-center gap-2 text-[hsl(142,70%,35%)] font-bold hover:gap-3 transition-all">
