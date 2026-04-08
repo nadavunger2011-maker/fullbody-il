@@ -5,7 +5,8 @@ import { Helmet } from 'react-helmet-async';
 import {
   Menu, X, ShoppingBag, ArrowRight,
   ChevronDown, Leaf, CheckCircle, Truck, ShieldCheck,
-  HeartPulse, Beaker, Utensils, Clock, Loader2, Minus, Plus
+  HeartPulse, Beaker, Utensils, Clock, Loader2, Minus, Plus,
+  FileText
 } from 'lucide-react';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { getProductByHandle, getRelatedProducts } from '@/data/herbalifeProducts';
@@ -392,6 +393,25 @@ export default function ProProductDetail() {
                 </div>
               ))}
             </div>
+
+            {/* Catalog Link */}
+            {product.catalogPage && (
+              <a
+                href={`/herbalife-catalog-2025.pdf#page=${product.catalogPage}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-3 bg-secondary/30 hover:bg-secondary/50 border border-border rounded-xl p-4 transition-colors"
+              >
+                <div className="w-10 h-10 bg-[hsl(142,70%,35%)]/10 rounded-full flex items-center justify-center shrink-0">
+                  <FileText className="w-5 h-5 text-[hsl(142,70%,35%)]" />
+                </div>
+                <div className="flex-1">
+                  <span className="font-bold text-foreground text-sm block">צפייה בקטלוג הרשמי</span>
+                  <span className="text-xs text-muted-foreground">עמוד {product.catalogPage} בקטלוג Herbalife 2025</span>
+                </div>
+                <ArrowRight className="w-4 h-4 text-muted-foreground" />
+              </a>
+            )}
           </div>
         </div>
       </section>

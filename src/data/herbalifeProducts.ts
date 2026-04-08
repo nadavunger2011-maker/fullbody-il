@@ -43,6 +43,7 @@ export interface HerbalifeProduct {
   isKosherMehadrin?: boolean;
   proteinPerServing?: number; // grams
   caloriesPerServing?: number;
+  catalogPage?: number; // page in the Herbalife catalog PDF
 }
 
 export const herbalifeProducts: HerbalifeProduct[] = [
@@ -90,6 +91,7 @@ export const herbalifeProducts: HerbalifeProduct[] = [
     goals: ['weight-loss', 'meal-replacement'],
     proteinPerServing: 18,
     caloriesPerServing: 220,
+    catalogPage: 16,
   },
   {
     sku: '0260',
@@ -134,6 +136,7 @@ export const herbalifeProducts: HerbalifeProduct[] = [
     goals: ['weight-loss', 'meal-replacement'],
     proteinPerServing: 18,
     caloriesPerServing: 220,
+    catalogPage: 19,
   },
   {
     sku: '0242',
@@ -178,6 +181,7 @@ export const herbalifeProducts: HerbalifeProduct[] = [
     isKosherMehadrin: true,
     proteinPerServing: 18,
     caloriesPerServing: 220,
+    catalogPage: 21,
   },
   {
     sku: '2793',
@@ -220,6 +224,7 @@ export const herbalifeProducts: HerbalifeProduct[] = [
     goals: ['muscle', 'weight-loss'],
     proteinPerServing: 15,
     caloriesPerServing: 80,
+    catalogPage: 20,
   },
   {
     sku: '4468',
@@ -265,6 +270,7 @@ export const herbalifeProducts: HerbalifeProduct[] = [
     goals: ['muscle', 'recovery'],
     proteinPerServing: 25,
     caloriesPerServing: 190,
+    catalogPage: 47,
   },
   {
     sku: '0145',
@@ -304,6 +310,7 @@ export const herbalifeProducts: HerbalifeProduct[] = [
     flavors: ['טבעי'],
     goals: ['digestion', 'hydration'],
     caloriesPerServing: 5,
+    catalogPage: 41,
   },
   {
     sku: '0146',
@@ -342,6 +349,7 @@ export const herbalifeProducts: HerbalifeProduct[] = [
     flavors: ['מנגו'],
     goals: ['digestion', 'hydration'],
     caloriesPerServing: 5,
+    catalogPage: 40,
   },
   {
     sku: '2600',
@@ -383,6 +391,7 @@ export const herbalifeProducts: HerbalifeProduct[] = [
     flavors: ['לימון'],
     goals: ['heart-health', 'energy'],
     caloriesPerServing: 25,
+    catalogPage: 31,
   },
   {
     sku: '403K',
