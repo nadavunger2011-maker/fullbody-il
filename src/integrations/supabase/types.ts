@@ -156,6 +156,7 @@ export type Database = {
           id: string
           ig_caption: string | null
           image: string | null
+          is_social_synced: boolean
           li_caption: string | null
           meta_description: string
           published: boolean
@@ -177,6 +178,7 @@ export type Database = {
           id?: string
           ig_caption?: string | null
           image?: string | null
+          is_social_synced?: boolean
           li_caption?: string | null
           meta_description: string
           published?: boolean
@@ -198,6 +200,7 @@ export type Database = {
           id?: string
           ig_caption?: string | null
           image?: string | null
+          is_social_synced?: boolean
           li_caption?: string | null
           meta_description?: string
           published?: boolean
