@@ -1,0 +1,1 @@
+ALTER TABLE public.blog_posts ADD COLUMN is_social_synced boolean NOT NULL DEFAULT false;
