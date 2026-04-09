@@ -5,7 +5,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { 
   BarChart3, Eye, ShoppingCart, CreditCard, TrendingUp, Users, 
   LogOut, Loader2, Calendar, Plus, Trash2, DollarSign, MousePointer,
-  Globe, ArrowUpRight, ArrowDownRight, Package, Brain, Sparkles, Clock
+  Globe, ArrowUpRight, ArrowDownRight, Package, Brain, Sparkles, Clock, Key, Copy, Check
 } from 'lucide-react';
 import {
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
@@ -55,7 +55,9 @@ export default function AdminDashboard() {
   const [adSpend, setAdSpend] = useState<AdSpendRow[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [dateRange, setDateRange] = useState<DateRange>('30d');
-  const [activeTab, setActiveTab] = useState<'overview' | 'products' | 'traffic' | 'funnel' | 'adspend' | 'ai'>('overview');
+  const [activeTab, setActiveTab] = useState<'overview' | 'products' | 'traffic' | 'funnel' | 'adspend' | 'ai' | 'api'>('overview');
+  const [apiCredentials, setApiCredentials] = useState<{ supabase_url: string; service_role_key: string; anon_key: string } | null>(null);
+  const [isApiLoading, setIsApiLoading] = useState(false);
   const [aiAnalysis, setAiAnalysis] = useState<string>('');
   const [isAiLoading, setIsAiLoading] = useState(false);
   const [socialCaptionStatus, setSocialCaptionStatus] = useState<string>('');
