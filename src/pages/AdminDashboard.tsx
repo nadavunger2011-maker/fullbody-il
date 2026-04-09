@@ -373,6 +373,7 @@ export default function AdminDashboard() {
     { id: 'traffic' as const, label: 'מקורות תנועה', icon: Globe },
     { id: 'adspend' as const, label: 'הוצאות פרסום', icon: DollarSign },
     { id: 'ai' as const, label: 'ניתוח AI', icon: Brain },
+    { id: 'api' as const, label: 'API Keys', icon: Key },
   ];
 
   async function fetchAiAnalysis() {
