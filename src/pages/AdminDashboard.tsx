@@ -904,6 +904,76 @@ export default function AdminDashboard() {
               </div>
             </div>
           )}
+
+          {/* API Keys Tab */}
+          {activeTab === 'api' && (
+            <div className="space-y-6">
+              <div className="bg-white/[0.03] rounded-2xl border border-white/5 p-6">
+                <h3 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
+                  <Key className="w-5 h-5 text-yellow-400" /> פרטי חיבור API (n8n / אינטגרציות)
+                </h3>
+                <p className="text-gray-400 text-sm mb-6">המפתחות הללו נדרשים לחיבור מערכות חיצוניות כמו n8n. שמור אותם במקום בטוח.</p>
+                
+                {!apiCredentials ? (
+                  <button
+                    onClick={async () => {
+                      setIsApiLoading(true);
+                      try {
+                        const { data: { session } } = await supabase.auth.getSession();
+                        if (!session) return;
+                        const res = await fetch(`${import.meta.env.VITE_SUPABASE_URL}/functions/v1/admin-credentials`, {
+                          method: 'POST',
+                          headers: {
+                            'Authorization': `Bearer ${session.access_token}`,
+                            'Content-Type': 'application/json',
+                          },
+                        });
+                        const data = await res.json();
+                        if (data.error) throw new Error(data.error);
+                        setApiCredentials(data);
+                      } catch (err: any) {
+                        alert('שגיאה: ' + err.message);
+                      } finally {
+                        setIsApiLoading(false);
+                      }
+                    }}
+                    disabled={isApiLoading}
+                    className="bg-yellow-500 hover:bg-yellow-600 disabled:opacity-50 text-black font-medium py-2.5 px-5 rounded-lg text-sm transition flex items-center gap-2"
+                  >
+                    {isApiLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Key className="w-4 h-4" />}
+                    הצג מפתחות API
+                  </button>
+                ) : (
+                  <div className="space-y-4">
+                    {[
+                      { label: 'Supabase URL', value: apiCredentials.supabase_url },
+                      { label: 'Service Role Key', value: apiCredentials.service_role_key },
+                      { label: 'Anon Key', value: apiCredentials.anon_key },
+                    ].map((item) => (
+                      <div key={item.label} className="bg-black/30 rounded-lg p-4 border border-white/10">
+                        <div className="flex items-center justify-between mb-1">
+                          <span className="text-xs text-gray-400 font-medium">{item.label}</span>
+                          <button
+                            onClick={() => {
+                              navigator.clipboard.writeText(item.value);
+                              alert(`${item.label} הועתק!`);
+                            }}
+                            className="text-gray-400 hover:text-white transition flex items-center gap-1 text-xs"
+                          >
+                            <Copy className="w-3.5 h-3.5" /> העתק
+                          </button>
+                        </div>
+                        <code className="text-green-400 text-xs break-all block">{item.value}</code>
+                      </div>
+                    ))}
+                    <div className="bg-red-500/10 border border-red-500/30 rounded-lg p-3 mt-4">
+                      <p className="text-red-400 text-xs">⚠️ <strong>אזהרה:</strong> אל תשתף את ה-Service Role Key עם אף אחד. מפתח זה מעניק גישה מלאה לבסיס הנתונים.</p>
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </>
