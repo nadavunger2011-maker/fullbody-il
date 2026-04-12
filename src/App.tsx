@@ -38,6 +38,7 @@ import ProPrivacyPolicy from "./pages/ProPrivacyPolicy";
 import ProTerms from "./pages/ProTerms";
 import { trackPageView } from "@/lib/analytics";
 import ScrollToTop from "@/components/ScrollToTop";
+import FirstVisitModal from "@/components/FirstVisitModal";
 
 const queryClient = new QueryClient();
 
@@ -123,6 +124,7 @@ const App = () => (
           <ScrollToTop />
           <AppContent />
           <WhatsAppButton />
+          <FirstVisitModal />
         </BrowserRouter>
       </TooltipProvider>
     </QueryClientProvider>
