@@ -1,108 +1,105 @@
 import { useState, useEffect } from "react";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogDescription,
-} from "@/components/ui/dialog";
-import {
-  Drawer,
-  DrawerContent,
-  DrawerHeader,
-  DrawerTitle,
-  DrawerDescription,
-} from "@/components/ui/drawer";
-import { Button } from "@/components/ui/button";
+import { X } from "lucide-react";
 import { useIsMobile } from "@/hooks/use-mobile";
 
 const STORAGE_KEY = "fullbody_first_visit_seen";
-const HERBALIFE_URL = "https://www.herbalife.com/";
+const HERBALIFE_URL = "https://www.herbalife.co.il/";
 
 export default function FirstVisitModal() {
-  const [open, setOpen] = useState(false);
+  const [visible, setVisible] = useState(false);
   const isMobile = useIsMobile();
 
   useEffect(() => {
     if (!localStorage.getItem(STORAGE_KEY)) {
-      const t = setTimeout(() => setOpen(true), 800);
+      const t = setTimeout(() => setVisible(true), 1200);
       return () => clearTimeout(t);
     }
   }, []);
 
-  const handleContinue = () => {
+  const handleDismiss = () => {
     localStorage.setItem(STORAGE_KEY, "1");
-    setOpen(false);
+    setVisible(false);
   };
 
-  const handleRedirect = () => {
-    localStorage.setItem(STORAGE_KEY, "1");
-    window.open(HERBALIFE_URL, "_blank", "noopener");
-    setOpen(false);
-  };
-
-  const content = (
-    <div className="flex flex-col items-center text-center gap-4 py-2" dir="rtl">
-      <p className="text-sm text-muted-foreground leading-relaxed max-w-md">
-        הקשר האישי שלך עם המפיץ הוא המפתח להשגת יעדי התזונה שלך. אם כבר יש לך
-        מפיץ אישי, אנו מעודדים אותך לרכוש את המוצרים דרכו. אם אין לך מפיץ,
-        נשמח ללוות אותך כחלק מקהילת FullBody!
-      </p>
-
-      <Button
-        onClick={handleContinue}
-        className="w-full max-w-xs h-11 text-base font-semibold rounded-lg"
-      >
-        אין לי מפיץ – המשך לאתר
-      </Button>
-
-      <button
-        onClick={handleRedirect}
-        className="text-sm text-muted-foreground underline underline-offset-4 hover:text-foreground transition-colors"
-      >
-        יש לי מפיץ – מעבר לאתר הרשמי
-      </button>
-
-      <p className="text-[11px] text-muted-foreground/60 mt-2 max-w-sm leading-relaxed">
-        אתר זה מופעל ע״י נדב אונגר, מפיץ עצמאי של הרבלייף (ID: 16Y0030013).
-      </p>
-    </div>
-  );
+  if (!visible) return null;
 
   if (isMobile) {
     return (
-      <Drawer open={open} onOpenChange={(o) => { if (!o) handleContinue(); }}>
-        <DrawerContent dir="rtl" className="px-6 pb-8">
-          <DrawerHeader className="pt-4 pb-0">
-            <DrawerTitle className="text-xl font-bold text-center">
-              ברוכים הבאים ל-FullBody
-            </DrawerTitle>
-            <DrawerDescription className="text-sm text-muted-foreground text-center mt-1">
-              האם כבר שוחחת עם חבר הרבלייף עצמאי?
-            </DrawerDescription>
-          </DrawerHeader>
-          {content}
-        </DrawerContent>
-      </Drawer>
+      <div
+        dir="rtl"
+        className="fixed bottom-0 left-0 right-0 z-40 bg-background border-t border-border shadow-[0_-4px_20px_rgba(0,0,0,0.08)] px-4 py-3 animate-in slide-in-from-bottom duration-300"
+      >
+        <div className="flex items-start gap-3">
+          <div className="flex-1 min-w-0">
+            <p className="text-xs text-foreground leading-relaxed">
+              כבר יש לך מפיץ אישי של הרבלייף? מומלץ להמשיך את הרכישה מולו. אם לא, נשמח ללוות אותך כחלק מקהילת FullBody!
+            </p>
+            <div className="flex items-center gap-3 mt-2">
+              <button
+                onClick={handleDismiss}
+                className="bg-foreground text-background text-xs font-semibold px-4 py-1.5 rounded-md hover:bg-foreground/90 transition-colors whitespace-nowrap"
+              >
+                הבנתי, המשך
+              </button>
+              <a
+                href={HERBALIFE_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={handleDismiss}
+                className="text-[11px] text-muted-foreground underline underline-offset-2 hover:text-foreground transition-colors whitespace-nowrap"
+              >
+                יש לי מפיץ
+              </a>
+            </div>
+          </div>
+          <button
+            onClick={handleDismiss}
+            className="text-muted-foreground hover:text-foreground transition-colors mt-0.5 shrink-0"
+            aria-label="סגור"
+          >
+            <X className="w-4 h-4" />
+          </button>
+        </div>
+      </div>
     );
   }
 
   return (
-    <Dialog open={open} onOpenChange={(o) => { if (!o) handleContinue(); }}>
-      <DialogContent
-        dir="rtl"
-        className="max-w-md rounded-xl p-8 shadow-xl border-border/40"
-      >
-        <DialogHeader className="gap-1">
-          <DialogTitle className="text-xl font-bold text-center">
-            ברוכים הבאים ל-FullBody
-          </DialogTitle>
-          <DialogDescription className="text-sm text-muted-foreground text-center">
-            האם כבר שוחחת עם חבר הרבלייף עצמאי?
-          </DialogDescription>
-        </DialogHeader>
-        {content}
-      </DialogContent>
-    </Dialog>
+    <div
+      dir="rtl"
+      className="fixed bottom-20 left-6 z-40 bg-background border border-border rounded-xl shadow-[0_4px_24px_rgba(0,0,0,0.1)] p-4 max-w-xs animate-in slide-in-from-left-4 fade-in duration-300"
+    >
+      <div className="flex items-start gap-2">
+        <div className="flex-1 min-w-0">
+          <p className="text-xs text-foreground leading-relaxed">
+            כבר יש לך מפיץ אישי של הרבלייף? מומלץ להמשיך את הרכישה מולו. אם לא, נשמח ללוות אותך כחלק מקהילת FullBody!
+          </p>
+          <div className="flex items-center gap-3 mt-3">
+            <button
+              onClick={handleDismiss}
+              className="bg-foreground text-background text-xs font-semibold px-4 py-1.5 rounded-md hover:bg-foreground/90 transition-colors whitespace-nowrap"
+            >
+              הבנתי, המשך
+            </button>
+            <a
+              href={HERBALIFE_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={handleDismiss}
+              className="text-[11px] text-muted-foreground underline underline-offset-2 hover:text-foreground transition-colors whitespace-nowrap"
+            >
+              יש לי מפיץ
+            </a>
+          </div>
+        </div>
+        <button
+          onClick={handleDismiss}
+          className="text-muted-foreground hover:text-foreground transition-colors shrink-0"
+          aria-label="סגור"
+        >
+          <X className="w-4 h-4" />
+        </button>
+      </div>
+    </div>
   );
 }
