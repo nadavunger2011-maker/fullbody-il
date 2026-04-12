@@ -22,6 +22,7 @@ import CartDrawer from './CartDrawer';
 import ProFooter from './ProFooter';
 import ProProductFilters, { type ActiveFilters } from './ProProductFilters';
 import { PRICE_RANGES } from '@/data/herbalifeProducts';
+import HeroProductSlider from './HeroProductSlider';
 
 type SortOption = 'default' | 'price-asc' | 'price-desc';
 
@@ -253,39 +254,7 @@ export default function ProBody() {
 
       <CartDrawer isOpen={isCartOpen} onClose={() => setIsCartOpen(false)} />
 
-      {/* Hero Section - Herbalife themed */}
-      <section className="relative h-[600px] flex items-center justify-center overflow-hidden">
-        <div className="absolute inset-0 z-0">
-          <img
-            src="https://images.unsplash.com/photo-1517836357463-d25dfeac3438?ixlib=rb-1.2.1&auto=format&fit=crop&w=1200&q=75&fm=webp"
-            alt="Gym Background"
-            className="w-full h-full object-cover"
-            loading="eager"
-          />
-          <div className="absolute inset-0 bg-gradient-to-r from-foreground/90 via-foreground/70 to-transparent" />
-        </div>
-        <div className="container mx-auto px-4 z-10 relative">
-          <div className="max-w-2xl text-primary-foreground">
-            <span className="bg-[hsl(142,70%,35%)] px-4 py-1.5 rounded-md text-sm font-bold uppercase tracking-wide mb-4 inline-block text-white animate-fade-in">
-              Herbalife Nutrition
-            </span>
-            <h1 className="text-5xl md:text-7xl font-black mb-6 leading-tight animate-slide-up">
-              תזונה חכמה <br /> <span className="text-[hsl(142,70%,50%)]">לחיים בריאים</span>
-            </h1>
-            <p className="text-xl md:text-2xl mb-8 text-primary-foreground/80 font-light animate-slide-up" style={{ animationDelay: '0.1s' }}>
-              מוצרי Herbalife מקוריים לשליטה במשקל, ביצועי ספורט ובריאות יומיומית.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 animate-slide-up" style={{ animationDelay: '0.2s' }}>
-              <a href="#products" className="bg-[hsl(142,70%,35%)] hover:bg-[hsl(142,70%,30%)] text-white font-bold py-4 px-8 rounded-lg text-center transition-all shadow-cta">
-                לכל המוצרים
-              </a>
-              <Link to="/contact" className="bg-primary-foreground/10 hover:bg-primary-foreground/20 backdrop-blur-sm border border-primary-foreground/30 text-primary-foreground font-bold py-4 px-8 rounded-lg text-center transition-all">
-                ייעוץ אישי
-              </Link>
-            </div>
-          </div>
-        </div>
-      </section>
+      <HeroProductSlider />
 
       {/* Trust Badges */}
       <section className="py-12 bg-card border-b border-border">
