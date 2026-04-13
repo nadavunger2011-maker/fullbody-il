@@ -88,6 +88,9 @@ export default function ProFooter() {
               <p className="text-xs text-primary-foreground/60 leading-relaxed">
                 מוצרי הרבלייף אינם מיועדים לדיאגנוזה, לטיפול, לריפוי או למניעה של מחלות. האתר מופעל ע"י מפיץ עצמאי ואינו האתר הרשמי של חברת הרבלייף ישראל.
               </p>
+              <p className="text-xs text-primary-foreground/60 leading-relaxed">
+                נשים בהריון, נשים מניקות, אנשים הנוטלים תרופות מרשם וילדים – יש להיוועץ ברופא לפני השימוש.
+              </p>
               <p className="text-sm text-primary-foreground/60">
                 © {new Date().getFullYear()} FullBody - נדב אונגר. כל הזכויות שמורות.
               </p>
