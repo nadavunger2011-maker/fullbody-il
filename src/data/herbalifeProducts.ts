@@ -400,7 +400,7 @@ export const PRO_PRODUCT_CATEGORIES = [
   { id: 'weight', name: 'אבקות חלבון' },
   { id: 'sport', name: 'ספורט ואנרגיה' },
   { id: 'digestion', name: 'עיכול והידרציה' },
-  { id: 'lifestyle', name: 'לייף סטייל' },
+  
 ];
 
 // Filter option lists derived from product data
