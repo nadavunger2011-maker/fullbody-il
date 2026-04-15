@@ -151,7 +151,7 @@ const HeroCarousel = () => {
     </section>
   );
 };
-
+export default function ProBody() {
 
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isCartOpen, setIsCartOpen] = useState(false);
