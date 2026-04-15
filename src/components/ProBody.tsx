@@ -1,4 +1,6 @@
 import greenLogo from '@/assets/logo-green.png';
+import heroSlide1 from '@/assets/hero-slide-1.png';
+import heroSlide2 from '@/assets/hero-slide-2.png';
 import { trackAddToCart as gtmTrackAddToCart } from '@/lib/gtm';
 import { trackAddToCart as fbTrackAddToCart } from '@/lib/fbPixel';
 import { trackGA4AddToCart } from '@/lib/ga4';
@@ -98,8 +100,59 @@ const ProductSkeleton = ({ index }: { index: number }) => (
     </div>
   </div>
 );
+const heroSlides = [
+  { image: heroSlide1, alt: "Fullbody Israel - מוצרי ספורט ותזונה", link: "#products" },
+  { image: heroSlide2, alt: "Full Body Israel - שייקי חלבון מובילים", link: "#products" },
+];
 
+const HeroCarousel = () => {
+  const [currentSlide, setCurrentSlide] = React.useState(0);
+
+  React.useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentSlide((prev) => (prev + 1) % heroSlides.length);
+    }, 5000);
+    return () => clearInterval(timer);
+  }, []);
+
+  return (
+    <section className="relative w-full overflow-hidden">
+      <div className="relative w-full" style={{ aspectRatio: '1/1', maxHeight: '600px' }}>
+        {heroSlides.map((slide, index) => (
+          <a
+            key={index}
+            href={slide.link}
+            className={`absolute inset-0 transition-opacity duration-700 ease-in-out ${
+              index === currentSlide ? 'opacity-100 z-10' : 'opacity-0 z-0'
+            }`}
+          >
+            <img
+              src={slide.image}
+              alt={slide.alt}
+              className="w-full h-full object-cover"
+              loading={index === 0 ? "eager" : "lazy"}
+            />
+          </a>
+        ))}
+      </div>
+      {/* Dots */}
+      <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-20 flex gap-2">
+        {heroSlides.map((_, index) => (
+          <button
+            key={index}
+            onClick={() => setCurrentSlide(index)}
+            className={`w-3 h-3 rounded-full transition-all ${
+              index === currentSlide ? 'bg-white scale-125' : 'bg-white/50'
+            }`}
+            aria-label={`שקופית ${index + 1}`}
+          />
+        ))}
+      </div>
+    </section>
+  );
+};
 export default function ProBody() {
+
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
@@ -253,39 +306,8 @@ export default function ProBody() {
 
       <CartDrawer isOpen={isCartOpen} onClose={() => setIsCartOpen(false)} />
 
-      {/* Hero Section - Herbalife themed */}
-      <section className="relative h-[600px] flex items-center justify-center overflow-hidden">
-        <div className="absolute inset-0 z-0">
-          <img
-            src="https://images.unsplash.com/photo-1517836357463-d25dfeac3438?ixlib=rb-1.2.1&auto=format&fit=crop&w=1200&q=75&fm=webp"
-            alt="Gym Background"
-            className="w-full h-full object-cover"
-            loading="eager"
-          />
-          <div className="absolute inset-0 bg-gradient-to-r from-foreground/90 via-foreground/70 to-transparent" />
-        </div>
-        <div className="container mx-auto px-4 z-10 relative">
-          <div className="max-w-2xl text-primary-foreground">
-            <span className="bg-[hsl(142,70%,35%)] px-4 py-1.5 rounded-md text-sm font-bold uppercase tracking-wide mb-4 inline-block text-white animate-fade-in">
-              Herbalife Nutrition
-            </span>
-            <h1 className="text-5xl md:text-7xl font-black mb-6 leading-tight animate-slide-up">
-              תזונה חכמה <br /> <span className="text-[hsl(142,70%,50%)]">לחיים בריאים</span>
-            </h1>
-            <p className="text-xl md:text-2xl mb-8 text-primary-foreground/80 font-light animate-slide-up" style={{ animationDelay: '0.1s' }}>
-              מוצרי Herbalife מקוריים לשליטה במשקל, ביצועי ספורט ובריאות יומיומית.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 animate-slide-up" style={{ animationDelay: '0.2s' }}>
-              <a href="#products" className="bg-[hsl(142,70%,35%)] hover:bg-[hsl(142,70%,30%)] text-white font-bold py-4 px-8 rounded-lg text-center transition-all shadow-cta">
-                לכל המוצרים
-              </a>
-              <Link to="/contact" className="bg-primary-foreground/10 hover:bg-primary-foreground/20 backdrop-blur-sm border border-primary-foreground/30 text-primary-foreground font-bold py-4 px-8 rounded-lg text-center transition-all">
-                ייעוץ אישי
-              </Link>
-            </div>
-          </div>
-        </div>
-      </section>
+      {/* Hero Carousel */}
+      <HeroCarousel />
 
       {/* Trust Badges */}
       <section className="py-12 bg-card border-b border-border">
