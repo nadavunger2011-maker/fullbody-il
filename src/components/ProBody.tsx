@@ -1,4 +1,6 @@
 import greenLogo from '@/assets/logo-green.png';
+import heroSlide1 from '@/assets/hero-slide-1.png';
+import heroSlide2 from '@/assets/hero-slide-2.png';
 import { trackAddToCart as gtmTrackAddToCart } from '@/lib/gtm';
 import { trackAddToCart as fbTrackAddToCart } from '@/lib/fbPixel';
 import { trackGA4AddToCart } from '@/lib/ga4';
