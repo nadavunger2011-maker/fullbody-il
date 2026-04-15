@@ -100,8 +100,59 @@ const ProductSkeleton = ({ index }: { index: number }) => (
     </div>
   </div>
 );
+const heroSlides = [
+  { image: heroSlide1, alt: "Fullbody Israel - מוצרי ספורט ותזונה", link: "#products" },
+  { image: heroSlide2, alt: "Full Body Israel - שייקי חלבון מובילים", link: "#products" },
+];
 
-export default function ProBody() {
+const HeroCarousel = () => {
+  const [currentSlide, setCurrentSlide] = React.useState(0);
+
+  React.useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentSlide((prev) => (prev + 1) % heroSlides.length);
+    }, 5000);
+    return () => clearInterval(timer);
+  }, []);
+
+  return (
+    <section className="relative w-full overflow-hidden">
+      <div className="relative w-full" style={{ aspectRatio: '1/1', maxHeight: '600px' }}>
+        {heroSlides.map((slide, index) => (
+          <a
+            key={index}
+            href={slide.link}
+            className={`absolute inset-0 transition-opacity duration-700 ease-in-out ${
+              index === currentSlide ? 'opacity-100 z-10' : 'opacity-0 z-0'
+            }`}
+          >
+            <img
+              src={slide.image}
+              alt={slide.alt}
+              className="w-full h-full object-cover"
+              loading={index === 0 ? "eager" : "lazy"}
+            />
+          </a>
+        ))}
+      </div>
+      {/* Dots */}
+      <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-20 flex gap-2">
+        {heroSlides.map((_, index) => (
+          <button
+            key={index}
+            onClick={() => setCurrentSlide(index)}
+            className={`w-3 h-3 rounded-full transition-all ${
+              index === currentSlide ? 'bg-white scale-125' : 'bg-white/50'
+            }`}
+            aria-label={`שקופית ${index + 1}`}
+          />
+        ))}
+      </div>
+    </section>
+  );
+};
+
+
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
