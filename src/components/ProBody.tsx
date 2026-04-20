@@ -382,7 +382,7 @@ export default function ProBody() {
               })
               .map((product, index) => (
               <Link
-                key={product.sku}
+                key={product.handle}
                 to={`/product/${product.handle}`}
                 className="group bg-card rounded-xl overflow-hidden hover:shadow-hover transition-all duration-300 border border-border flex flex-col animate-fade-in"
                 style={{ animationDelay: `${index * 0.05}s` }}
