@@ -641,7 +641,7 @@ export const herbalifeProducts: HerbalifeProduct[] = [
     caloriesPerServing: 135,
   },
   {
-    sku: '3972',
+    sku: '3973',
     handle: 'protein-bars-lemon',
     shopifyHandle: 'protein-bars-lemon',
     title: 'חטיפי חלבון בטעם לימון',
