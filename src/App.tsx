@@ -36,6 +36,9 @@ import ProShippingPolicy from "./pages/ProShippingPolicy";
 import ProReturnPolicy from "./pages/ProReturnPolicy";
 import ProPrivacyPolicy from "./pages/ProPrivacyPolicy";
 import ProTerms from "./pages/ProTerms";
+import ProProducts from "./pages/ProProducts";
+import ProBundles from "./pages/ProBundles";
+import { Navigate } from "react-router-dom";
 import { trackPageView } from "@/lib/analytics";
 import ScrollToTop from "@/components/ScrollToTop";
 import FirstVisitModal from "@/components/FirstVisitModal";
@@ -74,6 +77,9 @@ function AppContent() {
       <Routes>
         {/* PRO (Herbalife) — root site */}
         <Route path="/" element={<ProIndex />} />
+        <Route path="/products" element={<ProProducts />} />
+        <Route path="/bundles" element={<ProBundles />} />
+        <Route path="/articles" element={<Navigate to="/blog" replace />} />
         <Route path="/product/:handle" element={<ProProductDetail />} />
         <Route path="/blog" element={<ProBlog />} />
         <Route path="/blog/:slug" element={<ProBlogPost />} />
