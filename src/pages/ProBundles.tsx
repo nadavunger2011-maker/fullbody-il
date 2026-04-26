@@ -83,14 +83,12 @@ export default function ProBundles() {
         const variant = getFirstAvailableVariant(shopifyProduct);
         if (!variant) continue;
         const ok = await addItem({
+          product: shopifyProduct,
           variantId: variant.id,
-          productId: shopifyProduct.node.id,
-          title: shopifyProduct.node.title,
           variantTitle: variant.title,
-          price: parseFloat(variant.price.amount),
-          image: shopifyProduct.node.images.edges[0]?.node.url || local.image,
-          handle: shopifyProduct.node.handle,
+          price: variant.price,
           quantity: 1,
+          selectedOptions: variant.selectedOptions || [],
         });
         if (ok) added++;
       }
