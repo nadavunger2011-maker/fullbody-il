@@ -33,7 +33,8 @@ export default function ProFooter() {
               <h4 className="font-bold text-lg mb-4 text-accent">מידע וניווט</h4>
               <ul className="space-y-2 text-sm text-primary-foreground/80">
                 <li><Link to="/" className="hover:text-primary-foreground transition">דף הבית</Link></li>
-                <li><a href="/#products" className="hover:text-primary-foreground transition">חנות מוצרים</a></li>
+                <li><Link to="/products" className="hover:text-primary-foreground transition">חנות מוצרים</Link></li>
+                <li><Link to="/bundles" className="hover:text-primary-foreground transition">חבילות במחיר מיוחד</Link></li>
                 <li><Link to="/blog" className="hover:text-primary-foreground transition">מאמרים</Link></li>
                 <li><Link to="/contact" className="hover:text-primary-foreground transition">צור קשר</Link></li>
               </ul>
