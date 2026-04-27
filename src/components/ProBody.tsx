@@ -267,6 +267,12 @@ export default function ProBody() {
           <nav className="hidden lg:flex items-center gap-8 font-bold text-muted-foreground">
             <Link to="/" className="hover:text-accent transition-colors">ראשי</Link>
             <div className="relative group">
+              <Link to="/products" className="hover:text-accent transition-colors flex items-center gap-1">
+                כל המוצרים
+              </Link>
+              <Link to="/bundles" className="hover:text-accent transition-colors flex items-center gap-1">
+                חבילות 🔥
+              </Link>
               <a href="#products" className="hover:text-accent transition-colors flex items-center gap-1">
                 מוצרים
                 <ChevronDown className="w-4 h-4 transition-transform group-hover:rotate-180" />

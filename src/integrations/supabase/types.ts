@@ -212,6 +212,48 @@ export type Database = {
         }
         Relationships: []
       }
+      product_reviews: {
+        Row: {
+          content: string
+          created_at: string
+          id: string
+          is_approved: boolean
+          is_verified_purchase: boolean
+          product_handle: string
+          rating: number
+          reviewer_email: string | null
+          reviewer_name: string
+          title: string | null
+          updated_at: string
+        }
+        Insert: {
+          content: string
+          created_at?: string
+          id?: string
+          is_approved?: boolean
+          is_verified_purchase?: boolean
+          product_handle: string
+          rating: number
+          reviewer_email?: string | null
+          reviewer_name: string
+          title?: string | null
+          updated_at?: string
+        }
+        Update: {
+          content?: string
+          created_at?: string
+          id?: string
+          is_approved?: boolean
+          is_verified_purchase?: boolean
+          product_handle?: string
+          rating?: number
+          reviewer_email?: string | null
+          reviewer_name?: string
+          title?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never

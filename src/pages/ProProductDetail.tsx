@@ -12,6 +12,7 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/
 import { getProductByHandle, getRelatedProducts } from '@/data/herbalifeProducts';
 import { fetchProductByHandle, ShopifyProduct, getFirstAvailableVariant } from '@/lib/shopify';
 import ProFooter from '@/components/ProFooter';
+import ProductReviews from '@/components/ProductReviews';
 import CartDrawer from '@/components/CartDrawer';
 import { useCartStore } from '@/stores/cartStore';
 import { toast } from 'sonner';
@@ -413,6 +414,13 @@ export default function ProProductDetail() {
               </a>
             )}
           </div>
+        </div>
+      </section>
+
+      {/* Customer Reviews */}
+      <section className="bg-background py-12">
+        <div className="container mx-auto px-4 max-w-3xl">
+          <ProductReviews productHandle={product.handle} productTitle={product.title} />
         </div>
       </section>
 

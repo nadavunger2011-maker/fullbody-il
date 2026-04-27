@@ -5,13 +5,14 @@ import { supabase } from '@/integrations/supabase/client';
 import { 
   BarChart3, Eye, ShoppingCart, CreditCard, TrendingUp, Users, 
   LogOut, Loader2, Calendar, Plus, Trash2, DollarSign, MousePointer,
-  Globe, ArrowUpRight, ArrowDownRight, Package, Brain, Sparkles, Clock, Key, Copy, Check
+  Globe, ArrowUpRight, ArrowDownRight, Package, Brain, Sparkles, Clock, Key, Copy, Check, Star
 } from 'lucide-react';
 import {
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
   PieChart, Pie, Cell, LineChart, Line, Area, AreaChart
 } from 'recharts';
 import ReactMarkdown from 'react-markdown';
+import AdminReviews from '@/components/admin/AdminReviews';
 
 type DateRange = '7d' | '30d' | '90d' | 'all';
 
@@ -55,7 +56,7 @@ export default function AdminDashboard() {
   const [adSpend, setAdSpend] = useState<AdSpendRow[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [dateRange, setDateRange] = useState<DateRange>('30d');
-  const [activeTab, setActiveTab] = useState<'overview' | 'products' | 'traffic' | 'funnel' | 'adspend' | 'ai' | 'api'>('overview');
+  const [activeTab, setActiveTab] = useState<'overview' | 'products' | 'traffic' | 'funnel' | 'adspend' | 'ai' | 'api' | 'reviews'>('overview');
   const [apiCredentials, setApiCredentials] = useState<{ supabase_url: string; service_role_key: string; anon_key: string } | null>(null);
   const [isApiLoading, setIsApiLoading] = useState(false);
   const [aiAnalysis, setAiAnalysis] = useState<string>('');
@@ -370,6 +371,7 @@ export default function AdminDashboard() {
     { id: 'overview' as const, label: 'סקירה כללית', icon: BarChart3 },
     { id: 'funnel' as const, label: 'משפך ונטישה', icon: Users },
     { id: 'products' as const, label: 'מוצרים', icon: Package },
+    { id: 'reviews' as const, label: 'ביקורות', icon: Star },
     { id: 'traffic' as const, label: 'מקורות תנועה', icon: Globe },
     { id: 'adspend' as const, label: 'הוצאות פרסום', icon: DollarSign },
     { id: 'ai' as const, label: 'ניתוח AI', icon: Brain },
@@ -902,6 +904,17 @@ export default function AdminDashboard() {
                   </div>
                 )}
               </div>
+            </div>
+          )}
+
+          {/* Reviews Tab */}
+          {activeTab === 'reviews' && (
+            <div className="bg-white/[0.03] rounded-2xl border border-white/5 p-6">
+              <h3 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
+                <Star className="w-5 h-5 text-yellow-400" /> ניהול ביקורות לקוחות
+              </h3>
+              <p className="text-gray-400 text-sm mb-6">אישור, סינון ומחיקה של ביקורות לקוחות. ביקורות חדשות נכנסות כממתינות לאישור.</p>
+              <AdminReviews />
             </div>
           )}
 
