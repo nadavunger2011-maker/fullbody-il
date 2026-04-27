@@ -907,6 +907,17 @@ export default function AdminDashboard() {
             </div>
           )}
 
+          {/* Reviews Tab */}
+          {activeTab === 'reviews' && (
+            <div className="bg-white/[0.03] rounded-2xl border border-white/5 p-6">
+              <h3 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
+                <Star className="w-5 h-5 text-yellow-400" /> ניהול ביקורות לקוחות
+              </h3>
+              <p className="text-gray-400 text-sm mb-6">אישור, סינון ומחיקה של ביקורות לקוחות. ביקורות חדשות נכנסות כממתינות לאישור.</p>
+              <AdminReviews />
+            </div>
+          )}
+
           {/* API Keys Tab */}
           {activeTab === 'api' && (
             <div className="space-y-6">
