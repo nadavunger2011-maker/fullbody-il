@@ -40,6 +40,7 @@ import ProProducts from "./pages/ProProducts";
 import ProBundles from "./pages/ProBundles";
 import { Navigate } from "react-router-dom";
 import { trackPageView } from "@/lib/analytics";
+import { trackPageView as trackFBPageView } from "@/lib/fbPixel";
 import ScrollToTop from "@/components/ScrollToTop";
 import FirstVisitModal from "@/components/FirstVisitModal";
 
@@ -60,6 +61,8 @@ function AnalyticsListener() {
       trackGA4PageView(path);
       if (!path.startsWith('/admin')) {
         trackPageView(path);
+        // Facebook Pixel: fire PageView on every SPA route change
+        trackFBPageView();
       }
     }, 0);
     return () => window.clearTimeout(t);
