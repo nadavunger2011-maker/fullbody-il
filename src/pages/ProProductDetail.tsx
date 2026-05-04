@@ -13,7 +13,7 @@ import { getProductByHandle, getRelatedProducts } from '@/data/herbalifeProducts
 import { fetchProductByHandle, ShopifyProduct, getFirstAvailableVariant } from '@/lib/shopify';
 import ProFooter from '@/components/ProFooter';
 import ProductReviews from '@/components/ProductReviews';
-import { TestimonialSlider } from '@/components/SocialProofSection';
+
 import CartDrawer from '@/components/CartDrawer';
 import { useCartStore } from '@/stores/cartStore';
 import { toast } from 'sonner';
@@ -425,12 +425,6 @@ export default function ProProductDetail() {
         </div>
        </section>
 
-       {/* Success Stories */}
-       <section className="bg-secondary/10 py-12">
-         <div className="container mx-auto px-4 max-w-4xl">
-           <TestimonialSlider />
-         </div>
-       </section>
 
       <section className="bg-secondary/20 py-16">
         <div className="container mx-auto px-4 max-w-3xl">
