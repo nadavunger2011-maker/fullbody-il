@@ -118,7 +118,7 @@ const HeroCarousel = () => {
 
   return (
     <section className="relative w-full overflow-hidden">
-      <div className="relative w-full" style={{ aspectRatio: '1/1', maxHeight: '600px' }}>
+      <div className="relative w-full" style={{ aspectRatio: '21/9', maxHeight: '520px' }}>
         {heroSlides.map((slide, index) => (
           <a
             key={index}
@@ -130,7 +130,7 @@ const HeroCarousel = () => {
             <img
               src={slide.image}
               alt={slide.alt}
-              className="w-full h-full object-cover"
+              className="w-full h-full object-contain bg-background"
               loading={index === 0 ? "eager" : "lazy"}
             />
           </a>
