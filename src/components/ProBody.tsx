@@ -23,6 +23,7 @@ import { toast } from 'sonner';
 import CartDrawer from './CartDrawer';
 import ProFooter from './ProFooter';
 import ProProductFilters, { type ActiveFilters } from './ProProductFilters';
+import { TestimonialSlider, SuccessByNumbers, CrossCategoryFitness } from './SocialProofSection';
 import { PRICE_RANGES } from '@/data/herbalifeProducts';
 
 type SortOption = 'default' | 'price-asc' | 'price-desc';
