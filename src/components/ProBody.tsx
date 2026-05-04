@@ -118,7 +118,7 @@ const HeroCarousel = () => {
 
   return (
     <section className="relative w-full overflow-hidden">
-      <div className="relative w-full" style={{ aspectRatio: '1/1', maxHeight: '600px' }}>
+      <div className="relative w-full" style={{ aspectRatio: '21/9', maxHeight: '520px' }}>
         {heroSlides.map((slide, index) => (
           <a
             key={index}
@@ -130,7 +130,7 @@ const HeroCarousel = () => {
             <img
               src={slide.image}
               alt={slide.alt}
-              className="w-full h-full object-cover"
+              className="w-full h-full object-contain bg-background"
               loading={index === 0 ? "eager" : "lazy"}
             />
           </a>
@@ -265,30 +265,28 @@ export default function ProBody() {
             <img src={greenLogo} alt="FullBody Pro" className="h-14 md:h-16 w-auto" />
           </Link>
 
-          <nav className="hidden lg:flex items-center gap-8 font-bold text-muted-foreground">
-            <Link to="/" className="hover:text-accent transition-colors">ראשי</Link>
+          <nav className="hidden lg:flex items-center gap-6 font-semibold text-sm text-muted-foreground">
+            <Link to="/" className="hover:text-accent transition-colors py-2">ראשי</Link>
             <div className="relative group">
-              <Link to="/products" className="hover:text-accent transition-colors flex items-center gap-1">
-                כל המוצרים
-              </Link>
-              <Link to="/bundles" className="hover:text-accent transition-colors flex items-center gap-1">
-                חבילות 🔥
-              </Link>
-              <a href="#products" className="hover:text-accent transition-colors flex items-center gap-1">
+              <button className="hover:text-accent transition-colors flex items-center gap-1 py-2">
                 מוצרים
                 <ChevronDown className="w-4 h-4 transition-transform group-hover:rotate-180" />
-              </a>
+              </button>
               <div className="absolute top-full right-0 pt-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
                 <div className="bg-card border border-border rounded-lg shadow-hover py-2 min-w-[200px]">
-                  <a href="#products" onClick={() => setSelectedCategory('all')} className="block px-4 py-2.5 hover:bg-secondary hover:text-accent transition-colors font-medium">כל המוצרים</a>
+                  <Link to="/products" className="block px-4 py-2.5 hover:bg-secondary hover:text-accent transition-colors font-semibold">כל המוצרים</Link>
                   {PRO_CATEGORIES.filter(c => c.id !== 'all' && products.some(p => getProCategory(p.node.title) === c.id)).map(category => (
                     <a key={category.id} href="#products" onClick={() => setSelectedCategory(category.id)} className="block px-4 py-2.5 hover:bg-secondary hover:text-accent transition-colors">{category.name}</a>
                   ))}
                 </div>
               </div>
             </div>
-            <Link to="/blog" className="hover:text-accent transition-colors">מאמרים</Link>
-            <Link to="/contact" className="hover:text-accent transition-colors">צור קשר</Link>
+            <Link to="/bundles" className="hover:text-accent transition-colors py-2 flex items-center gap-1">
+              חבילות
+              <span className="text-xs bg-accent/15 text-accent px-1.5 py-0.5 rounded-full font-bold">🔥 חדש</span>
+            </Link>
+            <Link to="/blog" className="hover:text-accent transition-colors py-2">מאמרים</Link>
+            <Link to="/contact" className="hover:text-accent transition-colors py-2">צור קשר</Link>
           </nav>
 
           <div className="flex items-center gap-4">
