@@ -462,6 +462,11 @@ export default function ProBody() {
         </div>
       </section>
 
+      {/* Social Proof */}
+      <TestimonialSlider />
+      <SuccessByNumbers />
+      <CrossCategoryFitness />
+
       {/* Blog Section */}
       <section className="py-16 bg-secondary/30">
         <div className="container mx-auto px-4">
