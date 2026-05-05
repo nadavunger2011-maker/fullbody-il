@@ -43,6 +43,6 @@ Allow: /
 User-agent: *
 Allow: /
 Disallow: /admin
-Disallow: /nava
+Allow: /nava
 
 Sitemap: https://fullbody.co.il/sitemap.xml
