@@ -117,8 +117,8 @@ const HeroCarousel = () => {
   }, []);
 
   return (
-    <section className="relative w-full overflow-hidden bg-background">
-      <div className="relative w-full max-h-[600px] flex items-center justify-center">
+    <section className="relative w-full overflow-hidden bg-black">
+      <div className="relative w-full max-h-[600px] flex items-center justify-center bg-black">
         {heroSlides.map((slide, index) => (
           <a
             key={index}
