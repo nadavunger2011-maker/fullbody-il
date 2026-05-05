@@ -476,7 +476,7 @@ export default function FullBody() {
         <div className="absolute inset-0 z-0">
           <img 
             src="https://images.unsplash.com/photo-1517836357463-d25dfeac3438?ixlib=rb-1.2.1&auto=format&fit=crop&w=1200&q=75&fm=webp" 
-            alt="Gym Background" 
+            alt="FullBody - תוספי תזונה פרימיום לספורטאים בישראל"
             className="w-full h-full object-cover"
             loading="eager"
             decoding="async"
@@ -494,10 +494,10 @@ export default function FullBody() {
               FullBody תוספי תזונה פרימיום לספורטאים. נבדק מדעית, טעים בטירוף, תוצאות מוכחות.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 animate-slide-up" style={{ animationDelay: '0.2s' }}>
-              <a href="#products" className="bg-accent hover:bg-accent/90 text-accent-foreground font-bold py-4 px-8 rounded-lg text-center transition-all shadow-cta">
+              <a href="#products" className="bg-accent hover:bg-accent/90 text-accent-foreground font-bold py-4 px-8 rounded-lg text-center transition-all shadow-cta cursor-pointer">
                 קנה עכשיו
               </a>
-              <a href="#about" className="bg-primary-foreground/10 hover:bg-primary-foreground/20 backdrop-blur-sm border border-primary-foreground/30 text-primary-foreground font-bold py-4 px-8 rounded-lg text-center transition-all">
+              <a href="#about" className="bg-primary-foreground/10 hover:bg-primary-foreground/20 backdrop-blur-sm border border-primary-foreground/30 text-primary-foreground font-bold py-4 px-8 rounded-lg text-center transition-all cursor-pointer">
                 למידע נוסף
               </a>
             </div>
@@ -519,7 +519,7 @@ export default function FullBody() {
                 <div className="w-14 h-14 bg-accent/10 rounded-full flex items-center justify-center text-accent group-hover:bg-accent group-hover:text-accent-foreground transition-all duration-300">
                   <item.icon className="w-6 h-6" />
                 </div>
-                <h3 className="font-bold text-foreground">{item.title}</h3>
+                <div className="font-bold text-foreground">{item.title}</div>
                 <p className="text-sm text-muted-foreground">{item.text}</p>
               </div>
             ))}
@@ -653,7 +653,7 @@ export default function FullBody() {
       <section className="py-20 bg-secondary/30">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-black text-foreground mb-4">חדשות ועדכונים</h2>
+            <h2 className="text-3xl md:text-4xl font-black text-foreground mb-4">מאמרים ומדריכים</h2>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
               מאמרים, טיפים ומידע מקצועי על תזונה, אימון ואורח חיים בריא
             </p>
@@ -676,9 +676,9 @@ export default function FullBody() {
                 <span className="inline-block bg-accent/10 text-accent px-3 py-1 rounded-full text-sm font-bold mb-3">
                   תוספים
                 </span>
-                <h3 className="text-xl font-bold text-foreground mb-2 group-hover:text-accent transition-colors">
+                <h4 className="text-xl font-bold text-foreground mb-2 group-hover:text-accent transition-colors">
                   המדריך המלא לאבקות חלבון למתחילים
-                </h3>
+                </h4>
                 <p className="text-muted-foreground text-sm line-clamp-2">
                   כל מה שצריך לדעת על אבקות חלבון: סוגים, יתרונות, ואיך לבחור את האבקה הנכונה עבורכם.
                 </p>
@@ -701,9 +701,9 @@ export default function FullBody() {
                 <span className="inline-block bg-accent/10 text-accent px-3 py-1 rounded-full text-sm font-bold mb-3">
                   אימון
                 </span>
-                <h3 className="text-xl font-bold text-foreground mb-2 group-hover:text-accent transition-colors">
+                <h4 className="text-xl font-bold text-foreground mb-2 group-hover:text-accent transition-colors">
                   5 טיפים לאימון מושלם עם פרה-וורקאאוט
-                </h3>
+                </h4>
                 <p className="text-muted-foreground text-sm line-clamp-2">
                   איך להפיק את המקסימום מתוסף הפרה-וורקאאוט שלכם ולשפר את הביצועים באימון.
                 </p>
@@ -726,9 +726,9 @@ export default function FullBody() {
                 <span className="inline-block bg-accent/10 text-accent px-3 py-1 rounded-full text-sm font-bold mb-3">
                   תוספים
                 </span>
-                <h3 className="text-xl font-bold text-foreground mb-2 group-hover:text-accent transition-colors">
+                <h4 className="text-xl font-bold text-foreground mb-2 group-hover:text-accent transition-colors">
                   היתרונות של קריאטין: למה כל ספורטאי צריך
-                </h3>
+                </h4>
                 <p className="text-muted-foreground text-sm line-clamp-2">
                   קריאטין הוא אחד התוספים הנחקרים ביותר. גלו את כל היתרונות שלו לבניית שריר וכוח.
                 </p>
