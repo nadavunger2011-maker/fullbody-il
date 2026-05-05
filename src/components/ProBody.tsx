@@ -117,8 +117,8 @@ const HeroCarousel = () => {
   }, []);
 
   return (
-    <section className="relative w-full overflow-hidden bg-background">
-      <div className="relative w-full max-h-[600px] flex items-center justify-center">
+    <section className="relative w-full overflow-hidden bg-black">
+      <div className="relative w-full max-h-[600px] flex items-center justify-center bg-black">
         {heroSlides.map((slide, index) => (
           <a
             key={index}
@@ -139,9 +139,9 @@ const HeroCarousel = () => {
         {/* Dark gradient overlay for nav readability */}
         <div className="absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-black/30 to-transparent z-15 pointer-events-none" />
       </div>
-      {/* Visible H1 overlay */}
-      <div className="absolute bottom-16 inset-x-0 z-20 text-center pointer-events-none">
-        <h1 className="text-3xl md:text-4xl font-black text-white drop-shadow-[0_2px_8px_rgba(0,0,0,0.7)]">
+      {/* Visible H1 below hero */}
+      <div className="bg-black py-3 text-center">
+        <h1 className="text-2xl md:text-3xl lg:text-4xl font-black text-white">
           פולבאדי - תוספי תזונה ואבקות חלבון למתאמנים
         </h1>
       </div>
