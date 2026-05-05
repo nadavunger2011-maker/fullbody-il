@@ -117,8 +117,8 @@ const HeroCarousel = () => {
   }, []);
 
   return (
-    <section className="relative w-full overflow-hidden">
-      <div className="relative w-full" style={{ maxHeight: '600px' }}>
+    <section className="relative w-full overflow-hidden bg-background">
+      <div className="relative w-full max-h-[600px] flex items-center justify-center">
         {heroSlides.map((slide, index) => (
           <a
             key={index}
@@ -131,11 +131,19 @@ const HeroCarousel = () => {
             <img
               src={slide.image}
               alt={slide.alt}
-              className="w-full h-auto object-cover"
+              className="w-full h-auto max-h-[600px] object-contain mx-auto"
               loading={index === 0 ? "eager" : "lazy"}
             />
           </a>
         ))}
+        {/* Dark gradient overlay for nav readability */}
+        <div className="absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-black/30 to-transparent z-15 pointer-events-none" />
+      </div>
+      {/* Visible H1 overlay */}
+      <div className="absolute bottom-16 inset-x-0 z-20 text-center pointer-events-none">
+        <h1 className="text-3xl md:text-4xl font-black text-white drop-shadow-[0_2px_8px_rgba(0,0,0,0.7)]">
+          פולבאדי - תוספי תזונה ואבקות חלבון למתאמנים
+        </h1>
       </div>
       {/* Dots */}
       <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-20 flex gap-2">
@@ -312,14 +320,13 @@ export default function ProBody() {
 
       <CartDrawer isOpen={isCartOpen} onClose={() => setIsCartOpen(false)} />
 
-      {/* H1 - SEO Primary Heading */}
-      <h1 className="sr-only">פולבאדי - תוספי תזונה ואבקות חלבון למתאמנים</h1>
+      {/* H1 is now visible inside HeroCarousel */}
 
       {/* Hero Carousel - Full Width Edge-to-Edge */}
       <HeroCarousel />
 
       {/* Trust Badges */}
-      <section className="py-12 bg-card border-b border-border">
+      <section className="py-14 md:py-16 bg-card border-b border-border">
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
             {[
