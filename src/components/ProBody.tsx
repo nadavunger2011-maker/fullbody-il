@@ -117,36 +117,48 @@ const HeroCarousel = () => {
   }, []);
 
   return (
-    <section className="relative w-full overflow-hidden bg-black">
-      <div className="relative w-full max-h-[600px] flex items-center justify-center bg-black">
-        {heroSlides.map((slide, index) => (
-          <a
-            key={index}
-            href={slide.link}
-            className={`block w-full transition-opacity duration-700 ease-in-out ${
-              index === currentSlide ? 'opacity-100 relative z-10' : 'opacity-0 absolute inset-0 z-0'
-            }`}
-            style={{ pointerEvents: index === currentSlide ? 'auto' : 'none' }}
-          >
+    <section
+      className="relative w-screen left-1/2 right-1/2 -mx-[50vw] overflow-hidden bg-black"
+      style={{ height: 'min(80vh, 760px)' }}
+    >
+      {/* Slides */}
+      {heroSlides.map((slide, index) => (
+        <div
+          key={index}
+          className={`absolute inset-0 transition-opacity duration-700 ease-in-out ${
+            index === currentSlide ? 'opacity-100 z-10' : 'opacity-0 z-0'
+          }`}
+        >
+          {/* Blurred backdrop fills any empty space */}
+          <img
+            src={slide.image}
+            alt=""
+            aria-hidden="true"
+            className="absolute inset-0 w-full h-full object-cover scale-110 blur-2xl opacity-60"
+          />
+          {/* Main hero image — no crop, centered */}
+          <a href={slide.link} className="relative block w-full h-full">
             <img
               src={slide.image}
               alt={slide.alt}
-              className="w-full h-auto max-h-[600px] object-contain mx-auto"
-              loading={index === 0 ? "eager" : "lazy"}
+              className="w-full h-full object-cover object-center"
+              loading={index === 0 ? 'eager' : 'lazy'}
             />
+            {/* Dark gradient bottom→top for H1 readability */}
+            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-black/40 pointer-events-none" />
           </a>
-        ))}
-        {/* Dark gradient overlay for nav readability */}
-        <div className="absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-black/30 to-transparent z-15 pointer-events-none" />
-      </div>
-      {/* Visible H1 below hero */}
-      <div className="bg-black py-3 text-center">
-        <h1 className="text-2xl md:text-3xl lg:text-4xl font-black text-white">
-          פולבאדי - תוספי תזונה ואבקות חלבון למתאמנים
+        </div>
+      ))}
+
+      {/* Premium H1 overlay */}
+      <div className="absolute inset-x-0 bottom-12 md:bottom-16 z-20 px-4 text-center pointer-events-none">
+        <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black text-white drop-shadow-[0_4px_12px_rgba(0,0,0,0.7)] max-w-4xl mx-auto leading-tight">
+          FullBody — תזונת פרימיום, Wellness ומוצרי הרבלייף בכשרות מהודרת
         </h1>
       </div>
+
       {/* Dots */}
-      <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-20 flex gap-2">
+      <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-30 flex gap-2">
         {heroSlides.map((_, index) => (
           <button
             key={index}
@@ -158,6 +170,13 @@ const HeroCarousel = () => {
           />
         ))}
       </div>
+
+      {/* Mobile height override */}
+      <style>{`
+        @media (max-width: 768px) {
+          section[data-hero="pro"] { height: 60vh !important; }
+        }
+      `}</style>
     </section>
   );
 };
