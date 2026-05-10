@@ -425,7 +425,7 @@ export default function ProBody() {
                 <div className="relative overflow-hidden aspect-square bg-secondary/20 flex items-center justify-center p-6">
                   <img
                     src={product.image}
-                    alt={`${product.title} - ${product.category} מבית Herbalife`}
+                    alt={`${product.title} - ${product.category} הרבלייף כשרות מהודרת | פולבאדי`}
                     loading="lazy"
                     className="max-w-[75%] max-h-[75%] object-contain transform group-hover:scale-105 transition-transform duration-500"
                   />
