@@ -252,7 +252,7 @@ export default function ProBody() {
   return (
     <div dir="rtl" className="font-sans text-foreground bg-background min-h-screen">
       <Helmet>
-        <title>פולבאדי - תוספי תזונה ואבקות חלבון למתאמנים | Herbalife מקורי</title>
+        <title>FullBody - תזונת פרימיום, Wellness ומוצרי הרבלייף בכשרות מהודרת</title>
         <meta name="description" content="מפיץ מורשה של Herbalife בישראל. שייקי חלבון, ויטמינים ותוספי תזונה לכושר ובריאות. משלוח חינם מעל ₪299." />
         <link rel="canonical" href="https://fullbody.co.il/" />
         <meta property="og:title" content="פולבאדי - תוספי תזונה ואבקות חלבון למתאמנים" />
