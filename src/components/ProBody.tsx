@@ -102,8 +102,8 @@ const ProductSkeleton = ({ index }: { index: number }) => (
   </div>
 );
 const heroSlides = [
-  { image: heroSlide1, alt: "פולבאדי - מוצרי הרבלייף כשרות מהודרת, אבקת חלבון H24 ותוספי תזונה לספורטאים", link: "#products" },
-  { image: heroSlide2, alt: "שייקי הרבלייף Formula 1 ואבקת חלבון H24 בכשרות מהודרת - פולבאדי ישראל", link: "#products" },
+  { image: heroSlide1, alt: "פולבאדי - מוצרי הרבלייף כשר למהדרין, אבקת חלבון H24 ותוספי תזונה לספורטאים", link: "#products" },
+  { image: heroSlide2, alt: "שייקי הרבלייף Formula 1 ואבקת חלבון H24 בכשר למהדרין - פולבאדי ישראל", link: "#products" },
 ];
 
 const HeroCarousel = () => {
@@ -153,7 +153,7 @@ const HeroCarousel = () => {
       {/* Premium H1 overlay */}
       <div className="absolute inset-x-0 bottom-12 md:bottom-16 z-20 px-4 text-center pointer-events-none">
         <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black text-white drop-shadow-[0_4px_12px_rgba(0,0,0,0.7)] max-w-4xl mx-auto leading-tight">
-          FullBody — תזונת פרימיום, Wellness ומוצרי הרבלייף בכשרות מהודרת
+          FullBody — תזונת פרימיום, Wellness ומוצרי הרבלייף בכשר למהדרין
         </h1>
       </div>
 
@@ -252,7 +252,7 @@ export default function ProBody() {
   return (
     <div dir="rtl" className="font-sans text-foreground bg-background min-h-screen">
       <Helmet>
-        <title>FullBody - תזונת פרימיום, Wellness ומוצרי הרבלייף בכשרות מהודרת</title>
+        <title>FullBody - תזונת פרימיום, Wellness ומוצרי הרבלייף בכשר למהדרין</title>
         <meta name="description" content="מפיץ מורשה של Herbalife בישראל. שייקי חלבון, ויטמינים ותוספי תזונה לכושר ובריאות. משלוח חינם מעל ₪299." />
         <link rel="canonical" href="https://fullbody.co.il/" />
         <meta property="og:title" content="פולבאדי - תוספי תזונה ואבקות חלבון למתאמנים" />
@@ -425,7 +425,7 @@ export default function ProBody() {
                 <div className="relative overflow-hidden aspect-square bg-secondary/20 flex items-center justify-center p-6">
                   <img
                     src={product.image}
-                    alt={`${product.title} - ${product.category} הרבלייף כשרות מהודרת | פולבאדי`}
+                    alt={`${product.title} - ${product.category} הרבלייף כשר למהדרין | פולבאדי`}
                     loading="lazy"
                     className="max-w-[75%] max-h-[75%] object-contain transform group-hover:scale-105 transition-transform duration-500"
                   />
