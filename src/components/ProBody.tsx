@@ -333,7 +333,7 @@ export default function ProBody() {
 
       <CartDrawer isOpen={isCartOpen} onClose={() => setIsCartOpen(false)} />
 
-      {/* H1 is now visible inside HeroCarousel */}
+      
 
       {/* Hero Carousel - Full Width Edge-to-Edge */}
       <HeroCarousel />
