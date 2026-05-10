@@ -118,8 +118,8 @@ const HeroCarousel = () => {
 
   return (
     <section
-      className="relative w-screen left-1/2 right-1/2 -mx-[50vw] overflow-hidden bg-black"
-      style={{ height: 'min(80vh, 760px)' }}
+      data-hero="pro"
+      className="relative w-screen left-1/2 right-1/2 -mx-[50vw] overflow-hidden bg-black h-[60vh] md:h-[80vh] max-h-[760px]"
     >
       {/* Slides */}
       {heroSlides.map((slide, index) => (
