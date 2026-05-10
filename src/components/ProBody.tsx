@@ -365,7 +365,13 @@ export default function ProBody() {
         <div className="container mx-auto px-4">
           <div className="text-center mb-8">
             <span className="text-[hsl(142,70%,35%)] font-bold text-sm tracking-widest uppercase">Herbalife Nutrition</span>
-            <h2 className="text-4xl font-black text-primary mt-2">המוצרים שלנו</h2>
+            <h2 className="text-3xl md:text-4xl font-black text-primary mt-2">קטלוג מוצרי הרבלייף: פתרונות תזונה מתקדמים</h2>
+            {/* SEO sub-categories */}
+            <div className="sr-only">
+              <h3>ירידה במשקל וחיטוב</h3>
+              <h3>תזונת ספורט H24</h3>
+              <h3>חיוניות ותזונה יומית</h3>
+            </div>
           </div>
 
           {/* Category Filter */}
