@@ -171,12 +171,6 @@ const HeroCarousel = () => {
         ))}
       </div>
 
-      {/* Mobile height override */}
-      <style>{`
-        @media (max-width: 768px) {
-          section[data-hero="pro"] { height: 60vh !important; }
-        }
-      `}</style>
     </section>
   );
 };
