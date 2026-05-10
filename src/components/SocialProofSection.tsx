@@ -148,7 +148,7 @@ const TestimonialSlider = ({ filter = 'all' }: { filter?: TestimonialFilter }) =
 
   const t = list[current] ?? list[0];
   if (!t) return null;
-  const CatIcon = categoryLabels[t.category].icon;
+  const CatIcon = categoryLabels[t.displayCategory].icon;
 
   return (
     <section className="py-20 bg-background">
@@ -169,7 +169,7 @@ const TestimonialSlider = ({ filter = 'all' }: { filter?: TestimonialFilter }) =
             <div className="flex items-center gap-2 mb-6">
               <span className="inline-flex items-center gap-1.5 bg-[hsl(142,70%,35%)]/10 text-[hsl(142,70%,35%)] text-xs font-bold px-3 py-1.5 rounded-full">
                 <CatIcon className="w-3.5 h-3.5" />
-                {categoryLabels[t.category].label}
+                {categoryLabels[t.displayCategory].label}
               </span>
             </div>
 
@@ -189,7 +189,7 @@ const TestimonialSlider = ({ filter = 'all' }: { filter?: TestimonialFilter }) =
             <div className="flex items-center justify-between">
               <div>
                 <p className="font-bold text-foreground">{t.name}, {t.age}</p>
-                <p className="text-sm text-[hsl(142,70%,35%)] font-semibold">{t.result}</p>
+                <p className="text-sm text-[hsl(142,70%,35%)] font-semibold">{t.displayResult}</p>
               </div>
             </div>
 
