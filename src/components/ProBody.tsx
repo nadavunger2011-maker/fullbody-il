@@ -511,7 +511,7 @@ export default function ProBody() {
                     <span className="flex items-center gap-1"><Calendar className="w-3 h-3" />{new Date(post.date).toLocaleDateString('he-IL')}</span>
                     <span className="flex items-center gap-1"><Clock className="w-3 h-3" />{post.readTime} דק'</span>
                   </div>
-                  <h4 className="font-bold text-lg text-foreground mb-2 group-hover:text-[hsl(142,70%,35%)] transition-colors line-clamp-2">{post.title}</h4>
+                  <h3 className="font-bold text-lg text-foreground mb-2 group-hover:text-[hsl(142,70%,35%)] transition-colors line-clamp-2">{post.title}</h3>
                   <p className="text-sm text-muted-foreground line-clamp-2">{post.excerpt}</p>
                 </div>
               </Link>
