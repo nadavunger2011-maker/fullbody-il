@@ -135,7 +135,7 @@ const TestimonialSlider = ({ filter = 'all' }: { filter?: TestimonialFilter }) =
         <div className="relative max-w-3xl mx-auto">
           {/* Card */}
           <div
-            key={current}
+            key={`${filter}-${current}`}
             className="bg-card border border-border rounded-2xl p-8 md:p-12 shadow-sm animate-fade-in"
           >
             {/* Category badge */}
