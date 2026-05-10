@@ -494,7 +494,7 @@ export default function ProBody() {
       <section className="py-16 bg-secondary/30">
         <div className="container mx-auto px-4">
           <div className="text-center mb-10">
-            <h2 className="text-3xl md:text-4xl font-black text-foreground mb-3">מאמרים ומדריכים</h2>
+            <h2 className="text-3xl md:text-4xl font-black text-foreground mb-3">בלוג FullBody: ביו-האקינג, תזונת ספורט ואורח חיים בריא</h2>
             <p className="text-muted-foreground text-lg max-w-2xl mx-auto">טיפים, מדריכים ומידע מקצועי בנושאי תזונה, כושר ואורח חיים בריא</p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
