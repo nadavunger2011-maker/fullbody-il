@@ -101,10 +101,10 @@ export default function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
         <div className="flex flex-col h-full">
           {/* Header */}
           <div className="flex items-center justify-between p-4 border-b border-border">
-            <h2 className="text-xl font-bold flex items-center gap-2">
+            <div className="text-xl font-bold flex items-center gap-2" role="heading" aria-level={2}>
               <ShoppingBag className="w-5 h-5" />
               עגלת קניות ({items.length})
-            </h2>
+            </div>
             <button 
               onClick={onClose}
               className="p-2 hover:bg-muted rounded-lg transition"
