@@ -426,6 +426,9 @@ export default function ProProductDetail() {
         </div>
        </section>
 
+      {/* Contextual Social Proof — filtered by product category */}
+      <TestimonialSlider filter={mapCategoryToTestimonialFilter(product.categoryId)} />
+
 
       <section className="bg-secondary/20 py-16">
         <div className="container mx-auto px-4 max-w-3xl">
