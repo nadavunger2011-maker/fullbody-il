@@ -102,8 +102,8 @@ const ProductSkeleton = ({ index }: { index: number }) => (
   </div>
 );
 const heroSlides = [
-  { image: heroSlide1, alt: "פולבאדי ישראל - מוצרי Herbalife מקוריים לספורט ותזונה", link: "#products" },
-  { image: heroSlide2, alt: "פולבאדי - שייקי חלבון Herbalife ותוספי תזונה מובילים בישראל", link: "#products" },
+  { image: heroSlide1, alt: "פולבאדי - מוצרי הרבלייף כשר למהדרין, אבקת חלבון H24 ותוספי תזונה לספורטאים", link: "#products" },
+  { image: heroSlide2, alt: "שייקי הרבלייף Formula 1 ואבקת חלבון H24 בכשר למהדרין - פולבאדי ישראל", link: "#products" },
 ];
 
 const HeroCarousel = () => {
@@ -117,36 +117,48 @@ const HeroCarousel = () => {
   }, []);
 
   return (
-    <section className="relative w-full overflow-hidden bg-black">
-      <div className="relative w-full max-h-[600px] flex items-center justify-center bg-black">
-        {heroSlides.map((slide, index) => (
-          <a
-            key={index}
-            href={slide.link}
-            className={`block w-full transition-opacity duration-700 ease-in-out ${
-              index === currentSlide ? 'opacity-100 relative z-10' : 'opacity-0 absolute inset-0 z-0'
-            }`}
-            style={{ pointerEvents: index === currentSlide ? 'auto' : 'none' }}
-          >
+    <section
+      data-hero="pro"
+      className="relative w-screen left-1/2 right-1/2 -mx-[50vw] overflow-hidden bg-black h-[60vh] md:h-[80vh] max-h-[760px]"
+    >
+      {/* Slides */}
+      {heroSlides.map((slide, index) => (
+        <div
+          key={index}
+          className={`absolute inset-0 transition-opacity duration-700 ease-in-out ${
+            index === currentSlide ? 'opacity-100 z-10' : 'opacity-0 z-0'
+          }`}
+        >
+          {/* Blurred backdrop fills any empty space */}
+          <img
+            src={slide.image}
+            alt=""
+            aria-hidden="true"
+            className="absolute inset-0 w-full h-full object-cover scale-110 blur-2xl opacity-60"
+          />
+          {/* Main hero image — no crop, centered */}
+          <a href={slide.link} className="relative block w-full h-full">
             <img
               src={slide.image}
               alt={slide.alt}
-              className="w-full h-auto max-h-[600px] object-contain mx-auto"
-              loading={index === 0 ? "eager" : "lazy"}
+              className="w-full h-full object-cover object-center"
+              loading={index === 0 ? 'eager' : 'lazy'}
             />
+            {/* Dark gradient bottom→top for H1 readability */}
+            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-black/40 pointer-events-none" />
           </a>
-        ))}
-        {/* Dark gradient overlay for nav readability */}
-        <div className="absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-black/30 to-transparent z-15 pointer-events-none" />
-      </div>
-      {/* Visible H1 below hero */}
-      <div className="bg-black py-3 text-center">
-        <h1 className="text-2xl md:text-3xl lg:text-4xl font-black text-white">
-          פולבאדי - תוספי תזונה ואבקות חלבון למתאמנים
+        </div>
+      ))}
+
+      {/* Premium H1 overlay */}
+      <div className="absolute inset-x-0 bottom-12 md:bottom-16 z-20 px-4 text-center pointer-events-none">
+        <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black text-white drop-shadow-[0_4px_12px_rgba(0,0,0,0.7)] max-w-4xl mx-auto leading-tight">
+          FullBody — תזונת פרימיום, Wellness ומוצרי הרבלייף בכשר למהדרין
         </h1>
       </div>
+
       {/* Dots */}
-      <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-20 flex gap-2">
+      <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-30 flex gap-2">
         {heroSlides.map((_, index) => (
           <button
             key={index}
@@ -158,6 +170,7 @@ const HeroCarousel = () => {
           />
         ))}
       </div>
+
     </section>
   );
 };
@@ -239,7 +252,7 @@ export default function ProBody() {
   return (
     <div dir="rtl" className="font-sans text-foreground bg-background min-h-screen">
       <Helmet>
-        <title>פולבאדי - תוספי תזונה ואבקות חלבון למתאמנים | Herbalife מקורי</title>
+        <title>FullBody - תזונת פרימיום, Wellness ומוצרי הרבלייף בכשר למהדרין</title>
         <meta name="description" content="מפיץ מורשה של Herbalife בישראל. שייקי חלבון, ויטמינים ותוספי תזונה לכושר ובריאות. משלוח חינם מעל ₪299." />
         <link rel="canonical" href="https://fullbody.co.il/" />
         <meta property="og:title" content="פולבאדי - תוספי תזונה ואבקות חלבון למתאמנים" />
@@ -320,7 +333,7 @@ export default function ProBody() {
 
       <CartDrawer isOpen={isCartOpen} onClose={() => setIsCartOpen(false)} />
 
-      {/* H1 is now visible inside HeroCarousel */}
+      
 
       {/* Hero Carousel - Full Width Edge-to-Edge */}
       <HeroCarousel />
@@ -352,7 +365,13 @@ export default function ProBody() {
         <div className="container mx-auto px-4">
           <div className="text-center mb-8">
             <span className="text-[hsl(142,70%,35%)] font-bold text-sm tracking-widest uppercase">Herbalife Nutrition</span>
-            <h2 className="text-4xl font-black text-primary mt-2">המוצרים שלנו</h2>
+            <h2 className="text-3xl md:text-4xl font-black text-primary mt-2">קטלוג מוצרי הרבלייף: פתרונות תזונה מתקדמים</h2>
+            {/* SEO sub-categories */}
+            <div className="sr-only">
+              <h3>ירידה במשקל וחיטוב</h3>
+              <h3>תזונת ספורט H24</h3>
+              <h3>חיוניות ותזונה יומית</h3>
+            </div>
           </div>
 
           {/* Category Filter */}
@@ -406,7 +425,7 @@ export default function ProBody() {
                 <div className="relative overflow-hidden aspect-square bg-secondary/20 flex items-center justify-center p-6">
                   <img
                     src={product.image}
-                    alt={`${product.title} - ${product.category} מבית Herbalife`}
+                    alt={`${product.title} - ${product.category} הרבלייף כשר למהדרין | פולבאדי`}
                     loading="lazy"
                     className="max-w-[75%] max-h-[75%] object-contain transform group-hover:scale-105 transition-transform duration-500"
                   />
@@ -433,22 +452,11 @@ export default function ProBody() {
         </div>
       </section>
 
-      {/* Blog Teaser */}
-      <section className="py-16 bg-card border-b border-border">
-        <div className="container mx-auto px-4 text-center">
-          <h2 className="text-3xl font-black text-foreground mb-4">מאמרים ומדריכים</h2>
-          <p className="text-muted-foreground mb-6 max-w-2xl mx-auto">טיפים, מתכונים ומדריכים בנושאי תזונה, כושר ואורח חיים בריא</p>
-          <Link to="/blog" className="inline-flex items-center gap-2 bg-[hsl(142,70%,35%)] text-white font-bold py-3 px-6 rounded-lg hover:opacity-90 transition-all cursor-pointer">
-            לכל המאמרים <ArrowRight className="w-5 h-5" />
-          </Link>
-        </div>
-      </section>
-
       {/* Why Herbalife Section */}
       <section className="py-20 bg-secondary/30">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-black text-foreground mb-4">למה Herbalife?</h2>
+            <h2 className="text-3xl md:text-4xl font-black text-foreground mb-4">למה FullBody? המדע שמאחורי Herbalife Nutrition</h2>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
               מותג עולמי מוביל בתזונה מאוזנת ואורח חיים בריא, פועל ב-90 מדינות
             </p>
@@ -472,6 +480,12 @@ export default function ProBody() {
       </section>
 
       {/* Social Proof */}
+      {/* Social Proof — Success Stories */}
+      <section aria-labelledby="success-stories-heading" className="pt-12 bg-secondary/20">
+        <div className="container mx-auto px-4 text-center">
+          <h2 id="success-stories-heading" className="text-3xl md:text-4xl font-black text-foreground">סיפורי הצלחה ותוצאות בשטח</h2>
+        </div>
+      </section>
       <TestimonialSlider />
       <SuccessByNumbers />
       <CrossCategoryFitness />
@@ -480,7 +494,7 @@ export default function ProBody() {
       <section className="py-16 bg-secondary/30">
         <div className="container mx-auto px-4">
           <div className="text-center mb-10">
-            <h2 className="text-3xl md:text-4xl font-black text-foreground mb-3">מאמרים ומדריכים</h2>
+            <h2 className="text-3xl md:text-4xl font-black text-foreground mb-3">בלוג FullBody: ביו-האקינג, תזונת ספורט ואורח חיים בריא</h2>
             <p className="text-muted-foreground text-lg max-w-2xl mx-auto">טיפים, מדריכים ומידע מקצועי בנושאי תזונה, כושר ואורח חיים בריא</p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -497,7 +511,7 @@ export default function ProBody() {
                     <span className="flex items-center gap-1"><Calendar className="w-3 h-3" />{new Date(post.date).toLocaleDateString('he-IL')}</span>
                     <span className="flex items-center gap-1"><Clock className="w-3 h-3" />{post.readTime} דק'</span>
                   </div>
-                  <h4 className="font-bold text-lg text-foreground mb-2 group-hover:text-[hsl(142,70%,35%)] transition-colors line-clamp-2">{post.title}</h4>
+                  <h3 className="font-bold text-lg text-foreground mb-2 group-hover:text-[hsl(142,70%,35%)] transition-colors line-clamp-2">{post.title}</h3>
                   <p className="text-sm text-muted-foreground line-clamp-2">{post.excerpt}</p>
                 </div>
               </Link>
