@@ -456,7 +456,7 @@ export default function ProBody() {
       <section className="py-20 bg-secondary/30">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-black text-foreground mb-4">למה Herbalife?</h2>
+            <h2 className="text-3xl md:text-4xl font-black text-foreground mb-4">למה FullBody? המדע שמאחורי Herbalife Nutrition</h2>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
               מותג עולמי מוביל בתזונה מאוזנת ואורח חיים בריא, פועל ב-90 מדינות
             </p>
