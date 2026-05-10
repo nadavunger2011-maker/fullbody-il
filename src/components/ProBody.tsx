@@ -480,6 +480,12 @@ export default function ProBody() {
       </section>
 
       {/* Social Proof */}
+      {/* Social Proof — Success Stories */}
+      <section aria-labelledby="success-stories-heading" className="pt-12 bg-secondary/20">
+        <div className="container mx-auto px-4 text-center">
+          <h2 id="success-stories-heading" className="text-3xl md:text-4xl font-black text-foreground">סיפורי הצלחה ותוצאות בשטח</h2>
+        </div>
+      </section>
       <TestimonialSlider />
       <SuccessByNumbers />
       <CrossCategoryFitness />
