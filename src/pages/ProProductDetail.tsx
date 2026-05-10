@@ -13,6 +13,7 @@ import { getProductByHandle, getRelatedProducts } from '@/data/herbalifeProducts
 import { fetchProductByHandle, ShopifyProduct, getFirstAvailableVariant } from '@/lib/shopify';
 import ProFooter from '@/components/ProFooter';
 import ProductReviews from '@/components/ProductReviews';
+import { TestimonialSlider, mapCategoryToTestimonialFilter } from '@/components/SocialProofSection';
 
 import CartDrawer from '@/components/CartDrawer';
 import { useCartStore } from '@/stores/cartStore';
