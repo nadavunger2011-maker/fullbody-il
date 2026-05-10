@@ -102,8 +102,8 @@ const ProductSkeleton = ({ index }: { index: number }) => (
   </div>
 );
 const heroSlides = [
-  { image: heroSlide1, alt: "פולבאדי ישראל - מוצרי Herbalife מקוריים לספורט ותזונה", link: "#products" },
-  { image: heroSlide2, alt: "פולבאדי - שייקי חלבון Herbalife ותוספי תזונה מובילים בישראל", link: "#products" },
+  { image: heroSlide1, alt: "פולבאדי - מוצרי הרבלייף כשרות מהודרת, אבקת חלבון H24 ותוספי תזונה לספורטאים", link: "#products" },
+  { image: heroSlide2, alt: "שייקי הרבלייף Formula 1 ואבקת חלבון H24 בכשרות מהודרת - פולבאדי ישראל", link: "#products" },
 ];
 
 const HeroCarousel = () => {
