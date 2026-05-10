@@ -24,7 +24,7 @@ export default function FirstVisitModal() {
   return (
     <div
       dir="rtl"
-      className="fixed bottom-4 left-4 z-40 bg-background border border-border rounded-lg shadow-[0_4px_20px_rgba(0,0,0,0.12)] p-1.5 w-[180px] sm:w-[220px] animate-in slide-in-from-left-4 fade-in duration-300"
+      className="fixed bottom-4 left-4 z-40 bg-background border border-border rounded-lg shadow-[0_4px_20px_rgba(0,0,0,0.12)] p-2 w-[360px] sm:w-[440px] max-w-[90vw] animate-in slide-in-from-left-4 fade-in duration-300"
     >
       <button
         onClick={handleDismiss}
