@@ -486,7 +486,7 @@ export default function ProBody() {
           <h2 id="success-stories-heading" className="text-3xl md:text-4xl font-black text-foreground">סיפורי הצלחה ותוצאות בשטח</h2>
         </div>
       </section>
-      <TestimonialSlider />
+      <TestimonialSlider filter="mix" />
       <SuccessByNumbers />
       <CrossCategoryFitness />
 

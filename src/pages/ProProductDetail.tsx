@@ -13,6 +13,7 @@ import { getProductByHandle, getRelatedProducts } from '@/data/herbalifeProducts
 import { fetchProductByHandle, ShopifyProduct, getFirstAvailableVariant } from '@/lib/shopify';
 import ProFooter from '@/components/ProFooter';
 import ProductReviews from '@/components/ProductReviews';
+import { TestimonialSlider, mapCategoryToTestimonialFilter } from '@/components/SocialProofSection';
 
 import CartDrawer from '@/components/CartDrawer';
 import { useCartStore } from '@/stores/cartStore';
@@ -424,6 +425,9 @@ export default function ProProductDetail() {
           <ProductReviews productHandle={product.handle} productTitle={product.title} />
         </div>
        </section>
+
+      {/* Contextual Social Proof — filtered by product category */}
+      <TestimonialSlider filter={mapCategoryToTestimonialFilter(product.categoryId)} />
 
 
       <section className="bg-secondary/20 py-16">

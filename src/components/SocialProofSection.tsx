@@ -71,10 +71,37 @@ const categoryLabels: Record<TestimonialCategory, { label: string; icon: React.E
   'sports': { label: 'ספורט וביצועים', icon: Dumbbell },
 };
 
+/* ─── Filtering helpers ─── */
+export type TestimonialFilter = TestimonialCategory | 'mix' | 'all';
+
+/** Map an internal product categoryId (or Shopify tag) to a testimonial category. */
+export const mapCategoryToTestimonialFilter = (categoryId?: string): TestimonialFilter => {
+  if (!categoryId) return 'all';
+  const id = categoryId.toLowerCase();
+  if (['weight', 'weight-loss', 'weightloss'].includes(id)) return 'weight-loss';
+  if (['sport', 'sports', 'fitness', 'h24'].includes(id)) return 'sports';
+  if (['vitamins', 'digestion', 'snacks', 'tea', 'supplements', 'daily'].includes(id)) return 'daily-nutrition';
+  return 'all';
+};
+
+/* The "mix" preset for the homepage — top 3 across categories. */
+const MIX_NAMES = ['הדר כהן', 'ספיר מהצרי', 'יובל לוי'];
+
+const getFilteredTestimonials = (filter: TestimonialFilter): Testimonial[] => {
+  if (filter === 'mix') return testimonials.filter(t => MIX_NAMES.includes(t.name));
+  if (filter === 'all') return testimonials;
+  const subset = testimonials.filter(t => t.category === filter);
+  return subset.length ? subset : testimonials;
+};
+
 /* ─── Testimonial Slider ─── */
-const TestimonialSlider = () => {
+const TestimonialSlider = ({ filter = 'all' }: { filter?: TestimonialFilter }) => {
+  const list = React.useMemo(() => getFilteredTestimonials(filter), [filter]);
   const [current, setCurrent] = useState(0);
   const [isAnimating, setIsAnimating] = useState(false);
+
+  // Reset when filter changes
+  useEffect(() => { setCurrent(0); }, [filter]);
 
   const goTo = useCallback((index: number) => {
     if (isAnimating) return;
@@ -83,15 +110,17 @@ const TestimonialSlider = () => {
     setTimeout(() => setIsAnimating(false), 500);
   }, [isAnimating]);
 
-  const next = useCallback(() => goTo((current + 1) % testimonials.length), [current, goTo]);
-  const prev = useCallback(() => goTo((current - 1 + testimonials.length) % testimonials.length), [current, goTo]);
+  const next = useCallback(() => goTo((current + 1) % list.length), [current, goTo, list.length]);
+  const prev = useCallback(() => goTo((current - 1 + list.length) % list.length), [current, goTo, list.length]);
 
   useEffect(() => {
+    if (list.length <= 1) return;
     const timer = setInterval(next, 6000);
     return () => clearInterval(timer);
-  }, [next]);
+  }, [next, list.length]);
 
-  const t = testimonials[current];
+  const t = list[current] ?? list[0];
+  if (!t) return null;
   const CatIcon = categoryLabels[t.category].icon;
 
   return (
@@ -106,7 +135,7 @@ const TestimonialSlider = () => {
         <div className="relative max-w-3xl mx-auto">
           {/* Card */}
           <div
-            key={current}
+            key={`${filter}-${current}`}
             className="bg-card border border-border rounded-2xl p-8 md:p-12 shadow-sm animate-fade-in"
           >
             {/* Category badge */}
@@ -160,7 +189,7 @@ const TestimonialSlider = () => {
 
           {/* Dots */}
           <div className="flex justify-center gap-2 mt-8">
-            {testimonials.map((_, i) => (
+            {list.map((_, i) => (
               <button
                 key={i}
                 onClick={() => goTo(i)}
