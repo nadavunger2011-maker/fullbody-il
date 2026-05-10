@@ -135,6 +135,7 @@ const App = () => (
           <AppContent />
           <WhatsAppButton />
           <FirstVisitModal />
+          <CookieNotice />
         </BrowserRouter>
       </TooltipProvider>
     </QueryClientProvider>
