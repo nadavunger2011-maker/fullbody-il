@@ -419,13 +419,6 @@ export default function ProProductDetail() {
         </div>
       </section>
 
-      {/* Customer Reviews */}
-      <section className="bg-background py-12">
-        <div className="container mx-auto px-4 max-w-3xl">
-          <ProductReviews productHandle={product.handle} productTitle={product.title} />
-        </div>
-       </section>
-
       {/* Contextual Social Proof — filtered by product category */}
       <TestimonialSlider filter={mapCategoryToTestimonialFilter(product.categoryId)} />
 
