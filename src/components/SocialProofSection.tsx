@@ -189,7 +189,7 @@ const TestimonialSlider = ({ filter = 'all' }: { filter?: TestimonialFilter }) =
 
           {/* Dots */}
           <div className="flex justify-center gap-2 mt-8">
-            {testimonials.map((_, i) => (
+            {list.map((_, i) => (
               <button
                 key={i}
                 onClick={() => goTo(i)}
