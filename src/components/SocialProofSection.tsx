@@ -8,8 +8,12 @@ interface Testimonial {
   name: string;
   age: number;
   quote: string;
+  /** Default result tag (used when no contextual override exists). */
   result: string;
-  category: TestimonialCategory;
+  /** Categories this testimonial is genuinely relevant for. */
+  categories: TestimonialCategory[];
+  /** Optional per-category overrides so a single real story reads correctly per product context. */
+  contextual?: Partial<Record<TestimonialCategory, { result?: string; primaryCategory?: TestimonialCategory }>>;
   rating: number;
 }
 
@@ -20,7 +24,7 @@ const testimonials: Testimonial[] = [
     age: 47,
     quote: 'הפחתתי כ-21 ק"ג וצמצמתי כ-70 ס"מ בהיקפים. אני מרגיש הרבה יותר אנרגטי, ערני וקליל. המטרה שלי היא להמשיך עד שאראה קוביות בבטן.',
     result: 'הפחתה של 21 ק"ג',
-    category: 'weight-loss',
+    categories: ['weight-loss'],
     rating: 5,
   },
   {
@@ -28,7 +32,7 @@ const testimonials: Testimonial[] = [
     age: 28,
     quote: 'הפחתתי 35.5 ק"ג וירדתי 6 מידות מכנסיים, מ-46 ל-36. למדתי לשמור על אורח חיים בריא ופעיל באמצעות שימוש נכון במוצרים והכוונה מהמאמן שלי.',
     result: 'הפחתה של 35.5 ק"ג',
-    category: 'weight-loss',
+    categories: ['weight-loss'],
     rating: 5,
   },
   {
@@ -36,7 +40,7 @@ const testimonials: Testimonial[] = [
     age: 29,
     quote: 'הפחתתי 25 ק"ג ומעלה מ-14% אחוזי שומן. בעזרת הליווי והמעטפת התומכת שקיבלתי, הגעתי לצמצום משמעותי בהיקפים.',
     result: 'הפחתה של 25 ק"ג',
-    category: 'weight-loss',
+    categories: ['weight-loss'],
     rating: 5,
   },
   {
@@ -44,15 +48,18 @@ const testimonials: Testimonial[] = [
     age: 24,
     quote: 'ההישגים הם בראש ובראשונה הביטחון שלי, השמחה שלי והסיפוק. קיבלתי את החיים שלי בחזרה, ואני אוהבת שאני עוסקת בתחום שמאפשר לי לעזור לאנשים.',
     result: 'ביטחון וסיפוק',
-    category: 'daily-nutrition',
+    categories: ['daily-nutrition'],
     rating: 5,
   },
   {
     name: 'ספיר מהצרי',
     age: 30,
     quote: 'הפחתתי 28 ק"ג ו-19 אחוזי שומן. האוכל כבר לא אויב שלי, קיבלתי שליטה על החיים שלי והביצועים הספורטיביים השתפרו באופן מדהים.',
-    result: 'השינוי הוא גם פנימי',
-    category: 'sports',
+    result: 'הפחתה של 28 ק"ג',
+    categories: ['weight-loss', 'sports'],
+    contextual: {
+      sports: { result: 'שיפור משמעותי בביצועים ספורטיביים', primaryCategory: 'sports' },
+    },
     rating: 5,
   },
   {
@@ -60,7 +67,7 @@ const testimonials: Testimonial[] = [
     age: 21,
     quote: 'הפחתתי 48 ק"ג ו-27 אחוזי שומן. לפני שבחרתי את הדרך, עמדתי בפני ניתוח קיבה. נתתי צ\'אנס להרבלייף ועבד בגדול!',
     result: 'הפחתה של 48 ק"ג',
-    category: 'weight-loss',
+    categories: ['weight-loss'],
     rating: 5,
   },
 ];
@@ -87,11 +94,31 @@ export const mapCategoryToTestimonialFilter = (categoryId?: string): Testimonial
 /* The "mix" preset for the homepage — top 3 across categories. */
 const MIX_NAMES = ['הדר כהן', 'ספיר מהצרי', 'יובל לוי'];
 
-const getFilteredTestimonials = (filter: TestimonialFilter): Testimonial[] => {
-  if (filter === 'mix') return testimonials.filter(t => MIX_NAMES.includes(t.name));
-  if (filter === 'all') return testimonials;
-  const subset = testimonials.filter(t => t.category === filter);
-  return subset.length ? subset : testimonials;
+interface DisplayTestimonial extends Testimonial {
+  displayCategory: TestimonialCategory;
+  displayResult: string;
+}
+
+const project = (t: Testimonial, filter: TestimonialFilter): DisplayTestimonial => {
+  const ctxKey: TestimonialCategory | undefined =
+    filter === 'mix' || filter === 'all' ? t.categories[0] : (filter as TestimonialCategory);
+  const override = ctxKey ? t.contextual?.[ctxKey] : undefined;
+  const displayCategory = override?.primaryCategory ?? ctxKey ?? t.categories[0];
+  return {
+    ...t,
+    displayCategory,
+    displayResult: override?.result ?? t.result,
+  };
+};
+
+const getFilteredTestimonials = (filter: TestimonialFilter): DisplayTestimonial[] => {
+  if (filter === 'mix') {
+    return testimonials.filter(t => MIX_NAMES.includes(t.name)).map(t => project(t, 'mix'));
+  }
+  if (filter === 'all') return testimonials.map(t => project(t, 'all'));
+  const subset = testimonials.filter(t => t.categories.includes(filter as TestimonialCategory));
+  // No fallback: if no relevant testimonial exists, return empty so the section can hide.
+  return subset.map(t => project(t, filter));
 };
 
 /* ─── Testimonial Slider ─── */
@@ -121,7 +148,7 @@ const TestimonialSlider = ({ filter = 'all' }: { filter?: TestimonialFilter }) =
 
   const t = list[current] ?? list[0];
   if (!t) return null;
-  const CatIcon = categoryLabels[t.category].icon;
+  const CatIcon = categoryLabels[t.displayCategory].icon;
 
   return (
     <section className="py-20 bg-background">
@@ -142,7 +169,7 @@ const TestimonialSlider = ({ filter = 'all' }: { filter?: TestimonialFilter }) =
             <div className="flex items-center gap-2 mb-6">
               <span className="inline-flex items-center gap-1.5 bg-[hsl(142,70%,35%)]/10 text-[hsl(142,70%,35%)] text-xs font-bold px-3 py-1.5 rounded-full">
                 <CatIcon className="w-3.5 h-3.5" />
-                {categoryLabels[t.category].label}
+                {categoryLabels[t.displayCategory].label}
               </span>
             </div>
 
@@ -162,7 +189,7 @@ const TestimonialSlider = ({ filter = 'all' }: { filter?: TestimonialFilter }) =
             <div className="flex items-center justify-between">
               <div>
                 <p className="font-bold text-foreground">{t.name}, {t.age}</p>
-                <p className="text-sm text-[hsl(142,70%,35%)] font-semibold">{t.result}</p>
+                <p className="text-sm text-[hsl(142,70%,35%)] font-semibold">{t.displayResult}</p>
               </div>
             </div>
 
