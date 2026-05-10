@@ -43,6 +43,7 @@ import { trackPageView } from "@/lib/analytics";
 import { trackPageView as trackFBPageView } from "@/lib/fbPixel";
 import ScrollToTop from "@/components/ScrollToTop";
 import FirstVisitModal from "@/components/FirstVisitModal";
+import CookieNotice from "@/components/CookieNotice";
 
 const queryClient = new QueryClient();
 
