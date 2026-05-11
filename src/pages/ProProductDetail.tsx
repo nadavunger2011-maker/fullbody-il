@@ -531,6 +531,28 @@ export default function ProProductDetail() {
       </section>
 
       <ProFooter />
+
+      {/* Sticky Mobile Add-to-Cart Bar */}
+      <div
+        className={`lg:hidden fixed bottom-0 inset-x-0 z-40 bg-card border-t border-border shadow-[0_-4px_20px_rgba(0,0,0,0.15)] transition-transform duration-300 pb-[env(safe-area-inset-bottom)] ${
+          showStickyBar ? 'translate-y-0' : 'translate-y-full'
+        }`}
+      >
+        <div className="flex items-center gap-3 p-3">
+          <img src={product.image} alt="" className="w-12 h-12 object-contain rounded-md bg-secondary/30 flex-shrink-0" />
+          <div className="flex-1 min-w-0">
+            <p className="text-xs font-bold text-foreground line-clamp-1">{product.title}</p>
+            <p className="text-base font-black text-[hsl(142,70%,35%)]">₪{product.price * quantity}</p>
+          </div>
+          <button
+            onClick={handleAddToCart}
+            disabled={isLoadingShopify || isAddingToCart}
+            className="bg-[#16a34a] hover:bg-[#15803d] text-white font-black py-3 px-5 rounded-xl text-sm flex items-center gap-2 disabled:opacity-50 active:scale-95 transition-all shadow-md"
+          >
+            {isAddingToCart ? <Loader2 className="w-4 h-4 animate-spin" /> : <><ShoppingBag className="w-4 h-4" />הוסף לסל</>}
+          </button>
+        </div>
+      </div>
     </div>
   );
 }
