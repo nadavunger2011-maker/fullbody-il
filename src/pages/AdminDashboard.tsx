@@ -808,6 +808,11 @@ export default function AdminDashboard() {
             </div>
           )}
 
+          {/* AI Consultant Chat Tab */}
+          {activeTab === 'consultant' && (
+            <AIConsultantChat dateRange={dateRange} />
+          )}
+
           {/* AI Analysis Tab */}
           {activeTab === 'ai' && (
             <div className="space-y-6">
