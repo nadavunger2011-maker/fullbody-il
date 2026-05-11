@@ -328,6 +328,17 @@ export default function ProBody() {
         </div>
       </header>
 
+      {/* Benefits Bar */}
+      <div className="bg-secondary/40 border-b border-border">
+        <div className="container mx-auto px-4 py-2.5">
+          <div className="grid grid-cols-3 gap-2 text-center text-[11px] sm:text-sm font-bold text-foreground">
+            <div className="flex items-center justify-center gap-1.5"><Truck className="w-4 h-4 text-[hsl(142,70%,35%)] shrink-0" /><span>משלוח חינם מעל ₪299</span></div>
+            <div className="flex items-center justify-center gap-1.5 border-x border-border"><HeartPulse className="w-4 h-4 text-[hsl(142,70%,35%)] shrink-0" /><span>ליווי אישי לכל לקוח</span></div>
+            <div className="flex items-center justify-center gap-1.5"><ShieldCheck className="w-4 h-4 text-[hsl(142,70%,35%)] shrink-0" /><span>רכישה מאובטחת</span></div>
+          </div>
+        </div>
+      </div>
+
       <ProMobileMenu isOpen={isMobileMenuOpen} onClose={() => setIsMobileMenuOpen(false)} categories={PRO_CATEGORIES} onCategorySelect={(id) => { setSelectedCategory(id); setIsMobileMenuOpen(false); }} products={products} />
 
       {isMobileMenuOpen && (
