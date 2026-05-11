@@ -5,7 +5,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { 
   BarChart3, Eye, ShoppingCart, CreditCard, TrendingUp, Users, 
   LogOut, Loader2, Calendar, Plus, Trash2, DollarSign, MousePointer,
-  Globe, ArrowUpRight, ArrowDownRight, Package, Brain, Sparkles, Clock, Key, Copy, Check, Star
+  Globe, ArrowUpRight, ArrowDownRight, Package, Brain, Sparkles, Clock, Key, Copy, Check, Star, MessageSquare
 } from 'lucide-react';
 import {
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
@@ -13,6 +13,7 @@ import {
 } from 'recharts';
 import ReactMarkdown from 'react-markdown';
 import AdminReviews from '@/components/admin/AdminReviews';
+import AIConsultantChat from '@/components/admin/AIConsultantChat';
 
 type DateRange = '7d' | '30d' | '90d' | 'all';
 
@@ -56,7 +57,7 @@ export default function AdminDashboard() {
   const [adSpend, setAdSpend] = useState<AdSpendRow[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [dateRange, setDateRange] = useState<DateRange>('30d');
-  const [activeTab, setActiveTab] = useState<'overview' | 'products' | 'traffic' | 'funnel' | 'adspend' | 'ai' | 'api' | 'reviews'>('overview');
+  const [activeTab, setActiveTab] = useState<'overview' | 'products' | 'traffic' | 'funnel' | 'adspend' | 'ai' | 'consultant' | 'api' | 'reviews'>('overview');
   const [apiCredentials, setApiCredentials] = useState<{ supabase_url: string; service_role_key: string; anon_key: string } | null>(null);
   const [isApiLoading, setIsApiLoading] = useState(false);
   const [aiAnalysis, setAiAnalysis] = useState<string>('');
@@ -374,6 +375,7 @@ export default function AdminDashboard() {
     { id: 'reviews' as const, label: 'ביקורות', icon: Star },
     { id: 'traffic' as const, label: 'מקורות תנועה', icon: Globe },
     { id: 'adspend' as const, label: 'הוצאות פרסום', icon: DollarSign },
+    { id: 'consultant' as const, label: 'יועץ AI', icon: MessageSquare },
     { id: 'ai' as const, label: 'ניתוח AI', icon: Brain },
     { id: 'api' as const, label: 'API Keys', icon: Key },
   ];
@@ -804,6 +806,11 @@ export default function AdminDashboard() {
                 </table>
               </div>
             </div>
+          )}
+
+          {/* AI Consultant Chat Tab */}
+          {activeTab === 'consultant' && (
+            <AIConsultantChat dateRange={dateRange} />
           )}
 
           {/* AI Analysis Tab */}
