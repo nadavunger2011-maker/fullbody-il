@@ -198,10 +198,17 @@ export default function ProBlogPost() {
       <article className="pb-16">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto bg-card rounded-b-2xl p-6 sm:p-10 -mt-1">
-            <div
-              className="blog-content prose prose-lg max-w-none text-foreground prose-headings:text-foreground prose-headings:font-bold prose-h2:text-2xl prose-h2:mt-8 prose-h2:mb-4 prose-p:text-muted-foreground prose-p:leading-relaxed prose-ul:text-muted-foreground prose-li:my-1 prose-strong:text-foreground"
-              dangerouslySetInnerHTML={{ __html: normalizedContent }}
-            />
+            <div className="blog-content prose prose-lg max-w-none text-foreground prose-headings:text-foreground prose-headings:font-bold prose-h1:text-4xl prose-h2:text-2xl prose-h2:mt-10 prose-h2:mb-4 prose-h3:text-xl prose-h3:mt-6 prose-h3:mb-3 prose-p:text-foreground prose-p:leading-relaxed prose-p:mb-4 prose-ul:text-foreground prose-li:my-1 prose-strong:text-foreground">
+              {contentChunks.map((chunk, i) => (
+                <div key={i}>
+                  <div dangerouslySetInnerHTML={{ __html: chunk }} />
+                  {i === midIndex - 1 && inlineProducts.map(p => (
+                    <BlogProductCard key={p.handle} product={p} variant="inline" onAddToCart={handleAddToCart} />
+                  ))}
+                </div>
+              ))}
+              <div dangerouslySetInnerHTML={{ __html: appendDisclaimer('') }} />
+            </div>
           </div>
         </div>
       </article>
