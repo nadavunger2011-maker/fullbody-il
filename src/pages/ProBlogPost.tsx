@@ -38,9 +38,12 @@ export default function ProBlogPost() {
   if (!post) return null;
 
   const normalizedContent = normalizeBlogContent(post.content);
+  const contentChunks = splitContentByH2(normalizedContent);
+  const midIndex = Math.max(1, Math.floor(contentChunks.length / 2));
   const articleImage = post.image || '/placeholder.svg';
   const category = proBlogCategories.find(c => c.id === post.categoryId);
   const relatedProducts = post.relatedProductHandles.map(h => getProductByHandle(h)).filter(Boolean) as HerbalifeProduct[];
+  const inlineProducts = pickContextualProducts(normalizedContent, post.relatedProductHandles, 2);
 
   const handleAddToCart = async (product: HerbalifeProduct) => {
     const shopifyProduct = await fetchProductByHandle(product.shopifyHandle);
