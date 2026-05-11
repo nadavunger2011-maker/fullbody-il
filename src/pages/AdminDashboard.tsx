@@ -375,6 +375,7 @@ export default function AdminDashboard() {
     { id: 'reviews' as const, label: 'ביקורות', icon: Star },
     { id: 'traffic' as const, label: 'מקורות תנועה', icon: Globe },
     { id: 'adspend' as const, label: 'הוצאות פרסום', icon: DollarSign },
+    { id: 'consultant' as const, label: 'יועץ AI', icon: MessageSquare },
     { id: 'ai' as const, label: 'ניתוח AI', icon: Brain },
     { id: 'api' as const, label: 'API Keys', icon: Key },
   ];
