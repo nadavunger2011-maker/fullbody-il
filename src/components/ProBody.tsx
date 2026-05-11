@@ -153,8 +153,11 @@ const HeroCarousel = () => {
       {/* Premium H1 overlay */}
       <div className="absolute inset-x-0 bottom-12 md:bottom-16 z-20 px-4 text-center pointer-events-none">
         <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black text-white drop-shadow-[0_4px_12px_rgba(0,0,0,0.7)] max-w-4xl mx-auto leading-tight">
-          FullBody — תזונת פרימיום, Wellness ומוצרי הרבלייף בכשר למהדרין
+          התחילו את השינוי שלכם היום
         </h1>
+        <p className="mt-3 text-base sm:text-lg md:text-xl text-white/90 font-semibold drop-shadow-[0_2px_8px_rgba(0,0,0,0.7)] max-w-2xl mx-auto">
+          תוספי תזונה ומוצרי Herbalife מקוריים — לאורח חיים בריא, אנרגטי ומאוזן
+        </p>
       </div>
 
       {/* Dots */}
