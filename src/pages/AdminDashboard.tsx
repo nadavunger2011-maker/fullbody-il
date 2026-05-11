@@ -5,7 +5,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { 
   BarChart3, Eye, ShoppingCart, CreditCard, TrendingUp, Users, 
   LogOut, Loader2, Calendar, Plus, Trash2, DollarSign, MousePointer,
-  Globe, ArrowUpRight, ArrowDownRight, Package, Brain, Sparkles, Clock, Key, Copy, Check, Star
+  Globe, ArrowUpRight, ArrowDownRight, Package, Brain, Sparkles, Clock, Key, Copy, Check, Star, MessageSquare
 } from 'lucide-react';
 import {
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
@@ -13,6 +13,7 @@ import {
 } from 'recharts';
 import ReactMarkdown from 'react-markdown';
 import AdminReviews from '@/components/admin/AdminReviews';
+import AIConsultantChat from '@/components/admin/AIConsultantChat';
 
 type DateRange = '7d' | '30d' | '90d' | 'all';
 
