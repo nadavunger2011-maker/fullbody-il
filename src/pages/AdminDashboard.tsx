@@ -369,13 +369,13 @@ export default function AdminDashboard() {
   }
 
   const tabs = [
+    { id: 'consultant' as const, label: '🤖 יועץ AI', icon: MessageSquare },
     { id: 'overview' as const, label: 'סקירה כללית', icon: BarChart3 },
     { id: 'funnel' as const, label: 'משפך ונטישה', icon: Users },
     { id: 'products' as const, label: 'מוצרים', icon: Package },
     { id: 'reviews' as const, label: 'ביקורות', icon: Star },
     { id: 'traffic' as const, label: 'מקורות תנועה', icon: Globe },
     { id: 'adspend' as const, label: 'הוצאות פרסום', icon: DollarSign },
-    { id: 'consultant' as const, label: 'יועץ AI', icon: MessageSquare },
     { id: 'ai' as const, label: 'ניתוח AI', icon: Brain },
     { id: 'api' as const, label: 'API Keys', icon: Key },
   ];
