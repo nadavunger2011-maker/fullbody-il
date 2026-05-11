@@ -67,11 +67,13 @@ const WhatsAppButton = () => {
         dir="rtl"
       >
         <span className="text-white font-bold text-sm whitespace-nowrap">צריכים עזרה?</span>
-        {isOpen ? (
-          <X className="w-6 h-6 text-white" />
-        ) : (
-          <MessageCircle className="w-7 h-7 text-white" />
-        )}
+        <span className="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center">
+          {isOpen ? (
+            <X className="w-5 h-5 text-white" />
+          ) : (
+            <MessageCircle className="w-6 h-6 text-white" />
+          )}
+        </span>
       </button>
       
       {/* Pulse animation when closed */}
