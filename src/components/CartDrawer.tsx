@@ -200,6 +200,45 @@ export default function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
                 </div>
               ))
             )}
+
+            {/* Upsell — You might also like (Pro) */}
+            {items.length > 0 && (() => {
+              const inCartHandles = new Set(
+                items.map((i) => i.product?.node?.handle).filter(Boolean)
+              );
+              // Pick complementary lower-priced add-ons not already in cart
+              const upsells = herbalifeProducts
+                .filter((p) => !inCartHandles.has(p.shopifyHandle) && !inCartHandles.has(p.handle))
+                .sort((a, b) => a.price - b.price)
+                .slice(0, 2);
+              if (upsells.length === 0) return null;
+              return (
+                <div className="pt-4 border-t border-border">
+                  <p className="text-sm font-bold text-foreground mb-3 flex items-center gap-2">
+                    <span>✨ אולי תאהב גם</span>
+                  </p>
+                  <div className="space-y-2">
+                    {upsells.map((p) => (
+                      <Link
+                        key={p.handle}
+                        to={`/product/${p.handle}`}
+                        onClick={onClose}
+                        className="flex items-center gap-3 bg-background hover:bg-muted/50 rounded-lg p-2 border border-border transition group"
+                      >
+                        <img src={p.image} alt={p.title} className="w-12 h-12 object-contain bg-secondary/20 rounded-md flex-shrink-0" />
+                        <div className="flex-1 min-w-0">
+                          <p className="text-xs font-bold text-foreground line-clamp-1">{p.title}</p>
+                          <p className="text-sm font-black text-[hsl(142,70%,35%)]">₪{p.price}</p>
+                        </div>
+                        <span className="text-xs font-bold text-[hsl(142,70%,35%)] flex items-center gap-1 group-hover:gap-2 transition-all">
+                          הוסף <ArrowLeft className="w-3 h-3" />
+                        </span>
+                      </Link>
+                    ))}
+                  </div>
+                </div>
+              );
+            })()}
           </div>
 
           {/* Footer */}
