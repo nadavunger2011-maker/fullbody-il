@@ -354,6 +354,32 @@ serve(async (req) => {
       existingImages.push(image);
       results.push({ slug, title: article.title, category: category.name, mode });
 
+      // Fire-and-forget webhook to n8n for distribution
+      const webhookUrl = Deno.env.get("N8N_BLOG_WEBHOOK_URL");
+      if (webhookUrl) {
+        const postUrl = `https://fullbody.co.il/blog/${slug}`;
+        const plainText = String(article.content || "").replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim();
+        const payload = {
+          title: article.title,
+          content_summary: plainText.slice(0, 200),
+          full_content: article.content,
+          featured_image: image,
+          post_url: postUrl,
+          slug,
+          category: category.name,
+          excerpt: article.excerpt,
+          ig_caption: article.ig_caption || null,
+          fb_caption: article.fb_caption || null,
+          li_caption: article.li_caption || null,
+          published_at: new Date().toISOString(),
+        };
+        fetch(webhookUrl, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload),
+        }).catch(err => console.error("n8n webhook failed:", err));
+      }
+
       if (i < count - 1) await new Promise(r => setTimeout(r, 3000));
     }
 
