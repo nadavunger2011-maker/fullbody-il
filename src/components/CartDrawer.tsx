@@ -1,4 +1,5 @@
-import { X, Plus, Minus, ShoppingBag, Trash2, Loader2 } from 'lucide-react';
+import { X, Plus, Minus, ShoppingBag, Trash2, Loader2, ArrowLeft } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import { useCartStore } from '@/stores/cartStore';
 import { Button } from '@/components/ui/button';
 import { toast } from 'sonner';
@@ -7,6 +8,7 @@ import { formatCheckoutUrl, getVariantById } from '@/lib/shopify';
 import { trackBeginCheckout, trackRemoveFromCart, type GTMItem } from '@/lib/gtm';
 import { trackGA4BeginCheckout } from '@/lib/ga4';
 import { trackCheckoutStarted } from '@/lib/analytics';
+import { herbalifeProducts } from '@/data/herbalifeProducts';
 
 interface CartDrawerProps {
   isOpen: boolean;
