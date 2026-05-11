@@ -1,12 +1,12 @@
 import greenLogo from '@/assets/logo-green.png';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useParams, Link, Navigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import {
   Menu, X, ShoppingBag, ArrowRight,
   ChevronDown, Leaf, CheckCircle, Truck, ShieldCheck,
   HeartPulse, Beaker, Utensils, Clock, Loader2, Minus, Plus,
-  FileText
+  FileText, MessageCircle
 } from 'lucide-react';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { getProductByHandle, getRelatedProducts } from '@/data/herbalifeProducts';
