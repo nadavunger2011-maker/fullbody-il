@@ -24,6 +24,7 @@ import CartDrawer from './CartDrawer';
 import ProFooter from './ProFooter';
 import ProProductFilters, { type ActiveFilters } from './ProProductFilters';
 import { TestimonialSlider, SuccessByNumbers, CrossCategoryFitness } from './SocialProofSection';
+import HomepageReviews from './HomepageReviews';
 import { PRICE_RANGES } from '@/data/herbalifeProducts';
 
 type SortOption = 'default' | 'price-asc' | 'price-desc';
@@ -153,8 +154,11 @@ const HeroCarousel = () => {
       {/* Premium H1 overlay */}
       <div className="absolute inset-x-0 bottom-12 md:bottom-16 z-20 px-4 text-center pointer-events-none">
         <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black text-white drop-shadow-[0_4px_12px_rgba(0,0,0,0.7)] max-w-4xl mx-auto leading-tight">
-          FullBody — תזונת פרימיום, Wellness ומוצרי הרבלייף בכשר למהדרין
+          התחילו את השינוי שלכם היום
         </h1>
+        <p className="mt-3 text-base sm:text-lg md:text-xl text-white/90 font-semibold drop-shadow-[0_2px_8px_rgba(0,0,0,0.7)] max-w-2xl mx-auto">
+          תוספי תזונה ומוצרי Herbalife מקוריים — לאורח חיים בריא, אנרגטי ומאוזן
+        </p>
       </div>
 
       {/* Dots */}
@@ -325,6 +329,17 @@ export default function ProBody() {
         </div>
       </header>
 
+      {/* Benefits Bar */}
+      <div className="bg-secondary/40 border-b border-border">
+        <div className="container mx-auto px-4 py-2.5">
+          <div className="grid grid-cols-3 gap-2 text-center text-[11px] sm:text-sm font-bold text-foreground">
+            <div className="flex items-center justify-center gap-1.5"><Truck className="w-4 h-4 text-[hsl(142,70%,35%)] shrink-0" /><span>משלוח חינם מעל ₪299</span></div>
+            <div className="flex items-center justify-center gap-1.5 border-x border-border"><HeartPulse className="w-4 h-4 text-[hsl(142,70%,35%)] shrink-0" /><span>ליווי אישי לכל לקוח</span></div>
+            <div className="flex items-center justify-center gap-1.5"><ShieldCheck className="w-4 h-4 text-[hsl(142,70%,35%)] shrink-0" /><span>רכישה מאובטחת</span></div>
+          </div>
+        </div>
+      </div>
+
       <ProMobileMenu isOpen={isMobileMenuOpen} onClose={() => setIsMobileMenuOpen(false)} categories={PRO_CATEGORIES} onCategorySelect={(id) => { setSelectedCategory(id); setIsMobileMenuOpen(false); }} products={products} />
 
       {isMobileMenuOpen && (
@@ -489,6 +504,9 @@ export default function ProBody() {
       <TestimonialSlider filter="mix" />
       <SuccessByNumbers />
       <CrossCategoryFitness />
+
+      {/* Latest Reviews */}
+      <HomepageReviews />
 
       {/* Blog Section */}
       <section className="py-16 bg-secondary/30">
