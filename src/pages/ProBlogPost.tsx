@@ -17,15 +17,8 @@ import { trackAddToCart as gtmTrackAddToCart } from '@/lib/gtm';
 import { trackAddToCart as fbTrackAddToCart } from '@/lib/fbPixel';
 import { trackGA4AddToCart } from '@/lib/ga4';
 import { trackAddToCartEvent } from '@/lib/analytics';
-
-const BROKEN_INLINE_IMAGE_PATTERN = /<img\b[^>]*src=["'](?:https?:\/\/fullbody\.co\.il)?\/images\/[^"']+["'][^>]*>/gi;
-
-function normalizeBlogContent(html: string) {
-  return html
-    .replace(/^\s*<h1[^>]*>[\s\S]*?<\/h1>\s*/i, '')
-    .replace(BROKEN_INLINE_IMAGE_PATTERN, '')
-    .replace(/<figure([^>]*)>\s*<\/figure>/gi, '');
-}
+import { normalizeBlogContent, splitContentByH2, pickContextualProducts, appendDisclaimer } from '@/lib/blogContent';
+import BlogProductCard from '@/components/BlogProductCard';
 
 export default function ProBlogPost() {
   const { slug } = useParams();
