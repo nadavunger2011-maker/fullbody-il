@@ -17,15 +17,8 @@ import { trackAddToCart as gtmTrackAddToCart } from '@/lib/gtm';
 import { trackAddToCart as fbTrackAddToCart } from '@/lib/fbPixel';
 import { trackGA4AddToCart } from '@/lib/ga4';
 import { trackAddToCartEvent } from '@/lib/analytics';
-
-const BROKEN_INLINE_IMAGE_PATTERN = /<img\b[^>]*src=["'](?:https?:\/\/fullbody\.co\.il)?\/images\/[^"']+["'][^>]*>/gi;
-
-function normalizeBlogContent(html: string) {
-  return html
-    .replace(/^\s*<h1[^>]*>[\s\S]*?<\/h1>\s*/i, '')
-    .replace(BROKEN_INLINE_IMAGE_PATTERN, '')
-    .replace(/<figure([^>]*)>\s*<\/figure>/gi, '');
-}
+import { normalizeBlogContent, splitContentByH2, pickContextualProducts, appendDisclaimer } from '@/lib/blogContent';
+import BlogProductCard from '@/components/BlogProductCard';
 
 export default function ProBlogPost() {
   const { slug } = useParams();
@@ -45,9 +38,12 @@ export default function ProBlogPost() {
   if (!post) return null;
 
   const normalizedContent = normalizeBlogContent(post.content);
+  const contentChunks = splitContentByH2(normalizedContent);
+  const midIndex = Math.max(1, Math.floor(contentChunks.length / 2));
   const articleImage = post.image || '/placeholder.svg';
   const category = proBlogCategories.find(c => c.id === post.categoryId);
   const relatedProducts = post.relatedProductHandles.map(h => getProductByHandle(h)).filter(Boolean) as HerbalifeProduct[];
+  const inlineProducts = pickContextualProducts(normalizedContent, post.relatedProductHandles, 2);
 
   const handleAddToCart = async (product: HerbalifeProduct) => {
     const shopifyProduct = await fetchProductByHandle(product.shopifyHandle);
@@ -202,10 +198,17 @@ export default function ProBlogPost() {
       <article className="pb-16">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto bg-card rounded-b-2xl p-6 sm:p-10 -mt-1">
-            <div
-              className="blog-content prose prose-lg max-w-none text-foreground prose-headings:text-foreground prose-headings:font-bold prose-h2:text-2xl prose-h2:mt-8 prose-h2:mb-4 prose-p:text-muted-foreground prose-p:leading-relaxed prose-ul:text-muted-foreground prose-li:my-1 prose-strong:text-foreground"
-              dangerouslySetInnerHTML={{ __html: normalizedContent }}
-            />
+            <div className="blog-content prose prose-lg max-w-none text-foreground prose-headings:text-foreground prose-headings:font-bold prose-h1:text-4xl prose-h2:text-2xl prose-h2:mt-10 prose-h2:mb-4 prose-h3:text-xl prose-h3:mt-6 prose-h3:mb-3 prose-p:text-foreground prose-p:leading-relaxed prose-p:mb-4 prose-ul:text-foreground prose-li:my-1 prose-strong:text-foreground">
+              {contentChunks.map((chunk, i) => (
+                <div key={i}>
+                  <div dangerouslySetInnerHTML={{ __html: chunk }} />
+                  {i === midIndex - 1 && inlineProducts.map(p => (
+                    <BlogProductCard key={p.handle} product={p} variant="inline" onAddToCart={handleAddToCart} />
+                  ))}
+                </div>
+              ))}
+              <div dangerouslySetInnerHTML={{ __html: appendDisclaimer('') }} />
+            </div>
           </div>
         </div>
       </article>
