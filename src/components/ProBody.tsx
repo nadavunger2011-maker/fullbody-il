@@ -505,6 +505,9 @@ export default function ProBody() {
       <SuccessByNumbers />
       <CrossCategoryFitness />
 
+      {/* Latest Reviews */}
+      <HomepageReviews />
+
       {/* Blog Section */}
       <section className="py-16 bg-secondary/30">
         <div className="container mx-auto px-4">
