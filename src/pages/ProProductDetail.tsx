@@ -65,6 +65,17 @@ export default function ProProductDetail() {
     setQuantity(1);
   }, [handle]);
 
+  // Sticky mobile CTA: show when main button scrolls out of view
+  useEffect(() => {
+    if (!ctaRef.current) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => setShowStickyBar(!entry.isIntersecting),
+      { rootMargin: '0px 0px -20px 0px', threshold: 0 }
+    );
+    observer.observe(ctaRef.current);
+    return () => observer.disconnect();
+  }, [shopifyProduct]);
+
   const handleAddToCart = async () => {
     if (!shopifyProduct) {
       toast.error('לא ניתן להוסיף לעגלה כרגע');
