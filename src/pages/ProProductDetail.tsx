@@ -31,6 +31,8 @@ export default function ProProductDetail() {
   const [isLoadingShopify, setIsLoadingShopify] = useState(true);
   const [isAddingToCart, setIsAddingToCart] = useState(false);
   const [quantity, setQuantity] = useState(1);
+  const [showStickyBar, setShowStickyBar] = useState(false);
+  const ctaRef = useRef<HTMLButtonElement | null>(null);
   const { items: cartItems, addItem } = useCartStore();
 
   const product = handle ? getProductByHandle(handle) : undefined;
