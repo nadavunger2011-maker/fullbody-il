@@ -74,6 +74,8 @@ function AnalyticsListener() {
 }
 
 function AppContent() {
+  const location = useLocation();
+  const isCalculator = location.pathname === "/calculator";
   useCartSync();
   
   return (
@@ -122,6 +124,9 @@ function AppContent() {
         {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
         <Route path="*" element={<NotFound />} />
       </Routes>
+      {!isCalculator && <WhatsAppButton />}
+      {!isCalculator && <FirstVisitModal />}
+      <CookieNotice />
     </>
   );
 }
@@ -135,9 +140,6 @@ const App = () => (
         <BrowserRouter>
           <ScrollToTop />
           <AppContent />
-          <WhatsAppButton />
-          <FirstVisitModal />
-          <CookieNotice />
         </BrowserRouter>
       </TooltipProvider>
     </QueryClientProvider>

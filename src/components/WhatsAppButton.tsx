@@ -59,26 +59,22 @@ const WhatsAppButton = () => {
         </div>
       )}
 
-      {/* Floating Button with label */}
+      {/* Floating Button — icon only, compact */}
       <button
         onClick={handleButtonClick}
-        className="group flex items-center gap-2 bg-[#25D366] hover:bg-[#20bd5a] rounded-full shadow-lg hover:shadow-xl pl-4 pr-2 py-2 transition-all duration-300 hover:scale-105"
-        aria-label="פתח צ'אט ווטסאפ - צריכים עזרה?"
-        dir="rtl"
+        className="group flex items-center justify-center w-12 h-12 bg-[#25D366] hover:bg-[#20bd5a] rounded-full shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105"
+        aria-label="פתח צ'אט ווטסאפ"
       >
-        <span className="text-white font-bold text-sm whitespace-nowrap">צריכים עזרה?</span>
-        <span className="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center">
-          {isOpen ? (
-            <X className="w-5 h-5 text-white" />
-          ) : (
-            <MessageCircle className="w-6 h-6 text-white" />
-          )}
-        </span>
+        {isOpen ? (
+          <X className="w-5 h-5 text-white" />
+        ) : (
+          <MessageCircle className="w-6 h-6 text-white" />
+        )}
       </button>
       
       {/* Pulse animation when closed */}
       {!isOpen && (
-        <span className="absolute bottom-0 right-0 w-14 h-14 bg-[#25D366] rounded-full animate-ping opacity-20 pointer-events-none" />
+        <span className="absolute bottom-0 right-0 w-12 h-12 bg-[#25D366] rounded-full animate-ping opacity-20 pointer-events-none" />
       )}
     </div>
   );
