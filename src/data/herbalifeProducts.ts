@@ -416,7 +416,7 @@ export const herbalifeProducts: HerbalifeProduct[] = [
   {
     sku: '1104',
     handle: 'latte',
-    shopifyHandle: 'latte',
+    shopifyHandle: 'פורמולה-1-קפה-לאטה-550-גרם',
     title: 'פורמולה 1 – קפה לאטה',
     metaDescription: 'שייק פורמולה 1 בטעם קפה לאטה - הדור החדש של תחליפי הארוחה. עשיר בחלבון, טבעוני, ללא גלוטן וללא לקטוז. פתרון מושלם לתזונה מאוזנת וניהול משקל.',
     category: 'אבקות שייק פורמולה 1',
@@ -442,7 +442,7 @@ export const herbalifeProducts: HerbalifeProduct[] = [
   {
     sku: '4052',
     handle: 'formula-1-melon',
-    shopifyHandle: 'formula-1-melon',
+    shopifyHandle: 'פורמולה-1-מלון-550-גרם',
     title: 'פורמולה 1 - מלון',
     metaDescription: 'פורמולה 1 בטעם מלון – תחליף ארוחה מאוזן וטעים, עשיר בחלבון סויה, ויטמינים ומינרלים. הפתרון המושלם לניהול משקל ואורח חיים בריא. נטול לקטוז.',
     category: 'אבקות להכנת משקה שייק פורמולה 1',
@@ -468,7 +468,7 @@ export const herbalifeProducts: HerbalifeProduct[] = [
   {
     sku: '1124',
     handle: 'formula-1-berries',
-    shopifyHandle: 'formula-1-berries',
+    shopifyHandle: 'פורמולה-1-פירות-יער-550-גרם',
     title: 'פורמולה 1 - פירות יער',
     metaDescription: 'שייק פורמולה 1 המוכר בטעם פירות יער מרענן. תחליף ארוחה מאוזן, טבעוני, ללא גלוטן וללא לקטוז, עשיר בחלבון, ויטמינים ומינרלים לסיוע בניהול משקל בריא.',
     category: 'תחליפי ארוחה - בקרת משקל',
@@ -493,7 +493,7 @@ export const herbalifeProducts: HerbalifeProduct[] = [
   {
     sku: '1001',
     handle: 'formula-1-cookies',
-    shopifyHandle: 'formula-1-cookies',
+    shopifyHandle: 'פורמולה-1-עוגיות-שוקולד-550-גרם',
     title: 'פורמולה 1 - עוגיות שוקולד',
     metaDescription: 'גלו את הדור החדש של שייק פורמולה 1 בטעם עוגיות שוקולד. תחליף ארוחה טבעוני, ללא גלוטן, עשיר בחלבון וויטמינים לשמירה על אורח חיים בריא וניהול משקל.',
     category: 'אבקות משקה פורמולה 1',
@@ -518,7 +518,7 @@ export const herbalifeProducts: HerbalifeProduct[] = [
   {
     sku: '1142',
     handle: 'formula-1-banana',
-    shopifyHandle: 'formula-1-banana',
+    shopifyHandle: 'פורמולה-1-בננה-550-גרם',
     title: 'פורמולה 1 - בננה',
     metaDescription: 'שייק פורמולה 1 בטעם בננה (הדור החדש) - תחליף ארוחה טבעוני, ללא גלוטן, עשיר בחלבון ובויטמינים. הפתרון המושלם לניהול משקל ותזונה מאוזנת.',
     category: 'אבקות שייק פורמולה 1',
@@ -543,7 +543,7 @@ export const herbalifeProducts: HerbalifeProduct[] = [
   {
     sku: '1227',
     handle: 'protein-powder',
-    shopifyHandle: 'protein-powder',
+    shopifyHandle: 'אבקת-חלבון-הרבלייף',
     title: 'אבקת חלבון',
     metaDescription: 'אבקת חלבון איכותית של הרבלייף המשלבת חלבון סויה ומי גבינה. 5 גרם חלבון למנה, ללא סוכר, לשמירה על מסת השריר ותחושת שובע. מתאימה לכל ארוחה.',
     category: 'ניהול משקל וכושר',
@@ -568,7 +568,7 @@ export const herbalifeProducts: HerbalifeProduct[] = [
   {
     sku: '3972',
     handle: 'protein-bars-vanilla-almond',
-    shopifyHandle: 'protein-bars-vanilla-almond',
+    shopifyHandle: 'חטיפי-חלבון-בטעם-וניל-ושקדים',
     title: 'חטיפי חלבון בטעם וניל ושקדים',
     metaDescription: 'גלו את חטיפי החלבון של הרבלייף בטעם וניל ושקדים - 10 גרם חלבון ב-142 קלוריות בלבד. הדרך המושלמת לארוחת ביניים מתוקה, מזינה ומאוזנת.',
     category: 'חטיפי חלבון',
@@ -593,7 +593,7 @@ export const herbalifeProducts: HerbalifeProduct[] = [
   {
     sku: '1498',
     handle: 'h24-achieve-dark-chocolate',
-    shopifyHandle: 'h24-achieve-dark-chocolate',
+    shopifyHandle: 'חטיף-חלבון-h24-achieve-שוקולד-מריר',
     title: 'חטיף חלבון H24 ACHIEVE – טעם שוקולד מריר',
     metaDescription: 'חטיף חלבון H24 ACHIEVE בטעם שוקולד מריר: 21 גרם חלבון, דל סוכר ומאושר לספורטאים. הפתרון המושלם להתאוששות לאחר אימון או כנשנוש מזין במהלך היום.',
     category: 'חטיפי חלבון',
@@ -618,7 +618,7 @@ export const herbalifeProducts: HerbalifeProduct[] = [
   {
     sku: '6742',
     handle: 'baked-protein-bbq',
-    shopifyHandle: 'baked-protein-bbq',
+    shopifyHandle: 'חטיף-חלבון-אפוי-טעם-ברביקיו',
     title: 'חטיף חלבון אפוי טעם ברביקיו',
     metaDescription: 'חטיף חלבון אפוי בטעם ברביקיו מבית הרבלייף. חטיף מלוח, פריך וטבעוני עם חלבון אפונה, ללא גלוטן ועם 50% פחות שומן מחטיפים מטוגנים. הפתרון המושלם לנשנוש מזין.',
     category: 'חטיפים ומלוחים',
@@ -643,7 +643,7 @@ export const herbalifeProducts: HerbalifeProduct[] = [
   {
     sku: '3973',
     handle: 'protein-bars-lemon',
-    shopifyHandle: 'protein-bars-lemon',
+    shopifyHandle: 'חטיפי-חלבון-בטעם-לימון',
     title: 'חטיפי חלבון בטעם לימון',
     metaDescription: 'חטיפי חלבון הרבלייף בטעם לימון: 10 גרם חלבון ורק 142 קלוריות. פתרון המשלב תזונה מאוזנת וטעם נפלא לנשנוש בריא במהלך היום.',
     category: 'חטיפי חלבון',
@@ -668,7 +668,7 @@ export const herbalifeProducts: HerbalifeProduct[] = [
   {
     sku: '1125',
     handle: 'fiber-apple',
-    shopifyHandle: 'fiber-apple',
+    shopifyHandle: 'אבקת-סיבים-תזונתיים-תפוח',
     title: 'אבקת סיבים תזונתיים – תפוח',
     metaDescription: 'שדרגו את התזונה היומית עם אבקת סיבים תזונתיים בטעם תפוח של הרבלייף. 5 גרם סיבים מסיסים ובלתי מסיסים ממקורות טבעיים לתמיכה במערכת העיכול ותחושת שובע.',
     category: 'פתרונות לעיכול ולניהול משקל',
@@ -693,7 +693,7 @@ export const herbalifeProducts: HerbalifeProduct[] = [
   {
     sku: '5924',
     handle: 'thermo-complete',
-    shopifyHandle: 'thermo-complete',
+    shopifyHandle: 'טבליות-תרמו-קומפליט',
     title: 'טבליות תרמו קומפליט',
     metaDescription: 'שפרו את הריכוז והערנות לאורך היום עם טבליות תרמו קומפליט של הרבלייף. תערובת עוצמתית של קפאין ממקורות טבעיים וויטמין C לתמיכה באורח חיים פעיל.',
     category: 'תוספי תזונה וויטמינים',
@@ -716,7 +716,7 @@ export const herbalifeProducts: HerbalifeProduct[] = [
   {
     sku: '1746',
     handle: 'formula-2-women',
-    shopifyHandle: 'formula-2-women',
+    shopifyHandle: 'פורמולה-2-קומפלקס-ויטמינים-ומינרלים-לנשים',
     title: 'פורמולה 2 קומפלקס ויטמינים ומינרלים לנשים',
     metaDescription: 'קומפלקס ויטמינים ומינרלים פורמולה 2 לנשים של הרבלייף. 24 רכיבי תזונה חיוניים המותאמים אישית לצרכי האישה לתמיכה בבריאות הכללית ובחיוניות.',
     category: 'ויטמינים ומינרלים',
@@ -739,7 +739,7 @@ export const herbalifeProducts: HerbalifeProduct[] = [
   {
     sku: '1745',
     handle: 'formula-2-men',
-    shopifyHandle: 'formula-2-men',
+    shopifyHandle: 'פורמולה-2-קומפלקס-ויטמינים-ומינרלים-לגברים',
     title: 'פורמולה 2 קומפלקס ויטמינים ומינרלים לגברים',
     metaDescription: 'קומפלקס ויטמינים ומינרלים פורמולה 2 לגברים מבית הרבלייף. 25 מיקרו-נוטריאנטים חיוניים לתמיכה בבריאות הכללית, בחיסון ובשרירים. מותאם אישית לגבר המודרני.',
     category: 'ויטמינים ומינרלים',
@@ -762,7 +762,7 @@ export const herbalifeProducts: HerbalifeProduct[] = [
   {
     sku: '0107',
     handle: 'instant-herbal-peach',
-    shopifyHandle: 'instant-herbal-peach',
+    shopifyHandle: 'משקה-נמס-צמחי-בטעם-אפרסק',
     title: 'משקה נמס צמחי בטעם אפרסק',
     metaDescription: 'משקה נמס צמחי בטעם אפרסק של הרבלייף - תערובת תה מרעננת, דלת קלוריות ומעוררת, המבוססת על תה ירוק ושחור. מתאים לשתייה חמה או קרה כחלק מאורח חיים פעיל.',
     category: 'משקה נמס צמחי',
@@ -787,7 +787,7 @@ export const herbalifeProducts: HerbalifeProduct[] = [
   {
     sku: '1051',
     handle: 'instant-herbal-original',
-    shopifyHandle: 'instant-herbal-original',
+    shopifyHandle: 'משקה-נמס-צמחי-בטעם-מקור',
     title: 'משקה נמס צמחי בטעם מקור',
     metaDescription: 'משקה נמס צמחי של הרבלייף בטעם מקור - תערובת תה שחור וירוק לרעננות מקסימלית ותמיכה בניהול המשקל. דל קלוריות וכשר למהדרין.',
     category: 'משקאות תה צמחיים',
@@ -812,7 +812,7 @@ export const herbalifeProducts: HerbalifeProduct[] = [
   {
     sku: '1435',
     handle: 'instant-herbal-lemon',
-    shopifyHandle: 'instant-herbal-lemon',
+    shopifyHandle: 'משקה-נמס-צמחי-בטעם-לימון',
     title: 'משקה נמס צמחי בטעם לימון',
     metaDescription: 'משקה נמס צמחי בטעם לימון של הרבלייף - תערובת תה מרעננת, דלת קלוריות ומעוררת על בסיס צמחים, תה ירוק ושחור. מושלם לניהול משקל ואורח חיים פעיל.',
     category: 'משקאות תה וצמחים',
@@ -836,7 +836,7 @@ export const herbalifeProducts: HerbalifeProduct[] = [
   {
     sku: '1703',
     handle: 'instant-herbal-raspberry',
-    shopifyHandle: 'instant-herbal-raspberry',
+    shopifyHandle: 'משקה-נמס-צמחי-בטעם-פטל',
     title: 'משקה נמס צמחי בטעם פטל',
     metaDescription: 'משקה נמס צמחי בטעם פטל של הרבלייף - תערובת תה צמחים דלת קלוריות עם קפאין וסטיביה. מתאים לאורח חיים פעיל, טבעוני וכשר למהדרין.',
     category: 'משקה נמס צמחי',
@@ -860,7 +860,7 @@ export const herbalifeProducts: HerbalifeProduct[] = [
   {
     sku: '5572',
     handle: 'herbalifeline-max',
-    shopifyHandle: 'herbalifeline-max',
+    shopifyHandle: 'הרבלייפליין-מקס-אומגה-3',
     title: 'הרבלייפליין מקס',
     metaDescription: 'הרבלייפליין מקס הוא תוסף תזונה מתקדם המכיל חומצות שומן אומגה 3 (EPA ו-DHA) ממקור שמן דגים איכותי, כשר למהדרין לתמיכה בתזונה מאוזנת.',
     category: 'ויטמינים ותוספי תזונה',
@@ -883,7 +883,7 @@ export const herbalifeProducts: HerbalifeProduct[] = [
   {
     sku: '0022',
     handle: 'schizandra-plus',
-    shopifyHandle: 'schizandra-plus',
+    shopifyHandle: 'טבליות-שיזנדרה-פלוס',
     title: 'טבליות שיזנדרה פלוס',
     metaDescription: 'שיזנדרה פלוס של הרבלייף - פורמולה מתקדמת המשלבת תמצית גרגרי שיזנדרה עם ויטמינים C, E וסלניום להגנה על התאים מפני נזקי חמצון.',
     category: 'ויטמינים ותוספי תזונה',
