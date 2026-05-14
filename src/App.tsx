@@ -38,6 +38,7 @@ import ProPrivacyPolicy from "./pages/ProPrivacyPolicy";
 import ProTerms from "./pages/ProTerms";
 import ProProducts from "./pages/ProProducts";
 import ProBundles from "./pages/ProBundles";
+import ProteinCalculator from "./pages/ProteinCalculator";
 import { Navigate } from "react-router-dom";
 import { trackPageView } from "@/lib/analytics";
 import { trackPageView as trackFBPageView } from "@/lib/fbPixel";
@@ -83,6 +84,7 @@ function AppContent() {
         <Route path="/" element={<ProIndex />} />
         <Route path="/products" element={<ProProducts />} />
         <Route path="/bundles" element={<ProBundles />} />
+        <Route path="/calculator" element={<ProteinCalculator />} />
         <Route path="/articles" element={<Navigate to="/blog" replace />} />
         <Route path="/product/:handle" element={<ProProductDetail />} />
         <Route path="/blog" element={<ProBlog />} />
