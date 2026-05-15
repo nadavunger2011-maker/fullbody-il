@@ -77,6 +77,7 @@ function AnalyticsListener() {
 function AppContent() {
   const location = useLocation();
   const isCalculator = location.pathname === "/calculator";
+  const isRecipes = location.pathname === "/recipes";
   useCartSync();
   
   return (
@@ -88,6 +89,7 @@ function AppContent() {
         <Route path="/products" element={<ProProducts />} />
         <Route path="/bundles" element={<ProBundles />} />
         <Route path="/calculator" element={<ProteinCalculator />} />
+        <Route path="/recipes" element={<Recipes />} />
         <Route path="/articles" element={<Navigate to="/blog" replace />} />
         <Route path="/product/:handle" element={<ProProductDetail />} />
         <Route path="/blog" element={<ProBlog />} />
