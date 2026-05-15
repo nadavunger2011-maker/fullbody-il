@@ -89,6 +89,9 @@ export default function ProBundles() {
           price: variant.price,
           quantity: 1,
           selectedOptions: variant.selectedOptions || [],
+          bundleId: bundle.id,
+          bundleTitle: bundle.title,
+          bundleDiscountPct: bundle.discountPct,
         });
         if (ok) added++;
       }
