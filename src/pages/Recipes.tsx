@@ -93,7 +93,6 @@ function RecipeCard({ recipe }: { recipe: Recipe }) {
                 })}
               </ul>
             </div>
-        <div className="mt-auto pt-3">
           <button
             onClick={() => setExpanded(e => !e)}
             className="w-full text-sm font-bold text-white/80 hover:text-white py-2.5 rounded-lg border border-white/15 hover:border-[hsl(142,70%,35%)]/50 transition-colors"
