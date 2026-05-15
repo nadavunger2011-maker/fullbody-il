@@ -156,6 +156,14 @@ function RecipeCard({ recipe }: { recipe: Recipe }) {
 
 export default function Recipes() {
   const [activeCategory, setActiveCategory] = useState<RecipeCategory | "all">("all");
+  const navigate = useNavigate();
+
+  // Email gate — must opt-in via /protocol landing page
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const unlocked = localStorage.getItem("gfp_unlocked") === "1";
+    if (!unlocked) navigate("/protocol", { replace: true });
+  }, [navigate]);
 
   const filtered = useMemo(
     () => activeCategory === "all" ? recipes : recipes.filter(r => r.category === activeCategory),
