@@ -129,7 +129,6 @@ function RecipeCard({ recipe }: { recipe: Recipe }) {
             {expanded ? "הסתר מתכון" : "הצג מתכון מלא"}
           </button>
         </div>
-        </div>
       </div>
     </article>
   );
