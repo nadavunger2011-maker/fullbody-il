@@ -93,12 +93,42 @@ function RecipeCard({ recipe }: { recipe: Recipe }) {
                 })}
               </ul>
             </div>
+
+            <div>
+              <h4 className="text-sm font-bold text-[hsl(142,70%,55%)] mb-2 uppercase tracking-wider">הכנה</h4>
+              <ol className="space-y-1.5">
+                {recipe.steps.map((step, i) => {
+                  const checked = checkedSteps.has(i);
+                  return (
+                    <li key={i}>
+                      <button
+                        onClick={() => toggle(checkedSteps, setCheckedSteps, i)}
+                        className="w-full flex items-start gap-2 text-right text-sm text-white/85 hover:text-white transition-colors"
+                      >
+                        <span className={`mt-0.5 w-4 h-4 rounded border flex items-center justify-center flex-shrink-0 transition-all ${checked ? "bg-[hsl(142,70%,35%)] border-[hsl(142,70%,35%)]" : "border-white/30"}`}>
+                          {checked && <Check className="w-3 h-3 text-black" strokeWidth={3} />}
+                        </span>
+                        <span className={checked ? "line-through text-white/40" : ""}>
+                          <strong className="text-white/60 ml-1">{i + 1}.</strong>
+                          {step}
+                        </span>
+                      </button>
+                    </li>
+                  );
+                })}
+              </ol>
+            </div>
+          </div>
+        )}
+
+        <div className="mt-auto pt-3">
           <button
             onClick={() => setExpanded(e => !e)}
             className="w-full text-sm font-bold text-white/80 hover:text-white py-2.5 rounded-lg border border-white/15 hover:border-[hsl(142,70%,35%)]/50 transition-colors"
           >
             {expanded ? "הסתר מתכון" : "הצג מתכון מלא"}
           </button>
+        </div>
         </div>
       </div>
     </article>
