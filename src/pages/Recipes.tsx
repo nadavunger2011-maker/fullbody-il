@@ -1,10 +1,22 @@
-import { useMemo, useState } from "react";
-import { Link } from "react-router-dom";
+import { useEffect, useMemo, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import { ArrowLeft, Flame, Dumbbell, Clock, Check, ExternalLink } from "lucide-react";
 import { recipes, RECIPE_CATEGORIES, type Recipe, type RecipeCategory } from "@/data/recipes";
 
 const HERBA_GREEN = "hsl(142,70%,35%)";
+
+// Eagerly import all generated recipe photos as URLs
+const recipeImages = import.meta.glob("@/assets/recipes/*.jpg", {
+  eager: true,
+  query: "?url",
+  import: "default",
+}) as Record<string, string>;
+
+function getRecipeImage(id: string): string | undefined {
+  const key = Object.keys(recipeImages).find(k => k.endsWith(`/${id}.jpg`));
+  return key ? recipeImages[key] : undefined;
+}
 
 function NutritionBadge({ recipe }: { recipe: Recipe }) {
   return (
@@ -32,12 +44,20 @@ function RecipeCard({ recipe }: { recipe: Recipe }) {
     setter(next);
   };
 
+  const img = getRecipeImage(recipe.id);
   return (
     <article className="relative bg-zinc-900/80 border border-white/10 rounded-3xl overflow-hidden flex flex-col hover:border-[hsl(142,70%,35%)]/50 transition-all duration-300 shadow-xl">
-      {/* Hero — gradient block w/ emoji */}
-      <div className="relative h-44 bg-gradient-to-br from-[hsl(142,40%,15%)] via-zinc-900 to-black flex items-center justify-center text-7xl">
+      {/* Hero — real food photo */}
+      <div className="relative h-52 bg-gradient-to-br from-[hsl(142,40%,15%)] via-zinc-900 to-black overflow-hidden">
         <NutritionBadge recipe={recipe} />
-        <span aria-hidden className="drop-shadow-[0_4px_20px_rgba(0,0,0,0.6)]">{recipe.emoji}</span>
+        {img ? (
+          <img src={img} alt={recipe.title} loading="lazy" className="w-full h-full object-cover" />
+        ) : (
+          <div className="w-full h-full flex items-center justify-center text-7xl">
+            <span aria-hidden>{recipe.emoji}</span>
+          </div>
+        )}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent pointer-events-none" />
       </div>
 
       <div className="p-5 flex-1 flex flex-col gap-3">
@@ -136,6 +156,14 @@ function RecipeCard({ recipe }: { recipe: Recipe }) {
 
 export default function Recipes() {
   const [activeCategory, setActiveCategory] = useState<RecipeCategory | "all">("all");
+  const navigate = useNavigate();
+
+  // Email gate — must opt-in via /protocol landing page
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const unlocked = localStorage.getItem("gfp_unlocked") === "1";
+    if (!unlocked) navigate("/protocol", { replace: true });
+  }, [navigate]);
 
   const filtered = useMemo(
     () => activeCategory === "all" ? recipes : recipes.filter(r => r.category === activeCategory),
