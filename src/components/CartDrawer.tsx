@@ -18,8 +18,33 @@ interface CartDrawerProps {
 export default function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
   const { items, removeItem, updateQuantity, getTotal, getCheckoutUrl, isLoading } = useCartStore();
   const total = getTotal();
+
+  // Group bundle items
+  const bundleGroups = new Map<string, { title: string; discountPct: number; items: typeof items }>();
+  const standaloneItems: typeof items = [];
+  for (const item of items) {
+    if (item.bundleId) {
+      const existing = bundleGroups.get(item.bundleId);
+      if (existing) {
+        existing.items.push(item);
+      } else {
+        bundleGroups.set(item.bundleId, {
+          title: item.bundleTitle || 'ערכה',
+          discountPct: item.bundleDiscountPct || 0,
+          items: [item],
+        });
+      }
+    } else {
+      standaloneItems.push(item);
+    }
+  }
+  const bundleSavings = Array.from(bundleGroups.values()).reduce((sum, g) => {
+    const groupTotal = g.items.reduce((s, i) => s + parseFloat(i.price.amount) * i.quantity, 0);
+    return sum + groupTotal * (g.discountPct / 100);
+  }, 0);
+  const finalTotal = total - bundleSavings;
   const freeShippingThreshold = 299;
-  const remainingForFreeShipping = Math.max(0, freeShippingThreshold - total);
+  const remainingForFreeShipping = Math.max(0, freeShippingThreshold - finalTotal);
 
   const handleCheckout = () => {
     if (items.length === 0) {
