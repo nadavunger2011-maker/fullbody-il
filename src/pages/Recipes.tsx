@@ -93,7 +93,6 @@ function RecipeCard({ recipe }: { recipe: Recipe }) {
                 })}
               </ul>
             </div>
-...
         <div className="mt-auto pt-3">
           <button
             onClick={() => setExpanded(e => !e)}
