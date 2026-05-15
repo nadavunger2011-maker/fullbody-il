@@ -39,6 +39,7 @@ import ProTerms from "./pages/ProTerms";
 import ProProducts from "./pages/ProProducts";
 import ProBundles from "./pages/ProBundles";
 import ProteinCalculator from "./pages/ProteinCalculator";
+import Recipes from "./pages/Recipes";
 import { Navigate } from "react-router-dom";
 import { trackPageView } from "@/lib/analytics";
 import { trackPageView as trackFBPageView } from "@/lib/fbPixel";
