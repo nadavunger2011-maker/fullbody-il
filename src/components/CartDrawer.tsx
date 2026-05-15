@@ -350,12 +350,29 @@ export default function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
           {/* Footer */}
           {items.length > 0 && (
             <div className="border-t border-border p-4 pb-[calc(1rem+env(safe-area-inset-bottom))] space-y-3 bg-card shadow-[0_-4px_12px_rgba(0,0,0,0.1)]">
+              {bundleSavings > 0 && (
+                <>
+                  <div className="flex items-center justify-between text-sm text-muted-foreground">
+                    <span>סכום מקורי:</span>
+                    <span className="line-through">₪{total.toFixed(0)}</span>
+                  </div>
+                  <div className="flex items-center justify-between text-sm font-bold text-[hsl(142,70%,35%)]">
+                    <span className="flex items-center gap-1"><Tag className="w-3.5 h-3.5" /> חיסכון מהערכות:</span>
+                    <span>-₪{bundleSavings.toFixed(0)}</span>
+                  </div>
+                </>
+              )}
               <div className="flex items-center justify-between font-bold text-lg">
-                <span>סה"כ:</span>
-                <span className="text-accent">₪{total.toFixed(0)}</span>
+                <span>סה"כ לתשלום:</span>
+                <span className="text-accent">₪{finalTotal.toFixed(0)}</span>
               </div>
-              
-              <Button 
+              {bundleSavings > 0 && (
+                <p className="text-[11px] text-muted-foreground text-center">
+                  * הנחת הערכה תופעל אוטומטית בקופה
+                </p>
+              )}
+
+              <Button
                 onClick={handleCheckout}
                 className="w-full py-7 text-lg font-bold bg-accent hover:bg-accent/90 rounded-xl shadow-lg"
               >
