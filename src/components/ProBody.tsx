@@ -82,6 +82,10 @@ const ProMobileMenu = ({ isOpen, onClose, categories, onCategorySelect, products
         </div>
       </div>
       
+      <Link to="/bundles" onClick={onClose} className="py-4 border-b border-border text-lg font-bold hover:text-accent transition-colors flex items-center gap-2">
+        חבילות
+        <span className="text-xs bg-accent/15 text-accent px-1.5 py-0.5 rounded-full font-bold">🔥 חדש</span>
+      </Link>
       <Link to="/blog" onClick={onClose} className="py-4 border-b border-border text-lg font-bold hover:text-accent transition-colors">מאמרים</Link>
       <Link to="/contact" onClick={onClose} className="py-4 border-b border-border text-lg font-bold hover:text-accent transition-colors">צור קשר</Link>
     </div>
