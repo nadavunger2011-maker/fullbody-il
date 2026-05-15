@@ -1,7 +1,7 @@
 import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
-import { ArrowLeft, ShoppingCart, Flame, Dumbbell, Clock, Check } from "lucide-react";
+import { ArrowLeft, Flame, Dumbbell, Clock, Check, ExternalLink } from "lucide-react";
 import { recipes, RECIPE_CATEGORIES, type Recipe, type RecipeCategory } from "@/data/recipes";
 
 const HERBA_GREEN = "hsl(142,70%,35%)";
@@ -53,8 +53,6 @@ function RecipeCard({ recipe }: { recipe: Recipe }) {
 
         <div className="flex items-center gap-3 text-xs text-white/60">
           <span className="flex items-center gap-1"><Clock className="w-3 h-3" />{recipe.prepMinutes} דק'</span>
-          <span>•</span>
-          <span>מבוסס {recipe.productName}</span>
         </div>
 
         {expanded && (
@@ -64,17 +62,32 @@ function RecipeCard({ recipe }: { recipe: Recipe }) {
               <ul className="space-y-1.5">
                 {recipe.ingredients.map((ing, i) => {
                   const checked = checkedIngredients.has(i);
+                  const isProduct = i === 0;
                   return (
-                    <li key={i}>
+                    <li key={i} className="flex items-start gap-2">
                       <button
                         onClick={() => toggle(checkedIngredients, setCheckedIngredients, i)}
-                        className="w-full flex items-start gap-2 text-right text-sm text-white/85 hover:text-white transition-colors"
+                        aria-label="סמן"
+                        className={`mt-0.5 w-4 h-4 rounded border flex items-center justify-center flex-shrink-0 transition-all ${checked ? "bg-[hsl(142,70%,35%)] border-[hsl(142,70%,35%)]" : "border-white/30"}`}
                       >
-                        <span className={`mt-0.5 w-4 h-4 rounded border flex items-center justify-center flex-shrink-0 transition-all ${checked ? "bg-[hsl(142,70%,35%)] border-[hsl(142,70%,35%)]" : "border-white/30"}`}>
-                          {checked && <Check className="w-3 h-3 text-black" strokeWidth={3} />}
-                        </span>
-                        <span className={checked ? "line-through text-white/40" : ""}>{ing}</span>
+                        {checked && <Check className="w-3 h-3 text-black" strokeWidth={3} />}
                       </button>
+                      {isProduct ? (
+                        <Link
+                          to={`/product/${recipe.productHandle}`}
+                          className={`flex-1 text-right text-sm font-bold inline-flex items-center gap-1 transition-colors ${checked ? "line-through text-white/40" : "text-[hsl(142,70%,55%)] hover:text-[hsl(142,70%,65%)] underline decoration-dotted underline-offset-4"}`}
+                        >
+                          <span>{ing}</span>
+                          <ExternalLink className="w-3 h-3 opacity-70" />
+                        </Link>
+                      ) : (
+                        <button
+                          onClick={() => toggle(checkedIngredients, setCheckedIngredients, i)}
+                          className={`flex-1 text-right text-sm text-white/85 hover:text-white transition-colors ${checked ? "line-through text-white/40" : ""}`}
+                        >
+                          {ing}
+                        </button>
+                      )}
                     </li>
                   );
                 })}
@@ -108,20 +121,13 @@ function RecipeCard({ recipe }: { recipe: Recipe }) {
           </div>
         )}
 
-        <div className="mt-auto flex flex-col gap-2 pt-3">
+        <div className="mt-auto pt-3">
           <button
             onClick={() => setExpanded(e => !e)}
-            className="w-full text-sm font-bold text-white/70 hover:text-white py-2 rounded-lg border border-white/15 hover:border-white/30 transition-colors"
+            className="w-full text-sm font-bold text-white/80 hover:text-white py-2.5 rounded-lg border border-white/15 hover:border-[hsl(142,70%,35%)]/50 transition-colors"
           >
-            {expanded ? "הסתר" : "הצג מתכון מלא"}
+            {expanded ? "הסתר מתכון" : "הצג מתכון מלא"}
           </button>
-          <Link
-            to={`/product/${recipe.productHandle}`}
-            className="w-full inline-flex items-center justify-center gap-2 bg-[hsl(142,70%,35%)] hover:bg-[hsl(142,70%,40%)] text-white font-bold py-3 rounded-xl transition-all shadow-lg shadow-[hsl(142,70%,35%)]/30 hover:scale-[1.02]"
-          >
-            <ShoppingCart className="w-4 h-4" />
-            קנה {recipe.productName}
-          </Link>
         </div>
       </div>
     </article>

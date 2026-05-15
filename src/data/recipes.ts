@@ -23,7 +23,7 @@ export const recipes: Recipe[] = [
   // ===== BREAKFAST =====
   {
     id: "vanilla-cloud-9-pancakes",
-    title: "Vanilla Cloud 9 Pancakes",
+    title: "פנקייק וניל ענן",
     category: "breakfast",
     badges: ["Dairy", "Mehadrin Kosher"],
     protein: 32, calories: 290,
@@ -45,7 +45,7 @@ export const recipes: Recipe[] = [
   },
   {
     id: "berry-protein-bowl",
-    title: "Berry Protein Bowl",
+    title: "קערת חלבון פירות יער",
     category: "breakfast",
     badges: ["Dairy", "Mehadrin Kosher"],
     protein: 28, calories: 310,
@@ -66,7 +66,7 @@ export const recipes: Recipe[] = [
   },
   {
     id: "banana-protein-oatmeal",
-    title: "Banana Power Oatmeal",
+    title: "דייסת בננה עוצמתית",
     category: "breakfast",
     badges: ["Dairy", "Mehadrin Kosher"],
     protein: 26, calories: 340,
@@ -88,7 +88,7 @@ export const recipes: Recipe[] = [
   },
   {
     id: "cookies-cream-overnight-oats",
-    title: "Cookies & Cream Overnight Oats",
+    title: "אוברנייט אוטס עוגיות ושמנת",
     category: "breakfast",
     badges: ["Dairy", "Mehadrin Kosher"],
     protein: 30, calories: 320,
@@ -110,7 +110,7 @@ export const recipes: Recipe[] = [
   },
   {
     id: "melon-mint-yogurt",
-    title: "Melon-Mint Recovery Yogurt",
+    title: "יוגורט מלון-נענע להתאוששות",
     category: "breakfast",
     badges: ["Dairy", "Mehadrin Kosher"],
     protein: 24, calories: 220,
@@ -131,7 +131,7 @@ export const recipes: Recipe[] = [
   },
   {
     id: "kosher-french-toast",
-    title: "Kosher French Toast",
+    title: "פרנץ' טוסט מהדרין",
     category: "breakfast",
     badges: ["Dairy", "Mehadrin Kosher"],
     protein: 27, calories: 350,
@@ -152,7 +152,7 @@ export const recipes: Recipe[] = [
   },
   {
     id: "fiber-apple-muffins",
-    title: "Apple-Fibre Power Muffins",
+    title: "מאפינס סיבים תפוחים",
     category: "breakfast",
     badges: ["Vegan", "Mehadrin Kosher"],
     protein: 12, calories: 180,
@@ -176,7 +176,7 @@ export const recipes: Recipe[] = [
   // ===== MAINS =====
   {
     id: "power-salmon-tartare",
-    title: "Power Salmon Tartare",
+    title: "טרטר סלמון עוצמה",
     category: "mains",
     badges: ["Parve", "Mehadrin Kosher"],
     protein: 24, calories: 210,
@@ -198,7 +198,7 @@ export const recipes: Recipe[] = [
   },
   {
     id: "extreme-performance-pizza",
-    title: "Extreme Performance Pizza",
+    title: "פיצת חלבון אקסטרים",
     category: "mains",
     badges: ["Dairy", "Mehadrin Kosher"],
     protein: 45, calories: 420,
@@ -220,7 +220,7 @@ export const recipes: Recipe[] = [
   },
   {
     id: "rebuild-strength-bowl",
-    title: "Rebuild Strength Power Bowl",
+    title: "קערת כוח להתאוששות שריר",
     category: "mains",
     badges: ["Parve", "Mehadrin Kosher"],
     protein: 38, calories: 380,
@@ -242,7 +242,7 @@ export const recipes: Recipe[] = [
   },
   {
     id: "protein-chicken-schnitzel",
-    title: "Crispy Protein Schnitzel",
+    title: "שניצל חלבון פריך",
     category: "mains",
     badges: ["Parve", "Mehadrin Kosher"],
     protein: 42, calories: 360,
@@ -264,7 +264,7 @@ export const recipes: Recipe[] = [
   },
   {
     id: "achieve-protein-pasta",
-    title: "Achieve Protein Pasta",
+    title: "פסטת חלבון Achieve",
     category: "mains",
     badges: ["Dairy", "Mehadrin Kosher"],
     protein: 35, calories: 410,
@@ -286,7 +286,7 @@ export const recipes: Recipe[] = [
   },
   {
     id: "bbq-protein-tacos",
-    title: "BBQ Protein Tacos",
+    title: "טאקו חלבון BBQ",
     category: "mains",
     badges: ["Parve", "Mehadrin Kosher"],
     protein: 30, calories: 340,
@@ -308,7 +308,7 @@ export const recipes: Recipe[] = [
   },
   {
     id: "thermo-stir-fry",
-    title: "Thermo Burner Stir-Fry",
+    title: "מוקפץ שריפת שומנים",
     category: "mains",
     badges: ["Vegan", "Mehadrin Kosher"],
     protein: 22, calories: 290,
@@ -330,7 +330,7 @@ export const recipes: Recipe[] = [
   },
   {
     id: "f2-women-energy-wrap",
-    title: "F2 Women Energy Wrap",
+    title: "ראפ אנרגיה לנשים F2",
     category: "mains",
     badges: ["Parve", "Mehadrin Kosher"],
     protein: 18, calories: 260,
@@ -352,7 +352,7 @@ export const recipes: Recipe[] = [
   },
   {
     id: "f2-men-power-bowl",
-    title: "F2 Men Power Bowl",
+    title: "קערת כוח לגברים F2",
     category: "mains",
     badges: ["Parve", "Mehadrin Kosher"],
     protein: 36, calories: 400,
@@ -376,7 +376,7 @@ export const recipes: Recipe[] = [
   // ===== DESSERTS =====
   {
     id: "midnight-protein-souffle",
-    title: "Midnight Protein Soufflé",
+    title: "סופלה חלבון של חצות",
     category: "desserts",
     badges: ["Dairy", "Mehadrin Kosher"],
     protein: 22, calories: 180,
@@ -397,7 +397,7 @@ export const recipes: Recipe[] = [
   },
   {
     id: "vanilla-protein-cheesecake",
-    title: "Vanilla Protein Cheesecake (No-Bake)",
+    title: "עוגת גבינת חלבון וניל (ללא אפיה)",
     category: "desserts",
     badges: ["Dairy", "Mehadrin Kosher"],
     protein: 28, calories: 240,
@@ -418,7 +418,7 @@ export const recipes: Recipe[] = [
   },
   {
     id: "protein-bar-truffles",
-    title: "Lemon Protein Truffles",
+    title: "כדורי חלבון לימון",
     category: "desserts",
     badges: ["Parve", "Mehadrin Kosher"],
     protein: 14, calories: 150,
@@ -439,7 +439,7 @@ export const recipes: Recipe[] = [
   },
   {
     id: "chocolate-almond-bites",
-    title: "Vanilla Almond Protein Bites",
+    title: "כדורי חלבון וניל-שקדים",
     category: "desserts",
     badges: ["Parve", "Mehadrin Kosher"],
     protein: 16, calories: 170,
@@ -460,7 +460,7 @@ export const recipes: Recipe[] = [
   },
   {
     id: "schizandra-berry-mousse",
-    title: "Schizandra Berry Mousse",
+    title: "מוס פירות יער שיזנדרה",
     category: "desserts",
     badges: ["Vegan", "Mehadrin Kosher"],
     protein: 10, calories: 140,
@@ -481,7 +481,7 @@ export const recipes: Recipe[] = [
   },
   {
     id: "niteworks-night-pudding",
-    title: "Niteworks Sleep Pudding",
+    title: "פודינג שינה Niteworks",
     category: "desserts",
     badges: ["Parve", "Mehadrin Kosher"],
     protein: 8, calories: 130,
@@ -502,7 +502,7 @@ export const recipes: Recipe[] = [
   },
   {
     id: "latte-protein-tiramisu",
-    title: "Latte Protein Tiramisu",
+    title: "טירמיסו חלבון לאטה",
     category: "desserts",
     badges: ["Dairy", "Mehadrin Kosher"],
     protein: 20, calories: 230,
@@ -525,7 +525,7 @@ export const recipes: Recipe[] = [
   // ===== SHAKES =====
   {
     id: "green-energy-super-boost",
-    title: "Green Energy Super-Boost",
+    title: "סופר-בוסט אנרגיה ירוקה",
     category: "shakes",
     badges: ["Vegan", "Mehadrin Kosher"],
     protein: 8, calories: 120,
@@ -545,7 +545,7 @@ export const recipes: Recipe[] = [
   },
   {
     id: "aloe-natural-detox",
-    title: "Aloe Natural Detox Cooler",
+    title: "מי דטוקס אלוורה טבעית",
     category: "shakes",
     badges: ["Vegan", "Mehadrin Kosher"],
     protein: 0, calories: 15,
@@ -566,7 +566,7 @@ export const recipes: Recipe[] = [
   },
   {
     id: "instant-peach-iced-tea",
-    title: "Instant Peach Iced Tea",
+    title: "תה אפרסק קר אינסטנט",
     category: "shakes",
     badges: ["Vegan", "Mehadrin Kosher"],
     protein: 0, calories: 6,
@@ -586,7 +586,7 @@ export const recipes: Recipe[] = [
   },
   {
     id: "instant-original-classic",
-    title: "Instant Original Energy Tea",
+    title: "תה אנרגיה קלאסי אינסטנט",
     category: "shakes",
     badges: ["Vegan", "Mehadrin Kosher"],
     protein: 0, calories: 6,
@@ -606,7 +606,7 @@ export const recipes: Recipe[] = [
   },
   {
     id: "instant-lemon-fresh",
-    title: "Instant Lemon Fresh",
+    title: "תה לימון רענן אינסטנט",
     category: "shakes",
     badges: ["Vegan", "Mehadrin Kosher"],
     protein: 0, calories: 6,
@@ -626,7 +626,7 @@ export const recipes: Recipe[] = [
   },
   {
     id: "instant-raspberry-burn",
-    title: "Instant Raspberry Burn",
+    title: "תה פטל לשריפה",
     category: "shakes",
     badges: ["Vegan", "Mehadrin Kosher"],
     protein: 0, calories: 6,
@@ -646,7 +646,7 @@ export const recipes: Recipe[] = [
   },
   {
     id: "herbalifeline-omega-shot",
-    title: "Herbalifeline Omega Shot",
+    title: "שוט אומגה Herbalifeline",
     category: "shakes",
     badges: ["Parve", "Mehadrin Kosher"],
     protein: 1, calories: 14,
