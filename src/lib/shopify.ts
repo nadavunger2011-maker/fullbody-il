@@ -58,6 +58,9 @@ export interface CartItem {
   price: ShopifyPrice;
   quantity: number;
   selectedOptions: Array<{ name: string; value: string }>;
+  bundleId?: string;
+  bundleTitle?: string;
+  bundleDiscountPct?: number;
 }
 
 // Product/variant helpers
