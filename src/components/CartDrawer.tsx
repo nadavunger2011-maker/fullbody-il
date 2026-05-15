@@ -1,4 +1,4 @@
-import { X, Plus, Minus, ShoppingBag, Trash2, Loader2, ArrowLeft } from 'lucide-react';
+import { X, Plus, Minus, ShoppingBag, Trash2, Loader2, ArrowLeft, Package, Tag } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useCartStore } from '@/stores/cartStore';
 import { Button } from '@/components/ui/button';
@@ -18,8 +18,33 @@ interface CartDrawerProps {
 export default function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
   const { items, removeItem, updateQuantity, getTotal, getCheckoutUrl, isLoading } = useCartStore();
   const total = getTotal();
+
+  // Group bundle items
+  const bundleGroups = new Map<string, { title: string; discountPct: number; items: typeof items }>();
+  const standaloneItems: typeof items = [];
+  for (const item of items) {
+    if (item.bundleId) {
+      const existing = bundleGroups.get(item.bundleId);
+      if (existing) {
+        existing.items.push(item);
+      } else {
+        bundleGroups.set(item.bundleId, {
+          title: item.bundleTitle || 'ערכה',
+          discountPct: item.bundleDiscountPct || 0,
+          items: [item],
+        });
+      }
+    } else {
+      standaloneItems.push(item);
+    }
+  }
+  const bundleSavings = Array.from(bundleGroups.values()).reduce((sum, g) => {
+    const groupTotal = g.items.reduce((s, i) => s + parseFloat(i.price.amount) * i.quantity, 0);
+    return sum + groupTotal * (g.discountPct / 100);
+  }, 0);
+  const finalTotal = total - bundleSavings;
   const freeShippingThreshold = 299;
-  const remainingForFreeShipping = Math.max(0, freeShippingThreshold - total);
+  const remainingForFreeShipping = Math.max(0, freeShippingThreshold - finalTotal);
 
   const handleCheckout = () => {
     if (items.length === 0) {
@@ -146,59 +171,140 @@ export default function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
                 <p>העגלה ריקה</p>
               </div>
             ) : (
-              items.map((item) => (
-                <div 
-                  key={item.variantId}
-                  className="flex gap-3 bg-background rounded-xl p-3 border border-border"
-                >
-                  <div className="w-20 h-20 rounded-lg overflow-hidden bg-muted flex-shrink-0">
-                    {item.product.node.images.edges[0]?.node && (
-                      <img 
-                        src={item.product.node.images.edges[0].node.url}
-                        alt={item.product.node.title}
-                        className="w-full h-full object-cover"
-                      />
-                    )}
-                  </div>
-                  
-                  <div className="flex-1 min-w-0">
-                    <h3 className="font-bold text-sm text-foreground truncate">
-                      {item.product.node.title}
-                    </h3>
-                    {item.variantTitle !== 'Default Title' && (
-                      <p className="text-xs text-muted-foreground">{item.variantTitle}</p>
-                    )}
-                    <p className="font-bold text-accent mt-1">
-                      ₪{parseFloat(item.price.amount).toFixed(0)}
-                    </p>
-                    
-                    <div className="flex items-center justify-between mt-2">
-                      <div className="flex items-center gap-2 bg-muted rounded-lg">
-                        <button 
-                          onClick={() => updateQuantity(item.variantId, item.quantity - 1)}
-                          className="p-1.5 hover:bg-border rounded-lg transition"
+              <>
+                {/* Bundle groups */}
+                {Array.from(bundleGroups.entries()).map(([bundleId, group]) => {
+                  const groupOriginal = group.items.reduce(
+                    (s, i) => s + parseFloat(i.price.amount) * i.quantity,
+                    0
+                  );
+                  const groupSavings = groupOriginal * (group.discountPct / 100);
+                  const groupFinal = groupOriginal - groupSavings;
+                  return (
+                    <div
+                      key={bundleId}
+                      className="rounded-xl border-2 border-[hsl(142,70%,35%)] bg-[hsl(142,70%,35%)]/5 overflow-hidden"
+                    >
+                      {/* Bundle header */}
+                      <div className="flex items-center justify-between gap-2 p-3 bg-[hsl(142,70%,35%)]/10 border-b border-[hsl(142,70%,35%)]/30">
+                        <div className="flex items-center gap-2 min-w-0">
+                          <Package className="w-4 h-4 text-[hsl(142,70%,35%)] flex-shrink-0" />
+                          <div className="min-w-0">
+                            <p className="text-sm font-black text-foreground truncate">{group.title}</p>
+                            <p className="text-[11px] text-muted-foreground">
+                              {group.items.length} מוצרים בערכה
+                            </p>
+                          </div>
+                        </div>
+                        <span className="bg-[hsl(142,70%,35%)] text-white text-[11px] font-bold px-2 py-0.5 rounded flex-shrink-0">
+                          -{group.discountPct}%
+                        </span>
+                      </div>
+
+                      {/* Bundle items (compact) */}
+                      <div className="p-3 space-y-2">
+                        {group.items.map((item) => (
+                          <div key={item.variantId} className="flex gap-2 items-center">
+                            <div className="w-12 h-12 rounded-md overflow-hidden bg-muted flex-shrink-0">
+                              {item.product.node.images.edges[0]?.node && (
+                                <img
+                                  src={item.product.node.images.edges[0].node.url}
+                                  alt={item.product.node.title}
+                                  className="w-full h-full object-cover"
+                                />
+                              )}
+                            </div>
+                            <div className="flex-1 min-w-0">
+                              <p className="text-xs font-bold text-foreground line-clamp-1">
+                                {item.product.node.title}
+                              </p>
+                              <p className="text-[11px] text-muted-foreground">
+                                כמות: {item.quantity} · ₪{parseFloat(item.price.amount).toFixed(0)}
+                              </p>
+                            </div>
+                            <button
+                              onClick={() => removeItem(item.variantId)}
+                              className="p-1.5 text-muted-foreground hover:text-destructive transition"
+                              aria-label="הסר"
+                            >
+                              <Trash2 className="w-3.5 h-3.5" />
+                            </button>
+                          </div>
+                        ))}
+                      </div>
+
+                      {/* Bundle pricing */}
+                      <div className="px-3 py-2 bg-card border-t border-[hsl(142,70%,35%)]/20 flex items-center justify-between">
+                        <div className="flex items-center gap-2 text-xs">
+                          <span className="text-muted-foreground line-through">₪{groupOriginal.toFixed(0)}</span>
+                          <span className="font-bold text-[hsl(142,70%,35%)] flex items-center gap-1">
+                            <Tag className="w-3 h-3" />
+                            חוסך ₪{groupSavings.toFixed(0)}
+                          </span>
+                        </div>
+                        <span className="text-base font-black text-[hsl(142,70%,35%)]">
+                          ₪{groupFinal.toFixed(0)}
+                        </span>
+                      </div>
+                    </div>
+                  );
+                })}
+
+                {/* Standalone items */}
+                {standaloneItems.map((item) => (
+                  <div
+                    key={item.variantId}
+                    className="flex gap-3 bg-background rounded-xl p-3 border border-border"
+                  >
+                    <div className="w-20 h-20 rounded-lg overflow-hidden bg-muted flex-shrink-0">
+                      {item.product.node.images.edges[0]?.node && (
+                        <img
+                          src={item.product.node.images.edges[0].node.url}
+                          alt={item.product.node.title}
+                          className="w-full h-full object-cover"
+                        />
+                      )}
+                    </div>
+
+                    <div className="flex-1 min-w-0">
+                      <h3 className="font-bold text-sm text-foreground truncate">
+                        {item.product.node.title}
+                      </h3>
+                      {item.variantTitle !== 'Default Title' && (
+                        <p className="text-xs text-muted-foreground">{item.variantTitle}</p>
+                      )}
+                      <p className="font-bold text-accent mt-1">
+                        ₪{parseFloat(item.price.amount).toFixed(0)}
+                      </p>
+
+                      <div className="flex items-center justify-between mt-2">
+                        <div className="flex items-center gap-2 bg-muted rounded-lg">
+                          <button
+                            onClick={() => updateQuantity(item.variantId, item.quantity - 1)}
+                            className="p-1.5 hover:bg-border rounded-lg transition"
+                          >
+                            <Minus className="w-4 h-4" />
+                          </button>
+                          <span className="font-bold text-sm w-6 text-center">{item.quantity}</span>
+                          <button
+                            onClick={() => updateQuantity(item.variantId, item.quantity + 1)}
+                            className="p-1.5 hover:bg-border rounded-lg transition"
+                          >
+                            <Plus className="w-4 h-4" />
+                          </button>
+                        </div>
+
+                        <button
+                          onClick={() => removeItem(item.variantId)}
+                          className="p-2 text-muted-foreground hover:text-destructive transition"
                         >
-                          <Minus className="w-4 h-4" />
-                        </button>
-                        <span className="font-bold text-sm w-6 text-center">{item.quantity}</span>
-                        <button 
-                          onClick={() => updateQuantity(item.variantId, item.quantity + 1)}
-                          className="p-1.5 hover:bg-border rounded-lg transition"
-                        >
-                          <Plus className="w-4 h-4" />
+                          <Trash2 className="w-4 h-4" />
                         </button>
                       </div>
-                      
-                      <button 
-                        onClick={() => removeItem(item.variantId)}
-                        className="p-2 text-muted-foreground hover:text-destructive transition"
-                      >
-                        <Trash2 className="w-4 h-4" />
-                      </button>
                     </div>
                   </div>
-                </div>
-              ))
+                ))}
+              </>
             )}
 
             {/* Upsell — You might also like (Pro) */}
@@ -244,12 +350,29 @@ export default function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
           {/* Footer */}
           {items.length > 0 && (
             <div className="border-t border-border p-4 pb-[calc(1rem+env(safe-area-inset-bottom))] space-y-3 bg-card shadow-[0_-4px_12px_rgba(0,0,0,0.1)]">
+              {bundleSavings > 0 && (
+                <>
+                  <div className="flex items-center justify-between text-sm text-muted-foreground">
+                    <span>סכום מקורי:</span>
+                    <span className="line-through">₪{total.toFixed(0)}</span>
+                  </div>
+                  <div className="flex items-center justify-between text-sm font-bold text-[hsl(142,70%,35%)]">
+                    <span className="flex items-center gap-1"><Tag className="w-3.5 h-3.5" /> חיסכון מהערכות:</span>
+                    <span>-₪{bundleSavings.toFixed(0)}</span>
+                  </div>
+                </>
+              )}
               <div className="flex items-center justify-between font-bold text-lg">
-                <span>סה"כ:</span>
-                <span className="text-accent">₪{total.toFixed(0)}</span>
+                <span>סה"כ לתשלום:</span>
+                <span className="text-accent">₪{finalTotal.toFixed(0)}</span>
               </div>
-              
-              <Button 
+              {bundleSavings > 0 && (
+                <p className="text-[11px] text-muted-foreground text-center">
+                  * הנחת הערכה תופעל אוטומטית בקופה
+                </p>
+              )}
+
+              <Button
                 onClick={handleCheckout}
                 className="w-full py-7 text-lg font-bold bg-accent hover:bg-accent/90 rounded-xl shadow-lg"
               >
