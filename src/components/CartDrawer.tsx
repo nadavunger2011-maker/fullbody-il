@@ -1,4 +1,4 @@
-import { X, Plus, Minus, ShoppingBag, Trash2, Loader2, ArrowLeft } from 'lucide-react';
+import { X, Plus, Minus, ShoppingBag, Trash2, Loader2, ArrowLeft, Package, Tag } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useCartStore } from '@/stores/cartStore';
 import { Button } from '@/components/ui/button';
