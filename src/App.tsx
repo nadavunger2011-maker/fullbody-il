@@ -39,6 +39,7 @@ import ProTerms from "./pages/ProTerms";
 import ProProducts from "./pages/ProProducts";
 import ProBundles from "./pages/ProBundles";
 import ProteinCalculator from "./pages/ProteinCalculator";
+import Recipes from "./pages/Recipes";
 import { Navigate } from "react-router-dom";
 import { trackPageView } from "@/lib/analytics";
 import { trackPageView as trackFBPageView } from "@/lib/fbPixel";
@@ -76,6 +77,7 @@ function AnalyticsListener() {
 function AppContent() {
   const location = useLocation();
   const isCalculator = location.pathname === "/calculator";
+  const isRecipes = location.pathname === "/recipes";
   useCartSync();
   
   return (
@@ -87,6 +89,7 @@ function AppContent() {
         <Route path="/products" element={<ProProducts />} />
         <Route path="/bundles" element={<ProBundles />} />
         <Route path="/calculator" element={<ProteinCalculator />} />
+        <Route path="/recipes" element={<Recipes />} />
         <Route path="/articles" element={<Navigate to="/blog" replace />} />
         <Route path="/product/:handle" element={<ProProductDetail />} />
         <Route path="/blog" element={<ProBlog />} />
@@ -124,8 +127,8 @@ function AppContent() {
         {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
         <Route path="*" element={<NotFound />} />
       </Routes>
-      {!isCalculator && <WhatsAppButton />}
-      {!isCalculator && <FirstVisitModal />}
+      {!isCalculator && !isRecipes && <WhatsAppButton />}
+      {!isCalculator && !isRecipes && <FirstVisitModal />}
       <CookieNotice />
     </>
   );
