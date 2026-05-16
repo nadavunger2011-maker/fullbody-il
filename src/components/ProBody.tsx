@@ -359,6 +359,9 @@ export default function ProBody() {
       {/* Hero Carousel - Full Width Edge-to-Edge */}
       <HeroCarousel />
 
+      {/* Premium Trust Factors Section - directly below hero */}
+      <TrustFactors />
+
       {/* Trust Badges */}
       <section className="py-14 md:py-16 bg-card border-b border-border">
         <div className="container mx-auto px-4">
@@ -499,9 +502,6 @@ export default function ProBody() {
           </div>
         </div>
       </section>
-
-      {/* Premium Trust Factors Section */}
-      <TrustFactors />
 
       {/* Social Proof */}
       {/* Social Proof — Success Stories */}
