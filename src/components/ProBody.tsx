@@ -25,6 +25,8 @@ import ProFooter from './ProFooter';
 import ProProductFilters, { type ActiveFilters } from './ProProductFilters';
 import { TestimonialSlider, SuccessByNumbers, CrossCategoryFitness } from './SocialProofSection';
 import HomepageReviews from './HomepageReviews';
+import TrustFactors from './TrustFactors';
+import TestimonialsGrid from './TestimonialsGrid';
 import { PRICE_RANGES } from '@/data/herbalifeProducts';
 
 type SortOption = 'default' | 'price-asc' | 'price-desc';
@@ -498,8 +500,13 @@ export default function ProBody() {
         </div>
       </section>
 
+      {/* Premium Trust Factors Section */}
+      <TrustFactors />
+
       {/* Social Proof */}
       {/* Social Proof — Success Stories */}
+      <TestimonialsGrid />
+
       <section aria-labelledby="success-stories-heading" className="pt-12 bg-secondary/20">
         <div className="container mx-auto px-4 text-center">
           <h2 id="success-stories-heading" className="text-3xl md:text-4xl font-black text-foreground">סיפורי הצלחה ותוצאות בשטח</h2>
