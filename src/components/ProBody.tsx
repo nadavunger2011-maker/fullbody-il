@@ -25,6 +25,8 @@ import ProFooter from './ProFooter';
 import ProProductFilters, { type ActiveFilters } from './ProProductFilters';
 import { TestimonialSlider, SuccessByNumbers, CrossCategoryFitness } from './SocialProofSection';
 import HomepageReviews from './HomepageReviews';
+import TrustFactors from './TrustFactors';
+import TestimonialsGrid from './TestimonialsGrid';
 import { PRICE_RANGES } from '@/data/herbalifeProducts';
 
 type SortOption = 'default' | 'price-asc' | 'price-desc';
