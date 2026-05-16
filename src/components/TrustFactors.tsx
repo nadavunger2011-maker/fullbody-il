@@ -1,66 +1,100 @@
-const trustCards = [
+import { useEffect, useState } from "react";
+
+const trustLogos = [
   {
-    image: "https://www.herbi.co.il/wp-content/uploads/2023/12/Israeli_Ministry_of_Health_logo-small.webp",
-    title: "באישור משרד הבריאות",
-    description:
-      "כל מוצרי הרבלייף באתר מיוצרים תחת בקרת איכות מחמירה ומאושרים לשיווק על ידי משרד הבריאות הישראלי.",
+    src: "/trust/moh.webp",
+    alt: "פולבאדי - מוצרי הרבלייף באישור משרד הבריאות הישראלי",
   },
   {
-    image: "https://www.herbi.co.il/wp-content/uploads/2024/01/%D7%90%D7%AA%D7%A8-%D7%94%D7%A8%D7%91%D7%9C%D7%99%D7%99%D7%A3-_6_-1.webp",
-    title: "ספק התזונה של הספורטאים",
-    description:
-      "הרבלייף גאה להיות ספק התזונה הרשמי של הוועד האולימפי בישראל ושל ספורטאי עלית ברחבי העולם.",
+    src: "/trust/olympic-supplier.webp",
+    alt: "פולבאדי - הרבלייף ספק התזונה הרשמי של הוועד האולימפי בישראל",
   },
   {
-    image: "https://www.herbi.co.il/wp-content/uploads/2023/12/%D7%90%D7%AA%D7%A8-%D7%94%D7%A8%D7%91%D7%9C%D7%99%D7%99%D7%A3-_1_-2.webp",
-    title: "מותג התזונה המוביל בעולם",
-    description:
-      "מעל 40 שנות מומחיות, נוכחות בלמעלה מ-90 מדינות ומיליוני לקוחות מרוצים שמשנים את החיים שלהם בכל יום.",
+    src: "/trust/olympic-banner.webp",
+    alt: "פולבאדי - הרבלייף שותפה רשמית של הוועד האולימפי וספורטאי עלית",
   },
   {
-    image: "https://www.herbi.co.il/wp-content/uploads/2023/12/%D7%90%D7%AA%D7%A8-%D7%94%D7%A8%D7%91%D7%9C%D7%99%D7%99%D7%A3_1-1.webp",
-    title: "משווק מורשה מטעם הרבלייף",
-    description:
-      "FullBody – משווק מורשה רשמי של הרבלייף, עם ליווי אישי, התאמת תוכנית והמלצות מקצועיות לכל לקוח.",
+    src: "/trust/authorized.webp",
+    alt: "פולבאדי - משווק מורשה רשמי של הרבלייף ישראל עם ליווי אישי",
   },
 ];
 
 export default function TrustFactors() {
-  return (
-    <section className="py-12 md:py-16 bg-secondary/30 border-b border-border" dir="rtl">
-      <div className="container mx-auto px-4">
-        <div className="text-center mb-10">
-          <h2 className="text-2xl md:text-3xl lg:text-4xl font-black text-foreground">
-            גורמי אמינות
-          </h2>
-          <p className="text-muted-foreground mt-3 max-w-2xl mx-auto text-sm md:text-base">
-            הסיבות שאלפי לקוחות בישראל בוחרים בפולבאדי ובמוצרי הרבלייף
-          </p>
-        </div>
+  const [index, setIndex] = useState(0);
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {trustCards.map((card, index) => (
-            <div
-              key={index}
-              className="group bg-card rounded-2xl p-6 md:p-7 border border-border text-right
-                         hover:shadow-hover hover:-translate-y-1 transition-all duration-300 flex flex-col"
-            >
-              <div className="h-20 md:h-24 mb-5 flex items-center justify-center">
+  useEffect(() => {
+    const id = setInterval(() => {
+      setIndex((prev) => (prev + 1) % trustLogos.length);
+    }, 3500);
+    return () => clearInterval(id);
+  }, []);
+
+  return (
+    <section
+      className="py-8 md:py-12 bg-secondary/30 border-b border-border"
+      dir="rtl"
+      aria-label="גורמי אמינות"
+    >
+      <div className="container mx-auto px-4">
+        {/* Mobile / small: single-slide carousel */}
+        <div className="md:hidden relative overflow-hidden">
+          <div
+            className="flex transition-transform duration-700 ease-in-out"
+            style={{ transform: `translateX(${index * 100}%)` }}
+          >
+            {trustLogos.map((logo) => (
+              <div
+                key={logo.src}
+                className="w-full flex-shrink-0 flex items-center justify-center h-24"
+              >
                 <img
-                  src={card.image}
-                  alt={card.title}
+                  src={logo.src}
+                  alt={logo.alt}
                   loading="lazy"
-                  className="max-h-full max-w-full object-contain"
+                  className="max-h-full max-w-[70%] object-contain"
                 />
               </div>
-              <h3 className="text-lg font-bold text-foreground mb-3 leading-snug">
-                {card.title}
-              </h3>
-              <p className="text-sm text-muted-foreground leading-relaxed">
-                {card.description}
-              </p>
-            </div>
-          ))}
+            ))}
+          </div>
+          <div className="flex justify-center gap-2 mt-4">
+            {trustLogos.map((_, i) => (
+              <button
+                key={i}
+                onClick={() => setIndex(i)}
+                aria-label={`מעבר לשקופית ${i + 1}`}
+                className={`h-2 rounded-full transition-all ${
+                  i === index ? "w-6 bg-[hsl(142,70%,35%)]" : "w-2 bg-muted-foreground/40"
+                }`}
+              />
+            ))}
+          </div>
+        </div>
+
+        {/* Desktop: continuous marquee carousel */}
+        <div
+          className="hidden md:block overflow-hidden"
+          style={{
+            maskImage:
+              "linear-gradient(to right, transparent, black 10%, black 90%, transparent)",
+            WebkitMaskImage:
+              "linear-gradient(to right, transparent, black 10%, black 90%, transparent)",
+          }}
+        >
+          <div className="flex gap-16 animate-marquee items-center w-max">
+            {[...trustLogos, ...trustLogos].map((logo, i) => (
+              <div
+                key={`${logo.src}-${i}`}
+                className="flex items-center justify-center h-24 shrink-0"
+              >
+                <img
+                  src={logo.src}
+                  alt={logo.alt}
+                  loading="lazy"
+                  className="max-h-24 max-w-[220px] object-contain opacity-90 hover:opacity-100 transition-opacity"
+                />
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     </section>
