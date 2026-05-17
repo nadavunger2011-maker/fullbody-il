@@ -20,12 +20,12 @@ function getRecipeImage(id: string): string | undefined {
 
 function NutritionBadge({ recipe }: { recipe: Recipe }) {
   return (
-    <div className="absolute top-4 left-4 z-10 flex flex-col gap-1 bg-black/85 backdrop-blur-sm border border-[hsl(142,70%,35%)]/40 rounded-2xl px-3 py-2 shadow-lg">
+    <div className="absolute top-4 left-4 z-10 flex flex-col gap-1 bg-background/85 backdrop-blur-sm border border-[hsl(142,70%,35%)]/40 rounded-2xl px-3 py-2 shadow-lg">
       <div className="flex items-center gap-1.5 text-[hsl(142,70%,55%)] text-xs font-bold">
         <Dumbbell className="w-3 h-3" />
         <span>{recipe.protein}g חלבון</span>
       </div>
-      <div className="flex items-center gap-1.5 text-white/90 text-xs font-bold">
+      <div className="flex items-center gap-1.5 text-foreground/90 text-xs font-bold">
         <Flame className="w-3 h-3 text-orange-400" />
         <span>{recipe.calories} קל'</span>
       </div>
@@ -46,7 +46,7 @@ function RecipeCard({ recipe }: { recipe: Recipe }) {
 
   const img = getRecipeImage(recipe.id);
   return (
-    <article className="relative bg-zinc-900/80 border border-white/10 rounded-3xl overflow-hidden flex flex-col hover:border-[hsl(142,70%,35%)]/50 transition-all duration-300 shadow-xl">
+    <article className="relative bg-card border border-border rounded-3xl overflow-hidden flex flex-col hover:border-[hsl(142,70%,35%)]/50 transition-all duration-300 shadow-xl">
       {/* Hero — real food photo */}
       <div className="relative h-52 bg-gradient-to-br from-[hsl(142,40%,15%)] via-zinc-900 to-black overflow-hidden">
         <NutritionBadge recipe={recipe} />
@@ -69,9 +69,9 @@ function RecipeCard({ recipe }: { recipe: Recipe }) {
           ))}
         </div>
 
-        <h3 className="text-xl font-black text-white leading-tight">{recipe.title}</h3>
+        <h3 className="text-xl font-black text-foreground leading-tight">{recipe.title}</h3>
 
-        <div className="flex items-center gap-3 text-xs text-white/60">
+        <div className="flex items-center gap-3 text-xs text-muted-foreground">
           <span className="flex items-center gap-1"><Clock className="w-3 h-3" />{recipe.prepMinutes} דק'</span>
         </div>
 
@@ -88,14 +88,14 @@ function RecipeCard({ recipe }: { recipe: Recipe }) {
                       <button
                         onClick={() => toggle(checkedIngredients, setCheckedIngredients, i)}
                         aria-label="סמן"
-                        className={`mt-0.5 w-4 h-4 rounded border flex items-center justify-center flex-shrink-0 transition-all ${checked ? "bg-[hsl(142,70%,35%)] border-[hsl(142,70%,35%)]" : "border-white/30"}`}
+                        className={`mt-0.5 w-4 h-4 rounded border flex items-center justify-center flex-shrink-0 transition-all ${checked ? "bg-[hsl(142,70%,35%)] border-[hsl(142,70%,35%)]" : "border-border"}`}
                       >
                         {checked && <Check className="w-3 h-3 text-black" strokeWidth={3} />}
                       </button>
                       {isProduct ? (
                         <Link
                           to={`/product/${recipe.productHandle}`}
-                          className={`flex-1 text-right text-sm font-bold inline-flex items-center gap-1 transition-colors ${checked ? "line-through text-white/40" : "text-[hsl(142,70%,55%)] hover:text-[hsl(142,70%,65%)] underline decoration-dotted underline-offset-4"}`}
+                          className={`flex-1 text-right text-sm font-bold inline-flex items-center gap-1 transition-colors ${checked ? "line-through text-muted-foreground" : "text-[hsl(142,70%,55%)] hover:text-[hsl(142,70%,65%)] underline decoration-dotted underline-offset-4"}`}
                         >
                           <span>{ing}</span>
                           <ExternalLink className="w-3 h-3 opacity-70" />
@@ -103,7 +103,7 @@ function RecipeCard({ recipe }: { recipe: Recipe }) {
                       ) : (
                         <button
                           onClick={() => toggle(checkedIngredients, setCheckedIngredients, i)}
-                          className={`flex-1 text-right text-sm text-white/85 hover:text-white transition-colors ${checked ? "line-through text-white/40" : ""}`}
+                          className={`flex-1 text-right text-sm text-foreground/85 hover:text-foreground transition-colors ${checked ? "line-through text-muted-foreground" : ""}`}
                         >
                           {ing}
                         </button>
@@ -123,13 +123,13 @@ function RecipeCard({ recipe }: { recipe: Recipe }) {
                     <li key={i}>
                       <button
                         onClick={() => toggle(checkedSteps, setCheckedSteps, i)}
-                        className="w-full flex items-start gap-2 text-right text-sm text-white/85 hover:text-white transition-colors"
+                        className="w-full flex items-start gap-2 text-right text-sm text-foreground/85 hover:text-foreground transition-colors"
                       >
-                        <span className={`mt-0.5 w-4 h-4 rounded border flex items-center justify-center flex-shrink-0 transition-all ${checked ? "bg-[hsl(142,70%,35%)] border-[hsl(142,70%,35%)]" : "border-white/30"}`}>
+                        <span className={`mt-0.5 w-4 h-4 rounded border flex items-center justify-center flex-shrink-0 transition-all ${checked ? "bg-[hsl(142,70%,35%)] border-[hsl(142,70%,35%)]" : "border-border"}`}>
                           {checked && <Check className="w-3 h-3 text-black" strokeWidth={3} />}
                         </span>
-                        <span className={checked ? "line-through text-white/40" : ""}>
-                          <strong className="text-white/60 ml-1">{i + 1}.</strong>
+                        <span className={checked ? "line-through text-muted-foreground" : ""}>
+                          <strong className="text-muted-foreground ml-1">{i + 1}.</strong>
                           {step}
                         </span>
                       </button>
@@ -144,7 +144,7 @@ function RecipeCard({ recipe }: { recipe: Recipe }) {
         <div className="mt-auto pt-3">
           <button
             onClick={() => setExpanded(e => !e)}
-            className="w-full text-sm font-bold text-white/80 hover:text-white py-2.5 rounded-lg border border-white/15 hover:border-[hsl(142,70%,35%)]/50 transition-colors"
+            className="w-full text-sm font-bold text-foreground/80 hover:text-foreground py-2.5 rounded-lg border border-border hover:border-[hsl(142,70%,35%)]/50 transition-colors"
           >
             {expanded ? "הסתר מתכון" : "הצג מתכון מלא"}
           </button>
@@ -171,16 +171,16 @@ export default function Recipes() {
   );
 
   return (
-    <div dir="rtl" className="min-h-screen bg-black text-white">
+    <div dir="rtl" className="min-h-screen bg-background text-foreground">
       <Helmet>
         <title>ספר המתכונים | The Guilt-Free Protocol — פולבאדי</title>
         <meta name="description" content="30 מתכונים עתירי חלבון מבוססי הרבלייף — ארוחות בוקר, עיקריות, קינוחים ושייקים. כשרות מהדרין." />
       </Helmet>
 
       {/* Header */}
-      <header className="sticky top-0 z-40 bg-black/85 backdrop-blur-xl border-b border-white/10">
+      <header className="sticky top-0 z-40 bg-background/85 backdrop-blur-xl border-b border-border">
         <div className="container mx-auto px-4 py-4 flex items-center justify-between gap-4">
-          <Link to="/" className="flex items-center gap-2 text-white/70 hover:text-white text-sm font-semibold">
+          <Link to="/" className="flex items-center gap-2 text-muted-foreground hover:text-foreground text-sm font-semibold">
             <ArrowLeft className="w-4 h-4 rotate-180" />
             לאתר
           </Link>
@@ -192,7 +192,7 @@ export default function Recipes() {
       </header>
 
       {/* Hero */}
-      <section className="relative overflow-hidden border-b border-white/10">
+      <section className="relative overflow-hidden border-b border-border">
         <div
           className="absolute inset-0 opacity-30"
           style={{ background: `radial-gradient(ellipse at top, ${HERBA_GREEN} 0%, transparent 60%)` }}
@@ -203,7 +203,7 @@ export default function Recipes() {
             ספר המתכונים
             <span className="block text-[hsl(142,70%,55%)] mt-2">של הספורטאי הכשר.</span>
           </h1>
-          <p className="text-base md:text-lg text-white/70 leading-relaxed">
+          <p className="text-base md:text-lg text-muted-foreground leading-relaxed">
             30 מתכונים עתירי חלבון. ארוחות שמרגישות אסורות — אבל מקדמות אותך ליעד.
             כל מתכון בנוי סביב מוצר Herbalife מהדרין.
           </p>
@@ -211,7 +211,7 @@ export default function Recipes() {
       </section>
 
       {/* Category nav */}
-      <nav className="sticky top-[57px] z-30 bg-black/85 backdrop-blur-xl border-b border-white/10">
+      <nav className="sticky top-[57px] z-30 bg-background/85 backdrop-blur-xl border-b border-border">
         <div className="container mx-auto px-4">
           <div className="flex gap-2 overflow-x-auto py-3 scrollbar-hide">
             {RECIPE_CATEGORIES.map(cat => {
@@ -222,8 +222,8 @@ export default function Recipes() {
                   onClick={() => setActiveCategory(cat.id)}
                   className={`flex-shrink-0 inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-bold transition-all border ${
                     active
-                      ? "bg-[hsl(142,70%,35%)] border-[hsl(142,70%,35%)] text-white shadow-lg shadow-[hsl(142,70%,35%)]/30"
-                      : "bg-white/5 border-white/10 text-white/70 hover:bg-white/10 hover:text-white"
+                      ? "bg-[hsl(142,70%,35%)] border-[hsl(142,70%,35%)] text-foreground shadow-lg shadow-[hsl(142,70%,35%)]/30"
+                      : "bg-secondary border-border text-muted-foreground hover:bg-secondary hover:text-foreground"
                   }`}
                 >
                   <span>{cat.emoji}</span>
@@ -242,18 +242,18 @@ export default function Recipes() {
         </div>
 
         {filtered.length === 0 && (
-          <div className="text-center py-16 text-white/50">לא נמצאו מתכונים בקטגוריה זו</div>
+          <div className="text-center py-16 text-muted-foreground">לא נמצאו מתכונים בקטגוריה זו</div>
         )}
       </section>
 
       {/* Footer CTA */}
-      <section className="border-t border-white/10 bg-zinc-950">
+      <section className="border-t border-border bg-secondary">
         <div className="container mx-auto px-4 py-12 text-center max-w-2xl">
           <h2 className="text-2xl md:text-3xl font-black mb-3">רוצה תפריט מותאם אישית?</h2>
-          <p className="text-white/60 mb-6">קבל ייעוץ אישי וחבילת מוצרים שמתאימה ליעד שלך.</p>
+          <p className="text-muted-foreground mb-6">קבל ייעוץ אישי וחבילת מוצרים שמתאימה ליעד שלך.</p>
           <Link
             to="/contact"
-            className="inline-flex items-center justify-center gap-2 bg-[hsl(142,70%,35%)] hover:bg-[hsl(142,70%,40%)] text-white font-bold px-8 py-4 rounded-xl transition-all shadow-lg shadow-[hsl(142,70%,35%)]/30"
+            className="inline-flex items-center justify-center gap-2 bg-[hsl(142,70%,35%)] hover:bg-[hsl(142,70%,40%)] text-foreground font-bold px-8 py-4 rounded-xl transition-all shadow-lg shadow-[hsl(142,70%,35%)]/30"
           >
             דבר עם מאמן
           </Link>
