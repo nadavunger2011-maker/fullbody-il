@@ -306,28 +306,7 @@ export const recipes: Recipe[] = [
     ],
     emoji: "🌯", prepMinutes: 8,
   },
-  {
-    id: "f2-men-power-bowl",
-    title: "קערת כוח לגברים F2",
-    category: "mains",
-    badges: ["Parve", "Mehadrin Kosher"],
-    protein: 36, calories: 400,
-    productHandle: "formula-2-men",
-    productName: "Formula 2 Men",
-    ingredients: [
-      "1 טבליית F2 Men",
-      "150 גרם בקר רזה",
-      "1/2 כוס אורז מלא",
-      "אדממה",
-      "רוטב טריאקי דל סוכר",
-    ],
-    steps: [
-      "צולים את הבקר 4 דקות מכל צד",
-      "מסדרים על אורז עם אדממה ורוטב",
-      "נוטלים F2 Men לאחר הארוחה",
-    ],
-    emoji: "🍱", prepMinutes: 18,
-  },
+
 
   // ===== DESSERTS =====
   {
