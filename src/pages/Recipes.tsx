@@ -21,7 +21,7 @@ function getRecipeImage(id: string): string | undefined {
 function NutritionBadge({ recipe }: { recipe: Recipe }) {
   return (
     <div className="absolute top-4 left-4 z-10 flex flex-col gap-1 bg-background/85 backdrop-blur-sm border border-[hsl(142,70%,35%)]/40 rounded-2xl px-3 py-2 shadow-lg">
-      <div className="flex items-center gap-1.5 text-[hsl(142,70%,55%)] text-xs font-bold">
+      <div className="flex items-center gap-1.5 text-[hsl(142,70%,28%)] text-xs font-bold">
         <Dumbbell className="w-3 h-3" />
         <span>{recipe.protein}g חלבון</span>
       </div>
@@ -63,7 +63,7 @@ function RecipeCard({ recipe }: { recipe: Recipe }) {
       <div className="p-5 flex-1 flex flex-col gap-3">
         <div className="flex flex-wrap gap-1.5">
           {recipe.badges.map(b => (
-            <span key={b} className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-[hsl(142,70%,35%)]/15 text-[hsl(142,70%,55%)] border border-[hsl(142,70%,35%)]/30">
+            <span key={b} className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-[hsl(142,70%,35%)]/15 text-[hsl(142,70%,28%)] border border-[hsl(142,70%,35%)]/30">
               {b}
             </span>
           ))}
@@ -78,7 +78,7 @@ function RecipeCard({ recipe }: { recipe: Recipe }) {
         {expanded && (
           <div className="space-y-4 pt-2 animate-fade-in">
             <div>
-              <h4 className="text-sm font-bold text-[hsl(142,70%,55%)] mb-2 uppercase tracking-wider">מרכיבים</h4>
+              <h4 className="text-sm font-bold text-[hsl(142,70%,28%)] mb-2 uppercase tracking-wider">מרכיבים</h4>
               <ul className="space-y-1.5">
                 {recipe.ingredients.map((ing, i) => {
                   const checked = checkedIngredients.has(i);
@@ -95,7 +95,7 @@ function RecipeCard({ recipe }: { recipe: Recipe }) {
                       {isProduct ? (
                         <Link
                           to={`/product/${recipe.productHandle}`}
-                          className={`flex-1 text-right text-sm font-bold inline-flex items-center gap-1 transition-colors ${checked ? "line-through text-muted-foreground" : "text-[hsl(142,70%,55%)] hover:text-[hsl(142,70%,65%)] underline decoration-dotted underline-offset-4"}`}
+                          className={`flex-1 text-right text-sm font-bold inline-flex items-center gap-1 transition-colors ${checked ? "line-through text-muted-foreground" : "text-[hsl(142,70%,28%)] hover:text-[hsl(142,70%,22%)] underline decoration-dotted underline-offset-4"}`}
                         >
                           <span>{ing}</span>
                           <ExternalLink className="w-3 h-3 opacity-70" />
@@ -115,7 +115,7 @@ function RecipeCard({ recipe }: { recipe: Recipe }) {
             </div>
 
             <div>
-              <h4 className="text-sm font-bold text-[hsl(142,70%,55%)] mb-2 uppercase tracking-wider">הכנה</h4>
+              <h4 className="text-sm font-bold text-[hsl(142,70%,28%)] mb-2 uppercase tracking-wider">הכנה</h4>
               <ol className="space-y-1.5">
                 {recipe.steps.map((step, i) => {
                   const checked = checkedSteps.has(i);
@@ -185,7 +185,7 @@ export default function Recipes() {
             לאתר
           </Link>
           <div className="text-center flex-1">
-            <p className="text-[10px] tracking-[0.3em] text-[hsl(142,70%,55%)] font-bold">FULLBODY · PROTOCOL</p>
+            <p className="text-[10px] tracking-[0.3em] text-[hsl(142,70%,28%)] font-bold">FULLBODY · PROTOCOL</p>
           </div>
           <div className="w-12" />
         </div>
@@ -198,10 +198,10 @@ export default function Recipes() {
           style={{ background: `radial-gradient(ellipse at top, ${HERBA_GREEN} 0%, transparent 60%)` }}
         />
         <div className="relative container mx-auto px-4 py-12 md:py-20 text-center max-w-3xl">
-          <p className="text-xs tracking-[0.3em] text-[hsl(142,70%,55%)] font-bold mb-4">THE GUILT-FREE PROTOCOL</p>
+          <p className="text-xs tracking-[0.3em] text-[hsl(142,70%,28%)] font-bold mb-4">THE GUILT-FREE PROTOCOL</p>
           <h1 className="text-4xl md:text-6xl font-black leading-[1.05] mb-4">
             ספר המתכונים
-            <span className="block text-[hsl(142,70%,55%)] mt-2">של הספורטאי הכשר.</span>
+            <span className="block text-[hsl(142,70%,28%)] mt-2">של הספורטאי הכשר.</span>
           </h1>
           <p className="text-base md:text-lg text-muted-foreground leading-relaxed">
             30 מתכונים עתירי חלבון. ארוחות שמרגישות אסורות — אבל מקדמות אותך ליעד.

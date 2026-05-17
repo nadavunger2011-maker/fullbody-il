@@ -62,7 +62,7 @@ export default function ProtocolLanding() {
             <ArrowLeft className="w-4 h-4 rotate-180" />
             לאתר
           </Link>
-          <p className="text-[10px] tracking-[0.3em] text-[hsl(142,70%,55%)] font-bold">FULLBODY · PROTOCOL</p>
+          <p className="text-[10px] tracking-[0.3em] text-[hsl(142,70%,28%)] font-bold">FULLBODY · PROTOCOL</p>
           <div className="w-12" />
         </div>
       </header>
@@ -77,13 +77,13 @@ export default function ProtocolLanding() {
           <div className="grid md:grid-cols-2 gap-8 md:gap-12 items-center">
             {/* Copy */}
             <div className="text-center md:text-right">
-              <span className="inline-flex items-center gap-2 text-[10px] tracking-[0.25em] text-[hsl(142,70%,55%)] font-bold bg-[hsl(142,70%,35%)]/10 border border-[hsl(142,70%,35%)]/30 px-3 py-1.5 rounded-full mb-5">
+              <span className="inline-flex items-center gap-2 text-[10px] tracking-[0.25em] text-[hsl(142,70%,28%)] font-bold bg-[hsl(142,70%,35%)]/10 border border-[hsl(142,70%,35%)]/30 px-3 py-1.5 rounded-full mb-5">
                 <Sparkles className="w-3 h-3" />
                 מהדורה דיגיטלית · בחינם
               </span>
               <h1 className="text-4xl md:text-6xl font-black leading-[1.05] mb-4">
                 30 מתכונים שגורמים
-                <span className="block text-[hsl(142,70%,55%)] mt-2">לחלבון להרגיש כמו חטא.</span>
+                <span className="block text-[hsl(142,70%,28%)] mt-2">לחלבון להרגיש כמו חטא.</span>
               </h1>
               <p className="text-base md:text-lg text-muted-foreground leading-relaxed mb-6">
                 The Guilt-Free Protocol — ספר המתכונים האולטימטיבי של הספורטאי הכשר.
@@ -99,7 +99,7 @@ export default function ProtocolLanding() {
                   "כשרות מהדרין · גרסת Vegan, Dairy ו-Parve לכל ארוחה",
                 ].map((t, i) => (
                   <li key={i} className="flex items-start gap-2.5 text-sm md:text-base text-foreground/85">
-                    <Check className="w-5 h-5 text-[hsl(142,70%,55%)] flex-shrink-0 mt-0.5" strokeWidth={3} />
+                    <Check className="w-5 h-5 text-[hsl(142,70%,28%)] flex-shrink-0 mt-0.5" strokeWidth={3} />
                     <span>{t}</span>
                   </li>
                 ))}
@@ -165,7 +165,7 @@ export default function ProtocolLanding() {
               { icon: ShieldCheck, n: "100%", l: "כשרות מהדרין" },
             ].map(({ icon: Icon, n, l }, i) => (
               <div key={i} className="flex flex-col items-center gap-1">
-                <Icon className="w-5 h-5 text-[hsl(142,70%,55%)] mb-1" />
+                <Icon className="w-5 h-5 text-[hsl(142,70%,28%)] mb-1" />
                 <div className="text-2xl md:text-3xl font-black">{n}</div>
                 <div className="text-[11px] text-muted-foreground uppercase tracking-wider">{l}</div>
               </div>
