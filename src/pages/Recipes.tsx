@@ -33,6 +33,22 @@ function NutritionBadge({ recipe }: { recipe: Recipe }) {
   );
 }
 
+const BADGE_LABEL: Record<string, string> = {
+  Dairy: "חלבי",
+  Parve: "פרווה",
+  Vegan: "טבעוני",
+  Meat: "בשרי",
+  "Mehadrin Kosher": "כשרות מהדרין",
+};
+
+// Herbalife dry-mix keywords — only these ingredients get cart/product links
+const HERBA_KEYWORDS = ["פורמולה", "formula 1", "f1", "pdm", "tri-blend", "tri blend", "h24", "personalized protein", "אבקת חלבון", "herbalife"];
+
+function isHerbalifeIngredient(text: string): boolean {
+  const lower = text.toLowerCase();
+  return HERBA_KEYWORDS.some(k => lower.includes(k));
+}
+
 function RecipeCard({ recipe }: { recipe: Recipe }) {
   const [checkedIngredients, setCheckedIngredients] = useState<Set<number>>(new Set());
   const [checkedSteps, setCheckedSteps] = useState<Set<number>>(new Set());
