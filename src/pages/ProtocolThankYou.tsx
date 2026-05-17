@@ -10,14 +10,17 @@ import CartDrawer from "@/components/CartDrawer";
 
 const HERBA_GREEN = "hsl(142,70%,35%)";
 
-// Doubled bundle: 2x Formula 1 (וניל + שוקולד) + 2x PDM
-const BUNDLE_HANDLES = [
-  "formula-1-vanilla",
-  "formula-1-chocolate",
-  "pdm-protein",
-  "pdm-protein",
-];
+// Bundle: 1x Formula 1 + 1x PDM (שייקר ומשלוח כבונוס)
+const BUNDLE_HANDLES = ["formula-1-vanilla", "pdm-protein"];
 const EXTRA_DISCOUNT_PCT = 10;
+
+// Marketing pricing (independent of Shopify real prices)
+const RETAIL_PRICE = 640;       // מחיר מלא בקנייה רגילה
+const BUNDLE_PRICE = 498;       // מחיר באנדל לפני הנחת OTO
+const FINAL_PRICE = 448;        // מחיר סופי אחרי 10% OTO
+const BUNDLE_SAVINGS = RETAIL_PRICE - BUNDLE_PRICE; // 142
+const OTO_SAVINGS = BUNDLE_PRICE - FINAL_PRICE;     // 50
+const TOTAL_SAVINGS = RETAIL_PRICE - FINAL_PRICE;   // 192
 
 function pad(n: number) {
   return n.toString().padStart(2, "0");
