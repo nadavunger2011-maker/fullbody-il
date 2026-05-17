@@ -41,6 +41,7 @@ import ProBundles from "./pages/ProBundles";
 import ProteinCalculator from "./pages/ProteinCalculator";
 import Recipes from "./pages/Recipes";
 import ProtocolLanding from "./pages/ProtocolLanding";
+import ProtocolThankYou from "./pages/ProtocolThankYou";
 import ChocolateCakeProtocol from "./pages/ChocolateCakeProtocol";
 import { Navigate } from "react-router-dom";
 import { trackPageView } from "@/lib/analytics";
@@ -95,6 +96,7 @@ function AppContent() {
         <Route path="/calculator" element={<ProteinCalculator />} />
         <Route path="/recipes" element={<Recipes />} />
         <Route path="/protocol" element={<ProtocolLanding />} />
+        <Route path="/protocol-thank-you" element={<ProtocolThankYou />} />
         <Route path="/blog/chocolate-cake-protocol" element={<ChocolateCakeProtocol />} />
         <Route path="/articles" element={<Navigate to="/blog" replace />} />
         <Route path="/product/:handle" element={<ProProductDetail />} />

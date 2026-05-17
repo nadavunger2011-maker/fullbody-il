@@ -2,7 +2,7 @@
 // Handles match products in src/data/herbalifeProducts.ts → linked to /product/:handle
 
 export type RecipeCategory = "breakfast" | "mains" | "desserts" | "shakes";
-export type RecipeBadge = "Dairy" | "Parve" | "Vegan" | "Mehadrin Kosher";
+export type RecipeBadge = "Dairy" | "Parve" | "Vegan" | "Meat" | "Mehadrin Kosher";
 
 export interface Recipe {
   id: string;
@@ -244,7 +244,7 @@ export const recipes: Recipe[] = [
     id: "protein-chicken-schnitzel",
     title: "שניצל חלבון פריך",
     category: "mains",
-    badges: ["Parve", "Mehadrin Kosher"],
+    badges: ["Meat", "Mehadrin Kosher"],
     protein: 42, calories: 360,
     productHandle: "pdm-protein",
     productName: "PDM Personalized Protein Powder",
