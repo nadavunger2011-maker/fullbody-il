@@ -7,6 +7,26 @@ const trustLogos = [
     src: "/trust/olympic-supplier.webp",
     alt: "פולבאדי - הרבלייף ספק התזונה הרשמי של הוועד האולימפי בישראל",
   },
+  {
+    src: "/trust/herbalife-distributor.webp",
+    alt: "פולבאדי - משווק מורשה מטעם הרבלייף ישראל",
+  },
+  {
+    src: "/trust/one-themarker.webp",
+    alt: "פולבאדי בתקשורת - ONE ו-TheMarker",
+  },
+  {
+    src: "/trust/calcalist-ynet.webp",
+    alt: "פולבאדי בתקשורת - כלכליסט ו-ynet",
+  },
+  {
+    src: "/trust/israel-hayom-globes.webp",
+    alt: "פולבאדי בתקשורת - ישראל היום וגלובס",
+  },
+  {
+    src: "/trust/walla-maariv.webp",
+    alt: "פולבאדי בתקשורת - וואלה ומעריב",
+  },
 ];
 
 export default function TrustFactors() {
