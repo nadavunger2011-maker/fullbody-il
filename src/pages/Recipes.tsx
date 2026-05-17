@@ -98,7 +98,7 @@ function RecipeCard({ recipe }: { recipe: Recipe }) {
               <ul className="space-y-1.5">
                 {recipe.ingredients.map((ing, i) => {
                   const checked = checkedIngredients.has(i);
-                  const isProduct = i === 0;
+                  const isProduct = isHerbalifeIngredient(ing);
                   return (
                     <li key={i} className="flex items-start gap-2">
                       <button
