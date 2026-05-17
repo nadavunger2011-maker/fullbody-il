@@ -2,7 +2,7 @@
 // Handles match products in src/data/herbalifeProducts.ts → linked to /product/:handle
 
 export type RecipeCategory = "breakfast" | "mains" | "desserts" | "shakes";
-export type RecipeBadge = "Dairy" | "Parve" | "Vegan" | "Mehadrin Kosher";
+export type RecipeBadge = "Dairy" | "Parve" | "Vegan" | "Meat" | "Mehadrin Kosher";
 
 export interface Recipe {
   id: string;
