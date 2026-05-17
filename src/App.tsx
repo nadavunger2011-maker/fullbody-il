@@ -41,6 +41,7 @@ import ProBundles from "./pages/ProBundles";
 import ProteinCalculator from "./pages/ProteinCalculator";
 import Recipes from "./pages/Recipes";
 import ProtocolLanding from "./pages/ProtocolLanding";
+import ProtocolThankYou from "./pages/ProtocolThankYou";
 import ChocolateCakeProtocol from "./pages/ChocolateCakeProtocol";
 import { Navigate } from "react-router-dom";
 import { trackPageView } from "@/lib/analytics";
