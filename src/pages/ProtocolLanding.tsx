@@ -86,49 +86,41 @@ export default function ProtocolLanding() {
                 <span className="block text-[hsl(142,70%,28%)] mt-2">לחלבון להרגיש כמו חטא.</span>
               </h1>
               <p className="text-base md:text-lg text-muted-foreground leading-relaxed mb-6">
-                The Guilt-Free Protocol — ספר המתכונים האולטימטיבי של הספורטאי הכשר.
-                ארוחות בוקר, עיקריות, קינוחים ושייקים. כל מנה — עד 45 גרם חלבון, פחות מ־420 קלוריות,
-                מבוססת מוצר Herbalife מהדרין.
+                ספר מתכונים דיגיטלי — עד 45g חלבון, פחות מ־420 קלוריות לארוחה.
               </p>
 
-              <ul className="space-y-2.5 mb-8 text-right inline-block">
-                {[
-                  "30 מתכונים עתירי חלבון, בעברית, עם מדידות מדויקות",
-                  "סימון אינטראקטיבי של מרכיבים ושלבי הכנה",
-                  "מסונכרן לחנות — קנה את המוצר ישירות מתוך המתכון",
-                  "כשרות מהדרין · גרסת Vegan, Dairy ו-Parve לכל ארוחה",
-                ].map((t, i) => (
-                  <li key={i} className="flex items-start gap-2.5 text-sm md:text-base text-foreground/85">
-                    <Check className="w-5 h-5 text-[hsl(142,70%,28%)] flex-shrink-0 mt-0.5" strokeWidth={3} />
-                    <span>{t}</span>
-                  </li>
-                ))}
-              </ul>
-
-              {/* Email form */}
-              <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto md:mx-0">
-                <Input
-                  type="email"
-                  required
-                  placeholder="הכנס את האימייל שלך"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  className="h-14 text-base bg-card border-border text-foreground placeholder:text-muted-foreground focus-visible:border-[hsl(142,70%,55%)]"
-                  dir="ltr"
-                />
-                <Button
-                  type="submit"
-                  size="lg"
-                  disabled={loading}
-                  className="h-14 px-7 whitespace-nowrap font-black text-base shadow-lg shadow-[hsl(142,70%,35%)]/40 bg-[hsl(142,70%,35%)] hover:bg-[hsl(142,70%,40%)] text-foreground"
-                >
-                  {loading ? "פותח..." : "פתח את הספר"}
-                </Button>
+              {/* Email form — most prominent */}
+              <form
+                onSubmit={handleSubmit}
+                className="bg-card border-2 border-[hsl(142,70%,35%)] rounded-2xl p-5 shadow-2xl shadow-[hsl(142,70%,35%)]/20 max-w-md mx-auto md:mx-0"
+              >
+                <label className="block text-sm font-bold text-foreground mb-3 text-right">
+                  הכנס מייל וקבל גישה מיידית 👇
+                </label>
+                <div className="flex flex-col sm:flex-row gap-3">
+                  <Input
+                    type="email"
+                    required
+                    placeholder="your@email.com"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    className="h-14 text-base bg-background border-border text-foreground placeholder:text-muted-foreground focus-visible:border-[hsl(142,70%,55%)]"
+                    dir="ltr"
+                  />
+                  <Button
+                    type="submit"
+                    size="lg"
+                    disabled={loading}
+                    className="h-14 px-7 whitespace-nowrap font-black text-base shadow-lg shadow-[hsl(142,70%,35%)]/40 bg-[hsl(142,70%,35%)] hover:bg-[hsl(142,70%,40%)] text-white"
+                  >
+                    {loading ? "פותח..." : "פתח את הספר"}
+                  </Button>
+                </div>
+                <p className="text-[11px] text-muted-foreground mt-3 flex items-center justify-center md:justify-start gap-1.5">
+                  <Lock className="w-3 h-3" />
+                  גישה מיידית · ללא ספאם · ניתן להסרה בכל עת
+                </p>
               </form>
-              <p className="text-[11px] text-muted-foreground mt-3 flex items-center justify-center md:justify-start gap-1.5">
-                <Lock className="w-3 h-3" />
-                גישה מיידית · ללא ספאם · ניתן להסרה בכל עת
-              </p>
             </div>
 
             {/* Visual — photo grid */}
@@ -186,8 +178,8 @@ export default function ProtocolLanding() {
       {/* Bottom CTA */}
       <section className="border-t border-border bg-gradient-to-b from-zinc-950 to-black">
         <div className="container mx-auto px-4 py-12 text-center max-w-xl">
-          <h2 className="text-2xl md:text-3xl font-black mb-3">מוכן? הספר נפתח תוך 5 שניות.</h2>
-          <p className="text-muted-foreground mb-6 text-sm">
+          <h2 className="text-2xl md:text-3xl font-black mb-3 text-white">מוכן? הספר נפתח תוך 5 שניות.</h2>
+          <p className="text-white/80 mb-6 text-sm">
             הכנס מייל למעלה — תקבל גישה מיידית + עדכוני מתכונים חדשים פעם בשבוע.
           </p>
           <a
@@ -196,7 +188,7 @@ export default function ProtocolLanding() {
               e.preventDefault();
               window.scrollTo({ top: 0, behavior: "smooth" });
             }}
-            className="inline-flex items-center justify-center gap-2 bg-[hsl(142,70%,35%)] hover:bg-[hsl(142,70%,40%)] text-foreground font-bold px-8 py-4 rounded-xl transition-all shadow-lg shadow-[hsl(142,70%,35%)]/30"
+            className="inline-flex items-center justify-center gap-2 bg-[hsl(142,70%,35%)] hover:bg-[hsl(142,70%,40%)] text-white font-bold px-8 py-4 rounded-xl transition-all shadow-lg shadow-[hsl(142,70%,35%)]/30"
           >
             פתח את הספר בחינם
           </a>
