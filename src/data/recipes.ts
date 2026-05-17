@@ -219,50 +219,6 @@ export const recipes: Recipe[] = [
     emoji: "🍕", prepMinutes: 25,
   },
   {
-    id: "rebuild-strength-bowl",
-    title: "קערת כוח להתאוששות שריר",
-    category: "mains",
-    badges: ["Parve", "Mehadrin Kosher"],
-    protein: 38, calories: 380,
-    productHandle: "h24-rebuild-strength",
-    productName: "H24 Rebuild Strength",
-    ingredients: [
-      "1 מנת H24 Rebuild Strength",
-      "1/2 כוס קינואה מבושלת",
-      "100 גרם חזה עוף צלוי",
-      "ירקות מוקפצים",
-      "טחינה גולמית",
-    ],
-    steps: [
-      "מסדרים קינואה בקערה",
-      "מוסיפים עוף וירקות מוקפצים",
-      "מערבבים את ה-H24 עם מים ושותים בצד או מוזגים מעל הטחינה",
-    ],
-    emoji: "🥗", prepMinutes: 15,
-  },
-  {
-    id: "protein-chicken-schnitzel",
-    title: "שניצל חלבון פריך",
-    category: "mains",
-    badges: ["Meat", "Mehadrin Kosher"],
-    protein: 42, calories: 360,
-    productHandle: "pdm-protein",
-    productName: "PDM Personalized Protein Powder",
-    ingredients: [
-      "150 גרם חזה עוף",
-      "2 כפות PDM (אבקת חלבון ניטרלית)",
-      "1/4 כוס פירורי לחם",
-      "ביצה טרופה",
-      "פפריקה",
-    ],
-    steps: [
-      "מערבבים פירורי לחם עם ה-PDM והפפריקה",
-      "טובלים את החזה בביצה ואז בתערובת",
-      "מטגנים במעט שמן 4 דקות מכל צד",
-    ],
-    emoji: "🍗", prepMinutes: 15,
-  },
-  {
     id: "achieve-protein-pasta",
     title: "פסטת חלבון Achieve",
     category: "mains",
@@ -350,28 +306,7 @@ export const recipes: Recipe[] = [
     ],
     emoji: "🌯", prepMinutes: 8,
   },
-  {
-    id: "f2-men-power-bowl",
-    title: "קערת כוח לגברים F2",
-    category: "mains",
-    badges: ["Parve", "Mehadrin Kosher"],
-    protein: 36, calories: 400,
-    productHandle: "formula-2-men",
-    productName: "Formula 2 Men",
-    ingredients: [
-      "1 טבליית F2 Men",
-      "150 גרם בקר רזה",
-      "1/2 כוס אורז מלא",
-      "אדממה",
-      "רוטב טריאקי דל סוכר",
-    ],
-    steps: [
-      "צולים את הבקר 4 דקות מכל צד",
-      "מסדרים על אורז עם אדממה ורוטב",
-      "נוטלים F2 Men לאחר הארוחה",
-    ],
-    emoji: "🍱", prepMinutes: 18,
-  },
+
 
   // ===== DESSERTS =====
   {
