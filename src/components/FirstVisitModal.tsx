@@ -1,21 +1,43 @@
 import { useState, useEffect } from "react";
+import { useLocation } from "react-router-dom";
 import { X } from "lucide-react";
 
-const SESSION_KEY = "fullbody_disclaimer_seen";
-const IMAGE_SRC = "/herbalife-disclaimer.jpg"; // replace with your compliant image
+const STORAGE_KEY = "fullbody_disclaimer_seen";
+const IMAGE_SRC = "/herbalife-disclaimer.jpg";
+const VISIBLE_MS = 6000;
 
 export default function FirstVisitModal() {
   const [visible, setVisible] = useState(false);
+  const location = useLocation();
 
   useEffect(() => {
-    if (!sessionStorage.getItem(SESSION_KEY)) {
-      const t = setTimeout(() => setVisible(true), 1200);
-      return () => clearTimeout(t);
-    }
+    // Only show once per customer, ever (persisted across sessions)
+    if (typeof window === "undefined") return;
+    if (localStorage.getItem(STORAGE_KEY)) return;
+    // Only on initial mount — never on route transitions
+    const showT = setTimeout(() => setVisible(true), 1200);
+    const hideT = setTimeout(() => {
+      setVisible(false);
+      try { localStorage.setItem(STORAGE_KEY, "1"); } catch {}
+    }, 1200 + VISIBLE_MS);
+    return () => {
+      clearTimeout(showT);
+      clearTimeout(hideT);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  // Hide immediately on any route change & mark as seen
+  useEffect(() => {
+    if (visible) {
+      setVisible(false);
+      try { localStorage.setItem(STORAGE_KEY, "1"); } catch {}
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [location.pathname]);
+
   const handleDismiss = () => {
-    sessionStorage.setItem(SESSION_KEY, "1");
+    try { localStorage.setItem(STORAGE_KEY, "1"); } catch {}
     setVisible(false);
   };
 

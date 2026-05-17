@@ -89,6 +89,7 @@ const ProMobileMenu = ({ isOpen, onClose, categories, onCategorySelect, products
         <span className="text-xs bg-accent/15 text-accent px-1.5 py-0.5 rounded-full font-bold">🔥 חדש</span>
       </Link>
       <Link to="/blog" onClick={onClose} className="py-4 border-b border-border text-lg font-bold hover:text-accent transition-colors">מאמרים</Link>
+      <Link to="/protocol" onClick={onClose} className="py-4 border-b border-border text-lg font-bold hover:text-accent transition-colors flex items-center gap-2">מתכונים<span className="text-xs bg-accent/15 text-accent px-1.5 py-0.5 rounded-full font-bold">חדש</span></Link>
       <Link to="/contact" onClick={onClose} className="py-4 border-b border-border text-lg font-bold hover:text-accent transition-colors">צור קשר</Link>
     </div>
   );
@@ -318,6 +319,7 @@ export default function ProBody() {
               <span className="text-xs bg-accent/15 text-accent px-1.5 py-0.5 rounded-full font-bold">🔥 חדש</span>
             </Link>
             <Link to="/blog" className="hover:text-accent transition-colors py-2 cursor-pointer">מאמרים</Link>
+            <Link to="/protocol" className="hover:text-accent transition-colors py-2 cursor-pointer flex items-center gap-1">מתכונים<span className="text-xs bg-accent/15 text-accent px-1.5 py-0.5 rounded-full font-bold">חדש</span></Link>
             <Link to="/contact" className="hover:text-accent transition-colors py-2 cursor-pointer">צור קשר</Link>
           </nav>
 

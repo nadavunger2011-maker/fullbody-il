@@ -45,7 +45,7 @@ export default function ProtocolLanding() {
   };
 
   return (
-    <div dir="rtl" className="min-h-screen bg-black text-white">
+    <div dir="rtl" className="min-h-screen bg-background text-foreground">
       <Helmet>
         <title>The Guilt-Free Protocol | 30 מתכוני חלבון – פולבאדי</title>
         <meta
@@ -56,9 +56,9 @@ export default function ProtocolLanding() {
       </Helmet>
 
       {/* Top bar */}
-      <header className="border-b border-white/10">
+      <header className="border-b border-border">
         <div className="container mx-auto px-4 py-4 flex items-center justify-between">
-          <Link to="/" className="flex items-center gap-2 text-white/60 hover:text-white text-sm font-semibold">
+          <Link to="/" className="flex items-center gap-2 text-muted-foreground hover:text-foreground text-sm font-semibold">
             <ArrowLeft className="w-4 h-4 rotate-180" />
             לאתר
           </Link>
@@ -85,7 +85,7 @@ export default function ProtocolLanding() {
                 30 מתכונים שגורמים
                 <span className="block text-[hsl(142,70%,55%)] mt-2">לחלבון להרגיש כמו חטא.</span>
               </h1>
-              <p className="text-base md:text-lg text-white/75 leading-relaxed mb-6">
+              <p className="text-base md:text-lg text-muted-foreground leading-relaxed mb-6">
                 The Guilt-Free Protocol — ספר המתכונים האולטימטיבי של הספורטאי הכשר.
                 ארוחות בוקר, עיקריות, קינוחים ושייקים. כל מנה — עד 45 גרם חלבון, פחות מ־420 קלוריות,
                 מבוססת מוצר Herbalife מהדרין.
@@ -98,7 +98,7 @@ export default function ProtocolLanding() {
                   "מסונכרן לחנות — קנה את המוצר ישירות מתוך המתכון",
                   "כשרות מהדרין · גרסת Vegan, Dairy ו-Parve לכל ארוחה",
                 ].map((t, i) => (
-                  <li key={i} className="flex items-start gap-2.5 text-sm md:text-base text-white/85">
+                  <li key={i} className="flex items-start gap-2.5 text-sm md:text-base text-foreground/85">
                     <Check className="w-5 h-5 text-[hsl(142,70%,55%)] flex-shrink-0 mt-0.5" strokeWidth={3} />
                     <span>{t}</span>
                   </li>
@@ -113,19 +113,19 @@ export default function ProtocolLanding() {
                   placeholder="הכנס את האימייל שלך"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="h-14 text-base bg-zinc-900 border-white/15 text-white placeholder:text-white/40 focus-visible:border-[hsl(142,70%,55%)]"
+                  className="h-14 text-base bg-card border-border text-foreground placeholder:text-muted-foreground focus-visible:border-[hsl(142,70%,55%)]"
                   dir="ltr"
                 />
                 <Button
                   type="submit"
                   size="lg"
                   disabled={loading}
-                  className="h-14 px-7 whitespace-nowrap font-black text-base shadow-lg shadow-[hsl(142,70%,35%)]/40 bg-[hsl(142,70%,35%)] hover:bg-[hsl(142,70%,40%)] text-white"
+                  className="h-14 px-7 whitespace-nowrap font-black text-base shadow-lg shadow-[hsl(142,70%,35%)]/40 bg-[hsl(142,70%,35%)] hover:bg-[hsl(142,70%,40%)] text-foreground"
                 >
                   {loading ? "פותח..." : "פתח את הספר"}
                 </Button>
               </form>
-              <p className="text-[11px] text-white/45 mt-3 flex items-center justify-center md:justify-start gap-1.5">
+              <p className="text-[11px] text-muted-foreground mt-3 flex items-center justify-center md:justify-start gap-1.5">
                 <Lock className="w-3 h-3" />
                 גישה מיידית · ללא ספאם · ניתן להסרה בכל עת
               </p>
@@ -137,7 +137,7 @@ export default function ProtocolLanding() {
                 {previewImages.map((src, i) => (
                   <div
                     key={i}
-                    className={`relative overflow-hidden rounded-2xl border border-white/10 ${
+                    className={`relative overflow-hidden rounded-2xl border border-border ${
                       i === 0 ? "row-span-2 aspect-[1/2.05]" : "aspect-square"
                     }`}
                   >
@@ -156,7 +156,7 @@ export default function ProtocolLanding() {
       </section>
 
       {/* Stat strip */}
-      <section className="border-y border-white/10 bg-zinc-950">
+      <section className="border-y border-border bg-secondary">
         <div className="container mx-auto px-4 py-8">
           <div className="grid grid-cols-3 gap-4 max-w-3xl mx-auto text-center">
             {[
@@ -167,7 +167,7 @@ export default function ProtocolLanding() {
               <div key={i} className="flex flex-col items-center gap-1">
                 <Icon className="w-5 h-5 text-[hsl(142,70%,55%)] mb-1" />
                 <div className="text-2xl md:text-3xl font-black">{n}</div>
-                <div className="text-[11px] text-white/55 uppercase tracking-wider">{l}</div>
+                <div className="text-[11px] text-muted-foreground uppercase tracking-wider">{l}</div>
               </div>
             ))}
           </div>
@@ -176,18 +176,18 @@ export default function ProtocolLanding() {
 
       {/* Testimonial / authority */}
       <section className="container mx-auto px-4 py-12 max-w-2xl text-center">
-        <p className="text-base md:text-lg text-white/75 leading-relaxed italic">
+        <p className="text-base md:text-lg text-muted-foreground leading-relaxed italic">
           "סוף סוף ספר מתכונים שמדבר את שפת הספורטאי. הילדים שלי אוכלים את הפנקייק וניל ולא מאמינים שזה
           חלבון. שווה כל שקל — ובחינם, פשוט מתנה."
         </p>
-        <p className="text-sm text-white/50 mt-4">— ניצן ב., לקוחה Premium מאז 2023</p>
+        <p className="text-sm text-muted-foreground mt-4">— ניצן ב., לקוחה Premium מאז 2023</p>
       </section>
 
       {/* Bottom CTA */}
-      <section className="border-t border-white/10 bg-gradient-to-b from-zinc-950 to-black">
+      <section className="border-t border-border bg-gradient-to-b from-zinc-950 to-black">
         <div className="container mx-auto px-4 py-12 text-center max-w-xl">
           <h2 className="text-2xl md:text-3xl font-black mb-3">מוכן? הספר נפתח תוך 5 שניות.</h2>
-          <p className="text-white/60 mb-6 text-sm">
+          <p className="text-muted-foreground mb-6 text-sm">
             הכנס מייל למעלה — תקבל גישה מיידית + עדכוני מתכונים חדשים פעם בשבוע.
           </p>
           <a
@@ -196,7 +196,7 @@ export default function ProtocolLanding() {
               e.preventDefault();
               window.scrollTo({ top: 0, behavior: "smooth" });
             }}
-            className="inline-flex items-center justify-center gap-2 bg-[hsl(142,70%,35%)] hover:bg-[hsl(142,70%,40%)] text-white font-bold px-8 py-4 rounded-xl transition-all shadow-lg shadow-[hsl(142,70%,35%)]/30"
+            className="inline-flex items-center justify-center gap-2 bg-[hsl(142,70%,35%)] hover:bg-[hsl(142,70%,40%)] text-foreground font-bold px-8 py-4 rounded-xl transition-all shadow-lg shadow-[hsl(142,70%,35%)]/30"
           >
             פתח את הספר בחינם
           </a>
