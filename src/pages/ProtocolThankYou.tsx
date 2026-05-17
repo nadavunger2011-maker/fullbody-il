@@ -48,15 +48,7 @@ export default function ProtocolThankYou() {
   const mm = Math.floor(secondsLeft / 60);
   const ss = secondsLeft % 60;
 
-  // Pricing math from real product data
-  const baseProducts = BUNDLE_HANDLES.map((h) => getProductByHandle(h)).filter(Boolean) as Array<{
-    price: number;
-    title: string;
-    handle: string;
-  }>;
-  const originalTotal = baseProducts.reduce((sum, p) => sum + (p.price || 0), 0);
-  const finalTotal = Math.round(originalTotal * (1 - EXTRA_DISCOUNT_PCT / 100));
-  const totalSavings = originalTotal - finalTotal;
+  // Marketing pricing handled via constants above (RETAIL_PRICE / FINAL_PRICE / etc.)
 
   const handleAccept = async () => {
     setIsAdding(true);
