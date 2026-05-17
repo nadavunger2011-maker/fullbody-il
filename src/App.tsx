@@ -96,6 +96,7 @@ function AppContent() {
         <Route path="/calculator" element={<ProteinCalculator />} />
         <Route path="/recipes" element={<Recipes />} />
         <Route path="/protocol" element={<ProtocolLanding />} />
+        <Route path="/protocol-thank-you" element={<ProtocolThankYou />} />
         <Route path="/blog/chocolate-cake-protocol" element={<ChocolateCakeProtocol />} />
         <Route path="/articles" element={<Navigate to="/blog" replace />} />
         <Route path="/product/:handle" element={<ProProductDetail />} />
