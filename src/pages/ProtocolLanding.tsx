@@ -41,7 +41,7 @@ export default function ProtocolLanding() {
       localStorage.setItem("gfp_email", email);
     } catch {}
     setLoading(false);
-    navigate("/recipes", { replace: true });
+    navigate("/protocol-thank-you", { replace: true });
   };
 
   return (
