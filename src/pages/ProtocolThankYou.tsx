@@ -186,7 +186,13 @@ export default function ProtocolThankYou() {
           <div className="space-y-2 text-sm md:text-base mb-4">
             <div className="flex items-center justify-between text-white/70">
               <span>מחיר מלא בקנייה רגילה</span>
-              <s className="font-bold">₪{originalTotal}</s>
+              <s className="font-bold">₪{RETAIL_PRICE}</s>
+            </div>
+            <div className="flex items-center justify-between text-white">
+              <span>חיסכון באנדל</span>
+              <span className="font-bold" style={{ color: HERBA_GREEN }}>
+                -₪{BUNDLE_SAVINGS}
+              </span>
             </div>
             <div className="flex items-center justify-between text-white">
               <span className="flex items-center gap-2">
@@ -196,20 +202,20 @@ export default function ProtocolThankYou() {
                 >
                   OTO
                 </span>
-                בונוס הנחה -{EXTRA_DISCOUNT_PCT}% (רק בעמוד זה)
+                בונוס הנחה נוספת -{EXTRA_DISCOUNT_PCT}% (רק בעמוד זה)
               </span>
               <span className="font-bold" style={{ color: HERBA_GREEN }}>
-                -₪{totalSavings}
+                -₪{OTO_SAVINGS}
               </span>
             </div>
           </div>
           <div className="border-t border-white/10 pt-4 text-center">
             <p className="text-white/60 text-xs md:text-sm mb-1">המחיר הסופי שלך היום</p>
             <p className="text-4xl md:text-5xl font-black mb-2" style={{ color: HERBA_GREEN }}>
-              ₪{finalTotal}
+              ₪{FINAL_PRICE}
             </p>
             <p className="text-white/80 text-sm md:text-base font-bold">
-              חיסכון כולל של ₪{totalSavings} - תקף לעמוד זה בלבד
+              חיסכון כולל של ₪{TOTAL_SAVINGS} - תקף לעמוד זה בלבד
             </p>
           </div>
         </div>
@@ -221,8 +227,9 @@ export default function ProtocolThankYou() {
           className="w-full text-base md:text-lg font-black py-5 px-6 rounded-2xl text-black shadow-2xl transition-transform hover:scale-[1.01] active:scale-[0.99] disabled:opacity-70 disabled:cursor-not-allowed mb-3"
           style={{ background: HERBA_GREEN, boxShadow: `0 12px 40px -8px ${HERBA_GREEN}` }}
         >
-          {isAdding ? "מוסיף לעגלה..." : `🔥 הוסף לעגלה וחסוך ₪${totalSavings}`}
+          {isAdding ? "מוסיף לעגלה..." : `🔥 הוסף לעגלה וחסוך ₪${TOTAL_SAVINGS}`}
         </button>
+
 
         {/* Secondary CTA - go to recipe book */}
         <Link
