@@ -1,17 +1,23 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
-import { Check, Truck, Clock, ShieldCheck } from "lucide-react";
+import { Check, Truck, Clock, ShieldCheck, BookOpen, Mail } from "lucide-react";
+import { getProductByHandle } from "@/data/herbalifeProducts";
+import { useCartStore } from "@/stores/cartStore";
+import { fetchProductByHandle, getFirstAvailableVariant } from "@/lib/shopify";
+import { toast } from "sonner";
+import CartDrawer from "@/components/CartDrawer";
 
 const HERBA_GREEN = "hsl(142,70%,35%)";
-const WHATSAPP_NUMBER = "972547308826";
 
-const BUNDLE_MESSAGE = `היי! מגיע מעמוד ה-OTO של THE GUILT-FREE PROTOCOL.
-אני רוצה את ערכת הסטארטר הרשמית במחיר חג ₪249:
-- פורמולה 1 פרימיום (וניל / שוקולד לבן)
-- אבקת חלבון PDM
-- שייקר פרימיום FullBody
-- משלוח אקספרס עד הבית לפני החג`;
+// Doubled bundle: 2x Formula 1 (וניל + שוקולד) + 2x PDM
+const BUNDLE_HANDLES = [
+  "formula-1-vanilla",
+  "formula-1-chocolate",
+  "pdm-protein",
+  "pdm-protein",
+];
+const EXTRA_DISCOUNT_PCT = 10;
 
 function pad(n: number) {
   return n.toString().padStart(2, "0");
@@ -19,34 +25,82 @@ function pad(n: number) {
 
 export default function ProtocolThankYou() {
   const [secondsLeft, setSecondsLeft] = useState(10 * 60);
+  const [isCartOpen, setIsCartOpen] = useState(false);
+  const [isAdding, setIsAdding] = useState(false);
   const navigate = useNavigate();
+  const addItem = useCartStore((s) => s.addItem);
 
   useEffect(() => {
-    const id = setInterval(() => setSecondsLeft(s => (s > 0 ? s - 1 : 0)), 1000);
+    const id = setInterval(() => setSecondsLeft((s) => (s > 0 ? s - 1 : 0)), 1000);
     return () => clearInterval(id);
+  }, []);
+
+  // Ensure recipes are unlocked on arrival
+  useEffect(() => {
+    try {
+      localStorage.setItem("gfp_unlocked", "1");
+    } catch {}
   }, []);
 
   const mm = Math.floor(secondsLeft / 60);
   const ss = secondsLeft % 60;
 
-  const handleAccept = () => {
-    const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(BUNDLE_MESSAGE)}`;
-    window.open(url, "_blank", "noopener,noreferrer");
+  // Pricing math from real product data
+  const baseProducts = BUNDLE_HANDLES.map((h) => getProductByHandle(h)).filter(Boolean) as Array<{
+    price: number;
+    title: string;
+    handle: string;
+  }>;
+  const originalTotal = baseProducts.reduce((sum, p) => sum + (p.price || 0), 0);
+  const finalTotal = Math.round(originalTotal * (1 - EXTRA_DISCOUNT_PCT / 100));
+  const totalSavings = originalTotal - finalTotal;
+
+  const handleAccept = async () => {
+    setIsAdding(true);
+    try {
+      // Count duplicates per handle
+      const counts: Record<string, number> = {};
+      BUNDLE_HANDLES.forEach((h) => (counts[h] = (counts[h] || 0) + 1));
+
+      let added = 0;
+      for (const handle of Object.keys(counts)) {
+        const local = getProductByHandle(handle);
+        if (!local) continue;
+        const shopifyProduct = await fetchProductByHandle(local.shopifyHandle);
+        if (!shopifyProduct) continue;
+        const variant = getFirstAvailableVariant(shopifyProduct);
+        if (!variant) continue;
+        const ok = await addItem({
+          product: shopifyProduct,
+          variantId: variant.id,
+          variantTitle: variant.title,
+          price: variant.price,
+          quantity: counts[handle],
+          selectedOptions: variant.selectedOptions || [],
+          bundleId: "protocol-oto",
+          bundleTitle: "ערכת הסטארטר של הפרוטוקול",
+          bundleDiscountPct: EXTRA_DISCOUNT_PCT,
+        });
+        if (ok) added++;
+      }
+      if (added > 0) {
+        toast.success("הערכה נוספה לעגלה!", {
+          description: `הנחה של ${EXTRA_DISCOUNT_PCT}% תחושב אוטומטית בקופה.`,
+        });
+        setIsCartOpen(true);
+      } else {
+        toast.error("לא הצלחנו להוסיף את הערכה. נסו שוב.");
+      }
+    } catch {
+      toast.error("שגיאה בהוספה לעגלה");
+    } finally {
+      setIsAdding(false);
+    }
   };
 
   const handleDecline = () => {
-    try {
-      localStorage.setItem("gfp_unlocked", "1");
-    } catch {}
     navigate("/recipes", { replace: true });
   };
-
-  // Ensure recipes are unlocked on arrival (user submitted email)
-  useEffect(() => {
-    try {
-      localStorage.setItem("gfp_unlocked", "1");
-    } catch {}
-  }, []);
 
   return (
     <div dir="rtl" className="min-h-screen bg-black text-white">
@@ -55,18 +109,38 @@ export default function ProtocolThankYou() {
         <meta name="robots" content="noindex, nofollow" />
       </Helmet>
 
-      {/* Sticky top bar */}
-      <div className="sticky top-0 z-50 bg-[hsl(142,70%,18%)] border-b border-[hsl(142,70%,35%)]/50 text-white text-center text-[12px] md:text-sm font-bold py-2.5 px-3 leading-tight">
-        📩 הקישור ל-30 המתכונים נשלח לתיבת המייל שלך! אל תסגור את העמוד - יש לך 10 דקות לנצל את מבצע החג הקרוב
+      <CartDrawer isOpen={isCartOpen} onClose={() => setIsCartOpen(false)} />
+
+      {/* Sticky top bar: email confirmation + direct link to recipes */}
+      <div className="sticky top-0 z-40 bg-[hsl(142,70%,18%)] border-b border-[hsl(142,70%,35%)]/50 text-white py-2.5 px-3">
+        <div className="container mx-auto max-w-3xl flex items-center justify-between gap-3 flex-wrap">
+          <p className="flex items-center gap-2 text-[12px] md:text-sm font-bold leading-tight">
+            <Mail className="w-4 h-4 flex-shrink-0" />
+            ספר המתכונים נשלח למייל שלך!
+          </p>
+          <Link
+            to="/recipes"
+            onClick={() => {
+              try {
+                localStorage.setItem("gfp_unlocked", "1");
+              } catch {}
+            }}
+            className="text-[12px] md:text-sm font-bold underline underline-offset-4 hover:text-white/80"
+          >
+            פתח את הספר עכשיו ←
+          </Link>
+        </div>
       </div>
 
       <main className="container mx-auto px-4 max-w-3xl py-8 md:py-12">
         {/* Countdown */}
         <div className="bg-white/[0.03] border border-white/10 rounded-2xl p-4 md:p-5 flex items-center justify-between gap-4 mb-8">
           <div className="text-right">
-            <p className="text-[11px] md:text-xs uppercase tracking-[0.2em] text-white/60 mb-1">הטבה חד-פעמית</p>
+            <p className="text-[11px] md:text-xs uppercase tracking-[0.2em] text-white/60 mb-1">
+              הטבה חד-פעמית
+            </p>
             <p className="text-sm md:text-base font-bold text-white">
-              ההטבה החד-פעמית שלך לשבועות תפוג בעוד:
+              ההטבה תפוג בעוד:
             </p>
           </div>
           <div
@@ -85,20 +159,23 @@ export default function ProtocolThankYou() {
         </h1>
 
         <p className="text-white/80 text-base md:text-lg leading-relaxed text-center max-w-2xl mx-auto mb-10">
-          כדי שהפנקייק ייצא ענן והקינוחים באמת יחסלו את הדחף למתוק בלי להרוס את החיטוב, אתה חייב את הבסיס הנכון.
-          אל תבזבז זמן בחיפושים בסופרים. הרכבנו עבורך את ערכת הסטארטר הרשמית של הפרוטוקול במחיר חג חד-פעמי.
+          כדי שכל הקינוחים והפנקייקים בספר ייצאו מושלמים, אתה צריך את הבסיס הנכון - וכמות שתספיק לכל החודש.
+          הרכבנו ערכת סטארטר זוגית: 2 שייקי פורמולה 1 + 2 אבקות PDM. כפול ממה שהצענו במקור, ועם 10% הנחה נוספת רק בעמוד הזה.
         </p>
 
         {/* Bundle grid */}
-        <div className="grid sm:grid-cols-2 gap-3 mb-8">
+        <div className="grid sm:grid-cols-2 gap-3 mb-6">
           {[
-            { t: "אבקת חלבון פורמולה 1 פרימיום", d: "וניל / שוקולד לבן - בסיס לכל קינוח ומאפה בספר" },
-            { t: "אבקת תערובת חלבון מועשרת PDM", d: "מרקם מושלם + תוספת חלבון בכל מנה" },
-            { t: "שייקר פרימיום ממותג FullBody", d: "סולידי, נוח, נסגר אטום - מלווה אותך כל היום" },
-            { t: "בונוס חג: משלוח אקספרס עד הבית", d: "מתחייבים להגעה לפני ערב החג" },
+            { t: "2 x פורמולה 1 פרימיום", d: "וניל + שוקולד - בסיס לכל קינוח ומאפה בספר" },
+            { t: "2 x אבקת חלבון PDM", d: "תוספת חלבון מי גבינה - מרקם מושלם ועד 45g לארוחה" },
+            { t: "שייקר פרימיום FullBody", d: "מתנה - סולידי, נוח, אטום לחלוטין" },
+            { t: "משלוח אקספרס עד הבית", d: "מתחייבים להגעה לפני ערב החג" },
           ].map((b, i) => (
             <div key={i} className="bg-white/[0.04] border border-white/10 rounded-xl p-4 flex gap-3">
-              <div className="flex-shrink-0 w-7 h-7 rounded-full flex items-center justify-center" style={{ background: HERBA_GREEN }}>
+              <div
+                className="flex-shrink-0 w-7 h-7 rounded-full flex items-center justify-center"
+                style={{ background: HERBA_GREEN }}
+              >
                 <Check className="w-4 h-4 text-black" strokeWidth={3} />
               </div>
               <div className="text-right">
@@ -109,33 +186,74 @@ export default function ProtocolThankYou() {
           ))}
         </div>
 
-        {/* Pricing */}
-        <div className="bg-white/[0.03] border border-white/10 rounded-2xl p-6 text-center mb-6">
-          <div className="flex items-baseline justify-center gap-3 flex-wrap mb-2">
-            <s className="text-white/40 text-2xl md:text-3xl font-bold">₪320</s>
-            <span className="text-4xl md:text-5xl font-black" style={{ color: HERBA_GREEN }}>
-              רק ₪249
-            </span>
+        {/* Savings breakdown */}
+        <div className="bg-white/[0.03] border border-white/10 rounded-2xl p-6 mb-6">
+          <div className="space-y-2 text-sm md:text-base mb-4">
+            <div className="flex items-center justify-between text-white/70">
+              <span>מחיר מלא בקנייה רגילה</span>
+              <s className="font-bold">₪{originalTotal}</s>
+            </div>
+            <div className="flex items-center justify-between text-white">
+              <span className="flex items-center gap-2">
+                <span
+                  className="text-[10px] font-black px-2 py-0.5 rounded text-black"
+                  style={{ background: HERBA_GREEN }}
+                >
+                  OTO
+                </span>
+                בונוס הנחה -{EXTRA_DISCOUNT_PCT}% (רק בעמוד זה)
+              </span>
+              <span className="font-bold" style={{ color: HERBA_GREEN }}>
+                -₪{totalSavings}
+              </span>
+            </div>
           </div>
-          <p className="text-white/70 text-sm md:text-base font-bold">
-            חיסכון של ₪71 - תקף לעמוד זה בלבד!
-          </p>
+          <div className="border-t border-white/10 pt-4 text-center">
+            <p className="text-white/60 text-xs md:text-sm mb-1">המחיר הסופי שלך היום</p>
+            <p className="text-4xl md:text-5xl font-black mb-2" style={{ color: HERBA_GREEN }}>
+              ₪{finalTotal}
+            </p>
+            <p className="text-white/80 text-sm md:text-base font-bold">
+              חיסכון כולל של ₪{totalSavings} - תקף לעמוד זה בלבד
+            </p>
+          </div>
         </div>
 
-        {/* CTA */}
+        {/* Primary CTA - opens cart */}
         <button
           onClick={handleAccept}
-          className="w-full text-base md:text-lg font-black py-5 px-6 rounded-2xl text-black shadow-2xl transition-transform hover:scale-[1.01] active:scale-[0.99] mb-4"
+          disabled={isAdding}
+          className="w-full text-base md:text-lg font-black py-5 px-6 rounded-2xl text-black shadow-2xl transition-transform hover:scale-[1.01] active:scale-[0.99] disabled:opacity-70 disabled:cursor-not-allowed mb-3"
           style={{ background: HERBA_GREEN, boxShadow: `0 12px 40px -8px ${HERBA_GREEN}` }}
         >
-          🔥 הוסף את הערכה לעגלה ופתח את המתכונים עכשיו
+          {isAdding ? "מוסיף לעגלה..." : `🔥 הוסף לעגלה וחסוך ₪${totalSavings}`}
         </button>
+
+        {/* Secondary CTA - go to recipe book */}
+        <Link
+          to="/recipes"
+          onClick={() => {
+            try {
+              localStorage.setItem("gfp_unlocked", "1");
+            } catch {}
+          }}
+          className="w-full flex items-center justify-center gap-2 text-sm md:text-base font-bold py-3.5 px-6 rounded-2xl border border-white/20 text-white hover:bg-white/5 transition-colors mb-6"
+        >
+          <BookOpen className="w-4 h-4" />
+          פתח את 30 המתכונים עכשיו
+        </Link>
 
         {/* Trust strip */}
         <div className="flex flex-wrap items-center justify-center gap-4 text-white/60 text-[11px] md:text-xs mb-6">
-          <span className="flex items-center gap-1.5"><Truck className="w-3.5 h-3.5" /> משלוח אקספרס</span>
-          <span className="flex items-center gap-1.5"><ShieldCheck className="w-3.5 h-3.5" /> כשרות מהדרין</span>
-          <span className="flex items-center gap-1.5"><Clock className="w-3.5 h-3.5" /> מבצע חד-פעמי</span>
+          <span className="flex items-center gap-1.5">
+            <Truck className="w-3.5 h-3.5" /> משלוח אקספרס
+          </span>
+          <span className="flex items-center gap-1.5">
+            <ShieldCheck className="w-3.5 h-3.5" /> כשרות מהדרין
+          </span>
+          <span className="flex items-center gap-1.5">
+            <Clock className="w-3.5 h-3.5" /> מבצע חד-פעמי
+          </span>
         </div>
 
         {/* Decline */}
@@ -144,7 +262,7 @@ export default function ProtocolThankYou() {
             onClick={handleDecline}
             className="text-white/40 hover:text-white/70 text-xs md:text-sm underline underline-offset-4 transition-colors max-w-xl"
           >
-            לא תודה, אני מעדיף לקנות את הרכיבים בנפרד ולשלם מחיר מלא. העבר אותי ל-30 המתכונים הפתוחים.
+            לא תודה, אעבור ישר לספר המתכונים בלי הערכה.
           </button>
         </div>
       </main>
