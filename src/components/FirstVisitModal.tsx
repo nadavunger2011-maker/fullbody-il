@@ -3,7 +3,7 @@ import { useLocation } from "react-router-dom";
 import { X } from "lucide-react";
 
 const IMAGE_SRC = "/herbalife-disclaimer.jpg";
-const VISIBLE_MS = 6000;
+const VISIBLE_MS = 12000;
 
 export default function FirstVisitModal() {
   const [visible, setVisible] = useState(false);
@@ -46,27 +46,6 @@ export default function FirstVisitModal() {
         className="w-full h-auto rounded-md block"
         loading="lazy"
       />
-      <div className="px-3 pt-3 pb-2 text-[11px] leading-relaxed text-foreground space-y-2 text-right">
-        <div>
-          <p className="font-semibold">דיסקליימר תוצאות (עבור תוצאות במלל ו/או בתמונות):</p>
-          <p>
-            כל ההפניות לבקרת משקל קשורות לתוכנית ניהול משקל של הרבלייף, הכוללת, בין היתר, תזונה מאוזנת, פעילות גופנית קבועה, שתיית נוזלים מספקת בכל יום, תוספי תזונה אם צריך ומנוחה נאותה. תוצאות אישיות עשויות להשתנות.
-          </p>
-        </div>
-        <div>
-          <p className="font-semibold">דיסקליימר רווחים (באם מפרסמים באתר את ההזדמנות העסקית):</p>
-          <p>
-            ההכנסות חלות על הפרטים (או הדוגמאות) המתוארים ואינן מהוות ממוצע. הישגים משמעותיים מגיעים מעבודה קשה, השקעה והתמדה, רוב המפיצים מרוויחים הכנסה נוספת כלשהי.
-          </p>
-          <p>
-            למידע נוסף{" "}
-            <a href="https://Herbalife.com/STE" target="_blank" rel="noopener noreferrer" className="underline">
-              Herbalife.com/STE
-            </a>
-            .
-          </p>
-        </div>
-      </div>
     </div>
   );
 }

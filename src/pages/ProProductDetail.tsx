@@ -407,6 +407,34 @@ export default function ProProductDetail() {
                   </div>
                 </AccordionContent>
               </AccordionItem>
+              <AccordionItem value="disclaimer" className="border-border">
+                <AccordionTrigger className="text-lg font-bold hover:no-underline">
+                  <span className="flex items-center gap-2">דיסקליימר</span>
+                </AccordionTrigger>
+                <AccordionContent>
+                  <div className="text-muted-foreground space-y-3 text-sm leading-relaxed">
+                    <div>
+                      <p className="font-bold text-foreground">דיסקליימר תוצאות (עבור תוצאות במלל ו/או בתמונות):</p>
+                      <p>
+                        כל ההפניות לבקרת משקל קשורות לתוכנית ניהול משקל של הרבלייף, הכוללת, בין היתר, תזונה מאוזנת, פעילות גופנית קבועה, שתיית נוזלים מספקת בכל יום, תוספי תזונה אם צריך ומנוחה נאותה. תוצאות אישיות עשויות להשתנות.
+                      </p>
+                    </div>
+                    <div>
+                      <p className="font-bold text-foreground">דיסקליימר רווחים (באם מפרסמים באתר את ההזדמנות העסקית):</p>
+                      <p>
+                        ההכנסות חלות על הפרטים (או הדוגמאות) המתוארים ואינן מהוות ממוצע. הישגים משמעותיים מגיעים מעבודה קשה, השקעה והתמדה, רוב המפיצים מרוויחים הכנסה נוספת כלשהי.
+                      </p>
+                      <p>
+                        למידע נוסף{" "}
+                        <a href="https://Herbalife.com/STE" target="_blank" rel="noopener noreferrer" className="underline">
+                          Herbalife.com/STE
+                        </a>
+                        .
+                      </p>
+                    </div>
+                  </div>
+                </AccordionContent>
+              </AccordionItem>
             </Accordion>
 
             {/* Trust Badges */}
