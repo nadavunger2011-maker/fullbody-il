@@ -10,14 +10,17 @@ import CartDrawer from "@/components/CartDrawer";
 
 const HERBA_GREEN = "hsl(142,70%,35%)";
 
-// Doubled bundle: 2x Formula 1 (וניל + שוקולד) + 2x PDM
-const BUNDLE_HANDLES = [
-  "formula-1-vanilla",
-  "formula-1-chocolate",
-  "pdm-protein",
-  "pdm-protein",
-];
+// Bundle: 1x Formula 1 + 1x PDM (שייקר ומשלוח כבונוס)
+const BUNDLE_HANDLES = ["formula-1-vanilla", "pdm-protein"];
 const EXTRA_DISCOUNT_PCT = 10;
+
+// Marketing pricing (independent of Shopify real prices)
+const RETAIL_PRICE = 640;       // מחיר מלא בקנייה רגילה
+const BUNDLE_PRICE = 498;       // מחיר באנדל לפני הנחת OTO
+const FINAL_PRICE = 448;        // מחיר סופי אחרי 10% OTO
+const BUNDLE_SAVINGS = RETAIL_PRICE - BUNDLE_PRICE; // 142
+const OTO_SAVINGS = BUNDLE_PRICE - FINAL_PRICE;     // 50
+const TOTAL_SAVINGS = RETAIL_PRICE - FINAL_PRICE;   // 192
 
 function pad(n: number) {
   return n.toString().padStart(2, "0");
@@ -45,15 +48,7 @@ export default function ProtocolThankYou() {
   const mm = Math.floor(secondsLeft / 60);
   const ss = secondsLeft % 60;
 
-  // Pricing math from real product data
-  const baseProducts = BUNDLE_HANDLES.map((h) => getProductByHandle(h)).filter(Boolean) as Array<{
-    price: number;
-    title: string;
-    handle: string;
-  }>;
-  const originalTotal = baseProducts.reduce((sum, p) => sum + (p.price || 0), 0);
-  const finalTotal = Math.round(originalTotal * (1 - EXTRA_DISCOUNT_PCT / 100));
-  const totalSavings = originalTotal - finalTotal;
+  // Marketing pricing handled via constants above (RETAIL_PRICE / FINAL_PRICE / etc.)
 
   const handleAccept = async () => {
     setIsAdding(true);
@@ -191,7 +186,13 @@ export default function ProtocolThankYou() {
           <div className="space-y-2 text-sm md:text-base mb-4">
             <div className="flex items-center justify-between text-white/70">
               <span>מחיר מלא בקנייה רגילה</span>
-              <s className="font-bold">₪{originalTotal}</s>
+              <s className="font-bold">₪{RETAIL_PRICE}</s>
+            </div>
+            <div className="flex items-center justify-between text-white">
+              <span>חיסכון באנדל</span>
+              <span className="font-bold" style={{ color: HERBA_GREEN }}>
+                -₪{BUNDLE_SAVINGS}
+              </span>
             </div>
             <div className="flex items-center justify-between text-white">
               <span className="flex items-center gap-2">
@@ -201,20 +202,20 @@ export default function ProtocolThankYou() {
                 >
                   OTO
                 </span>
-                בונוס הנחה -{EXTRA_DISCOUNT_PCT}% (רק בעמוד זה)
+                בונוס הנחה נוספת -{EXTRA_DISCOUNT_PCT}% (רק בעמוד זה)
               </span>
               <span className="font-bold" style={{ color: HERBA_GREEN }}>
-                -₪{totalSavings}
+                -₪{OTO_SAVINGS}
               </span>
             </div>
           </div>
           <div className="border-t border-white/10 pt-4 text-center">
             <p className="text-white/60 text-xs md:text-sm mb-1">המחיר הסופי שלך היום</p>
             <p className="text-4xl md:text-5xl font-black mb-2" style={{ color: HERBA_GREEN }}>
-              ₪{finalTotal}
+              ₪{FINAL_PRICE}
             </p>
             <p className="text-white/80 text-sm md:text-base font-bold">
-              חיסכון כולל של ₪{totalSavings} - תקף לעמוד זה בלבד
+              חיסכון כולל של ₪{TOTAL_SAVINGS} - תקף לעמוד זה בלבד
             </p>
           </div>
         </div>
@@ -226,8 +227,9 @@ export default function ProtocolThankYou() {
           className="w-full text-base md:text-lg font-black py-5 px-6 rounded-2xl text-black shadow-2xl transition-transform hover:scale-[1.01] active:scale-[0.99] disabled:opacity-70 disabled:cursor-not-allowed mb-3"
           style={{ background: HERBA_GREEN, boxShadow: `0 12px 40px -8px ${HERBA_GREEN}` }}
         >
-          {isAdding ? "מוסיף לעגלה..." : `🔥 הוסף לעגלה וחסוך ₪${totalSavings}`}
+          {isAdding ? "מוסיף לעגלה..." : `🔥 הוסף לעגלה וחסוך ₪${TOTAL_SAVINGS}`}
         </button>
+
 
         {/* Secondary CTA - go to recipe book */}
         <Link
