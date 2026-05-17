@@ -80,7 +80,7 @@ function RecipeCard({ recipe }: { recipe: Recipe }) {
         <div className="flex flex-wrap gap-1.5">
           {recipe.badges.map(b => (
             <span key={b} className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-[hsl(142,70%,35%)]/15 text-[hsl(142,70%,28%)] border border-[hsl(142,70%,35%)]/30">
-              {b}
+              {BADGE_LABEL[b] ?? b}
             </span>
           ))}
         </div>
