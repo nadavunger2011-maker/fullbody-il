@@ -79,21 +79,31 @@ export default function ProtocolLanding() {
             <div className="text-center md:text-right">
               <span className="inline-flex items-center gap-2 text-[10px] tracking-[0.25em] text-[hsl(142,70%,28%)] font-bold bg-[hsl(142,70%,35%)]/10 border border-[hsl(142,70%,35%)]/30 px-3 py-1.5 rounded-full mb-5">
                 <Sparkles className="w-3 h-3" />
-                מהדורה דיגיטלית · בחינם
+                ❖ THE GUILT-FREE PROTOCOL · מהדורת פרימיום
               </span>
-              <h1 className="text-4xl md:text-6xl font-black leading-[1.05] mb-4">
-                30 מתכונים שגורמים
-                <span className="block text-[hsl(142,70%,28%)] mt-2">לחלבון להרגיש כמו חטא.</span>
+              <h1 className="text-3xl md:text-5xl font-black leading-[1.15] mb-4">
+                לאכול פיצה וסופלה שוקולד.
+                <br />
+                <span className="text-[hsl(142,70%,28%)]">להיראות כמו ספורטאי.</span>
+                <br />
+                בלי להתפשר על כשרות למהדרין.
               </h1>
-              <p className="text-base md:text-lg text-muted-foreground leading-relaxed mb-6">
-                ספר מתכונים דיגיטלי — עד 45g חלבון, פחות מ־420 קלוריות לארוחה.
-              </p>
+              <h2 className="text-sm md:text-base text-muted-foreground leading-relaxed mb-6 font-normal">
+                30 מתכוני שף אינטראקטיביים לחיטוב ובניית שריר.
+                <br />
+                עד 45g חלבון נקי, פחות מ-420 קלוריות לארוחה, ואפס דקות של רגשות אשם.
+                <br />
+                זמן הכנה ממוצע: עד 10 דקות למנה.
+              </h2>
 
               {/* Email form — most prominent */}
               <form
                 onSubmit={handleSubmit}
                 className="bg-card border-2 border-[hsl(142,70%,35%)] rounded-2xl p-5 shadow-2xl shadow-[hsl(142,70%,35%)]/20 max-w-md mx-auto md:mx-0"
               >
+                <p className="text-[12px] md:text-[13px] text-[hsl(142,70%,45%)] font-bold mb-3 text-right">
+                  *שדרוג דיגיטלי בשווי שוק של ₪149 — עכשיו בגישה מיידית בחינם.*
+                </p>
                 <label className="block text-sm font-bold text-foreground mb-3 text-right">
                   הכנס מייל וקבל גישה מיידית 👇
                 </label>
