@@ -57,7 +57,6 @@ export default function ProFooter() {
               <h4 className="font-bold text-lg mb-4 text-accent">יצירת קשר</h4>
               <div className="text-sm text-primary-foreground/80 space-y-2">
                 <p className="font-bold text-primary-foreground">נדב אונגר - מפיץ עצמאי הרבלייף</p>
-                <p>ID מפיץ: 16Y0030013</p>
                 <p>ח.פ: 200353720</p>
                 <div className="flex items-center gap-2">
                   <MapPin className="w-4 h-4 shrink-0" />
