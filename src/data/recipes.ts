@@ -244,7 +244,7 @@ export const recipes: Recipe[] = [
     id: "protein-chicken-schnitzel",
     title: "שניצל חלבון פריך",
     category: "mains",
-    badges: ["Parve", "Mehadrin Kosher"],
+    badges: ["Meat", "Mehadrin Kosher"],
     protein: 42, calories: 360,
     productHandle: "pdm-protein",
     productName: "PDM Personalized Protein Powder",
