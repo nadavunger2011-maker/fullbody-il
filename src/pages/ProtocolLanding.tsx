@@ -82,27 +82,25 @@ export default function ProtocolLanding() {
                 ❖ THE GUILT-FREE PROTOCOL · מהדורת פרימיום
               </span>
               <h1 className="text-3xl md:text-5xl font-black leading-[1.15] mb-4">
-                לאכול פיצה וסופלה שוקולד.
+                ליהנות ממתוקים ומאפים.
                 <br />
-                <span className="text-[hsl(142,70%,28%)]">להיראות כמו ספורטאי.</span>
+                <span className="text-[hsl(142,70%,28%)]">לשמור על החיטוב.</span>
                 <br />
-                בלי להתפשר על כשרות למהדרין.
+                באפס מאמץ.
               </h1>
               <h2 className="text-sm md:text-base text-muted-foreground leading-relaxed mb-6 font-normal">
-                30 מתכוני שף אינטראקטיביים לחיטוב ובניית שריר.
+                30 מתכוני חלבון קלים לביצוע שמחסלים את החשק למתוק בלי רגשות אשם.
                 <br />
-                עד 45g חלבון נקי, פחות מ-420 קלוריות לארוחה, ואפס דקות של רגשות אשם.
-                <br />
-                זמן הכנה ממוצע: עד 10 דקות למנה.
+                עד 45g חלבון למנה, פחות מ-420 קלוריות, ופחות מ-10 דקות הכנה.
               </h2>
 
-              {/* Email form — most prominent */}
+              {/* Email form - most prominent */}
               <form
                 onSubmit={handleSubmit}
                 className="bg-card border-2 border-[hsl(142,70%,35%)] rounded-2xl p-5 shadow-2xl shadow-[hsl(142,70%,35%)]/20 max-w-md mx-auto md:mx-0"
               >
                 <p className="text-[12px] md:text-[13px] text-[hsl(142,70%,45%)] font-bold mb-3 text-right">
-                  *שדרוג דיגיטלי בשווי שוק של ₪149 — עכשיו בגישה מיידית בחינם.*
+                  *בשווי שוק של ₪149 - עכשיו בגישה דיגיטלית מיידית בחינם*
                 </p>
                 <label className="block text-sm font-bold text-foreground mb-3 text-right">
                   הכנס מייל וקבל גישה מיידית 👇
