@@ -13,7 +13,7 @@ const recipeImages = import.meta.glob("@/assets/recipes/*.jpg", {
 }) as Record<string, string>;
 const previewImages = Object.values(recipeImages).slice(0, 6);
 
-const FLASHY_LIST_ID = 34516;
+const FLASHY_LIST_ID = 37383;
 const HERBA_GREEN = "hsl(142,70%,35%)";
 
 export default function ProtocolLanding() {
