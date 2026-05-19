@@ -15,9 +15,11 @@ const recipeImages = import.meta.glob("@/assets/recipes/*.jpg", {
   import: "default",
 }) as Record<string, string>;
 
-function getRecipeImage(id: string): string | undefined {
-  const key = Object.keys(recipeImages).find(k => k.endsWith(`/${id}.jpg`));
-  return key ? recipeImages[key] : undefined;
+function getRecipeImage(recipe: Recipe): string | undefined {
+  const key = Object.keys(recipeImages).find(k => k.endsWith(`/${recipe.id}.jpg`));
+  if (key) return recipeImages[key];
+  // @ts-ignore - DB-sourced recipes carry imageUrl
+  return recipe.imageUrl || undefined;
 }
 
 function NutritionBadge({ recipe }: { recipe: Recipe }) {
