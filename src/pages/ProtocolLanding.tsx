@@ -167,7 +167,7 @@ export default function ProtocolLanding() {
                       disabled={loading}
                       className="h-14 px-7 whitespace-nowrap font-black text-base shadow-lg shadow-[hsl(142,70%,35%)]/40 bg-[hsl(142,70%,35%)] hover:bg-[hsl(142,70%,40%)] text-white"
                     >
-                      {loading ? "שולח..." : "שלח לי קוד"}
+                      {loading ? "שולח..." : "פתח את הספר בחינם"}
                     </Button>
                   </div>
                   <label className="flex items-start gap-2 mt-3 text-[12px] text-muted-foreground text-right cursor-pointer">
