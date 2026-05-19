@@ -18,6 +18,7 @@ const HERBA_GREEN = "hsl(142,70%,35%)";
 
 export default function ProtocolLanding() {
   const [email, setEmail] = useState("");
+  const [agreed, setAgreed] = useState(false);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
@@ -25,7 +26,7 @@ export default function ProtocolLanding() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!email || loading) return;
+    if (!email || loading || !agreed) return;
     setLoading(true);
     try {
       if (typeof window !== "undefined" && window.flashy?.contacts) {

@@ -25,12 +25,13 @@ const macros = [
 
 export default function ChocolateCakeProtocol() {
   const [email, setEmail] = useState("");
+  const [agreed, setAgreed] = useState(false);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!email || loading) return;
+    if (!email || loading || !agreed) return;
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return;
     setLoading(true);
     try {
