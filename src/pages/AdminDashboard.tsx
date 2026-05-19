@@ -14,6 +14,8 @@ import {
 import ReactMarkdown from 'react-markdown';
 import AdminReviews from '@/components/admin/AdminReviews';
 import AIConsultantChat from '@/components/admin/AIConsultantChat';
+import AdminRecipes from '@/components/admin/AdminRecipes';
+import { BookOpen } from 'lucide-react';
 
 type DateRange = '7d' | '30d' | '90d' | 'all';
 
@@ -57,7 +59,7 @@ export default function AdminDashboard() {
   const [adSpend, setAdSpend] = useState<AdSpendRow[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [dateRange, setDateRange] = useState<DateRange>('30d');
-  const [activeTab, setActiveTab] = useState<'overview' | 'products' | 'traffic' | 'funnel' | 'adspend' | 'ai' | 'consultant' | 'api' | 'reviews'>('overview');
+  const [activeTab, setActiveTab] = useState<'overview' | 'products' | 'traffic' | 'funnel' | 'adspend' | 'ai' | 'consultant' | 'api' | 'reviews' | 'recipes'>('overview');
   const [apiCredentials, setApiCredentials] = useState<{ supabase_url: string; service_role_key: string; anon_key: string } | null>(null);
   const [isApiLoading, setIsApiLoading] = useState(false);
   const [aiAnalysis, setAiAnalysis] = useState<string>('');
@@ -373,6 +375,7 @@ export default function AdminDashboard() {
     { id: 'overview' as const, label: 'סקירה כללית', icon: BarChart3 },
     { id: 'funnel' as const, label: 'משפך ונטישה', icon: Users },
     { id: 'products' as const, label: 'מוצרים', icon: Package },
+    { id: 'recipes' as const, label: 'מתכונים', icon: BookOpen },
     { id: 'reviews' as const, label: 'ביקורות', icon: Star },
     { id: 'traffic' as const, label: 'מקורות תנועה', icon: Globe },
     { id: 'adspend' as const, label: 'הוצאות פרסום', icon: DollarSign },
@@ -913,6 +916,9 @@ export default function AdminDashboard() {
               </div>
             </div>
           )}
+
+          {/* Recipes Tab */}
+          {activeTab === 'recipes' && <AdminRecipes />}
 
           {/* Reviews Tab */}
           {activeTab === 'reviews' && (
