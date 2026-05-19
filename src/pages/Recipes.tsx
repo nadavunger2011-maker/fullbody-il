@@ -216,12 +216,21 @@ export default function Recipes() {
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
 
-  // Password gate — must unlock via /protocol landing page
+  // Password gate — must unlock via /protocol landing page or ?code= URL param
   useEffect(() => {
     if (typeof window === "undefined") return;
+    const codeParam = searchParams.get("code");
+    if (codeParam && codeParam.toLowerCase() === "fullbody2026") {
+      localStorage.setItem("gfp_unlocked", "1");
+      // Clean the URL so the code isn't visible/shared accidentally
+      const next = new URLSearchParams(searchParams);
+      next.delete("code");
+      setSearchParams(next, { replace: true });
+      return;
+    }
     const unlocked = localStorage.getItem("gfp_unlocked") === "1";
     if (!unlocked) navigate("/protocol", { replace: true });
-  }, [navigate]);
+  }, [navigate, searchParams, setSearchParams]);
 
   // Fetch admin-managed recipes from DB
   useEffect(() => {
