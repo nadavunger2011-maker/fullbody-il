@@ -312,7 +312,7 @@ export default function Recipes() {
       {/* Grid */}
       <section className="container mx-auto px-4 py-8 md:py-12">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {filtered.map(r => <RecipeCard key={r.id} recipe={r} />)}
+          {filtered.map(r => <RecipeCard key={r.id} recipe={r} onOpen={handleOpen} />)}
         </div>
 
         {filtered.length === 0 && (
