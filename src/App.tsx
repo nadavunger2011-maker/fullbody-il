@@ -43,6 +43,7 @@ import Recipes from "./pages/Recipes";
 import ProtocolLanding from "./pages/ProtocolLanding";
 import ProtocolThankYou from "./pages/ProtocolThankYou";
 import ChocolateCakeProtocol from "./pages/ChocolateCakeProtocol";
+import CartPage from "./pages/CartPage";
 import { Navigate } from "react-router-dom";
 import { trackPageView } from "@/lib/analytics";
 import { trackPageView as trackFBPageView } from "@/lib/fbPixel";
@@ -98,6 +99,7 @@ function AppContent() {
         <Route path="/protocol" element={<ProtocolLanding />} />
         <Route path="/protocol-thank-you" element={<ProtocolThankYou />} />
         <Route path="/blog/chocolate-cake-protocol" element={<ChocolateCakeProtocol />} />
+        <Route path="/cart" element={<CartPage />} />
         <Route path="/articles" element={<Navigate to="/blog" replace />} />
         <Route path="/product/:handle" element={<ProProductDetail />} />
         <Route path="/blog" element={<ProBlog />} />
