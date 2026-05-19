@@ -254,6 +254,66 @@ export type Database = {
         }
         Relationships: []
       }
+      recipes: {
+        Row: {
+          badges: string[]
+          calories: number
+          category: string
+          created_at: string
+          emoji: string
+          id: string
+          image_url: string | null
+          ingredients: string[]
+          prep_minutes: number
+          product_handle: string
+          product_name: string
+          protein: number
+          published: boolean
+          sort_order: number
+          steps: string[]
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          badges?: string[]
+          calories?: number
+          category: string
+          created_at?: string
+          emoji?: string
+          id: string
+          image_url?: string | null
+          ingredients?: string[]
+          prep_minutes?: number
+          product_handle?: string
+          product_name?: string
+          protein?: number
+          published?: boolean
+          sort_order?: number
+          steps?: string[]
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          badges?: string[]
+          calories?: number
+          category?: string
+          created_at?: string
+          emoji?: string
+          id?: string
+          image_url?: string | null
+          ingredients?: string[]
+          prep_minutes?: number
+          product_handle?: string
+          product_name?: string
+          protein?: number
+          published?: boolean
+          sort_order?: number
+          steps?: string[]
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
