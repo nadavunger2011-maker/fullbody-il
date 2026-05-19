@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import { Check, Lock, Flame, Dumbbell, ShieldCheck, Sparkles, ArrowLeft } from "lucide-react";
 import { Input } from "@/components/ui/input";
@@ -20,6 +20,8 @@ export default function ProtocolLanding() {
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const target = searchParams.get("target")?.trim();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -41,7 +43,8 @@ export default function ProtocolLanding() {
       localStorage.setItem("gfp_email", email);
     } catch {}
     setLoading(false);
-    navigate("/protocol-thank-you", { replace: true });
+    const dest = target ? `/recipes?recipe=${encodeURIComponent(target)}` : "/recipes";
+    navigate(dest, { replace: true });
   };
 
   return (
