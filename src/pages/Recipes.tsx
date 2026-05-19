@@ -217,11 +217,19 @@ export default function Recipes() {
   const [searchParams, setSearchParams] = useSearchParams();
 
   // Email gate — must opt-in via /protocol landing page
+  // Bypass via URL params (e.g. ?status=unlocked or ?email=...) for users coming from Flashy welcome emails
   useEffect(() => {
     if (typeof window === "undefined") return;
+    const status = searchParams.get("status");
+    const email = searchParams.get("email");
+    const bypass = status === "unlocked" || !!email;
+    if (bypass) {
+      localStorage.setItem("gfp_unlocked", "1");
+      return;
+    }
     const unlocked = localStorage.getItem("gfp_unlocked") === "1";
     if (!unlocked) navigate("/protocol", { replace: true });
-  }, [navigate]);
+  }, [navigate, searchParams]);
 
   // Fetch admin-managed recipes from DB
   useEffect(() => {
