@@ -50,22 +50,11 @@ function isHerbalifeIngredient(text: string): boolean {
   return HERBA_KEYWORDS.some(k => lower.includes(k));
 }
 
-function RecipeCard({ recipe }: { recipe: Recipe }) {
-  const [checkedIngredients, setCheckedIngredients] = useState<Set<number>>(new Set());
-  const [checkedSteps, setCheckedSteps] = useState<Set<number>>(new Set());
-  const [expanded, setExpanded] = useState(false);
-
-  const toggle = (set: Set<number>, setter: (s: Set<number>) => void, idx: number) => {
-    const next = new Set(set);
-    next.has(idx) ? next.delete(idx) : next.add(idx);
-    setter(next);
-  };
-
+function RecipeCard({ recipe, onOpen }: { recipe: Recipe; onOpen: (r: Recipe) => void }) {
   const img = getRecipeImage(recipe.id);
   return (
     <article className="relative bg-card border border-border rounded-3xl overflow-hidden flex flex-col hover:border-[hsl(142,70%,35%)]/50 transition-all duration-300 shadow-xl">
-      {/* Hero — real food photo */}
-      <div className="relative h-52 bg-gradient-to-br from-[hsl(142,40%,15%)] via-zinc-900 to-black overflow-hidden">
+      <button onClick={() => onOpen(recipe)} className="relative h-52 bg-gradient-to-br from-[hsl(142,40%,15%)] via-zinc-900 to-black overflow-hidden text-right">
         <NutritionBadge recipe={recipe} />
         {img ? (
           <img src={img} alt={recipe.title} loading="lazy" className="w-full h-full object-cover" />
@@ -75,7 +64,7 @@ function RecipeCard({ recipe }: { recipe: Recipe }) {
           </div>
         )}
         <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent pointer-events-none" />
-      </div>
+      </button>
 
       <div className="p-5 flex-1 flex flex-col gap-3">
         <div className="flex flex-wrap gap-1.5">
@@ -92,82 +81,128 @@ function RecipeCard({ recipe }: { recipe: Recipe }) {
           <span className="flex items-center gap-1"><Clock className="w-3 h-3" />{recipe.prepMinutes} דק'</span>
         </div>
 
-        {expanded && (
-          <div className="space-y-4 pt-2 animate-fade-in">
-            <div>
-              <h4 className="text-sm font-bold text-[hsl(142,70%,28%)] mb-2 uppercase tracking-wider">מרכיבים</h4>
-              <ul className="space-y-1.5">
-                {recipe.ingredients.map((ing, i) => {
-                  const checked = checkedIngredients.has(i);
-                  const isProduct = isHerbalifeIngredient(ing);
-                  return (
-                    <li key={i} className="flex items-start gap-2">
-                      <button
-                        onClick={() => toggle(checkedIngredients, setCheckedIngredients, i)}
-                        aria-label="סמן"
-                        className={`mt-0.5 w-4 h-4 rounded border flex items-center justify-center flex-shrink-0 transition-all ${checked ? "bg-[hsl(142,70%,35%)] border-[hsl(142,70%,35%)]" : "border-border"}`}
-                      >
-                        {checked && <Check className="w-3 h-3 text-black" strokeWidth={3} />}
-                      </button>
-                      {isProduct ? (
-                        <Link
-                          to={`/product/${recipe.productHandle}`}
-                          className={`flex-1 text-right text-sm font-bold inline-flex items-center gap-1 transition-colors ${checked ? "line-through text-muted-foreground" : "text-[hsl(142,70%,28%)] hover:text-[hsl(142,70%,22%)] underline decoration-dotted underline-offset-4"}`}
-                        >
-                          <span>{ing}</span>
-                          <ExternalLink className="w-3 h-3 opacity-70" />
-                        </Link>
-                      ) : (
-                        <button
-                          onClick={() => toggle(checkedIngredients, setCheckedIngredients, i)}
-                          className={`flex-1 text-right text-sm text-foreground/85 hover:text-foreground transition-colors ${checked ? "line-through text-muted-foreground" : ""}`}
-                        >
-                          {ing}
-                        </button>
-                      )}
-                    </li>
-                  );
-                })}
-              </ul>
-            </div>
-
-            <div>
-              <h4 className="text-sm font-bold text-[hsl(142,70%,28%)] mb-2 uppercase tracking-wider">הכנה</h4>
-              <ol className="space-y-1.5">
-                {recipe.steps.map((step, i) => {
-                  const checked = checkedSteps.has(i);
-                  return (
-                    <li key={i}>
-                      <button
-                        onClick={() => toggle(checkedSteps, setCheckedSteps, i)}
-                        className="w-full flex items-start gap-2 text-right text-sm text-foreground/85 hover:text-foreground transition-colors"
-                      >
-                        <span className={`mt-0.5 w-4 h-4 rounded border flex items-center justify-center flex-shrink-0 transition-all ${checked ? "bg-[hsl(142,70%,35%)] border-[hsl(142,70%,35%)]" : "border-border"}`}>
-                          {checked && <Check className="w-3 h-3 text-black" strokeWidth={3} />}
-                        </span>
-                        <span className={checked ? "line-through text-muted-foreground" : ""}>
-                          <strong className="text-muted-foreground ml-1">{i + 1}.</strong>
-                          {step}
-                        </span>
-                      </button>
-                    </li>
-                  );
-                })}
-              </ol>
-            </div>
-          </div>
-        )}
-
         <div className="mt-auto pt-3">
           <button
-            onClick={() => setExpanded(e => !e)}
+            onClick={() => onOpen(recipe)}
             className="w-full text-sm font-bold text-foreground/80 hover:text-foreground py-2.5 rounded-lg border border-border hover:border-[hsl(142,70%,35%)]/50 transition-colors"
           >
-            {expanded ? "הסתר מתכון" : "הצג מתכון מלא"}
+            הצג מתכון מלא
           </button>
         </div>
       </div>
     </article>
+  );
+}
+
+function RecipeModalContent({ recipe, onClose }: { recipe: Recipe; onClose: () => void }) {
+  const [checkedIngredients, setCheckedIngredients] = useState<Set<number>>(new Set());
+  const [checkedSteps, setCheckedSteps] = useState<Set<number>>(new Set());
+  const img = getRecipeImage(recipe.id);
+
+  const toggle = (set: Set<number>, setter: (s: Set<number>) => void, idx: number) => {
+    const next = new Set(set);
+    next.has(idx) ? next.delete(idx) : next.add(idx);
+    setter(next);
+  };
+
+  return (
+    <div dir="rtl" className="bg-black text-white">
+      {img && (
+        <div className="relative h-56 md:h-72 overflow-hidden -mt-6 -mx-6 mb-4">
+          <img src={img} alt={recipe.title} className="w-full h-full object-cover" />
+          <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent" />
+          <div className="absolute bottom-3 right-4 left-4">
+            <h2 className="text-2xl md:text-3xl font-black text-white leading-tight">{recipe.title}</h2>
+            <div className="flex items-center gap-3 text-xs text-white/80 mt-2">
+              <span className="flex items-center gap-1"><Dumbbell className="w-3 h-3" />{recipe.protein}g חלבון</span>
+              <span className="flex items-center gap-1"><Flame className="w-3 h-3 text-orange-400" />{recipe.calories} קל'</span>
+              <span className="flex items-center gap-1"><Clock className="w-3 h-3" />{recipe.prepMinutes} דק'</span>
+            </div>
+          </div>
+        </div>
+      )}
+
+      <div className="px-1 space-y-5">
+        <div>
+          <h4 className="text-sm font-bold text-[hsl(142,70%,55%)] mb-2 uppercase tracking-wider">מרכיבים</h4>
+          <ul className="space-y-1.5">
+            {recipe.ingredients.map((ing, i) => {
+              const checked = checkedIngredients.has(i);
+              const isProduct = isHerbalifeIngredient(ing);
+              return (
+                <li key={i} className="flex items-start gap-2">
+                  <button
+                    onClick={() => toggle(checkedIngredients, setCheckedIngredients, i)}
+                    aria-label="סמן"
+                    className={`mt-0.5 w-4 h-4 rounded border flex items-center justify-center flex-shrink-0 transition-all ${checked ? "bg-[hsl(142,70%,45%)] border-[hsl(142,70%,45%)]" : "border-white/30"}`}
+                  >
+                    {checked && <Check className="w-3 h-3 text-black" strokeWidth={3} />}
+                  </button>
+                  {isProduct ? (
+                    <Link
+                      to={`/product/${recipe.productHandle}`}
+                      className={`flex-1 text-right text-sm font-bold inline-flex items-center gap-1 transition-colors ${checked ? "line-through text-white/40" : "text-[hsl(142,70%,55%)] hover:text-[hsl(142,70%,65%)] underline decoration-dotted underline-offset-4"}`}
+                    >
+                      <span>{ing}</span>
+                      <ExternalLink className="w-3 h-3 opacity-70" />
+                    </Link>
+                  ) : (
+                    <button
+                      onClick={() => toggle(checkedIngredients, setCheckedIngredients, i)}
+                      className={`flex-1 text-right text-sm text-white/90 hover:text-white transition-colors ${checked ? "line-through text-white/40" : ""}`}
+                    >
+                      {ing}
+                    </button>
+                  )}
+                </li>
+              );
+            })}
+          </ul>
+        </div>
+
+        {/* Primary CTA */}
+        <div className="space-y-2 py-2">
+          <Link
+            to={`/product/${recipe.productHandle}`}
+            className="w-full inline-flex items-center justify-center gap-2 bg-white text-black hover:bg-[hsl(142,70%,45%)] hover:text-white font-black text-base px-6 py-4 rounded-xl transition-all shadow-2xl border border-white/10"
+          >
+            <ShoppingCart className="w-5 h-5" />
+            קנה עכשיו את פורמולת החלבון להכנת המתכון
+          </Link>
+          <button
+            onClick={onClose}
+            className="w-full text-center text-xs text-white/55 hover:text-white/80 underline underline-offset-4 transition-colors py-1"
+          >
+            לכל שאר הקינוחים בספר שפתוח עבורך ברקע, סגור את החלון
+          </button>
+        </div>
+
+        <div>
+          <h4 className="text-sm font-bold text-[hsl(142,70%,55%)] mb-2 uppercase tracking-wider">הכנה</h4>
+          <ol className="space-y-1.5">
+            {recipe.steps.map((step, i) => {
+              const checked = checkedSteps.has(i);
+              return (
+                <li key={i}>
+                  <button
+                    onClick={() => toggle(checkedSteps, setCheckedSteps, i)}
+                    className="w-full flex items-start gap-2 text-right text-sm text-white/90 hover:text-white transition-colors"
+                  >
+                    <span className={`mt-0.5 w-4 h-4 rounded border flex items-center justify-center flex-shrink-0 transition-all ${checked ? "bg-[hsl(142,70%,45%)] border-[hsl(142,70%,45%)]" : "border-white/30"}`}>
+                      {checked && <Check className="w-3 h-3 text-black" strokeWidth={3} />}
+                    </span>
+                    <span className={checked ? "line-through text-white/40" : ""}>
+                      <strong className="text-white/50 ml-1">{i + 1}.</strong>
+                      {step}
+                    </span>
+                  </button>
+                </li>
+              );
+            })}
+          </ol>
+        </div>
+      </div>
+    </div>
   );
 }
 
