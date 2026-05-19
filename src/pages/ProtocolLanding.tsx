@@ -18,6 +18,7 @@ const HERBA_GREEN = "hsl(142,70%,35%)";
 
 export default function ProtocolLanding() {
   const [email, setEmail] = useState("");
+  const [agreed, setAgreed] = useState(false);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
@@ -25,7 +26,7 @@ export default function ProtocolLanding() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!email || loading) return;
+    if (!email || loading || !agreed) return;
     setLoading(true);
     try {
       if (typeof window !== "undefined" && window.flashy?.contacts) {
@@ -121,13 +122,33 @@ export default function ProtocolLanding() {
                   <Button
                     type="submit"
                     size="lg"
-                    disabled={loading}
+                    disabled={loading || !agreed}
                     className="h-14 px-7 whitespace-nowrap font-black text-base shadow-lg shadow-[hsl(142,70%,35%)]/40 bg-[hsl(142,70%,35%)] hover:bg-[hsl(142,70%,40%)] text-white"
                   >
                     {loading ? "פותח..." : "פתח את הספר"}
                   </Button>
                 </div>
-                <p className="text-[11px] text-muted-foreground mt-3 flex items-center justify-center md:justify-start gap-1.5">
+                <label className="flex items-start gap-2 mt-3 cursor-pointer">
+                  <input
+                    type="checkbox"
+                    checked={agreed}
+                    onChange={(e) => setAgreed(e.target.checked)}
+                    className="mt-0.5 h-4 w-4 accent-[hsl(142,70%,35%)]"
+                  />
+                  <span className="text-[11px] text-muted-foreground leading-relaxed">
+                    אני מאשר/ת את קבלת חומרי שיווק, עדכונים ודיוורים בהתאם לתיקון 13 לחוק הגנת הפרטיות. יש לקרוא את{" "}
+                    <a
+                      href="https://fullbody.co.il/privacy-policy"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="underline text-[hsl(142,70%,45%)] hover:text-[hsl(142,70%,55%)]"
+                    >
+                      מדיניות הפרטיות
+                    </a>{" "}
+                    שלנו.
+                  </span>
+                </label>
+                <p className="text-[11px] text-muted-foreground mt-2 flex items-center justify-center md:justify-start gap-1.5">
                   <Lock className="w-3 h-3" />
                   גישה מיידית · ללא ספאם · ניתן להסרה בכל עת
                 </p>
