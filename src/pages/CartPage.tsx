@@ -1,11 +1,15 @@
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { Helmet } from "react-helmet-async";
 import CartDrawer from "@/components/CartDrawer";
-import ProBody from "@/components/ProBody";
 
 export default function CartPage() {
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(true);
+
+  useEffect(() => {
+    setIsOpen(true);
+  }, []);
 
   const handleClose = () => {
     setIsOpen(false);
@@ -13,8 +17,13 @@ export default function CartPage() {
   };
 
   return (
-    <ProBody>
+    <>
+      <Helmet>
+        <title>עגלת קניות | FullBody</title>
+        <meta name="robots" content="noindex,nofollow" />
+      </Helmet>
+      <div className="min-h-screen bg-background" />
       <CartDrawer isOpen={isOpen} onClose={handleClose} />
-    </ProBody>
+    </>
   );
 }
