@@ -333,6 +333,13 @@ export default function Recipes() {
           </Link>
         </div>
       </section>
+
+      {/* Recipe modal — CRO conversion point */}
+      <Dialog open={!!openRecipe} onOpenChange={(o) => { if (!o) handleClose(); }}>
+        <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto bg-black border-white/10 text-white">
+          {openRecipe && <RecipeModalContent recipe={openRecipe} onClose={handleClose} />}
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
