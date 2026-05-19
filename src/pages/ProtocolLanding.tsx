@@ -16,9 +16,11 @@ const previewImages = Object.values(recipeImages).slice(0, 6);
 const FLASHY_LIST_ID = 37383;
 const HERBA_GREEN = "hsl(142,70%,35%)";
 
+const ACCESS_CODE = "Fullbody2026";
+
 export default function ProtocolLanding() {
-  const [email, setEmail] = useState("");
-  const [agreed, setAgreed] = useState(false);
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
@@ -26,24 +28,15 @@ export default function ProtocolLanding() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!email || loading || !agreed) return;
+    if (loading) return;
+    if (password.trim() !== ACCESS_CODE) {
+      setError("קוד שגוי. נסה שוב.");
+      return;
+    }
     setLoading(true);
     try {
-      if (typeof window !== "undefined" && window.flashy?.contacts) {
-        window.flashy.contacts.createOrUpdate({
-          email,
-          lists: { [FLASHY_LIST_ID]: true },
-        });
-        window.flashy("CustomEvent", { event_name: "guilt_free_protocol_unlock" });
-      }
-    } catch {
-      // silent
-    }
-    try {
       localStorage.setItem("gfp_unlocked", "1");
-      localStorage.setItem("gfp_email", email);
     } catch {}
-    setLoading(false);
     const dest = target ? `/recipes?recipe=${encodeURIComponent(target)}` : "/recipes";
     navigate(dest, { replace: true });
   };
@@ -98,59 +91,42 @@ export default function ProtocolLanding() {
                 עד 45g חלבון למנה, פחות מ-420 קלוריות, ופחות מ-10 דקות הכנה.
               </h2>
 
-              {/* Email form - most prominent */}
+              {/* Password form - simple unlock */}
               <form
                 onSubmit={handleSubmit}
                 className="bg-card border-2 border-[hsl(142,70%,35%)] rounded-2xl p-5 shadow-2xl shadow-[hsl(142,70%,35%)]/20 max-w-md mx-auto md:mx-0"
               >
-                <p className="text-[12px] md:text-[13px] text-[hsl(142,70%,45%)] font-bold mb-3 text-right">
-                  *בשווי שוק של ₪149 - עכשיו בגישה דיגיטלית מיידית בחינם*
-                </p>
                 <label className="block text-sm font-bold text-foreground mb-3 text-right">
-                  הכנס מייל וקבל גישה מיידית 👇
+                  הכנס את קוד הגישה לספר 👇
                 </label>
                 <div className="flex flex-col sm:flex-row gap-3">
                   <Input
-                    type="email"
+                    type="password"
                     required
-                    placeholder="your@email.com"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
+                    autoComplete="current-password"
+                    placeholder="קוד גישה"
+                    value={password}
+                    onChange={(e) => {
+                      setPassword(e.target.value);
+                      if (error) setError("");
+                    }}
                     className="h-14 text-base bg-background border-border text-foreground placeholder:text-muted-foreground focus-visible:border-[hsl(142,70%,55%)]"
-                    dir="ltr"
                   />
                   <Button
                     type="submit"
                     size="lg"
-                    disabled={loading || !agreed}
+                    disabled={loading}
                     className="h-14 px-7 whitespace-nowrap font-black text-base shadow-lg shadow-[hsl(142,70%,35%)]/40 bg-[hsl(142,70%,35%)] hover:bg-[hsl(142,70%,40%)] text-white"
                   >
                     {loading ? "פותח..." : "פתח את הספר"}
                   </Button>
                 </div>
-                <label className="flex items-start gap-2 mt-3 cursor-pointer">
-                  <input
-                    type="checkbox"
-                    checked={agreed}
-                    onChange={(e) => setAgreed(e.target.checked)}
-                    className="mt-0.5 h-4 w-4 accent-[hsl(142,70%,35%)]"
-                  />
-                  <span className="text-[11px] text-muted-foreground leading-relaxed">
-                    אני מאשר/ת את קבלת חומרי שיווק, עדכונים ודיוורים בהתאם לתיקון 13 לחוק הגנת הפרטיות. יש לקרוא את{" "}
-                    <a
-                      href="https://fullbody.co.il/privacy-policy"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="underline text-[hsl(142,70%,45%)] hover:text-[hsl(142,70%,55%)]"
-                    >
-                      מדיניות הפרטיות
-                    </a>{" "}
-                    שלנו.
-                  </span>
-                </label>
-                <p className="text-[11px] text-muted-foreground mt-2 flex items-center justify-center md:justify-start gap-1.5">
+                {error && (
+                  <p className="text-[12px] text-red-500 mt-2 text-right font-semibold">{error}</p>
+                )}
+                <p className="text-[11px] text-muted-foreground mt-3 flex items-center justify-center md:justify-start gap-1.5">
                   <Lock className="w-3 h-3" />
-                  גישה מיידית · ללא ספאם · ניתן להסרה בכל עת
+                  גישה מיידית · נשמר במכשיר שלך
                 </p>
               </form>
             </div>
