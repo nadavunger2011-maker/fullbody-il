@@ -19,6 +19,10 @@ const HERBA_GREEN = "hsl(142,70%,35%)";
 const ACCESS_CODE = "Fullbody2026";
 
 export default function ProtocolLanding() {
+  const [mode, setMode] = useState<"signup" | "code">("signup");
+  const [email, setEmail] = useState("");
+  const [agreed, setAgreed] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
@@ -26,10 +30,39 @@ export default function ProtocolLanding() {
   const [searchParams] = useSearchParams();
   const target = searchParams.get("target")?.trim();
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault();
     if (loading) return;
-    if (password.trim() !== ACCESS_CODE) {
+    if (!email.trim() || !email.includes("@")) {
+      setError("אנא הזן כתובת מייל תקינה.");
+      return;
+    }
+    if (!agreed) {
+      setError("יש לאשר את מדיניות הפרטיות.");
+      return;
+    }
+    setError("");
+    setLoading(true);
+    try {
+      // @ts-ignore
+      if (typeof window !== "undefined" && (window as any).flashy?.contacts?.createOrUpdate) {
+        // @ts-ignore
+        await (window as any).flashy.contacts.createOrUpdate({
+          email: email.trim(),
+          lists: { [FLASHY_LIST_ID]: true },
+        });
+        // @ts-ignore
+        (window as any).flashy?.("CustomEvent", { event_name: "guilt_free_protocol_signup" });
+      }
+    } catch {}
+    setLoading(false);
+    setSubmitted(true);
+  };
+
+  const handleCodeSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (loading) return;
+    if (password.trim().toLowerCase() !== ACCESS_CODE.toLowerCase()) {
       setError("קוד שגוי. נסה שוב.");
       return;
     }
