@@ -138,9 +138,29 @@ export default function ChocolateCakeProtocol() {
                 onChange={(e) => setEmail(e.target.value)}
                 className="h-12 rounded-xl border-border bg-secondary text-foreground placeholder:text-muted-foreground/30 focus-visible:border-[#d4af37] focus-visible:ring-[#d4af37]/30"
               />
+              <label className="flex items-start gap-2 cursor-pointer">
+                <input
+                  type="checkbox"
+                  checked={agreed}
+                  onChange={(e) => setAgreed(e.target.checked)}
+                  className="mt-0.5 h-4 w-4 accent-[#d4af37]"
+                />
+                <span className="text-[11px] text-muted-foreground leading-relaxed">
+                  אני מאשר/ת את קבלת חומרי שיווק, עדכונים ודיוורים בהתאם לתיקון 13 לחוק הגנת הפרטיות. יש לקרוא את{" "}
+                  <a
+                    href="https://fullbody.co.il/privacy-policy"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="underline text-[#d4af37] hover:text-[#f0d78c]"
+                  >
+                    מדיניות הפרטיות
+                  </a>{" "}
+                  שלנו.
+                </span>
+              </label>
               <Button
                 type="submit"
-                disabled={loading}
+                disabled={loading || !agreed}
                 className="h-12 w-full rounded-xl bg-white text-black hover:bg-[#d4af37] hover:text-black transition-colors font-bold text-[15px]"
               >
                 {loading ? "פותח..." : "פתח את המתכון והעבר אותי לעמוד הסודי ←"}
