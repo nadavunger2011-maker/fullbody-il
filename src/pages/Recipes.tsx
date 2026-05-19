@@ -3,7 +3,8 @@ import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import { ArrowLeft, Flame, Dumbbell, Clock, Check, ExternalLink, ShoppingCart, X } from "lucide-react";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
-import { recipes, RECIPE_CATEGORIES, type Recipe, type RecipeCategory } from "@/data/recipes";
+import { recipes as staticRecipes, RECIPE_CATEGORIES, type Recipe, type RecipeCategory } from "@/data/recipes";
+import { supabase } from "@/integrations/supabase/client";
 
 const HERBA_GREEN = "hsl(142,70%,35%)";
 
@@ -14,9 +15,11 @@ const recipeImages = import.meta.glob("@/assets/recipes/*.jpg", {
   import: "default",
 }) as Record<string, string>;
 
-function getRecipeImage(id: string): string | undefined {
-  const key = Object.keys(recipeImages).find(k => k.endsWith(`/${id}.jpg`));
-  return key ? recipeImages[key] : undefined;
+function getRecipeImage(recipe: Recipe): string | undefined {
+  const key = Object.keys(recipeImages).find(k => k.endsWith(`/${recipe.id}.jpg`));
+  if (key) return recipeImages[key];
+  // @ts-ignore - DB-sourced recipes carry imageUrl
+  return recipe.imageUrl || undefined;
 }
 
 function NutritionBadge({ recipe }: { recipe: Recipe }) {
@@ -51,7 +54,7 @@ function isHerbalifeIngredient(text: string): boolean {
 }
 
 function RecipeCard({ recipe, onOpen }: { recipe: Recipe; onOpen: (r: Recipe) => void }) {
-  const img = getRecipeImage(recipe.id);
+  const img = getRecipeImage(recipe);
   return (
     <article className="relative bg-card border border-border rounded-3xl overflow-hidden flex flex-col hover:border-[hsl(142,70%,35%)]/50 transition-all duration-300 shadow-xl">
       <button onClick={() => onOpen(recipe)} className="relative h-52 bg-gradient-to-br from-[hsl(142,40%,15%)] via-zinc-900 to-black overflow-hidden text-right">
@@ -97,7 +100,7 @@ function RecipeCard({ recipe, onOpen }: { recipe: Recipe; onOpen: (r: Recipe) =>
 function RecipeModalContent({ recipe, onClose }: { recipe: Recipe; onClose: () => void }) {
   const [checkedIngredients, setCheckedIngredients] = useState<Set<number>>(new Set());
   const [checkedSteps, setCheckedSteps] = useState<Set<number>>(new Set());
-  const img = getRecipeImage(recipe.id);
+  const img = getRecipeImage(recipe);
 
   const toggle = (set: Set<number>, setter: (s: Set<number>) => void, idx: number) => {
     const next = new Set(set);
@@ -209,6 +212,7 @@ function RecipeModalContent({ recipe, onClose }: { recipe: Recipe; onClose: () =
 export default function Recipes() {
   const [activeCategory, setActiveCategory] = useState<RecipeCategory | "all">("all");
   const [openRecipe, setOpenRecipe] = useState<Recipe | null>(null);
+  const [dbRecipes, setDbRecipes] = useState<Recipe[]>([]);
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
 
@@ -219,16 +223,60 @@ export default function Recipes() {
     if (!unlocked) navigate("/protocol", { replace: true });
   }, [navigate]);
 
+  // Fetch admin-managed recipes from DB
+  useEffect(() => {
+    let mounted = true;
+    (async () => {
+      const { data, error } = await supabase
+        .from("recipes")
+        .select("*")
+        .eq("published", true)
+        .order("sort_order", { ascending: false })
+        .order("created_at", { ascending: false });
+      if (error || !mounted) return;
+      const mapped: Recipe[] = (data ?? []).map((r: any) => ({
+        id: r.id,
+        title: r.title,
+        category: r.category as RecipeCategory,
+        badges: r.badges ?? [],
+        protein: r.protein ?? 0,
+        calories: r.calories ?? 0,
+        productHandle: r.product_handle ?? "",
+        productName: r.product_name ?? "",
+        ingredients: r.ingredients ?? [],
+        steps: r.steps ?? [],
+        emoji: r.emoji ?? "🍽️",
+        prepMinutes: r.prep_minutes ?? 0,
+        // @ts-ignore - extra field for DB-sourced images
+        imageUrl: r.image_url ?? undefined,
+      }));
+      setDbRecipes(mapped);
+    })();
+    return () => { mounted = false; };
+  }, []);
+
+  // Merge DB recipes (first) with static fallback, dedup by id
+  const allRecipes = useMemo(() => {
+    const seen = new Set<string>();
+    const merged: Recipe[] = [];
+    for (const r of [...dbRecipes, ...staticRecipes]) {
+      if (seen.has(r.id)) continue;
+      seen.add(r.id);
+      merged.push(r);
+    }
+    return merged;
+  }, [dbRecipes]);
+
   // Auto-open recipe modal from URL param (?recipe=<id|alias>)
   useEffect(() => {
     const param = searchParams.get("recipe")?.trim().toLowerCase();
     if (!param) return;
     const match =
-      recipes.find(r => r.id.toLowerCase() === param) ||
-      recipes.find(r => r.id.toLowerCase().includes(param)) ||
-      recipes.find(r => r.title.toLowerCase().includes(param));
+      allRecipes.find(r => r.id.toLowerCase() === param) ||
+      allRecipes.find(r => r.id.toLowerCase().includes(param)) ||
+      allRecipes.find(r => r.title.toLowerCase().includes(param));
     if (match) setOpenRecipe(match);
-  }, [searchParams]);
+  }, [searchParams, allRecipes]);
 
   const handleOpen = (r: Recipe) => setOpenRecipe(r);
   const handleClose = () => {
@@ -240,8 +288,8 @@ export default function Recipes() {
   };
 
   const filtered = useMemo(
-    () => activeCategory === "all" ? recipes : recipes.filter(r => r.category === activeCategory),
-    [activeCategory]
+    () => activeCategory === "all" ? allRecipes : allRecipes.filter(r => r.category === activeCategory),
+    [activeCategory, allRecipes]
   );
 
   return (
