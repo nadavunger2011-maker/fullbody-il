@@ -54,7 +54,7 @@ function isHerbalifeIngredient(text: string): boolean {
 }
 
 function RecipeCard({ recipe, onOpen }: { recipe: Recipe; onOpen: (r: Recipe) => void }) {
-  const img = getRecipeImage(recipe.id);
+  const img = getRecipeImage(recipe);
   return (
     <article className="relative bg-card border border-border rounded-3xl overflow-hidden flex flex-col hover:border-[hsl(142,70%,35%)]/50 transition-all duration-300 shadow-xl">
       <button onClick={() => onOpen(recipe)} className="relative h-52 bg-gradient-to-br from-[hsl(142,40%,15%)] via-zinc-900 to-black overflow-hidden text-right">
@@ -100,7 +100,7 @@ function RecipeCard({ recipe, onOpen }: { recipe: Recipe; onOpen: (r: Recipe) =>
 function RecipeModalContent({ recipe, onClose }: { recipe: Recipe; onClose: () => void }) {
   const [checkedIngredients, setCheckedIngredients] = useState<Set<number>>(new Set());
   const [checkedSteps, setCheckedSteps] = useState<Set<number>>(new Set());
-  const img = getRecipeImage(recipe.id);
+  const img = getRecipeImage(recipe);
 
   const toggle = (set: Set<number>, setter: (s: Set<number>) => void, idx: number) => {
     const next = new Set(set);
