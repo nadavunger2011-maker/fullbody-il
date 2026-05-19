@@ -1,7 +1,8 @@
 import { useEffect, useMemo, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
-import { ArrowLeft, Flame, Dumbbell, Clock, Check, ExternalLink } from "lucide-react";
+import { ArrowLeft, Flame, Dumbbell, Clock, Check, ExternalLink, ShoppingCart, X } from "lucide-react";
+import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { recipes, RECIPE_CATEGORIES, type Recipe, type RecipeCategory } from "@/data/recipes";
 
 const HERBA_GREEN = "hsl(142,70%,35%)";
