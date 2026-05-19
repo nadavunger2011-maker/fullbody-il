@@ -20,6 +20,8 @@ export default function ProtocolLanding() {
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const target = searchParams.get("target")?.trim();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -41,7 +43,8 @@ export default function ProtocolLanding() {
       localStorage.setItem("gfp_email", email);
     } catch {}
     setLoading(false);
-    navigate("/protocol-thank-you", { replace: true });
+    const dest = target ? `/recipes?recipe=${encodeURIComponent(target)}` : "/recipes";
+    navigate(dest, { replace: true });
   };
 
   return (
