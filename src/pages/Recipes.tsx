@@ -208,7 +208,9 @@ function RecipeModalContent({ recipe, onClose }: { recipe: Recipe; onClose: () =
 
 export default function Recipes() {
   const [activeCategory, setActiveCategory] = useState<RecipeCategory | "all">("all");
+  const [openRecipe, setOpenRecipe] = useState<Recipe | null>(null);
   const navigate = useNavigate();
+  const [searchParams, setSearchParams] = useSearchParams();
 
   // Email gate — must opt-in via /protocol landing page
   useEffect(() => {
@@ -216,6 +218,26 @@ export default function Recipes() {
     const unlocked = localStorage.getItem("gfp_unlocked") === "1";
     if (!unlocked) navigate("/protocol", { replace: true });
   }, [navigate]);
+
+  // Auto-open recipe modal from URL param (?recipe=<id|alias>)
+  useEffect(() => {
+    const param = searchParams.get("recipe")?.trim().toLowerCase();
+    if (!param) return;
+    const match =
+      recipes.find(r => r.id.toLowerCase() === param) ||
+      recipes.find(r => r.id.toLowerCase().includes(param)) ||
+      recipes.find(r => r.title.toLowerCase().includes(param));
+    if (match) setOpenRecipe(match);
+  }, [searchParams]);
+
+  const handleOpen = (r: Recipe) => setOpenRecipe(r);
+  const handleClose = () => {
+    setOpenRecipe(null);
+    if (searchParams.get("recipe")) {
+      searchParams.delete("recipe");
+      setSearchParams(searchParams, { replace: true });
+    }
+  };
 
   const filtered = useMemo(
     () => activeCategory === "all" ? recipes : recipes.filter(r => r.category === activeCategory),
