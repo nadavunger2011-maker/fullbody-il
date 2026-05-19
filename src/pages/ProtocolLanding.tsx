@@ -19,6 +19,10 @@ const HERBA_GREEN = "hsl(142,70%,35%)";
 const ACCESS_CODE = "Fullbody2026";
 
 export default function ProtocolLanding() {
+  const [mode, setMode] = useState<"signup" | "code">("signup");
+  const [email, setEmail] = useState("");
+  const [agreed, setAgreed] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
@@ -26,10 +30,39 @@ export default function ProtocolLanding() {
   const [searchParams] = useSearchParams();
   const target = searchParams.get("target")?.trim();
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault();
     if (loading) return;
-    if (password.trim() !== ACCESS_CODE) {
+    if (!email.trim() || !email.includes("@")) {
+      setError("אנא הזן כתובת מייל תקינה.");
+      return;
+    }
+    if (!agreed) {
+      setError("יש לאשר את מדיניות הפרטיות.");
+      return;
+    }
+    setError("");
+    setLoading(true);
+    try {
+      // @ts-ignore
+      if (typeof window !== "undefined" && (window as any).flashy?.contacts?.createOrUpdate) {
+        // @ts-ignore
+        await (window as any).flashy.contacts.createOrUpdate({
+          email: email.trim(),
+          lists: { [FLASHY_LIST_ID]: true },
+        });
+        // @ts-ignore
+        (window as any).flashy?.("CustomEvent", { event_name: "guilt_free_protocol_signup" });
+      }
+    } catch {}
+    setLoading(false);
+    setSubmitted(true);
+  };
+
+  const handleCodeSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (loading) return;
+    if (password.trim().toLowerCase() !== ACCESS_CODE.toLowerCase()) {
       setError("קוד שגוי. נסה שוב.");
       return;
     }
@@ -91,44 +124,117 @@ export default function ProtocolLanding() {
                 עד 45g חלבון למנה, פחות מ-420 קלוריות, ופחות מ-10 דקות הכנה.
               </h2>
 
-              {/* Password form - simple unlock */}
-              <form
-                onSubmit={handleSubmit}
-                className="bg-card border-2 border-[hsl(142,70%,35%)] rounded-2xl p-5 shadow-2xl shadow-[hsl(142,70%,35%)]/20 max-w-md mx-auto md:mx-0"
-              >
-                <label className="block text-sm font-bold text-foreground mb-3 text-right">
-                  הכנס את קוד הגישה לספר 👇
-                </label>
-                <div className="flex flex-col sm:flex-row gap-3">
-                  <Input
-                    type="password"
-                    required
-                    autoComplete="current-password"
-                    placeholder="קוד גישה"
-                    value={password}
-                    onChange={(e) => {
-                      setPassword(e.target.value);
-                      if (error) setError("");
-                    }}
-                    className="h-14 text-base bg-background border-border text-foreground placeholder:text-muted-foreground focus-visible:border-[hsl(142,70%,55%)]"
-                  />
+              {/* Form: signup by default, code-entry on demand */}
+              {submitted ? (
+                <div className="bg-card border-2 border-[hsl(142,70%,35%)] rounded-2xl p-6 shadow-2xl shadow-[hsl(142,70%,35%)]/20 max-w-md mx-auto md:mx-0 text-right">
+                  <div className="flex items-center gap-2 mb-2">
+                    <Check className="w-5 h-5 text-[hsl(142,70%,28%)]" />
+                    <h3 className="font-black text-lg">נרשמת בהצלחה!</h3>
+                  </div>
+                  <p className="text-sm text-muted-foreground leading-relaxed mb-4">
+                    שלחנו לך עכשיו מייל עם <strong>קוד הגישה</strong> לספר.
+                    בדוק את תיבת הדואר (כולל ספאם/פרסומות) והכנס את הקוד כאן.
+                  </p>
                   <Button
-                    type="submit"
-                    size="lg"
-                    disabled={loading}
-                    className="h-14 px-7 whitespace-nowrap font-black text-base shadow-lg shadow-[hsl(142,70%,35%)]/40 bg-[hsl(142,70%,35%)] hover:bg-[hsl(142,70%,40%)] text-white"
+                    type="button"
+                    onClick={() => { setMode("code"); setSubmitted(false); setError(""); }}
+                    className="w-full h-12 font-bold bg-[hsl(142,70%,35%)] hover:bg-[hsl(142,70%,40%)] text-white"
                   >
-                    {loading ? "פותח..." : "פתח את הספר"}
+                    יש לי את הקוד — להזנת קוד גישה
                   </Button>
                 </div>
-                {error && (
-                  <p className="text-[12px] text-red-500 mt-2 text-right font-semibold">{error}</p>
-                )}
-                <p className="text-[11px] text-muted-foreground mt-3 flex items-center justify-center md:justify-start gap-1.5">
-                  <Lock className="w-3 h-3" />
-                  גישה מיידית · נשמר במכשיר שלך
-                </p>
-              </form>
+              ) : mode === "signup" ? (
+                <form
+                  onSubmit={handleSignup}
+                  className="bg-card border-2 border-[hsl(142,70%,35%)] rounded-2xl p-5 shadow-2xl shadow-[hsl(142,70%,35%)]/20 max-w-md mx-auto md:mx-0"
+                >
+                  <label className="block text-sm font-bold text-foreground mb-3 text-right">
+                    הכנס מייל לקבלת קוד הגישה לספר 👇
+                  </label>
+                  <div className="flex flex-col sm:flex-row gap-3">
+                    <Input
+                      type="email"
+                      required
+                      autoComplete="email"
+                      placeholder="your@email.com"
+                      value={email}
+                      onChange={(e) => { setEmail(e.target.value); if (error) setError(""); }}
+                      className="h-14 text-base bg-background border-border text-foreground placeholder:text-muted-foreground focus-visible:border-[hsl(142,70%,55%)]"
+                    />
+                    <Button
+                      type="submit"
+                      size="lg"
+                      disabled={loading}
+                      className="h-14 px-7 whitespace-nowrap font-black text-base shadow-lg shadow-[hsl(142,70%,35%)]/40 bg-[hsl(142,70%,35%)] hover:bg-[hsl(142,70%,40%)] text-white"
+                    >
+                      {loading ? "שולח..." : "שלח לי קוד"}
+                    </Button>
+                  </div>
+                  <label className="flex items-start gap-2 mt-3 text-[12px] text-muted-foreground text-right cursor-pointer">
+                    <input
+                      type="checkbox"
+                      checked={agreed}
+                      onChange={(e) => { setAgreed(e.target.checked); if (error) setError(""); }}
+                      className="mt-0.5 accent-[hsl(142,70%,35%)]"
+                    />
+                    <span>
+                      אני מאשר/ת קבלת מיילים ומסכים/ה ל<Link to="/privacy" className="underline">מדיניות הפרטיות</Link>
+                    </span>
+                  </label>
+                  {error && (
+                    <p className="text-[12px] text-red-500 mt-2 text-right font-semibold">{error}</p>
+                  )}
+                  <button
+                    type="button"
+                    onClick={() => { setMode("code"); setError(""); }}
+                    className="block w-full text-center text-[12px] text-[hsl(142,70%,28%)] hover:underline mt-3 font-semibold"
+                  >
+                    כבר נרשמתי ויש לי קוד גישה →
+                  </button>
+                </form>
+              ) : (
+                <form
+                  onSubmit={handleCodeSubmit}
+                  className="bg-card border-2 border-[hsl(142,70%,35%)] rounded-2xl p-5 shadow-2xl shadow-[hsl(142,70%,35%)]/20 max-w-md mx-auto md:mx-0"
+                >
+                  <label className="block text-sm font-bold text-foreground mb-3 text-right">
+                    הכנס את קוד הגישה שקיבלת במייל 👇
+                  </label>
+                  <div className="flex flex-col sm:flex-row gap-3">
+                    <Input
+                      type="text"
+                      required
+                      autoComplete="off"
+                      placeholder="קוד גישה"
+                      value={password}
+                      onChange={(e) => { setPassword(e.target.value); if (error) setError(""); }}
+                      className="h-14 text-base bg-background border-border text-foreground placeholder:text-muted-foreground focus-visible:border-[hsl(142,70%,55%)]"
+                    />
+                    <Button
+                      type="submit"
+                      size="lg"
+                      disabled={loading}
+                      className="h-14 px-7 whitespace-nowrap font-black text-base shadow-lg shadow-[hsl(142,70%,35%)]/40 bg-[hsl(142,70%,35%)] hover:bg-[hsl(142,70%,40%)] text-white"
+                    >
+                      {loading ? "פותח..." : "פתח את הספר"}
+                    </Button>
+                  </div>
+                  {error && (
+                    <p className="text-[12px] text-red-500 mt-2 text-right font-semibold">{error}</p>
+                  )}
+                  <p className="text-[11px] text-muted-foreground mt-3 flex items-center justify-center md:justify-start gap-1.5">
+                    <Lock className="w-3 h-3" />
+                    גישה מיידית · נשמר במכשיר שלך
+                  </p>
+                  <button
+                    type="button"
+                    onClick={() => { setMode("signup"); setError(""); }}
+                    className="block w-full text-center text-[12px] text-muted-foreground hover:underline mt-3"
+                  >
+                    עוד לא נרשמתי — חזרה להרשמה
+                  </button>
+                </form>
+              )}
             </div>
 
             {/* Visual — photo grid */}
