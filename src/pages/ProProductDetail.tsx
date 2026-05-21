@@ -1,5 +1,6 @@
 import greenLogo from '@/assets/logo-green.png';
 import React, { useState, useEffect, useRef } from 'react';
+import { supabase } from '@/integrations/supabase/client';
 import { useParams, Link, Navigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import {
@@ -48,6 +49,24 @@ export default function ProProductDetail() {
       setIsLoadingShopify(false);
     });
   }, [product?.shopifyHandle]);
+
+  // Fetch real review aggregates for JSON-LD
+  const [reviewAgg, setReviewAgg] = useState<{ avg: number; count: number }>({ avg: 0, count: 0 });
+  useEffect(() => {
+    if (!handle) return;
+    let cancel = false;
+    (async () => {
+      const { data } = await supabase
+        .from('product_reviews')
+        .select('rating')
+        .eq('product_handle', handle)
+        .eq('is_approved', true);
+      if (cancel || !data || data.length === 0) return;
+      const avg = data.reduce((s, r: any) => s + r.rating, 0) / data.length;
+      setReviewAgg({ avg, count: data.length });
+    })();
+    return () => { cancel = true; };
+  }, [handle]);
 
   // Track product view
   useEffect(() => {
@@ -123,8 +142,8 @@ export default function ProProductDetail() {
 
   const whatsappLink = `https://wa.me/972547308826?text=${encodeURIComponent(`היי, אשמח לשמוע פרטים על ${product.title}`)}`;
 
-  const productJsonLd = {
-    "@context": "https://schema.org",
+  const productJsonLd: Record<string, any> = {
+    "@context": "https://schema.org/",
     "@type": "Product",
     "name": product.title,
     "description": product.description,
@@ -140,6 +159,13 @@ export default function ProProductDetail() {
       "price": product.price,
     },
   };
+  if (reviewAgg.count > 0) {
+    productJsonLd.aggregateRating = {
+      "@type": "AggregateRating",
+      "ratingValue": Number(reviewAgg.avg.toFixed(1)),
+      "reviewCount": reviewAgg.count,
+    };
+  }
 
   const faqJsonLd = {
     "@context": "https://schema.org",
