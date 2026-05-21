@@ -50,6 +50,24 @@ export default function ProProductDetail() {
     });
   }, [product?.shopifyHandle]);
 
+  // Fetch real review aggregates for JSON-LD
+  const [reviewAgg, setReviewAgg] = useState<{ avg: number; count: number }>({ avg: 0, count: 0 });
+  useEffect(() => {
+    if (!handle) return;
+    let cancel = false;
+    (async () => {
+      const { data } = await supabase
+        .from('product_reviews')
+        .select('rating')
+        .eq('product_handle', handle)
+        .eq('is_approved', true);
+      if (cancel || !data || data.length === 0) return;
+      const avg = data.reduce((s, r: any) => s + r.rating, 0) / data.length;
+      setReviewAgg({ avg, count: data.length });
+    })();
+    return () => { cancel = true; };
+  }, [handle]);
+
   // Track product view
   useEffect(() => {
     if (!product) return;
