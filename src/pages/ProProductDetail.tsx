@@ -142,8 +142,8 @@ export default function ProProductDetail() {
 
   const whatsappLink = `https://wa.me/972547308826?text=${encodeURIComponent(`היי, אשמח לשמוע פרטים על ${product.title}`)}`;
 
-  const productJsonLd = {
-    "@context": "https://schema.org",
+  const productJsonLd: Record<string, any> = {
+    "@context": "https://schema.org/",
     "@type": "Product",
     "name": product.title,
     "description": product.description,
@@ -159,6 +159,13 @@ export default function ProProductDetail() {
       "price": product.price,
     },
   };
+  if (reviewAgg.count > 0) {
+    productJsonLd.aggregateRating = {
+      "@type": "AggregateRating",
+      "ratingValue": Number(reviewAgg.avg.toFixed(1)),
+      "reviewCount": reviewAgg.count,
+    };
+  }
 
   const faqJsonLd = {
     "@context": "https://schema.org",
