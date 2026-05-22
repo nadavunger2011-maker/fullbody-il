@@ -13,7 +13,7 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/
 import { getProductByHandle, getRelatedProducts } from '@/data/herbalifeProducts';
 import { fetchProductByHandle, ShopifyProduct, getFirstAvailableVariant } from '@/lib/shopify';
 import ProFooter from '@/components/ProFooter';
-import ProductReviews from '@/components/ProductReviews';
+
 import TrustFactors from '@/components/TrustFactors';
 import { TestimonialSlider, mapCategoryToTestimonialFilter } from '@/components/SocialProofSection';
 
