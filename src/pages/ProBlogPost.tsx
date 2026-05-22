@@ -67,6 +67,15 @@ export default function ProBlogPost() {
       handle: product.handle, title: product.title, id: productId,
       variantId: variant.id, variantTitle: variant.title, price, quantity: 1,
     });
+    trackFlashyAddedToCart({
+      product_id: productId,
+      product_name: product.title,
+      price,
+      currency: variant.price.currencyCode || 'ILS',
+      image_url: typeof product.image === 'string' && product.image.startsWith('http')
+        ? product.image
+        : `${window.location.origin}${product.image}`,
+    });
   };
 
   const articleSchema = {
