@@ -4,16 +4,17 @@ import { supabase } from '@/integrations/supabase/client';
 import { useParams, Link, Navigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import {
-  Menu, X, ShoppingBag, ArrowRight,
+  Menu, X, ShoppingBag, ArrowRight, ArrowLeft,
   ChevronDown, Leaf, CheckCircle, Truck, ShieldCheck,
   HeartPulse, Beaker, Utensils, Clock, Loader2, Minus, Plus,
-  FileText, MessageCircle
+  FileText, MessageCircle, Sparkles, Droplet, Zap
 } from 'lucide-react';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { getProductByHandle, getRelatedProducts } from '@/data/herbalifeProducts';
 import { fetchProductByHandle, ShopifyProduct, getFirstAvailableVariant } from '@/lib/shopify';
 import ProFooter from '@/components/ProFooter';
 import ProductReviews from '@/components/ProductReviews';
+import TrustFactors from '@/components/TrustFactors';
 import { TestimonialSlider, mapCategoryToTestimonialFilter } from '@/components/SocialProofSection';
 
 import CartDrawer from '@/components/CartDrawer';
