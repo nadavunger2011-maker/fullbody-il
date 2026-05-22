@@ -470,7 +470,7 @@ export default function ProProductDetail() {
                         <div className="bg-[#F4FBF6] border-r-4 border-[hsl(142,70%,35%)] rounded-lg p-4">
                           <h3 className="text-base font-black text-foreground mb-2 flex items-center gap-2">
                             <CheckCircle className="w-5 h-5 text-[hsl(142,70%,35%)]" />
-                            הפתרון — איך {product.name} פותר את זה
+                            הפתרון — איך {product.title} פותר את זה
                           </h3>
                           <p className="text-muted-foreground leading-[1.7]">{ve.solution}</p>
                         </div>
