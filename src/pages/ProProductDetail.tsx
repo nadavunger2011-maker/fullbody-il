@@ -26,6 +26,32 @@ import { trackGA4ViewItem, trackGA4AddToCart } from '@/lib/ga4';
 import { trackProductView, trackAddToCartEvent } from '@/lib/analytics';
 import { trackFlashyAddedToCart } from '@/lib/flashyEvents';
 
+type ValueEquation = { problem: string; solution: string };
+
+const VALUE_EQUATION_BY_CATEGORY: Record<string, ValueEquation> = {
+  weight: {
+    problem: 'דיאטות מתישות, ארוחות לא מאוזנות ורעב כרוני בין הארוחות — שגורמים לאכילת יתר בערב, לאיבוד מסת שריר במקום שומן ולעצירה במשקל אחרי כמה שבועות.',
+    solution: 'תחליף ארוחה מדויק שמספק חלבון איכותי, ויטמינים ומינרלים בכמות קלורית נשלטת — שובע ארוך, אנרגיה יציבה ושמירה על מסת שריר תוך ירידה הדרגתית ועקבית במשקל, בלי לספור כל ביס.',
+  },
+  digestion: {
+    problem: 'נפיחות בטנית, כבדות אחרי ארוחות והרגשת אי-נוחות במערכת העיכול — שמשבשים את היום, פוגעים בספיגת הרכיבים החשובים ומורידים את רמת האנרגיה הכללית.',
+    solution: 'תמיכה ממוקדת במערכת העיכול עם רכיבים פעילים שמרגיעים את המעי, משפרים סדירות ועוזרים לגוף לספוג טוב יותר את מה שאתם אוכלים — תחושת קלילות אמיתית, יום שלם בלי הסחות דעת מהבטן.',
+  },
+  sport: {
+    problem: 'חוסר אנרגיה לפני אימון, ירידה בביצועים באמצע ושרירים שלא מתאוששים מהר מספיק — שמובילים לתחושת תקיעות, פציעות קטנות ולאיבוד מוטיבציה להמשיך.',
+    solution: 'דלק ספורטיבי מקצועי שמשחרר אנרגיה זמינה לפני האימון, שומר על ריכוז ועוצמה לאורך כל הסט, ומאיץ התאוששות שרירית אחרי — כדי שתחזרו לאימון הבא חזקים יותר, לא שבורים יותר.',
+  },
+};
+
+const DEFAULT_VE: ValueEquation = {
+  problem: 'מוצרי תזונה רבים מבטיחים הרבה ומספקים מעט — תוויות מבלבלות, איכות לא עקבית ותוצאות שמרגישות אקראיות במקום מתוכננות.',
+  solution: 'פורמולה מקצועית בתקן Herbalife עם רכיבים פעילים מוכחים, מינונים מדויקים ושילוב נכון — תוצאה מהירה יותר, פשוטה יותר ועם פחות ניחושים.',
+};
+
+function getValueEquation(p: { categoryId: string }): ValueEquation {
+  return VALUE_EQUATION_BY_CATEGORY[p.categoryId] || DEFAULT_VE;
+}
+
 export default function ProProductDetail() {
   const { handle } = useParams<{ handle: string }>();
   const [isCartOpen, setIsCartOpen] = useState(false);
@@ -454,47 +480,71 @@ export default function ProProductDetail() {
                   </span>
                 </AccordionTrigger>
                 <AccordionContent>
-                  <div className="space-y-5 pt-1">
-                    {shopifyProduct?.node?.descriptionHtml ? (
-                      <div
-                        className="text-muted-foreground leading-[1.7] space-y-3
-                          [&_p]:mb-3 [&_p]:leading-[1.7]
-                          [&_h1]:text-xl [&_h1]:font-black [&_h1]:text-foreground [&_h1]:mt-5 [&_h1]:mb-2
-                          [&_h2]:text-lg [&_h2]:font-black [&_h2]:text-foreground [&_h2]:mt-5 [&_h2]:mb-2
-                          [&_h3]:text-base [&_h3]:font-bold [&_h3]:text-foreground [&_h3]:mt-4 [&_h3]:mb-2
-                          [&_h4]:text-base [&_h4]:font-bold [&_h4]:text-foreground [&_h4]:mt-4 [&_h4]:mb-2
-                          [&_strong]:text-foreground [&_strong]:font-bold
-                          [&_ul]:list-disc [&_ul]:pr-5 [&_ul]:space-y-1.5 [&_ul]:my-3
-                          [&_ol]:list-decimal [&_ol]:pr-5 [&_ol]:space-y-1.5 [&_ol]:my-3
-                          [&_li]:leading-[1.6]
-                          [&_a]:text-[hsl(142,70%,35%)] [&_a]:underline
-                          [&_table]:w-full [&_table]:my-3 [&_table]:border [&_table]:border-border [&_table]:rounded-lg [&_table]:overflow-hidden
-                          [&_th]:bg-[#F1F1F1] [&_th]:text-right [&_th]:font-bold [&_th]:text-foreground [&_th]:py-2 [&_th]:px-3
-                          [&_td]:py-2 [&_td]:px-3 [&_td]:border-t [&_td]:border-border/40
-                          [&_img]:rounded-lg [&_img]:my-3"
-                        dangerouslySetInnerHTML={{ __html: shopifyProduct.node.descriptionHtml }}
-                      />
-                    ) : (
-                      <p className="text-muted-foreground leading-[1.7]">{product.description}</p>
-                    )}
+                  {(() => {
+                    const ve = getValueEquation(product);
+                    return (
+                      <div className="space-y-4 pt-1">
+                        {/* Problem / Pain */}
+                        <div className="bg-[#FFF7F5] border-r-4 border-[#E85D3A] rounded-lg p-4">
+                          <h3 className="text-base font-black text-foreground mb-2 flex items-center gap-2">
+                            <span className="text-[#E85D3A]">●</span> הבעיה
+                          </h3>
+                          <p className="text-muted-foreground leading-[1.7]">{ve.problem}</p>
+                        </div>
 
-                    {product.benefits.length > 0 && (
-                      <div className="bg-[#F9F9F9] border border-border rounded-xl p-5">
-                        <h3 className="text-base font-black text-foreground mb-3 flex items-center gap-2">
-                          <CheckCircle className="w-5 h-5 text-[hsl(142,70%,35%)]" />
-                          מה תקבלו במוצר
-                        </h3>
-                        <ul className="space-y-2.5">
-                          {product.benefits.map((b, i) => (
-                            <li key={i} className="flex items-start gap-3">
-                              <CheckCircle className="w-4 h-4 mt-1 text-[hsl(142,70%,35%)] shrink-0" strokeWidth={2.5} />
-                              <span className="text-muted-foreground leading-[1.6]">{b}</span>
-                            </li>
-                          ))}
-                        </ul>
+                        {/* Solution */}
+                        <div className="bg-[#F4FBF6] border-r-4 border-[hsl(142,70%,35%)] rounded-lg p-4">
+                          <h3 className="text-base font-black text-foreground mb-2 flex items-center gap-2">
+                            <CheckCircle className="w-5 h-5 text-[hsl(142,70%,35%)]" />
+                            הפתרון — איך {product.title} פותר את זה
+                          </h3>
+                          <p className="text-muted-foreground leading-[1.7]">{ve.solution}</p>
+                        </div>
+
+                        {/* FullBody Protocol Bonus Banner */}
+                        <div className="relative overflow-hidden rounded-xl p-5 bg-gradient-to-l from-[hsl(142,70%,30%)] to-[hsl(142,70%,38%)] text-white shadow-lg">
+                          <div className="flex items-start gap-3">
+                            <FileText className="w-7 h-7 shrink-0 mt-0.5" strokeWidth={2.2} />
+                            <div className="flex-1">
+                              <div className="text-xs font-bold uppercase tracking-wider opacity-90 mb-1">בונוס בלעדי</div>
+                              <h3 className="text-lg font-black mb-1.5 leading-tight">
+                                קבלו את מדריך פרוטוקול FullBody (PDF) מתנה עם רכישת מוצר זה
+                              </h3>
+                              <p className="text-sm opacity-95 leading-[1.6]">
+                                מדריך מקצועי מלא — שילובים מומלצים, תזמון נטילה, תפריט יומי לדוגמה וטיפים ליישום בשטח.
+                              </p>
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* Optional manufacturer details */}
+                        {shopifyProduct?.node?.descriptionHtml && (
+                          <details className="group border border-border rounded-lg">
+                            <summary className="cursor-pointer list-none px-4 py-3 flex items-center justify-between text-sm font-bold text-foreground">
+                              <span>פרטים נוספים מהיצרן</span>
+                              <ChevronDown className="w-4 h-4 transition-transform group-open:rotate-180" />
+                            </summary>
+                            <div
+                              className="px-4 pb-4 text-muted-foreground leading-[1.7] space-y-3
+                                [&_p]:mb-3 [&_p]:leading-[1.7]
+                                [&_h1]:text-base [&_h1]:font-black [&_h1]:text-foreground [&_h1]:mt-4 [&_h1]:mb-2
+                                [&_h2]:text-base [&_h2]:font-black [&_h2]:text-foreground [&_h2]:mt-4 [&_h2]:mb-2
+                                [&_h3]:text-sm [&_h3]:font-bold [&_h3]:text-foreground [&_h3]:mt-3 [&_h3]:mb-1.5
+                                [&_strong]:text-foreground [&_strong]:font-bold
+                                [&_ul]:list-disc [&_ul]:pr-5 [&_ul]:space-y-1.5 [&_ul]:my-3
+                                [&_ol]:list-decimal [&_ol]:pr-5 [&_ol]:space-y-1.5 [&_ol]:my-3
+                                [&_a]:text-[hsl(142,70%,35%)] [&_a]:underline
+                                [&_table]:w-full [&_table]:my-3 [&_table]:border [&_table]:border-border [&_table]:rounded-lg [&_table]:overflow-hidden
+                                [&_th]:bg-[#F1F1F1] [&_th]:text-right [&_th]:font-bold [&_th]:text-foreground [&_th]:py-2 [&_th]:px-3
+                                [&_td]:py-2 [&_td]:px-3 [&_td]:border-t [&_td]:border-border/40
+                                [&_img]:rounded-lg [&_img]:my-3"
+                              dangerouslySetInnerHTML={{ __html: shopifyProduct.node.descriptionHtml }}
+                            />
+                          </details>
+                        )}
                       </div>
-                    )}
-                  </div>
+                    );
+                  })()}
                 </AccordionContent>
               </AccordionItem>
 
