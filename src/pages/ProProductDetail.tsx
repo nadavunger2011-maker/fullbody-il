@@ -26,6 +26,32 @@ import { trackGA4ViewItem, trackGA4AddToCart } from '@/lib/ga4';
 import { trackProductView, trackAddToCartEvent } from '@/lib/analytics';
 import { trackFlashyAddedToCart } from '@/lib/flashyEvents';
 
+type ValueEquation = { problem: string; solution: string };
+
+const VALUE_EQUATION_BY_CATEGORY: Record<string, ValueEquation> = {
+  weight: {
+    problem: 'דיאטות מתישות, ארוחות לא מאוזנות ורעב כרוני בין הארוחות — שגורמים לאכילת יתר בערב, לאיבוד מסת שריר במקום שומן ולעצירה במשקל אחרי כמה שבועות.',
+    solution: 'תחליף ארוחה מדויק שמספק חלבון איכותי, ויטמינים ומינרלים בכמות קלורית נשלטת — שובע ארוך, אנרגיה יציבה ושמירה על מסת שריר תוך ירידה הדרגתית ועקבית במשקל, בלי לספור כל ביס.',
+  },
+  digestion: {
+    problem: 'נפיחות בטנית, כבדות אחרי ארוחות והרגשת אי-נוחות במערכת העיכול — שמשבשים את היום, פוגעים בספיגת הרכיבים החשובים ומורידים את רמת האנרגיה הכללית.',
+    solution: 'תמיכה ממוקדת במערכת העיכול עם רכיבים פעילים שמרגיעים את המעי, משפרים סדירות ועוזרים לגוף לספוג טוב יותר את מה שאתם אוכלים — תחושת קלילות אמיתית, יום שלם בלי הסחות דעת מהבטן.',
+  },
+  sport: {
+    problem: 'חוסר אנרגיה לפני אימון, ירידה בביצועים באמצע ושרירים שלא מתאוששים מהר מספיק — שמובילים לתחושת תקיעות, פציעות קטנות ולאיבוד מוטיבציה להמשיך.',
+    solution: 'דלק ספורטיבי מקצועי שמשחרר אנרגיה זמינה לפני האימון, שומר על ריכוז ועוצמה לאורך כל הסט, ומאיץ התאוששות שרירית אחרי — כדי שתחזרו לאימון הבא חזקים יותר, לא שבורים יותר.',
+  },
+};
+
+const DEFAULT_VE: ValueEquation = {
+  problem: 'מוצרי תזונה רבים מבטיחים הרבה ומספקים מעט — תוויות מבלבלות, איכות לא עקבית ותוצאות שמרגישות אקראיות במקום מתוכננות.',
+  solution: 'פורמולה מקצועית בתקן Herbalife עם רכיבים פעילים מוכחים, מינונים מדויקים ושילוב נכון — תוצאה מהירה יותר, פשוטה יותר ועם פחות ניחושים.',
+};
+
+function getValueEquation(p: { categoryId: string }): ValueEquation {
+  return VALUE_EQUATION_BY_CATEGORY[p.categoryId] || DEFAULT_VE;
+}
+
 export default function ProProductDetail() {
   const { handle } = useParams<{ handle: string }>();
   const [isCartOpen, setIsCartOpen] = useState(false);
