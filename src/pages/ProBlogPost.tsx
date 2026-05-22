@@ -17,6 +17,7 @@ import { trackAddToCart as gtmTrackAddToCart } from '@/lib/gtm';
 import { trackAddToCart as fbTrackAddToCart } from '@/lib/fbPixel';
 import { trackGA4AddToCart } from '@/lib/ga4';
 import { trackAddToCartEvent } from '@/lib/analytics';
+import { trackFlashyAddedToCart } from '@/lib/flashyEvents';
 import { normalizeBlogContent, splitContentByH2, pickContextualProducts, appendDisclaimer } from '@/lib/blogContent';
 import BlogProductCard from '@/components/BlogProductCard';
 
