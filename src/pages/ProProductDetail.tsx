@@ -454,7 +454,47 @@ export default function ProProductDetail() {
                   </span>
                 </AccordionTrigger>
                 <AccordionContent>
-                  <p className="text-muted-foreground leading-[1.6]">{product.description}</p>
+                  <div className="space-y-5 pt-1">
+                    {shopifyProduct?.descriptionHtml ? (
+                      <div
+                        className="text-muted-foreground leading-[1.7] space-y-3
+                          [&_p]:mb-3 [&_p]:leading-[1.7]
+                          [&_h1]:text-xl [&_h1]:font-black [&_h1]:text-foreground [&_h1]:mt-5 [&_h1]:mb-2
+                          [&_h2]:text-lg [&_h2]:font-black [&_h2]:text-foreground [&_h2]:mt-5 [&_h2]:mb-2
+                          [&_h3]:text-base [&_h3]:font-bold [&_h3]:text-foreground [&_h3]:mt-4 [&_h3]:mb-2
+                          [&_h4]:text-base [&_h4]:font-bold [&_h4]:text-foreground [&_h4]:mt-4 [&_h4]:mb-2
+                          [&_strong]:text-foreground [&_strong]:font-bold
+                          [&_ul]:list-disc [&_ul]:pr-5 [&_ul]:space-y-1.5 [&_ul]:my-3
+                          [&_ol]:list-decimal [&_ol]:pr-5 [&_ol]:space-y-1.5 [&_ol]:my-3
+                          [&_li]:leading-[1.6]
+                          [&_a]:text-[hsl(142,70%,35%)] [&_a]:underline
+                          [&_table]:w-full [&_table]:my-3 [&_table]:border [&_table]:border-border [&_table]:rounded-lg [&_table]:overflow-hidden
+                          [&_th]:bg-[#F1F1F1] [&_th]:text-right [&_th]:font-bold [&_th]:text-foreground [&_th]:py-2 [&_th]:px-3
+                          [&_td]:py-2 [&_td]:px-3 [&_td]:border-t [&_td]:border-border/40
+                          [&_img]:rounded-lg [&_img]:my-3"
+                        dangerouslySetInnerHTML={{ __html: shopifyProduct.descriptionHtml }}
+                      />
+                    ) : (
+                      <p className="text-muted-foreground leading-[1.7]">{product.description}</p>
+                    )}
+
+                    {product.benefits.length > 0 && (
+                      <div className="bg-[#F9F9F9] border border-border rounded-xl p-5">
+                        <h3 className="text-base font-black text-foreground mb-3 flex items-center gap-2">
+                          <CheckCircle className="w-5 h-5 text-[hsl(142,70%,35%)]" />
+                          מה תקבלו במוצר
+                        </h3>
+                        <ul className="space-y-2.5">
+                          {product.benefits.map((b, i) => (
+                            <li key={i} className="flex items-start gap-3">
+                              <CheckCircle className="w-4 h-4 mt-1 text-[hsl(142,70%,35%)] shrink-0" strokeWidth={2.5} />
+                              <span className="text-muted-foreground leading-[1.6]">{b}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    )}
+                  </div>
                 </AccordionContent>
               </AccordionItem>
 
