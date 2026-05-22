@@ -455,7 +455,7 @@ export default function ProProductDetail() {
                 </AccordionTrigger>
                 <AccordionContent>
                   <div className="space-y-5 pt-1">
-                    {shopifyProduct?.descriptionHtml ? (
+                    {shopifyProduct?.node?.descriptionHtml ? (
                       <div
                         className="text-muted-foreground leading-[1.7] space-y-3
                           [&_p]:mb-3 [&_p]:leading-[1.7]
@@ -472,7 +472,7 @@ export default function ProProductDetail() {
                           [&_th]:bg-[#F1F1F1] [&_th]:text-right [&_th]:font-bold [&_th]:text-foreground [&_th]:py-2 [&_th]:px-3
                           [&_td]:py-2 [&_td]:px-3 [&_td]:border-t [&_td]:border-border/40
                           [&_img]:rounded-lg [&_img]:my-3"
-                        dangerouslySetInnerHTML={{ __html: shopifyProduct.descriptionHtml }}
+                        dangerouslySetInnerHTML={{ __html: shopifyProduct.node.descriptionHtml }}
                       />
                     ) : (
                       <p className="text-muted-foreground leading-[1.7]">{product.description}</p>
