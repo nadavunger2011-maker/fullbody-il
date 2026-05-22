@@ -552,32 +552,43 @@ export default function ProProductDetail() {
         </div>
       </section>
 
-      {/* Related Products */}
+      {/* AOV: Pairs Well With — horizontal swipe carousel */}
       {related.length > 0 && (
-        <section className="py-16 bg-background">
+        <section className="py-14 bg-background border-t border-border">
           <div className="container mx-auto px-4">
-            <h2 className="text-2xl md:text-3xl font-black text-foreground text-center mb-8">
-              מוצרים נוספים שיעניינו אתכם
-            </h2>
-            <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+            <div className="flex items-end justify-between mb-6">
+              <div>
+                <span className="text-xs font-bold tracking-wider text-[hsl(142,70%,35%)] uppercase">AOV · השלמת הפרוטוקול</span>
+                <h2 className="text-2xl md:text-3xl font-black text-foreground mt-1">
+                  שילובים מומלצים לפרוטוקול שלך
+                </h2>
+              </div>
+              <Link to="/#products" className="hidden md:flex items-center gap-1 text-sm font-bold text-[hsl(142,70%,35%)] hover:underline shrink-0">
+                כל המוצרים <ArrowLeft className="w-4 h-4" />
+              </Link>
+            </div>
+            <div
+              className="flex gap-4 sm:gap-6 overflow-x-auto snap-x snap-mandatory scroll-smooth pb-4 -mx-4 px-4 lg:mx-0 lg:px-0 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+              style={{ scrollPaddingInline: '1rem' }}
+            >
               {related.map((rp) => (
                 <Link
                   key={rp.handle}
                   to={`/product/${rp.handle}`}
-                  className="group bg-card rounded-xl overflow-hidden border border-border hover:shadow-hover transition-all duration-300 flex flex-col"
+                  className="group bg-card rounded-xl overflow-hidden border border-border hover:shadow-card-hover transition-all duration-300 flex flex-col shrink-0 snap-start w-[70%] sm:w-[45%] md:w-[32%] lg:w-[23%]"
                 >
                   <div className="aspect-square bg-secondary/20 flex items-center justify-center p-6">
                     <img src={rp.image} alt={rp.title} className="max-w-[75%] max-h-[75%] object-contain group-hover:scale-105 transition-transform duration-500" loading="lazy" width={256} height={256} />
                   </div>
                   <div className="p-4 flex-1 flex flex-col">
                     <span className="text-[10px] font-bold text-[hsl(142,70%,35%)] uppercase mb-1">{rp.category}</span>
-                    <h3 className="font-bold text-sm text-foreground group-hover:text-[hsl(142,70%,35%)] transition-colors line-clamp-2">
+                    <h3 className="font-bold text-sm text-foreground group-hover:text-[hsl(142,70%,35%)] transition-colors line-clamp-2 leading-[1.4]">
                       {rp.title}
                     </h3>
                     <div className="mt-auto pt-3 flex items-center justify-between">
                       <span className="font-black text-foreground">₪{rp.price}</span>
                       <span className="text-xs font-bold text-[hsl(142,70%,35%)] flex items-center gap-1">
-                        לפרטים <ArrowRight className="w-3 h-3" />
+                        הוסף <ArrowLeft className="w-3 h-3" />
                       </span>
                     </div>
                   </div>
