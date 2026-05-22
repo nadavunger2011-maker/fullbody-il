@@ -133,6 +133,15 @@ export default function ProProductDetail() {
       variantId: variant.id, variantTitle: variant.title,
       price: itemPrice, quantity,
     });
+    trackFlashyAddedToCart({
+      product_id: productId,
+      product_name: product!.title,
+      price: itemPrice,
+      currency: variant.price.currencyCode || 'ILS',
+      image_url: typeof product!.image === 'string' && product!.image.startsWith('http')
+        ? product!.image
+        : `${window.location.origin}${product!.image}`,
+    });
   };
 
   if (!product) {
