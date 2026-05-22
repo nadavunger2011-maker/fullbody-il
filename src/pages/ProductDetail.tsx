@@ -162,6 +162,14 @@ export default function ProductDetail() {
         id: productId, variantId: variant.id, variantTitle: variant.title,
         price: parseFloat(variant.price.amount), quantity,
       });
+
+      trackFlashyAddedToCart({
+        product_id: productId,
+        product_name: product.node.title,
+        price: parseFloat(variant.price.amount),
+        currency: variant.price.currencyCode || 'ILS',
+        image_url: product.node.images?.edges?.[0]?.node?.url || '',
+      });
       
       setIsCartOpen(true);
       toast.success(`${product.node.title} נוסף לעגלה`);
