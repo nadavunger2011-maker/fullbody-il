@@ -95,6 +95,14 @@ export default function Products() {
       return;
     }
 
+    trackFlashyAddedToCart({
+      product_id: product.node.id.replace('gid://shopify/Product/', ''),
+      product_name: product.node.title,
+      price: parseFloat(variant.price.amount),
+      currency: variant.price.currencyCode || 'ILS',
+      image_url: product.node.images?.edges?.[0]?.node?.url || '',
+    });
+
     setIsCartOpen(true);
     toast.success('המוצר נוסף לעגלה!');
   };
