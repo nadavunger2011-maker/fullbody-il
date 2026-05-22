@@ -73,6 +73,14 @@ export default function BlogPost() {
       return;
     }
     
+    trackFlashyAddedToCart({
+      product_id: product.node.id.replace('gid://shopify/Product/', ''),
+      product_name: product.node.title,
+      price: parseFloat(variant.price.amount),
+      currency: variant.price.currencyCode || 'ILS',
+      image_url: product.node.images?.edges?.[0]?.node?.url || '',
+    });
+
     toast.success(`${product.node.title} נוסף לעגלה`);
   };
 
