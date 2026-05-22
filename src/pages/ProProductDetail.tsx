@@ -297,6 +297,26 @@ export default function ProProductDetail() {
                 <span className="text-sm text-muted-foreground">כולל מע"מ</span>
               </div>
 
+              {/* Dynamic Nutrition Highlights (top 3) */}
+              {product.nutrition.length > 0 && (
+                <div className="grid grid-cols-3 gap-2 mb-5 pb-5 border-b border-border">
+                  {product.nutrition.slice(0, 3).map((n, i) => {
+                    const Icon = [Zap, Droplet, Sparkles][i] || Leaf;
+                    return (
+                      <div key={i} className="flex flex-col items-center text-center gap-1.5">
+                        <div className="w-10 h-10 rounded-full border border-[hsl(142,70%,35%)]/30 flex items-center justify-center">
+                          <Icon className="w-4 h-4 text-[hsl(142,70%,35%)]" strokeWidth={1.5} />
+                        </div>
+                        <span className="text-[11px] font-bold text-foreground leading-tight">
+                          {n.value}{n.unit ? ` ${n.unit}` : ''}
+                        </span>
+                        <span className="text-[10px] text-muted-foreground leading-tight line-clamp-1">{n.label}</span>
+                      </div>
+                    );
+                  })}
+                </div>
+              )}
+
               {/* Quantity Selector */}
               <div className="flex items-center gap-4 mb-4">
                 <span className="text-sm font-bold text-muted-foreground">כמות:</span>
@@ -334,22 +354,6 @@ export default function ProProductDetail() {
                 )}
               </button>
 
-              {/* Trust Badges Row — directly under CTA */}
-              <div className="grid grid-cols-3 gap-2 mt-4">
-                <div className="flex flex-col items-center text-center gap-1.5 p-2">
-                  <Truck className="w-5 h-5 text-[hsl(142,70%,35%)]" />
-                  <span className="text-[11px] sm:text-xs font-bold text-foreground leading-tight">משלוח מהיר לכל הארץ</span>
-                </div>
-                <div className="flex flex-col items-center text-center gap-1.5 p-2">
-                  <ShieldCheck className="w-5 h-5 text-[hsl(142,70%,35%)]" />
-                  <span className="text-[11px] sm:text-xs font-bold text-foreground leading-tight">משווק מורשה — 100% מקורי</span>
-                </div>
-                <a href={whatsappLink} target="_blank" rel="noopener noreferrer" className="flex flex-col items-center text-center gap-1.5 p-2 hover:bg-[#25D366]/5 rounded-lg transition-colors">
-                  <MessageCircle className="w-5 h-5 text-[#25D366]" />
-                  <span className="text-[11px] sm:text-xs font-bold text-foreground leading-tight">ייעוץ אישי בוואטסאפ</span>
-                </a>
-              </div>
-
               {/* WhatsApp alternative */}
               <a
                 href={whatsappLink}
@@ -362,61 +366,86 @@ export default function ProProductDetail() {
               </a>
             </div>
 
-            {/* Benefits */}
-            <div>
-              <h2 className="text-xl font-bold text-foreground mb-4 flex items-center gap-2">
-                <CheckCircle className="w-5 h-5 text-[hsl(142,70%,35%)]" />
-                יתרונות המוצר
-              </h2>
-              <ul className="space-y-3">
-                {product.benefits.map((b, i) => (
-                  <li key={i} className="flex items-start gap-3">
-                    <span className="mt-1.5 w-2 h-2 rounded-full bg-[hsl(142,70%,35%)] shrink-0" />
-                    <span className="text-muted-foreground">{b}</span>
-                  </li>
-                ))}
-              </ul>
+            {/* Trust Factors (reused from homepage, compact) — directly beneath CTA */}
+            <div className="-mx-4 sm:mx-0">
+              <TrustFactors compact />
             </div>
 
-            {/* Nutrition Table */}
-            {product.nutrition.length > 0 && (
-              <div>
-                <h2 className="text-xl font-bold text-foreground mb-4 flex items-center gap-2">
-                  <Beaker className="w-5 h-5 text-[hsl(142,70%,35%)]" />
-                  ערכים תזונתיים למנה
-                </h2>
-                <div className="bg-card rounded-xl border border-border overflow-hidden">
-                  <table className="w-full text-sm">
-                    <thead>
-                      <tr className="bg-secondary/50">
-                        <th className="text-right py-3 px-4 font-bold text-foreground">רכיב</th>
-                        <th className="text-left py-3 px-4 font-bold text-foreground">כמות</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {product.nutrition.map((n, i) => (
-                        <tr key={i} className="border-t border-border/50 hover:bg-secondary/20 transition-colors">
-                          <td className="py-3 px-4 text-muted-foreground">{n.label}</td>
-                          <td className="py-3 px-4 font-bold text-foreground text-left">{n.value} {n.unit}</td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-            )}
+            {/* Description Accordion — 3 core sections + extras */}
+            <Accordion type="single" collapsible defaultValue="benefits" className="w-full">
+              <AccordionItem value="benefits" className="border-border">
+                <AccordionTrigger className="text-lg font-bold hover:no-underline">
+                  <span className="flex items-center gap-2">
+                    <CheckCircle className="w-5 h-5 text-[hsl(142,70%,35%)]" />
+                    תועלות מרכזיות
+                  </span>
+                </AccordionTrigger>
+                <AccordionContent>
+                  <ul className="space-y-3 pt-1">
+                    {product.benefits.map((b, i) => (
+                      <li key={i} className="flex items-start gap-3">
+                        <CheckCircle className="w-4 h-4 mt-1 text-[hsl(142,70%,35%)] shrink-0" strokeWidth={2.5} />
+                        <span className="text-muted-foreground leading-[1.6]">{b}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </AccordionContent>
+              </AccordionItem>
 
-            {/* Usage */}
-            <div className="bg-secondary/20 rounded-xl p-6 border border-border">
-              <h2 className="text-lg font-bold text-foreground mb-2 flex items-center gap-2">
-                <Utensils className="w-5 h-5 text-[hsl(142,70%,35%)]" />
-                אופן השימוש
-              </h2>
-              <p className="text-muted-foreground">{product.usage}</p>
-            </div>
+              <AccordionItem value="usage" className="border-border">
+                <AccordionTrigger className="text-lg font-bold hover:no-underline">
+                  <span className="flex items-center gap-2">
+                    <Utensils className="w-5 h-5 text-[hsl(142,70%,35%)]" />
+                    אופן השימוש
+                  </span>
+                </AccordionTrigger>
+                <AccordionContent>
+                  <div className="text-muted-foreground leading-[1.6] space-y-2 pt-1">
+                    {product.usage.split(/(?<=[.!?])\s+/).filter(Boolean).map((step, i, arr) => (
+                      arr.length > 1 ? (
+                        <div key={i} className="flex items-start gap-3">
+                          <span className="shrink-0 w-6 h-6 rounded-full bg-[hsl(142,70%,35%)]/10 text-[hsl(142,70%,35%)] text-xs font-black flex items-center justify-center mt-0.5">{i + 1}</span>
+                          <span>{step}</span>
+                        </div>
+                      ) : (
+                        <p key={i}>{step}</p>
+                      )
+                    ))}
+                  </div>
+                </AccordionContent>
+              </AccordionItem>
 
-            {/* Description Accordion */}
-            <Accordion type="single" collapsible className="w-full">
+              {product.nutrition.length > 0 && (
+                <AccordionItem value="nutrition" className="border-border">
+                  <AccordionTrigger className="text-lg font-bold hover:no-underline">
+                    <span className="flex items-center gap-2">
+                      <Beaker className="w-5 h-5 text-[hsl(142,70%,35%)]" />
+                      ערכים תזונתיים
+                    </span>
+                  </AccordionTrigger>
+                  <AccordionContent>
+                    <div className="rounded-xl border border-border overflow-hidden bg-[#F9F9F9]">
+                      <table className="w-full text-sm">
+                        <thead>
+                          <tr className="bg-[#F1F1F1]">
+                            <th className="text-right py-3 px-4 font-bold text-foreground">רכיב</th>
+                            <th className="text-left py-3 px-4 font-bold text-foreground">כמות</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {product.nutrition.map((n, i) => (
+                            <tr key={i} className="border-t border-border/40">
+                              <td className="py-3 px-4 text-muted-foreground leading-[1.6]">{n.label}</td>
+                              <td className="py-3 px-4 font-bold text-foreground text-left">{n.value} {n.unit}</td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                  </AccordionContent>
+                </AccordionItem>
+              )}
+
               <AccordionItem value="description" className="border-border">
                 <AccordionTrigger className="text-lg font-bold hover:no-underline">
                   <span className="flex items-center gap-2">
@@ -425,9 +454,10 @@ export default function ProProductDetail() {
                   </span>
                 </AccordionTrigger>
                 <AccordionContent>
-                  <p className="text-muted-foreground leading-relaxed">{product.description}</p>
+                  <p className="text-muted-foreground leading-[1.6]">{product.description}</p>
                 </AccordionContent>
               </AccordionItem>
+
               <AccordionItem value="shipping" className="border-border">
                 <AccordionTrigger className="text-lg font-bold hover:no-underline">
                   <span className="flex items-center gap-2">
@@ -436,7 +466,7 @@ export default function ProProductDetail() {
                   </span>
                 </AccordionTrigger>
                 <AccordionContent>
-                  <div className="text-muted-foreground space-y-2">
+                  <div className="text-muted-foreground leading-[1.6] space-y-2">
                     <p>• משלוח חינם בהזמנה מעל ₪299</p>
                     <p>• זמן משלוח: 2-5 ימי עסקים</p>
                     <p>• ניתן להחזיר מוצרים לא פתוחים תוך 14 יום</p>
@@ -444,12 +474,13 @@ export default function ProProductDetail() {
                   </div>
                 </AccordionContent>
               </AccordionItem>
+
               <AccordionItem value="disclaimer" className="border-border">
                 <AccordionTrigger className="text-lg font-bold hover:no-underline">
                   <span className="flex items-center gap-2">דיסקליימר</span>
                 </AccordionTrigger>
                 <AccordionContent>
-                  <div className="text-muted-foreground space-y-3 text-sm leading-relaxed">
+                  <div className="text-muted-foreground space-y-3 text-sm leading-[1.6]">
                     <div>
                       <p className="font-bold text-foreground">דיסקליימר תוצאות (עבור תוצאות במלל ו/או בתמונות):</p>
                       <p>
@@ -474,21 +505,6 @@ export default function ProProductDetail() {
               </AccordionItem>
             </Accordion>
 
-            {/* Trust Badges */}
-            <div className="grid grid-cols-3 gap-4 py-4">
-              {[
-                { icon: ShieldCheck, label: 'מוצר מקורי' },
-                { icon: Truck, label: 'משלוח מהיר' },
-                { icon: Clock, label: 'שירות אישי' },
-              ].map((badge, i) => (
-                <div key={i} className="flex flex-col items-center gap-2 text-center">
-                  <div className="w-10 h-10 bg-[hsl(142,70%,35%)]/10 rounded-full flex items-center justify-center">
-                    <badge.icon className="w-5 h-5 text-[hsl(142,70%,35%)]" />
-                  </div>
-                  <span className="text-xs font-bold text-muted-foreground">{badge.label}</span>
-                </div>
-              ))}
-            </div>
 
             {/* Catalog Link */}
             {product.catalogPage && (
