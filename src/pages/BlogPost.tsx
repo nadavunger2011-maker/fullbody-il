@@ -6,6 +6,7 @@ import { fetchShopifyProducts, ShopifyProduct, getFirstAvailableVariant, isProdu
 import { useCartStore } from '@/stores/cartStore';
 import { toast } from 'sonner';
 import type { CartItem as ShopifyCartItem } from '@/lib/shopify';
+import { trackFlashyAddedToCart } from '@/lib/flashyEvents';
 
 export default function BlogPost() {
   const { slug } = useParams();
