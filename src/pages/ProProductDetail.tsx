@@ -639,12 +639,6 @@ export default function ProProductDetail() {
         </section>
       )}
 
-      {/* Reviews */}
-      <section className="py-12 bg-card border-t border-border">
-        <div className="container mx-auto px-4 max-w-4xl">
-          <ProductReviews productHandle={product.handle} productTitle={product.title} />
-        </div>
-      </section>
 
       {/* Bottom CTA */}
       <section className="py-12 bg-[hsl(142,70%,35%)]">
