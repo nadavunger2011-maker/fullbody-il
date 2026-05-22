@@ -8,6 +8,7 @@ import { toast } from 'sonner';
 import Footer from '@/components/Footer';
 import CartDrawer from '@/components/CartDrawer';
 import { Skeleton } from '@/components/ui/skeleton';
+import { trackFlashyAddedToCart } from '@/lib/flashyEvents';
 
 const ProductSkeleton = ({ index }: { index: number }) => (
   <div 
