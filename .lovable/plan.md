@@ -1,23 +1,32 @@
-# Dynamic Recipe Book + Admin CMS
+## מה משנים בעמוד המוצר (`src/pages/ProProductDetail.tsx`)
 
-The existing `/recipes` page is hardcoded in `src/data/recipes.ts` (30 Herbalife-protocol recipes, email-gated). I'll keep it working and layer a database + admin editor on top so you can add/edit/delete recipes without touching code, with the URL `/recipes` unchanged.
+הקובץ הזה הוא תבנית גלובלית — כל מוצר ב-`/product/:handle` משתמש בו, אז כל שינוי מחיל אוטומטית על **כל המוצרים**.
 
-## What you get
+### 1. אקורדיון "תיאור מפורט" — תוכן עשיר ואמיתי
 
-1. **Public page (`/recipes`)** — unchanged URL, same minimalist dark UI, same modal flow. It will load recipes from the database (with the existing 30 as a built-in fallback so nothing breaks if the DB is empty). Mobile-first, fast, infinite-scalable as you add rows.
-2. **Admin Recipes tab** — new tab in `/admin/dashboard` called "מתכונים" with:
-   - List of all recipes (search + filter by category)
-   - "הוסף מתכון" button → form: title, category (breakfast/mains/desserts/shakes), badges, protein, calories, prep minutes, emoji, product handle, ingredients (one per line), steps (one per line), image URL
-   - Edit / Delete per row
-   - Changes go live on `/recipes` immediately on next page load (or instantly via realtime subscribe)
-3. **Image handling** — paste an image URL in the admin form. (Optional later: native upload to storage bucket — say the word and I'll add it.)
+כרגע האקורדיון מציג רק את שדה `product.description` הקצר מהקובץ המקומי `herbalifeProducts.ts` (לפעמים משפט אחד בלבד).
 
-## Technical notes
+שינוי:
+- לשלוף את `descriptionHtml` מ-Shopify (כבר נטען ל-`shopifyProduct` בקומפוננטה) — זה התיאור המלא, המפורט והרשמי של המוצר ישירות מה-Backend, כולל פסקאות, כותרות ורשימות.
+- לרנדר אותו בתוך האקורדיון עם `dangerouslySetInnerHTML` בתוך wrapper מעוצב (`prose`-style: line-height 1.6, מרווחים בין פסקאות, bullets מסודרים, h3 בולטים).
+- אם `descriptionHtml` ריק או חסר — fallback ל-`product.description` המקומי.
+- מתחת לתיאור מ-Shopify, להוסיף בלוק תמיד-מוצג של "מה תקבלו במוצר" שמורכב דינמית מ-`product.benefits` כדי להבטיח שגם מוצרים עם תיאור Shopify קצר יקבלו מסת תוכן הוגנת.
 
-- New table `public.recipes` with columns matching the `Recipe` type (id text PK, title, category, badges text[], protein int, calories int, prep_minutes int, product_handle, product_name, emoji, ingredients text[], steps text[], image_url, sort_order, created_at, updated_at). RLS: public can SELECT; only authenticated admin can INSERT/UPDATE/DELETE.
-- Seed the table with the current 30 static recipes via the migration so nothing visually changes on day 1.
-- `Recipes.tsx` switches from importing the static array to `supabase.from('recipes').select()`, with the static array as fallback if the query fails or returns empty.
-- New admin component `src/components/admin/AdminRecipes.tsx` mounted as a new tab in `AdminDashboard.tsx`.
-- Keep the email-gate (`gfp_unlocked`) and the `?recipe=<id>` deep-link behavior intact.
+תוצאה: כל מוצר מקבל תיאור מפורט אמיתי בלי להזין ידנית טקסטים נוספים בקוד.
 
-Reply "go" and I'll ship it.
+### 2. הסרת קטע "ביקורות לקוחות"
+
+הקומפוננטה `ProductReviews` (סקשן בסוף העמוד, שורות 602-607) מציגה "ביקורות לקוחות" — היא כרגע כמעט תמיד ריקה ומציגה "עדיין אין ביקורות למוצר זה".
+
+שינוי: להסיר את כל הסקשן מהעמוד (כולל הימפורט). הסכמה של `aggregateRating` ב-JSON-LD כבר מותנית ב-`reviewAgg.count > 0` אז זה ימשיך לעבוד נקי.
+
+**נשמר:** `TestimonialSlider` (סיפורי הצלחה אמיתיים, מסונן לפי קטגוריית המוצר) — שורה 532.
+
+### פרטים טכניים
+
+קובץ יחיד שמשתנה: `src/pages/ProProductDetail.tsx`
+- מחיקת import של `ProductReviews` ושל הסקשן בשורות 602-607.
+- החלפת ה-`AccordionItem value="description"` (שורות 449-459) לרנדר `shopifyProduct?.descriptionHtml` ב-`dangerouslySetInnerHTML` + fallback + בלוק benefits.
+- הוספת מחלקות Tailwind ל-styling של ה-HTML מ-Shopify (כותרות, פסקאות, רשימות) דרך selector מקומי או `prose` של @tailwindcss/typography אם זמין; אחרת קלאסים ידניים על ה-wrapper.
+
+ללא שינויים בנתונים, ב-Shopify, או בקבצים אחרים.
