@@ -23,6 +23,7 @@ import { trackViewItem, trackAddToCart as gtmTrackAddToCart } from '@/lib/gtm';
 import { trackViewContent, trackAddToCart as fbTrackAddToCart } from '@/lib/fbPixel';
 import { trackGA4ViewItem, trackGA4AddToCart } from '@/lib/ga4';
 import { trackProductView, trackAddToCartEvent } from '@/lib/analytics';
+import { trackFlashyAddedToCart } from '@/lib/flashyEvents';
 
 export default function ProProductDetail() {
   const { handle } = useParams<{ handle: string }>();
@@ -132,6 +133,15 @@ export default function ProProductDetail() {
       handle: product!.handle, title: product!.title, id: productId,
       variantId: variant.id, variantTitle: variant.title,
       price: itemPrice, quantity,
+    });
+    trackFlashyAddedToCart({
+      product_id: productId,
+      product_name: product!.title,
+      price: itemPrice,
+      currency: variant.price.currencyCode || 'ILS',
+      image_url: typeof product!.image === 'string' && product!.image.startsWith('http')
+        ? product!.image
+        : `${window.location.origin}${product!.image}`,
     });
   };
 

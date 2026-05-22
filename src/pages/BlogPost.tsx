@@ -6,6 +6,7 @@ import { fetchShopifyProducts, ShopifyProduct, getFirstAvailableVariant, isProdu
 import { useCartStore } from '@/stores/cartStore';
 import { toast } from 'sonner';
 import type { CartItem as ShopifyCartItem } from '@/lib/shopify';
+import { trackFlashyAddedToCart } from '@/lib/flashyEvents';
 
 export default function BlogPost() {
   const { slug } = useParams();
@@ -72,6 +73,14 @@ export default function BlogPost() {
       return;
     }
     
+    trackFlashyAddedToCart({
+      product_id: product.node.id.replace('gid://shopify/Product/', ''),
+      product_name: product.node.title,
+      price: parseFloat(variant.price.amount),
+      currency: variant.price.currencyCode || 'ILS',
+      image_url: product.node.images?.edges?.[0]?.node?.url || '',
+    });
+
     toast.success(`${product.node.title} נוסף לעגלה`);
   };
 

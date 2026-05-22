@@ -17,6 +17,7 @@ import { trackAddToCart as gtmTrackAddToCart } from '@/lib/gtm';
 import { trackAddToCart as fbTrackAddToCart } from '@/lib/fbPixel';
 import { trackGA4AddToCart } from '@/lib/ga4';
 import { trackAddToCartEvent } from '@/lib/analytics';
+import { trackFlashyAddedToCart } from '@/lib/flashyEvents';
 import { normalizeBlogContent, splitContentByH2, pickContextualProducts, appendDisclaimer } from '@/lib/blogContent';
 import BlogProductCard from '@/components/BlogProductCard';
 
@@ -66,6 +67,15 @@ export default function ProBlogPost() {
     trackAddToCartEvent({
       handle: product.handle, title: product.title, id: productId,
       variantId: variant.id, variantTitle: variant.title, price, quantity: 1,
+    });
+    trackFlashyAddedToCart({
+      product_id: productId,
+      product_name: product.title,
+      price,
+      currency: variant.price.currencyCode || 'ILS',
+      image_url: typeof product.image === 'string' && product.image.startsWith('http')
+        ? product.image
+        : `${window.location.origin}${product.image}`,
     });
   };
 

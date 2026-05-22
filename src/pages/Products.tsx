@@ -8,6 +8,7 @@ import { toast } from 'sonner';
 import Footer from '@/components/Footer';
 import CartDrawer from '@/components/CartDrawer';
 import { Skeleton } from '@/components/ui/skeleton';
+import { trackFlashyAddedToCart } from '@/lib/flashyEvents';
 
 const ProductSkeleton = ({ index }: { index: number }) => (
   <div 
@@ -93,6 +94,14 @@ export default function Products() {
       toast.error('לא ניתן להוסיף לעגלה כרגע');
       return;
     }
+
+    trackFlashyAddedToCart({
+      product_id: product.node.id.replace('gid://shopify/Product/', ''),
+      product_name: product.node.title,
+      price: parseFloat(variant.price.amount),
+      currency: variant.price.currencyCode || 'ILS',
+      image_url: product.node.images?.edges?.[0]?.node?.url || '',
+    });
 
     setIsCartOpen(true);
     toast.success('המוצר נוסף לעגלה!');

@@ -13,6 +13,7 @@ import { trackViewContent, trackAddToCart } from '@/lib/fbPixel';
 import { trackViewItem, trackAddToCart as gtmTrackAddToCart } from '@/lib/gtm';
 import { trackGA4AddToCart, trackGA4ViewItem } from '@/lib/ga4';
 import { trackProductView, trackAddToCartEvent, trackProductDuration } from '@/lib/analytics';
+import { trackFlashyAddedToCart } from '@/lib/flashyEvents';
 import {
   Accordion,
   AccordionContent,
@@ -161,6 +162,14 @@ export default function ProductDetail() {
         handle: product.node.handle, title: product.node.title,
         id: productId, variantId: variant.id, variantTitle: variant.title,
         price: parseFloat(variant.price.amount), quantity,
+      });
+
+      trackFlashyAddedToCart({
+        product_id: productId,
+        product_name: product.node.title,
+        price: parseFloat(variant.price.amount),
+        currency: variant.price.currencyCode || 'ILS',
+        image_url: product.node.images?.edges?.[0]?.node?.url || '',
       });
       
       setIsCartOpen(true);
