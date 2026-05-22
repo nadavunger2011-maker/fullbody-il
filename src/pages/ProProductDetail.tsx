@@ -23,6 +23,7 @@ import { trackViewItem, trackAddToCart as gtmTrackAddToCart } from '@/lib/gtm';
 import { trackViewContent, trackAddToCart as fbTrackAddToCart } from '@/lib/fbPixel';
 import { trackGA4ViewItem, trackGA4AddToCart } from '@/lib/ga4';
 import { trackProductView, trackAddToCartEvent } from '@/lib/analytics';
+import { trackFlashyAddedToCart } from '@/lib/flashyEvents';
 
 export default function ProProductDetail() {
   const { handle } = useParams<{ handle: string }>();
