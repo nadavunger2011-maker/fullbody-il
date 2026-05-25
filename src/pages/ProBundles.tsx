@@ -96,15 +96,66 @@ export default function ProBundles() {
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [addingId, setAddingId] = useState<string | null>(null);
+  // choices[bundleId] = array of selected handles per choice index
+  const [choices, setChoices] = useState<Record<string, string[]>>(() => {
+    const init: Record<string, string[]> = {};
+    BUNDLES.forEach((b) => {
+      if (b.choices) init[b.id] = b.choices.map((c) => c.options[0].handle);
+    });
+    return init;
+  });
   const items = useCartStore((s) => s.items);
   const addItem = useCartStore((s) => s.addItem);
   const cartCount = items.reduce((sum, i) => sum + i.quantity, 0);
+
+  // Scroll to anchor (direct bundle link) and highlight briefly
+  useEffect(() => {
+    const hash = window.location.hash.replace("#", "");
+    if (!hash) return;
+    setTimeout(() => {
+      const el = document.getElementById(`bundle-${hash}`);
+      if (el) {
+        el.scrollIntoView({ behavior: "smooth", block: "center" });
+        el.classList.add("ring-4", "ring-[hsl(142,70%,35%)]");
+        setTimeout(() => el.classList.remove("ring-4", "ring-[hsl(142,70%,35%)]"), 2500);
+      }
+    }, 200);
+  }, []);
+
+  const resolveHandles = (bundle: BundleDef): string[] => {
+    const picks = choices[bundle.id] || [];
+    let ci = 0;
+    return bundle.productHandles.map((h) => {
+      if (h.startsWith("__choice_")) {
+        const handle = picks[ci] || bundle.choices?.[ci]?.options[0].handle || h;
+        ci++;
+        return handle;
+      }
+      return h;
+    });
+  };
+
+  const setChoice = (bundleId: string, index: number, handle: string) => {
+    setChoices((prev) => ({
+      ...prev,
+      [bundleId]: (prev[bundleId] || []).map((h, i) => (i === index ? handle : h)),
+    }));
+  };
+
+  const copyBundleLink = (bundleId: string) => {
+    const url = `${window.location.origin}/bundles#${bundleId}`;
+    navigator.clipboard.writeText(url).then(
+      () => toast.success("הקישור הועתק!", { description: url }),
+      () => toast.error("לא הצלחנו להעתיק את הקישור")
+    );
+  };
 
   const handleAddBundle = async (bundle: BundleDef) => {
     setAddingId(bundle.id);
     try {
       let added = 0;
-      for (const handle of bundle.productHandles) {
+      const handles = resolveHandles(bundle);
+      for (const handle of handles) {
         const local = getProductByHandle(handle);
         if (!local) continue;
         const shopifyProduct = await fetchProductByHandle(local.shopifyHandle);
@@ -138,6 +189,7 @@ export default function ProBundles() {
       setAddingId(null);
     }
   };
+
 
   const calcBundlePrice = (bundle: BundleDef) => {
     const total = bundle.productHandles.reduce((sum, h) => {
