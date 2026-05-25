@@ -101,9 +101,9 @@ export default function StarterStack() {
   }, []);
 
   return (
-    <div dir="rtl" className="min-h-screen bg-black text-white antialiased selection:bg-white selection:text-black" style={{ fontFamily: "Heebo, system-ui, sans-serif" }}>
+    <div dir="rtl" className="min-h-screen bg-black text-white antialiased selection:bg-white selection:text-black">
       <Helmet>
-        <title>FullBody Starter Stack — 150g חלבון מקינוחים מושחתים</title>
+        <title>FullBody Starter Stack, 150g חלבון מקינוחים מושחתים</title>
         <meta name="description" content="ערכת ההתחלה של פרוטוקול העצלנים: Formula 1 וניל + שוקולד + PDM. 15% הנחה אוטומטית, שייקר פרימיום מתנה." />
         <link rel="canonical" href="https://fullbody.co.il/starter-stack" />
       </Helmet>
@@ -135,7 +135,7 @@ export default function StarterStack() {
         <div className="max-w-6xl mx-auto px-5 pt-16 pb-12 md:pt-24 md:pb-16 text-center relative">
           <span className="inline-block text-[11px] tracking-[0.25em] uppercase text-white/60 mb-6">The Lazy Protocol</span>
           <h1 className="text-3xl md:text-5xl lg:text-6xl font-black leading-[1.15] max-w-4xl mx-auto">
-            איך להכניס 150 גרם חלבון ביום מקינוחים מושחתים —
+            איך להכניס 150 גרם חלבון ביום מקינוחים מושחתים -
             <span className="block text-white/70 font-bold mt-2">בלי לבזבז יותר מ-5 דקות במטבח</span>
           </h1>
           <p className="mt-6 text-base md:text-lg text-white/60 max-w-2xl mx-auto leading-relaxed">
@@ -272,7 +272,7 @@ export default function StarterStack() {
 
           <div className="text-center space-y-1 mb-8">
             <p className="text-sm text-white/70">
-              משווק עצמאי מורשה הרבלייף — <span className="font-bold text-white">נדב אונגר</span>
+              משווק עצמאי מורשה הרבלייף, <span className="font-bold text-white">נדב אונגר</span>
             </p>
             <p className="text-xs text-white/50">מספר משווק: 16Y0030013</p>
           </div>
@@ -282,7 +282,7 @@ export default function StarterStack() {
               FullBody היא יוזמה עצמאית של משווק מורשה הרבלייף ואינה אתר רשמי של חברת Herbalife Nutrition.
               מוצרי הרבלייף אינם מיועדים לאבחון, טיפול, ריפוי או מניעה של מחלה כלשהי.
               תוצאות עשויות להשתנות בהתאם לאדם, לפעילות גופנית ולתזונה כללית.
-              אין באמור משום הבטחת הכנסה — הצלחת משווקים תלויה בעבודה, בזמן וביכולת אישית.
+              אין באמור משום הבטחת הכנסה, הצלחת משווקים תלויה בעבודה, בזמן וביכולת אישית.
               מומלץ להיוועץ ברופא לפני תחילת תוכנית תזונתית, בייחוד בהריון, הנקה או מצב רפואי קיים.
             </p>
           </div>
