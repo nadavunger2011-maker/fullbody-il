@@ -23,10 +23,12 @@ interface BundleDef {
   title: string;
   subtitle: string;
   productHandles: string[];
+  choices?: BundleChoice[]; // optional user selections (replace placeholder handles like __choice_0__)
   discountPct: number;
   highlight?: boolean;
   color: string;
 }
+
 
 const BUNDLES: BundleDef[] = [
   {
