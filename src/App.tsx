@@ -38,6 +38,7 @@ import ProPrivacyPolicy from "./pages/ProPrivacyPolicy";
 import ProTerms from "./pages/ProTerms";
 import ProProducts from "./pages/ProProducts";
 import ProBundles from "./pages/ProBundles";
+import StarterStack from "./pages/StarterStack";
 import ProteinCalculator from "./pages/ProteinCalculator";
 import Recipes from "./pages/Recipes";
 import ProtocolLanding from "./pages/ProtocolLanding";
@@ -94,6 +95,7 @@ function AppContent() {
         <Route path="/" element={<ProIndex />} />
         <Route path="/products" element={<ProProducts />} />
         <Route path="/bundles" element={<ProBundles />} />
+        <Route path="/starter-stack" element={<StarterStack />} />
         <Route path="/calculator" element={<ProteinCalculator />} />
         <Route path="/recipes" element={<Recipes />} />
         <Route path="/protocol" element={<ProtocolLanding />} />
