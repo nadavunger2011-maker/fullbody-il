@@ -290,7 +290,7 @@ export async function fetchProductByHandle(handle: string): Promise<ShopifyProdu
 }
 
 // Cart helper functions
-export function formatCheckoutUrl(checkoutUrl: string): string {
+export function formatCheckoutUrl(checkoutUrl: string, discountCode?: string): string {
   try {
     const url = new URL(checkoutUrl);
     url.searchParams.set('channel', 'online_store');
@@ -298,6 +298,9 @@ export function formatCheckoutUrl(checkoutUrl: string): string {
     const siteOrigin = typeof window !== 'undefined' ? window.location.origin : 'https://fullbody-il.lovable.app';
     const returnUrl = `${siteOrigin}/thank-you`;
     url.searchParams.set('return_to', returnUrl);
+    if (discountCode) {
+      url.searchParams.set('discount', discountCode);
+    }
     return url.toString();
   } catch {
     return checkoutUrl;
