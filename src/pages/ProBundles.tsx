@@ -45,12 +45,22 @@ const BUNDLES: BundleDef[] = [
     id: "shake-protein",
     badge: "שייק + חלבון",
     icon: Sparkles,
-    title: "פורמולה 1 וניל + PDM חלבון",
+    title: "פורמולה 1 + PDM חלבון",
     subtitle: "שייק הארוחה המוביל בשילוב תוספת חלבון PDM להעצמת התוצאות",
-    productHandles: ["formula-1-vanilla", "pdm-protein"],
+    productHandles: ["__choice_0__", "pdm-protein"],
+    choices: [
+      {
+        label: "בחרו טעם לפורמולה 1",
+        options: [
+          { handle: "formula-1-vanilla", label: "וניל" },
+          { handle: "formula-1-chocolate", label: "שוקולד" },
+        ],
+      },
+    ],
     discountPct: 10,
     color: "hsl(142,70%,35%)",
   },
+
   {
     id: "popular",
     badge: "הכי פופולרי",
