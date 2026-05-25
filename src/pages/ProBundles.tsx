@@ -197,7 +197,7 @@ export default function ProBundles() {
 
       {/* Bundles */}
       <section className="container mx-auto px-4 py-12">
-        <div className="grid md:grid-cols-3 gap-6 max-w-6xl mx-auto">
+        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-7xl mx-auto">
           {BUNDLES.map((bundle) => {
             const Icon = bundle.icon;
             const { original, discounted, savings } = calcBundlePrice(bundle);
