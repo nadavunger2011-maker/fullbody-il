@@ -329,7 +329,12 @@ export default function ProBody() {
             <Link to="/contact" className="hover:text-accent transition-colors py-2 cursor-pointer">צור קשר</Link>
           </nav>
 
-          <div className="flex items-center gap-4 relative z-10">
+          <div className="flex items-center gap-3 md:gap-4 relative z-10">
+            <img
+              src={herbalifeDistributorLogo}
+              alt="Herbalife Independent Distributor"
+              className="hidden sm:block h-7 md:h-8 w-auto opacity-90"
+            />
             <button onClick={() => setIsSearchOpen(true)} className="p-2 text-muted-foreground hover:text-accent transition-colors cursor-pointer" aria-label="חיפוש">
               <Search className="w-5 h-5" />
             </button>
