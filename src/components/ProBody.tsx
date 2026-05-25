@@ -295,16 +295,13 @@ export default function ProBody() {
             <Menu className="w-6 h-6" />
           </button>
 
-          <Link to="/" className="flex items-center gap-3 md:gap-4 relative z-10">
-            <div className="flex flex-col items-center">
+          <Link to="/" className="flex items-center relative z-10">
+            <div className="flex flex-col items-start">
               <img src={greenLogo} alt="פולבאדי - מפיץ מורשה Herbalife בישראל" className="h-12 md:h-14 w-auto" />
-              <span className="text-[10px] md:text-xs font-semibold text-accent mt-0.5 tracking-wide">מפיץ עצמאי</span>
+              <span className="text-[10px] md:text-[11px] font-medium text-muted-foreground mt-0.5 tracking-wide leading-tight">
+                נדב אונגר · 054-2008578
+              </span>
             </div>
-            <img
-              src={herbalifeDistributorLogo}
-              alt="Herbalife Independent Distributor"
-              className="h-10 md:h-12 w-auto"
-            />
           </Link>
 
           <nav className="hidden lg:flex items-center gap-6 font-semibold text-sm text-muted-foreground relative z-10">
