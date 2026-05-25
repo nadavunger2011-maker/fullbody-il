@@ -276,7 +276,8 @@ export default function ProBundles() {
             return (
               <div
                 key={bundle.id}
-                className={`relative bg-card rounded-2xl border-2 p-6 flex flex-col transition-all hover:shadow-hover ${
+                id={`bundle-${bundle.id}`}
+                className={`relative bg-card rounded-2xl border-2 p-6 flex flex-col transition-all hover:shadow-hover scroll-mt-24 ${
                   bundle.highlight
                     ? "border-[hsl(142,70%,35%)] shadow-lg md:scale-105"
                     : "border-border"
@@ -287,6 +288,15 @@ export default function ProBundles() {
                     הכי משתלם
                   </div>
                 )}
+
+                <button
+                  onClick={() => copyBundleLink(bundle.id)}
+                  className="absolute top-3 left-3 p-1.5 rounded-md text-muted-foreground hover:text-[hsl(142,70%,35%)] hover:bg-[hsl(142,70%,35%)]/10 transition"
+                  aria-label="העתק קישור לחבילה"
+                  title="העתק קישור ישיר"
+                >
+                  <Link2 className="w-4 h-4" />
+                </button>
 
                 <div className="flex items-center gap-3 mb-4">
                   <div className="w-12 h-12 rounded-full bg-[hsl(142,70%,35%)]/10 flex items-center justify-center">
@@ -299,18 +309,47 @@ export default function ProBundles() {
                 <p className="text-sm text-muted-foreground mb-6">{bundle.subtitle}</p>
 
                 {/* Products in bundle */}
-                <ul className="space-y-2 mb-6 flex-1">
-                  {bundle.productHandles.map((h) => {
+                <ul className="space-y-2 mb-4 flex-1">
+                  {resolveHandles(bundle).map((h, idx) => {
                     const p = getProductByHandle(h);
                     if (!p) return null;
                     return (
-                      <li key={h} className="flex items-start gap-2 text-sm text-foreground">
+                      <li key={`${h}-${idx}`} className="flex items-start gap-2 text-sm text-foreground">
                         <Check className="w-4 h-4 text-[hsl(142,70%,35%)] flex-shrink-0 mt-0.5" />
                         <span className="line-clamp-1">{p.title}</span>
                       </li>
                     );
                   })}
                 </ul>
+
+                {/* Choices (e.g., flavor) */}
+                {bundle.choices && bundle.choices.length > 0 && (
+                  <div className="mb-4 space-y-3">
+                    {bundle.choices.map((choice, ci) => (
+                      <div key={ci}>
+                        <p className="text-xs font-bold text-foreground mb-2">{choice.label}</p>
+                        <div className="flex flex-wrap gap-2">
+                          {choice.options.map((opt) => {
+                            const selected = (choices[bundle.id]?.[ci] || choice.options[0].handle) === opt.handle;
+                            return (
+                              <button
+                                key={opt.handle}
+                                onClick={() => setChoice(bundle.id, ci, opt.handle)}
+                                className={`px-3 py-1.5 rounded-full text-xs font-bold border-2 transition ${
+                                  selected
+                                    ? "bg-[hsl(142,70%,35%)] text-white border-[hsl(142,70%,35%)]"
+                                    : "bg-card text-foreground border-border hover:border-[hsl(142,70%,35%)]"
+                                }`}
+                              >
+                                {opt.label}
+                              </button>
+                            );
+                          })}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
 
                 {/* Pricing */}
                 <div className="border-t border-border pt-4 mb-4">
@@ -335,6 +374,7 @@ export default function ProBundles() {
                 </button>
               </div>
             );
+
           })}
         </div>
 
