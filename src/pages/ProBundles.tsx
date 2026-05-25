@@ -192,13 +192,15 @@ export default function ProBundles() {
 
 
   const calcBundlePrice = (bundle: BundleDef) => {
-    const total = bundle.productHandles.reduce((sum, h) => {
+    const handles = resolveHandles(bundle);
+    const total = handles.reduce((sum, h) => {
       const p = getProductByHandle(h);
       return sum + (p?.price || 0);
     }, 0);
     const discounted = total * (1 - bundle.discountPct / 100);
     return { original: Math.round(total), discounted: Math.round(discounted), savings: Math.round(total - discounted) };
   };
+
 
   return (
     <div className="min-h-screen bg-background" dir="rtl">
