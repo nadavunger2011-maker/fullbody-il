@@ -1,7 +1,7 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
-import { ShoppingBag, Check, Menu, X, Sparkles, Trophy, Crown } from "lucide-react";
+import { ShoppingBag, Check, Menu, X, Sparkles, Trophy, Crown, Link2 } from "lucide-react";
 import { getProductByHandle } from "@/data/herbalifeProducts";
 import { useCartStore } from "@/stores/cartStore";
 import { fetchProductByHandle, getFirstAvailableVariant } from "@/lib/shopify";
@@ -9,6 +9,12 @@ import { toast } from "sonner";
 import CartDrawer from "@/components/CartDrawer";
 import ProFooter from "@/components/ProFooter";
 import greenLogo from "@/assets/logo-green.png";
+
+interface BundleChoice {
+  label: string;
+  options: { handle: string; label: string }[];
+}
+
 
 interface BundleDef {
   id: string;
