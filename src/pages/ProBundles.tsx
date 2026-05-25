@@ -34,6 +34,16 @@ const BUNDLES: BundleDef[] = [
     color: "hsl(142,70%,35%)",
   },
   {
+    id: "shake-protein",
+    badge: "שייק + חלבון",
+    icon: Sparkles,
+    title: "פורמולה 1 וניל + PDM חלבון",
+    subtitle: "שייק הארוחה המוביל בשילוב תוספת חלבון PDM להעצמת התוצאות",
+    productHandles: ["formula-1-vanilla", "pdm-protein"],
+    discountPct: 10,
+    color: "hsl(142,70%,35%)",
+  },
+  {
     id: "popular",
     badge: "הכי פופולרי",
     icon: Trophy,
@@ -62,6 +72,7 @@ const BUNDLES: BundleDef[] = [
     color: "hsl(142,70%,35%)",
   },
 ];
+
 
 export default function ProBundles() {
   const [isCartOpen, setIsCartOpen] = useState(false);
@@ -186,7 +197,7 @@ export default function ProBundles() {
 
       {/* Bundles */}
       <section className="container mx-auto px-4 py-12">
-        <div className="grid md:grid-cols-3 gap-6 max-w-6xl mx-auto">
+        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-7xl mx-auto">
           {BUNDLES.map((bundle) => {
             const Icon = bundle.icon;
             const { original, discounted, savings } = calcBundlePrice(bundle);
