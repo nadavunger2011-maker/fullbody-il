@@ -99,8 +99,15 @@ export default function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
       // Track checkout_started in our analytics DB
       trackCheckoutStarted();
       
+      // Auto-apply Starter Stack discount if all 3 bundle items are in cart
+      const starterHandles = ['formula-1-vanilla', 'formula-1-chocolate', 'pdm-protein'];
+      const hasStarterStack = starterHandles.every(h =>
+        items.some(i => i.product.node.handle === h)
+      );
+      const discountCode = hasStarterStack ? 'STARTERSTACK15' : undefined;
+
       // Format URL with channel parameter and open in new tab
-      const formattedUrl = formatCheckoutUrl(checkoutUrl);
+      const formattedUrl = formatCheckoutUrl(checkoutUrl, discountCode);
       window.open(formattedUrl, '_blank');
       onClose();
     } else {
