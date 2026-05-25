@@ -378,6 +378,12 @@ export default function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
               >
                 לתשלום
               </Button>
+
+              <p className="text-[10px] leading-relaxed text-muted-foreground text-center pt-2 border-t border-border/50">
+                הרשו לי לעזור לכם להשיג את המטרות - ללקוחות יש סיכוי טוב יותר להשיג את מטרותיהם עם המוצרים ברצונם למערכת יחסים עם חבר הלקוחות העצמאי שלהם, ולהיות חלק מקהילה. אם ברצונכם לקבל תמיכה מותאמת אישית להשגת מטרותיכם, אנא צרו עמי קשר בשימוש בפרטים לעיל.
+                <br />
+                <span className="font-semibold text-foreground/80">נדב אונגר · 054-2008578</span>
+              </p>
             </div>
           )}
         </div>
