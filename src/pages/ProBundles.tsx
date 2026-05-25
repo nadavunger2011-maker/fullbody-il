@@ -34,6 +34,16 @@ const BUNDLES: BundleDef[] = [
     color: "hsl(142,70%,35%)",
   },
   {
+    id: "shake-protein",
+    badge: "שייק + חלבון",
+    icon: Sparkles,
+    title: "פורמולה 1 וניל + PDM חלבון",
+    subtitle: "שייק הארוחה המוביל בשילוב תוספת חלבון PDM להעצמת התוצאות",
+    productHandles: ["formula-1-vanilla", "pdm-protein"],
+    discountPct: 10,
+    color: "hsl(142,70%,35%)",
+  },
+  {
     id: "popular",
     badge: "הכי פופולרי",
     icon: Trophy,
@@ -62,6 +72,7 @@ const BUNDLES: BundleDef[] = [
     color: "hsl(142,70%,35%)",
   },
 ];
+
 
 export default function ProBundles() {
   const [isCartOpen, setIsCartOpen] = useState(false);
