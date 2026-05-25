@@ -1,7 +1,7 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
-import { ShoppingBag, Check, Menu, X, Sparkles, Trophy, Crown } from "lucide-react";
+import { ShoppingBag, Check, Menu, X, Sparkles, Trophy, Crown, Link2 } from "lucide-react";
 import { getProductByHandle } from "@/data/herbalifeProducts";
 import { useCartStore } from "@/stores/cartStore";
 import { fetchProductByHandle, getFirstAvailableVariant } from "@/lib/shopify";
@@ -10,6 +10,12 @@ import CartDrawer from "@/components/CartDrawer";
 import ProFooter from "@/components/ProFooter";
 import greenLogo from "@/assets/logo-green.png";
 
+interface BundleChoice {
+  label: string;
+  options: { handle: string; label: string }[];
+}
+
+
 interface BundleDef {
   id: string;
   badge: string;
@@ -17,10 +23,12 @@ interface BundleDef {
   title: string;
   subtitle: string;
   productHandles: string[];
+  choices?: BundleChoice[]; // optional user selections (replace placeholder handles like __choice_0__)
   discountPct: number;
   highlight?: boolean;
   color: string;
 }
+
 
 const BUNDLES: BundleDef[] = [
   {
@@ -37,12 +45,22 @@ const BUNDLES: BundleDef[] = [
     id: "shake-protein",
     badge: "שייק + חלבון",
     icon: Sparkles,
-    title: "פורמולה 1 וניל + PDM חלבון",
+    title: "פורמולה 1 + PDM חלבון",
     subtitle: "שייק הארוחה המוביל בשילוב תוספת חלבון PDM להעצמת התוצאות",
-    productHandles: ["formula-1-vanilla", "pdm-protein"],
+    productHandles: ["__choice_0__", "pdm-protein"],
+    choices: [
+      {
+        label: "בחרו טעם לפורמולה 1",
+        options: [
+          { handle: "formula-1-vanilla", label: "וניל" },
+          { handle: "formula-1-chocolate", label: "שוקולד" },
+        ],
+      },
+    ],
     discountPct: 10,
     color: "hsl(142,70%,35%)",
   },
+
   {
     id: "popular",
     badge: "הכי פופולרי",
@@ -78,15 +96,66 @@ export default function ProBundles() {
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [addingId, setAddingId] = useState<string | null>(null);
+  // choices[bundleId] = array of selected handles per choice index
+  const [choices, setChoices] = useState<Record<string, string[]>>(() => {
+    const init: Record<string, string[]> = {};
+    BUNDLES.forEach((b) => {
+      if (b.choices) init[b.id] = b.choices.map((c) => c.options[0].handle);
+    });
+    return init;
+  });
   const items = useCartStore((s) => s.items);
   const addItem = useCartStore((s) => s.addItem);
   const cartCount = items.reduce((sum, i) => sum + i.quantity, 0);
+
+  // Scroll to anchor (direct bundle link) and highlight briefly
+  useEffect(() => {
+    const hash = window.location.hash.replace("#", "");
+    if (!hash) return;
+    setTimeout(() => {
+      const el = document.getElementById(`bundle-${hash}`);
+      if (el) {
+        el.scrollIntoView({ behavior: "smooth", block: "center" });
+        el.classList.add("ring-4", "ring-[hsl(142,70%,35%)]");
+        setTimeout(() => el.classList.remove("ring-4", "ring-[hsl(142,70%,35%)]"), 2500);
+      }
+    }, 200);
+  }, []);
+
+  const resolveHandles = (bundle: BundleDef): string[] => {
+    const picks = choices[bundle.id] || [];
+    let ci = 0;
+    return bundle.productHandles.map((h) => {
+      if (h.startsWith("__choice_")) {
+        const handle = picks[ci] || bundle.choices?.[ci]?.options[0].handle || h;
+        ci++;
+        return handle;
+      }
+      return h;
+    });
+  };
+
+  const setChoice = (bundleId: string, index: number, handle: string) => {
+    setChoices((prev) => ({
+      ...prev,
+      [bundleId]: (prev[bundleId] || []).map((h, i) => (i === index ? handle : h)),
+    }));
+  };
+
+  const copyBundleLink = (bundleId: string) => {
+    const url = `${window.location.origin}/bundles#${bundleId}`;
+    navigator.clipboard.writeText(url).then(
+      () => toast.success("הקישור הועתק!", { description: url }),
+      () => toast.error("לא הצלחנו להעתיק את הקישור")
+    );
+  };
 
   const handleAddBundle = async (bundle: BundleDef) => {
     setAddingId(bundle.id);
     try {
       let added = 0;
-      for (const handle of bundle.productHandles) {
+      const handles = resolveHandles(bundle);
+      for (const handle of handles) {
         const local = getProductByHandle(handle);
         if (!local) continue;
         const shopifyProduct = await fetchProductByHandle(local.shopifyHandle);
@@ -121,14 +190,17 @@ export default function ProBundles() {
     }
   };
 
+
   const calcBundlePrice = (bundle: BundleDef) => {
-    const total = bundle.productHandles.reduce((sum, h) => {
+    const handles = resolveHandles(bundle);
+    const total = handles.reduce((sum, h) => {
       const p = getProductByHandle(h);
       return sum + (p?.price || 0);
     }, 0);
     const discounted = total * (1 - bundle.discountPct / 100);
     return { original: Math.round(total), discounted: Math.round(discounted), savings: Math.round(total - discounted) };
   };
+
 
   return (
     <div className="min-h-screen bg-background" dir="rtl">
@@ -204,7 +276,8 @@ export default function ProBundles() {
             return (
               <div
                 key={bundle.id}
-                className={`relative bg-card rounded-2xl border-2 p-6 flex flex-col transition-all hover:shadow-hover ${
+                id={`bundle-${bundle.id}`}
+                className={`relative bg-card rounded-2xl border-2 p-6 flex flex-col transition-all hover:shadow-hover scroll-mt-24 ${
                   bundle.highlight
                     ? "border-[hsl(142,70%,35%)] shadow-lg md:scale-105"
                     : "border-border"
@@ -215,6 +288,15 @@ export default function ProBundles() {
                     הכי משתלם
                   </div>
                 )}
+
+                <button
+                  onClick={() => copyBundleLink(bundle.id)}
+                  className="absolute top-3 left-3 p-1.5 rounded-md text-muted-foreground hover:text-[hsl(142,70%,35%)] hover:bg-[hsl(142,70%,35%)]/10 transition"
+                  aria-label="העתק קישור לחבילה"
+                  title="העתק קישור ישיר"
+                >
+                  <Link2 className="w-4 h-4" />
+                </button>
 
                 <div className="flex items-center gap-3 mb-4">
                   <div className="w-12 h-12 rounded-full bg-[hsl(142,70%,35%)]/10 flex items-center justify-center">
@@ -227,18 +309,47 @@ export default function ProBundles() {
                 <p className="text-sm text-muted-foreground mb-6">{bundle.subtitle}</p>
 
                 {/* Products in bundle */}
-                <ul className="space-y-2 mb-6 flex-1">
-                  {bundle.productHandles.map((h) => {
+                <ul className="space-y-2 mb-4 flex-1">
+                  {resolveHandles(bundle).map((h, idx) => {
                     const p = getProductByHandle(h);
                     if (!p) return null;
                     return (
-                      <li key={h} className="flex items-start gap-2 text-sm text-foreground">
+                      <li key={`${h}-${idx}`} className="flex items-start gap-2 text-sm text-foreground">
                         <Check className="w-4 h-4 text-[hsl(142,70%,35%)] flex-shrink-0 mt-0.5" />
                         <span className="line-clamp-1">{p.title}</span>
                       </li>
                     );
                   })}
                 </ul>
+
+                {/* Choices (e.g., flavor) */}
+                {bundle.choices && bundle.choices.length > 0 && (
+                  <div className="mb-4 space-y-3">
+                    {bundle.choices.map((choice, ci) => (
+                      <div key={ci}>
+                        <p className="text-xs font-bold text-foreground mb-2">{choice.label}</p>
+                        <div className="flex flex-wrap gap-2">
+                          {choice.options.map((opt) => {
+                            const selected = (choices[bundle.id]?.[ci] || choice.options[0].handle) === opt.handle;
+                            return (
+                              <button
+                                key={opt.handle}
+                                onClick={() => setChoice(bundle.id, ci, opt.handle)}
+                                className={`px-3 py-1.5 rounded-full text-xs font-bold border-2 transition ${
+                                  selected
+                                    ? "bg-[hsl(142,70%,35%)] text-white border-[hsl(142,70%,35%)]"
+                                    : "bg-card text-foreground border-border hover:border-[hsl(142,70%,35%)]"
+                                }`}
+                              >
+                                {opt.label}
+                              </button>
+                            );
+                          })}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
 
                 {/* Pricing */}
                 <div className="border-t border-border pt-4 mb-4">
@@ -263,6 +374,7 @@ export default function ProBundles() {
                 </button>
               </div>
             );
+
           })}
         </div>
 
