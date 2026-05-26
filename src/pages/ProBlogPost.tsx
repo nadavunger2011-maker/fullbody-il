@@ -5,7 +5,7 @@ import { Calendar, Clock, ArrowRight, Tag, Menu, X, ShoppingBag } from 'lucide-r
 import { proBlogCategories } from '@/data/proBlogPosts';
 import { useBlogPostBySlug } from '@/hooks/useBlogPosts';
 import { getProductByHandle, HerbalifeProduct } from '@/data/herbalifeProducts';
-import greenLogo from '@/assets/logo-green.png';
+import greenLogo from '@/assets/logo-green.webp';
 import ProFooter from '@/components/ProFooter';
 import { useCartStore } from '@/stores/cartStore';
 import CartDrawer from '@/components/CartDrawer';
@@ -88,7 +88,7 @@ export default function ProBlogPost() {
     datePublished: post.date,
     dateModified: post.date,
     author: { '@type': 'Organization', name: 'FullBody Pro', url: 'https://fullbody.co.il' },
-    publisher: { '@type': 'Organization', name: 'FullBody Pro', logo: { '@type': 'ImageObject', url: 'https://fullbody.co.il/assets/logo-green.png' } },
+    publisher: { '@type': 'Organization', name: 'FullBody Pro', logo: { '@type': 'ImageObject', url: 'https://fullbody.co.il/assets/logo-green.webp' } },
     mainEntityOfPage: { '@type': 'WebPage', '@id': `https://fullbody.co.il/blog/${post.slug}` },
   };
 

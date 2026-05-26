@@ -1,7 +1,7 @@
-import greenLogo from '@/assets/logo-green.png';
+import greenLogo from '@/assets/logo-green.webp';
 import herbalifeDistributorLogo from '@/assets/herbalife-independent-distributor.webp';
-import heroSlide1 from '@/assets/hero-slide-1.png';
-import heroSlide2 from '@/assets/hero-slide-2.png';
+import heroSlide1 from '@/assets/hero-slide-1.webp';
+import heroSlide2 from '@/assets/hero-slide-2.webp';
 import { trackAddToCart as gtmTrackAddToCart } from '@/lib/gtm';
 import { trackAddToCart as fbTrackAddToCart } from '@/lib/fbPixel';
 import { trackGA4AddToCart } from '@/lib/ga4';

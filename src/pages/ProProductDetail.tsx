@@ -1,4 +1,4 @@
-import greenLogo from '@/assets/logo-green.png';
+import greenLogo from '@/assets/logo-green.webp';
 import React, { useState, useEffect, useRef } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useParams, Link, Navigate } from 'react-router-dom';
