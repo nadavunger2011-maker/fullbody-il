@@ -91,7 +91,7 @@ export default function CheckoutAssistantModal({
             </Button>
             {!isAcknowledged && (
               <p className="text-[11px] text-muted-foreground text-center mt-2">
-                יש לאשר תמיכה אישית כדי להמשיך
+                יש לסמן כדי להמשיך
               </p>
             )}
           </div>
