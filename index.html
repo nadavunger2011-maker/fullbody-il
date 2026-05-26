@@ -3,46 +3,53 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    
-    <!-- Google Tag Manager -->
-    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-    })(window,document,'script','dataLayer','GTM-T9932PDT');</script>
-    <!-- End Google Tag Manager -->
-    
-    <!-- Facebook Pixel Code -->
-    <script>
-      !function(f,b,e,v,n,t,s)
-      {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-      n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-      if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-      n.queue=[];t=b.createElement(e);t.async=!0;
-      t.src=v;s=b.getElementsByTagName(e)[0];
-      s.parentNode.insertBefore(t,s)}(window, document,'script',
-      'https://connect.facebook.net/en_US/fbevents.js');
-      fbq('init', '898424022537875');
-      fbq('track', 'PageView');
-    </script>
-    <!-- End Facebook Pixel Code -->
-    
-    <!-- Microsoft Clarity -->
-    <script type="text/javascript">
-      (function(c,l,a,r,i,t,y){
-        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
-        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
-        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
-      })(window,document,"clarity","script","REPLACE_WITH_YOUR_CLARITY_ID");
-    </script>
-    <!-- End Microsoft Clarity -->
 
-    <!-- Flashy Pixel -->
+    <!-- Third-party tracking (deferred for mobile perf) -->
     <script>
-      'use strict'; (function (a, b, c) { if (!a.flashy) { a.flashy = function () { a.flashy.event && a.flashy.event(arguments), a.flashy.queue.push(arguments) }, a.flashy.queue = []; var d = document.getElementsByTagName('script')[0], e = document.createElement(b); e.src = c, e.async = !0, d.parentNode.insertBefore(e, d) } })(window, 'script', 'https://js.flashyapp.com/thunder.js');
-      flashy('init', 12132);
-      flashy('PageView');
+      (function () {
+        function loadTracking() {
+          (function (w, d, s, l, i) {
+            w[l] = w[l] || []; w[l].push({ 'gtm.start': new Date().getTime(), event: 'gtm.js' });
+            var f = d.getElementsByTagName(s)[0], j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : '';
+            j.async = true; j.src = 'https://www.googletagmanager.com/gtm.js?id=' + i + dl;
+            f.parentNode.insertBefore(j, f);
+          })(window, document, 'script', 'dataLayer', 'GTM-T9932PDT');
+
+          !function (f, b, e, v, n, t, s) {
+            if (f.fbq) return; n = f.fbq = function () { n.callMethod ? n.callMethod.apply(n, arguments) : n.queue.push(arguments) };
+            if (!f._fbq) f._fbq = n; n.push = n; n.loaded = !0; n.version = '2.0'; n.queue = [];
+            t = b.createElement(e); t.async = !0; t.src = v;
+            s = b.getElementsByTagName(e)[0]; s.parentNode.insertBefore(t, s);
+          }(window, document, 'script', 'https://connect.facebook.net/en_US/fbevents.js');
+          window.fbq && fbq('init', '898424022537875');
+          window.fbq && fbq('track', 'PageView');
+
+          (function (c, l, a, r, i, t, y) {
+            c[a] = c[a] || function () { (c[a].q = c[a].q || []).push(arguments) };
+            t = l.createElement(r); t.async = 1; t.src = "https://www.clarity.ms/tag/" + i;
+            y = l.getElementsByTagName(r)[0]; y.parentNode.insertBefore(t, y);
+          })(window, document, "clarity", "script", "REPLACE_WITH_YOUR_CLARITY_ID");
+
+          (function (a, b, c) {
+            if (!a.flashy) {
+              a.flashy = function () { a.flashy.event && a.flashy.event(arguments), a.flashy.queue.push(arguments) };
+              a.flashy.queue = [];
+              var d = document.getElementsByTagName('script')[0], e = document.createElement(b);
+              e.src = c; e.async = !0; d.parentNode.insertBefore(e, d);
+            }
+          })(window, 'script', 'https://js.flashyapp.com/thunder.js');
+          window.flashy && flashy('init', 12132);
+          window.flashy && flashy('PageView');
+        }
+
+        if (document.readyState === 'complete') {
+          setTimeout(loadTracking, 1500);
+        } else {
+          window.addEventListener('load', function () { setTimeout(loadTracking, 1500); });
+        }
+      })();
     </script>
+
     <link rel="icon" href="/favicon.png" type="image/png" />
     <title>FullBody - מוצרי Herbalife מקוריים בישראל</title>
     <meta name="description" content="מפיץ מורשה של Herbalife בישראל. שייקי חלבון, ויטמינים ותוספי תזונה. משלוח חינם מעל ₪299." />
@@ -63,17 +70,13 @@
   </head>
 
   <body>
-    <!-- Google Tag Manager (noscript) -->
     <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-T9932PDT"
     height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-    <!-- End Google Tag Manager (noscript) -->
-    
-    <!-- Facebook Pixel (noscript) -->
+
     <noscript><img height="1" width="1" style="display:none"
       src="https://www.facebook.com/tr?id=898424022537875&ev=PageView&noscript=1"
     /></noscript>
-    <!-- End Facebook Pixel (noscript) -->
-    
+
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>
