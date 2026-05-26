@@ -381,7 +381,7 @@ export default function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
               )}
 
               <Button
-                onClick={handleCheckout}
+                onClick={() => setShowAssistant(true)}
                 className="w-full py-7 text-lg font-bold bg-accent hover:bg-accent/90 rounded-xl shadow-lg"
               >
                 לתשלום
