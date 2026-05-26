@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { X, ArrowLeft, MessageCircle, CheckCircle2 } from "lucide-react";
+import { X, CheckCircle2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 interface CheckoutAssistantModalProps {
@@ -8,7 +8,7 @@ interface CheckoutAssistantModalProps {
   onProceed: () => void;
 }
 
-const WHATSAPP_URL = "https://wa.link/0g4tht";
+
 
 export default function CheckoutAssistantModal({
   isOpen,
@@ -35,9 +35,8 @@ export default function CheckoutAssistantModal({
         >
           {/* Header */}
           <div className="flex items-center justify-between p-5 border-b border-border">
-            <h2 className="text-lg font-bold text-foreground flex items-center gap-2">
-              <MessageCircle className="w-5 h-5 text-[hsl(142,70%,35%)]" />
-              עוזר הקופה
+            <h2 className="text-lg font-bold text-foreground">
+              לפני המעבר לקופה
             </h2>
             <button
               onClick={onClose}
@@ -57,18 +56,6 @@ export default function CheckoutAssistantModal({
               </p>
             </div>
 
-            {/* WhatsApp CTA */}
-            <a
-              href={WHATSAPP_URL}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center justify-center gap-2 w-full bg-[#25D366] hover:bg-[#20bd5a] text-white font-bold py-3.5 px-4 rounded-xl transition-colors shadow-lg"
-            >
-              <MessageCircle className="w-5 h-5" />
-              <span>להמשך, לחצו כאן</span>
-              <ArrowLeft className="w-4 h-4" />
-            </a>
-
             {/* Acknowledgment Checkbox */}
             <label className="flex items-start gap-3 cursor-pointer group p-2 -m-2 rounded-lg hover:bg-muted/40 transition">
               <div className="relative flex items-center mt-0.5">
@@ -85,7 +72,7 @@ export default function CheckoutAssistantModal({
                 </div>
               </div>
               <span className="text-sm text-muted-foreground group-hover:text-foreground transition-colors select-none">
-                סמנו כאן לאישור תמיכה אישית
+                אני יודע שאני יכול לקבל תמיכה אישית במידה וארצה
               </span>
             </label>
           </div>
@@ -104,7 +91,7 @@ export default function CheckoutAssistantModal({
             </Button>
             {!isAcknowledged && (
               <p className="text-[11px] text-muted-foreground text-center mt-2">
-                יש לאשר תמיכה אישית כדי להמשיך
+                יש לסמן כדי להמשיך
               </p>
             )}
           </div>
