@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { X, Plus, Minus, ShoppingBag, Trash2, Loader2, ArrowLeft, Package, Tag } from 'lucide-react';
 import CheckoutAssistantModal from './CheckoutAssistantModal';
 import { Link } from 'react-router-dom';
