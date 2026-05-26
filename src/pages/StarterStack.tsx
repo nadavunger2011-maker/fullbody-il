@@ -164,9 +164,9 @@ export default function StarterStack() {
         <div className="absolute inset-0 pointer-events-none opacity-40" style={{ background: `radial-gradient(ellipse at 50% 0%, ${GOLD}22, transparent 55%)` }} />
         <div className="max-w-6xl mx-auto px-5 pt-14 pb-10 md:pt-24 md:pb-16 text-center relative">
           <span className="inline-block text-[11px] tracking-[0.3em] uppercase mb-6" style={{ color: GOLD }}>The Lazy Protocol</span>
-          <h1 className="text-3xl md:text-5xl lg:text-6xl font-black leading-[1.15] max-w-4xl mx-auto">
-            150 גרם חלבון ביום מקינוחים מושחתים -
-            <span className="block font-bold mt-3" style={{ color: GOLD }}>הדרך הקלה לחיטוב שחשבת שבלתי אפשרי.</span>
+          <h1 className="text-4xl md:text-6xl lg:text-7xl font-black leading-[1.1] max-w-4xl mx-auto tracking-tight">
+            הגוף שרצית, ב-5 דקות הכנה ביום.
+            <span className="block font-bold mt-4 text-2xl md:text-4xl lg:text-5xl" style={{ color: GOLD }}>הכירו את ערכת ה-FullBody Performance.</span>
           </h1>
           <p className="mt-6 text-base md:text-lg text-white/65 max-w-2xl mx-auto leading-relaxed">
             בלי להעביר שעות במטבח. בלי להרגיש רעב. השיטה המדעית של FullBody להשגת תוצאות שיא במינימום מאמץ.
