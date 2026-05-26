@@ -72,7 +72,7 @@ export default function CheckoutAssistantModal({
                 </div>
               </div>
               <span className="text-sm text-muted-foreground group-hover:text-foreground transition-colors select-none">
-                סמנו כאן לאישור תמיכה אישית
+                אני יודע שאני יכול לקבל תמיכה אישית במידה וארצה
               </span>
             </label>
           </div>
