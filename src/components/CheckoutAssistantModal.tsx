@@ -56,18 +56,6 @@ export default function CheckoutAssistantModal({
               </p>
             </div>
 
-            {/* WhatsApp CTA */}
-            <a
-              href={WHATSAPP_URL}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center justify-center gap-2 w-full bg-[#25D366] hover:bg-[#20bd5a] text-white font-bold py-3.5 px-4 rounded-xl transition-colors shadow-lg"
-            >
-              <MessageCircle className="w-5 h-5" />
-              <span>להמשך, לחצו כאן</span>
-              <ArrowLeft className="w-4 h-4" />
-            </a>
-
             {/* Acknowledgment Checkbox */}
             <label className="flex items-start gap-3 cursor-pointer group p-2 -m-2 rounded-lg hover:bg-muted/40 transition">
               <div className="relative flex items-center mt-0.5">
