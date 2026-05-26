@@ -1,4 +1,6 @@
+import { useState } from 'react';
 import { X, Plus, Minus, ShoppingBag, Trash2, Loader2, ArrowLeft, Package, Tag } from 'lucide-react';
+import CheckoutAssistantModal from './CheckoutAssistantModal';
 import { Link } from 'react-router-dom';
 import { useCartStore } from '@/stores/cartStore';
 import { Button } from '@/components/ui/button';
@@ -17,6 +19,7 @@ interface CartDrawerProps {
 
 export default function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
   const { items, removeItem, updateQuantity, getTotal, getCheckoutUrl, isLoading } = useCartStore();
+  const [showAssistant, setShowAssistant] = useState(false);
   const total = getTotal();
 
   // Group bundle items
@@ -378,7 +381,7 @@ export default function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
               )}
 
               <Button
-                onClick={handleCheckout}
+                onClick={() => setShowAssistant(true)}
                 className="w-full py-7 text-lg font-bold bg-accent hover:bg-accent/90 rounded-xl shadow-lg"
               >
                 לתשלום
@@ -388,6 +391,13 @@ export default function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
           )}
         </div>
       </div>
+
+      {/* Checkout Assistant Modal */}
+      <CheckoutAssistantModal
+        isOpen={showAssistant}
+        onClose={() => setShowAssistant(false)}
+        onProceed={handleCheckout}
+      />
     </>
   );
 }
