@@ -1,7 +1,7 @@
 import { useState, useMemo, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
-import { ShoppingBag, Check, Shield, Truck, Award, Loader2, ChevronDown, Star, Gift, FileText, ClipboardList } from "lucide-react";
+import { ShoppingBag, Check, Shield, Truck, Award, Loader2, ChevronDown, Star, Gift, FileText, ClipboardList, Flame, Dumbbell, Zap } from "lucide-react";
 import { getProductByHandle } from "@/data/herbalifeProducts";
 import { useCartStore } from "@/stores/cartStore";
 import { fetchProductByHandle, getFirstAvailableVariant } from "@/lib/shopify";
