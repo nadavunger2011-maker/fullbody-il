@@ -391,6 +391,13 @@ export default function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
           )}
         </div>
       </div>
+
+      {/* Checkout Assistant Modal */}
+      <CheckoutAssistantModal
+        isOpen={showAssistant}
+        onClose={() => setShowAssistant(false)}
+        onProceed={handleCheckout}
+      />
     </>
   );
 }
