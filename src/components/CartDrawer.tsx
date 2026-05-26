@@ -1,4 +1,5 @@
 import { X, Plus, Minus, ShoppingBag, Trash2, Loader2, ArrowLeft, Package, Tag } from 'lucide-react';
+import CheckoutAssistantModal from './CheckoutAssistantModal';
 import { Link } from 'react-router-dom';
 import { useCartStore } from '@/stores/cartStore';
 import { Button } from '@/components/ui/button';
