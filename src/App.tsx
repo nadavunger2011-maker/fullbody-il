@@ -1,56 +1,59 @@
-import { useEffect } from "react";
+import { useEffect, lazy, Suspense } from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
+import { BrowserRouter, Routes, Route, useLocation, Navigate } from "react-router-dom";
 import { HelmetProvider } from "react-helmet-async";
 import { useCartSync } from "@/hooks/useCartSync";
 import { initGA4, trackGA4PageView } from "@/lib/ga4";
-import Index from "./pages/Index";
-import NotFound from "./pages/NotFound";
-import Blog from "./pages/Blog";
-import BlogPost from "./pages/BlogPost";
-import ThankYou from "./pages/ThankYou";
-import Terms from "./pages/Terms";
-import Shipping from "./pages/Shipping";
-import Returns from "./pages/Returns";
-import Privacy from "./pages/Privacy";
-import FAQ from "./pages/FAQ";
-import Contact from "./pages/Contact";
-import About from "./pages/About";
-import Accessibility from "./pages/Accessibility";
-import ProductDetail from "./pages/ProductDetail";
-import Products from "./pages/Products";
-import SleepGuide from "./pages/SleepGuide";
-import WhatsAppButton from "./components/WhatsAppButton";
-import { LegacyProductRedirect } from "./components/LegacyProductRedirect";
-import AdminLogin from "./pages/AdminLogin";
-import AdminDashboard from "./pages/AdminDashboard";
-import ProIndex from "./pages/ProIndex";
-import ProProductDetail from "./pages/ProProductDetail";
-import ProContact from "./pages/ProContact";
-import ProBlog from "./pages/ProBlog";
-import ProBlogPost from "./pages/ProBlogPost";
-import ProShippingPolicy from "./pages/ProShippingPolicy";
-import ProReturnPolicy from "./pages/ProReturnPolicy";
-import ProPrivacyPolicy from "./pages/ProPrivacyPolicy";
-import ProTerms from "./pages/ProTerms";
-import ProProducts from "./pages/ProProducts";
-import ProBundles from "./pages/ProBundles";
-import StarterStack from "./pages/StarterStack";
-import ProteinCalculator from "./pages/ProteinCalculator";
-import Recipes from "./pages/Recipes";
-import ProtocolLanding from "./pages/ProtocolLanding";
-import ProtocolThankYou from "./pages/ProtocolThankYou";
-import ChocolateCakeProtocol from "./pages/ChocolateCakeProtocol";
-import CartPage from "./pages/CartPage";
-import { Navigate } from "react-router-dom";
+import ScrollToTop from "@/components/ScrollToTop";
+import CookieNotice from "@/components/CookieNotice";
 import { trackPageView } from "@/lib/analytics";
 import { trackPageView as trackFBPageView } from "@/lib/fbPixel";
-import ScrollToTop from "@/components/ScrollToTop";
-import FirstVisitModal from "@/components/FirstVisitModal";
-import CookieNotice from "@/components/CookieNotice";
+
+// Eager: landing page user typically hits first
+import ProIndex from "./pages/ProIndex";
+import StarterStack from "./pages/StarterStack";
+
+// Lazy: everything else
+const NotFound = lazy(() => import("./pages/NotFound"));
+const Blog = lazy(() => import("./pages/Blog"));
+const BlogPost = lazy(() => import("./pages/BlogPost"));
+const ThankYou = lazy(() => import("./pages/ThankYou"));
+const Terms = lazy(() => import("./pages/Terms"));
+const Shipping = lazy(() => import("./pages/Shipping"));
+const Returns = lazy(() => import("./pages/Returns"));
+const Privacy = lazy(() => import("./pages/Privacy"));
+const FAQ = lazy(() => import("./pages/FAQ"));
+const Contact = lazy(() => import("./pages/Contact"));
+const About = lazy(() => import("./pages/About"));
+const Accessibility = lazy(() => import("./pages/Accessibility"));
+const ProductDetail = lazy(() => import("./pages/ProductDetail"));
+const Products = lazy(() => import("./pages/Products"));
+const SleepGuide = lazy(() => import("./pages/SleepGuide"));
+const WhatsAppButton = lazy(() => import("./components/WhatsAppButton"));
+const LegacyProductRedirect = lazy(() => import("./components/LegacyProductRedirect").then(m => ({ default: m.LegacyProductRedirect })));
+const AdminLogin = lazy(() => import("./pages/AdminLogin"));
+const AdminDashboard = lazy(() => import("./pages/AdminDashboard"));
+const Index = lazy(() => import("./pages/Index"));
+const ProProductDetail = lazy(() => import("./pages/ProProductDetail"));
+const ProContact = lazy(() => import("./pages/ProContact"));
+const ProBlog = lazy(() => import("./pages/ProBlog"));
+const ProBlogPost = lazy(() => import("./pages/ProBlogPost"));
+const ProShippingPolicy = lazy(() => import("./pages/ProShippingPolicy"));
+const ProReturnPolicy = lazy(() => import("./pages/ProReturnPolicy"));
+const ProPrivacyPolicy = lazy(() => import("./pages/ProPrivacyPolicy"));
+const ProTerms = lazy(() => import("./pages/ProTerms"));
+const ProProducts = lazy(() => import("./pages/ProProducts"));
+const ProBundles = lazy(() => import("./pages/ProBundles"));
+const ProteinCalculator = lazy(() => import("./pages/ProteinCalculator"));
+const Recipes = lazy(() => import("./pages/Recipes"));
+const ProtocolLanding = lazy(() => import("./pages/ProtocolLanding"));
+const ProtocolThankYou = lazy(() => import("./pages/ProtocolThankYou"));
+const ChocolateCakeProtocol = lazy(() => import("./pages/ChocolateCakeProtocol"));
+const CartPage = lazy(() => import("./pages/CartPage"));
+const FirstVisitModal = lazy(() => import("@/components/FirstVisitModal"));
 
 const queryClient = new QueryClient();
 
@@ -69,7 +72,6 @@ function AnalyticsListener() {
       trackGA4PageView(path);
       if (!path.startsWith('/admin')) {
         trackPageView(path);
-        // Facebook Pixel: fire PageView on every SPA route change
         trackFBPageView();
       }
     }, 0);
@@ -86,62 +88,64 @@ function AppContent() {
   const isProtocol = location.pathname === "/protocol";
   const isChocolateCake = location.pathname === "/blog/chocolate-cake-protocol";
   useCartSync();
-  
+
   return (
     <>
       <AnalyticsListener />
-      <Routes>
-        {/* PRO (Herbalife) — root site */}
-        <Route path="/" element={<ProIndex />} />
-        <Route path="/products" element={<ProProducts />} />
-        <Route path="/bundles" element={<ProBundles />} />
-        <Route path="/starter-stack" element={<StarterStack />} />
-        <Route path="/calculator" element={<ProteinCalculator />} />
-        <Route path="/recipes" element={<Recipes />} />
-        <Route path="/protocol" element={<ProtocolLanding />} />
-        <Route path="/protocol-thank-you" element={<ProtocolThankYou />} />
-        <Route path="/blog/chocolate-cake-protocol" element={<ChocolateCakeProtocol />} />
-        <Route path="/cart" element={<CartPage />} />
-        <Route path="/articles" element={<Navigate to="/blog" replace />} />
-        <Route path="/product/:handle" element={<ProProductDetail />} />
-        <Route path="/blog" element={<ProBlog />} />
-        <Route path="/blog/:slug" element={<ProBlogPost />} />
-        <Route path="/contact" element={<ProContact />} />
-        <Route path="/shipping-policy" element={<ProShippingPolicy />} />
-        <Route path="/return-policy" element={<ProReturnPolicy />} />
-        <Route path="/privacy-policy" element={<ProPrivacyPolicy />} />
-        <Route path="/terms-of-use" element={<ProTerms />} />
-        {/* Legacy Shopify URLs without /nava prefix */}
-        <Route path="/products/:handle" element={<LegacyProductRedirect />} />
+      <Suspense fallback={null}>
+        <Routes>
+          {/* PRO (Herbalife) — root site */}
+          <Route path="/" element={<ProIndex />} />
+          <Route path="/products" element={<ProProducts />} />
+          <Route path="/bundles" element={<ProBundles />} />
+          <Route path="/starter-stack" element={<StarterStack />} />
+          <Route path="/calculator" element={<ProteinCalculator />} />
+          <Route path="/recipes" element={<Recipes />} />
+          <Route path="/protocol" element={<ProtocolLanding />} />
+          <Route path="/protocol-thank-you" element={<ProtocolThankYou />} />
+          <Route path="/blog/chocolate-cake-protocol" element={<ChocolateCakeProtocol />} />
+          <Route path="/cart" element={<CartPage />} />
+          <Route path="/articles" element={<Navigate to="/blog" replace />} />
+          <Route path="/product/:handle" element={<ProProductDetail />} />
+          <Route path="/blog" element={<ProBlog />} />
+          <Route path="/blog/:slug" element={<ProBlogPost />} />
+          <Route path="/contact" element={<ProContact />} />
+          <Route path="/shipping-policy" element={<ProShippingPolicy />} />
+          <Route path="/return-policy" element={<ProReturnPolicy />} />
+          <Route path="/privacy-policy" element={<ProPrivacyPolicy />} />
+          <Route path="/terms-of-use" element={<ProTerms />} />
+          <Route path="/products/:handle" element={<LegacyProductRedirect />} />
 
-        {/* NAVA — original FullBody site */}
-        <Route path="/nava" element={<Index />} />
-        <Route path="/nava/product/:handle" element={<ProductDetail />} />
-        <Route path="/nava/products/:handle" element={<LegacyProductRedirect />} />
-        <Route path="/nava/products" element={<Products />} />
-        <Route path="/nava/blog" element={<Blog />} />
-        <Route path="/nava/blog/:slug" element={<BlogPost />} />
-        <Route path="/nava/thank-you" element={<ThankYou />} />
-        <Route path="/nava/terms" element={<Terms />} />
-        <Route path="/nava/shipping" element={<Shipping />} />
-        <Route path="/nava/returns" element={<Returns />} />
-        <Route path="/nava/privacy" element={<Privacy />} />
-        <Route path="/nava/faq" element={<FAQ />} />
-        <Route path="/nava/contact" element={<Contact />} />
-        <Route path="/nava/about" element={<About />} />
-        <Route path="/nava/accessibility" element={<Accessibility />} />
-        <Route path="/nava/sleep-guide" element={<SleepGuide />} />
+          {/* NAVA — original FullBody site */}
+          <Route path="/nava" element={<Index />} />
+          <Route path="/nava/product/:handle" element={<ProductDetail />} />
+          <Route path="/nava/products/:handle" element={<LegacyProductRedirect />} />
+          <Route path="/nava/products" element={<Products />} />
+          <Route path="/nava/blog" element={<Blog />} />
+          <Route path="/nava/blog/:slug" element={<BlogPost />} />
+          <Route path="/nava/thank-you" element={<ThankYou />} />
+          <Route path="/nava/terms" element={<Terms />} />
+          <Route path="/nava/shipping" element={<Shipping />} />
+          <Route path="/nava/returns" element={<Returns />} />
+          <Route path="/nava/privacy" element={<Privacy />} />
+          <Route path="/nava/faq" element={<FAQ />} />
+          <Route path="/nava/contact" element={<Contact />} />
+          <Route path="/nava/about" element={<About />} />
+          <Route path="/nava/accessibility" element={<Accessibility />} />
+          <Route path="/nava/sleep-guide" element={<SleepGuide />} />
 
-        {/* Admin */}
-        <Route path="/admin" element={<AdminLogin />} />
-        <Route path="/admin/dashboard" element={<AdminDashboard />} />
+          {/* Admin */}
+          <Route path="/admin" element={<AdminLogin />} />
+          <Route path="/admin/dashboard" element={<AdminDashboard />} />
 
-        {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-        <Route path="*" element={<NotFound />} />
-      </Routes>
-      {!isCalculator && !isRecipes && !isProtocol && !isChocolateCake && <WhatsAppButton />}
-      {!isCalculator && !isRecipes && !isProtocol && !isChocolateCake && <FirstVisitModal />}
-      <CookieNotice />
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+      </Suspense>
+      <Suspense fallback={null}>
+        {!isCalculator && !isRecipes && !isProtocol && !isChocolateCake && <WhatsAppButton />}
+        {!isCalculator && !isRecipes && !isProtocol && !isChocolateCake && <FirstVisitModal />}
+        <CookieNotice />
+      </Suspense>
     </>
   );
 }

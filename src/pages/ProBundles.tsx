@@ -8,7 +8,7 @@ import { fetchProductByHandle, getFirstAvailableVariant } from "@/lib/shopify";
 import { toast } from "sonner";
 import CartDrawer from "@/components/CartDrawer";
 import ProFooter from "@/components/ProFooter";
-import greenLogo from "@/assets/logo-green.png";
+import greenLogo from "@/assets/logo-green.webp";
 
 interface BundleChoice {
   label: string;

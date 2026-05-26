@@ -7,7 +7,7 @@ import ProProductFilters, { type ActiveFilters } from "@/components/ProProductFi
 import ProFooter from "@/components/ProFooter";
 import CartDrawer from "@/components/CartDrawer";
 import { useCartStore } from "@/stores/cartStore";
-import greenLogo from "@/assets/logo-green.png";
+import greenLogo from "@/assets/logo-green.webp";
 
 export default function ProProducts() {
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
