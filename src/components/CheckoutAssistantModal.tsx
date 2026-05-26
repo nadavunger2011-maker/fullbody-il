@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { X, ArrowLeft, MessageCircle, CheckCircle2 } from "lucide-react";
+import { X, CheckCircle2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 interface CheckoutAssistantModalProps {
