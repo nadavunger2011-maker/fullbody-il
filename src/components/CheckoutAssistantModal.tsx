@@ -35,9 +35,8 @@ export default function CheckoutAssistantModal({
         >
           {/* Header */}
           <div className="flex items-center justify-between p-5 border-b border-border">
-            <h2 className="text-lg font-bold text-foreground flex items-center gap-2">
-              <MessageCircle className="w-5 h-5 text-[hsl(142,70%,35%)]" />
-              עוזר הקופה
+            <h2 className="text-lg font-bold text-foreground">
+              לפני המעבר לקופה
             </h2>
             <button
               onClick={onClose}
