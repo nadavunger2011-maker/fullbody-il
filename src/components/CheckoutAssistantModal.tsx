@@ -8,7 +8,7 @@ interface CheckoutAssistantModalProps {
   onProceed: () => void;
 }
 
-const WHATSAPP_URL = "https://wa.link/0g4tht";
+
 
 export default function CheckoutAssistantModal({
   isOpen,
