@@ -18,6 +18,7 @@ interface CartDrawerProps {
 
 export default function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
   const { items, removeItem, updateQuantity, getTotal, getCheckoutUrl, isLoading } = useCartStore();
+  const [showAssistant, setShowAssistant] = useState(false);
   const total = getTotal();
 
   // Group bundle items
