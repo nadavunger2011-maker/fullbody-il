@@ -1,7 +1,7 @@
 import { useState, useMemo, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
-import { ShoppingBag, Check, Shield, Truck, Award, Loader2, ChevronDown, Star, Gift, FileText, ClipboardList } from "lucide-react";
+import { ShoppingBag, Check, Shield, Truck, Award, Loader2, ChevronDown, Star, Gift, FileText, ClipboardList, Flame, Dumbbell, Zap } from "lucide-react";
 import { getProductByHandle } from "@/data/herbalifeProducts";
 import { useCartStore } from "@/stores/cartStore";
 import { fetchProductByHandle, getFirstAvailableVariant } from "@/lib/shopify";
@@ -35,10 +35,15 @@ const BONUSES = [
 ];
 
 const TESTIMONIALS = [
-  { name: "יונתן ל.", category: "ביצועים", text: "סוגר 180 גרם חלבון ביום בלי לשבור את התפריט. הסופלה אחרי אימון הפך לטקס." },
-  { name: "רוני ש.", category: "כושר", text: "ירדתי 7 ק\"ג חיטוב תוך 11 שבועות. בלי דיאטות מטופשות, בלי לוותר על משהו מתוק." },
-  { name: "אדם ק.", category: "ביצועים", text: "אימוני כוח 5 פעמים בשבוע, הפלטו נשבר. ההתאוששות בין אימונים מורגשת אחרת לגמרי." },
-  { name: "תום מ.", category: "כושר", text: "בתור מישהו ששונא לבשל, סוף סוף יש לי שיטה שעובדת. 5 דקות הכנה וזהו." },
+  { name: "יונתן ל.", category: "Performance", text: "סוגר 180 גרם חלבון ביום בלי לשבור את התפריט. הסופלה אחרי אימון הפך לטקס." },
+  { name: "רוני ש.", category: "Results", text: "ירדתי 7 ק\"ג חיטוב תוך 11 שבועות. בלי דיאטות מטופשות, בלי לוותר על משהו מתוק." },
+  { name: "אדם ק.", category: "Performance", text: "אימוני כוח 5 פעמים בשבוע, הפלטו נשבר. ההתאוששות בין אימונים מורגשת אחרת לגמרי." },
+];
+
+const WHY_STACK = [
+  { icon: Flame, tag: "דלק", title: "פורמולה 1", desc: "אנרגיה נקייה לאורך כל היום, בלי קריסות סוכר." },
+  { icon: Dumbbell, tag: "בנייה", title: "PDM", desc: "חלבון איכותי לבנייה, התאוששות ושימור מסה." },
+  { icon: Zap, tag: "הכנה", title: "שייקר FullBody", desc: "מהירות מקסימלית - שייק מושלם ב-10 שניות." },
 ];
 
 const FAQ = [
@@ -159,9 +164,9 @@ export default function StarterStack() {
         <div className="absolute inset-0 pointer-events-none opacity-40" style={{ background: `radial-gradient(ellipse at 50% 0%, ${GOLD}22, transparent 55%)` }} />
         <div className="max-w-6xl mx-auto px-5 pt-14 pb-10 md:pt-24 md:pb-16 text-center relative">
           <span className="inline-block text-[11px] tracking-[0.3em] uppercase mb-6" style={{ color: GOLD }}>The Lazy Protocol</span>
-          <h1 className="text-3xl md:text-5xl lg:text-6xl font-black leading-[1.15] max-w-4xl mx-auto">
-            150 גרם חלבון ביום מקינוחים מושחתים -
-            <span className="block font-bold mt-3" style={{ color: GOLD }}>הדרך הקלה לחיטוב שחשבת שבלתי אפשרי.</span>
+          <h1 className="text-4xl md:text-6xl lg:text-7xl font-black leading-[1.1] max-w-4xl mx-auto tracking-tight">
+            הגוף שרצית, ב-5 דקות הכנה ביום.
+            <span className="block font-bold mt-4 text-2xl md:text-4xl lg:text-5xl" style={{ color: GOLD }}>הכירו את ערכת ה-FullBody Performance.</span>
           </h1>
           <p className="mt-6 text-base md:text-lg text-white/65 max-w-2xl mx-auto leading-relaxed">
             בלי להעביר שעות במטבח. בלי להרגיש רעב. השיטה המדעית של FullBody להשגת תוצאות שיא במינימום מאמץ.
@@ -196,6 +201,29 @@ export default function StarterStack() {
             <Star className="w-4 h-4 fill-current" style={{ color: GOLD }} />
             <Star className="w-4 h-4 fill-current" style={{ color: GOLD }} />
             <span className="mr-2">מעל 4,800 ספורטאים פעילים</span>
+          </div>
+        </div>
+      </section>
+
+      {/* WHY THIS STACK */}
+      <section className="px-5 pt-14 pb-4 md:pt-20">
+        <div className="max-w-5xl mx-auto">
+          <div className="text-center mb-10">
+            <div className="text-[11px] tracking-[0.3em] uppercase mb-3" style={{ color: GOLD }}>Why This Stack?</div>
+            <h2 className="text-2xl md:text-4xl font-black leading-tight">למה דווקא הערכה ולא מוצר בודד?</h2>
+            <p className="text-white/55 mt-3 text-sm md:text-base max-w-2xl mx-auto">שלושת המרכיבים עובדים יחד כמערכת אחת - דלק, בנייה והכנה מהירה. בלי אחד מהם, הפרוטוקול לא מושלם.</p>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            {WHY_STACK.map((w) => (
+              <div key={w.tag} className="bg-white/[0.03] border border-white/10 rounded-2xl p-6 text-center hover:border-white/20 transition">
+                <div className="mx-auto w-14 h-14 rounded-2xl flex items-center justify-center mb-4" style={{ background: `${GOLD}1a`, color: GOLD, border: `1px solid ${GOLD}40` }}>
+                  <w.icon className="w-7 h-7" />
+                </div>
+                <div className="text-[11px] tracking-[0.3em] uppercase font-black mb-1" style={{ color: GOLD }}>{w.tag}</div>
+                <div className="text-lg md:text-xl font-black mb-2">{w.title}</div>
+                <p className="text-sm text-white/65 leading-relaxed">{w.desc}</p>
+              </div>
+            ))}
           </div>
         </div>
       </section>
