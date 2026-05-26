@@ -205,6 +205,29 @@ export default function StarterStack() {
         </div>
       </section>
 
+      {/* WHY THIS STACK */}
+      <section className="px-5 pt-14 pb-4 md:pt-20">
+        <div className="max-w-5xl mx-auto">
+          <div className="text-center mb-10">
+            <div className="text-[11px] tracking-[0.3em] uppercase mb-3" style={{ color: GOLD }}>Why This Stack?</div>
+            <h2 className="text-2xl md:text-4xl font-black leading-tight">למה דווקא הערכה ולא מוצר בודד?</h2>
+            <p className="text-white/55 mt-3 text-sm md:text-base max-w-2xl mx-auto">שלושת המרכיבים עובדים יחד כמערכת אחת - דלק, בנייה והכנה מהירה. בלי אחד מהם, הפרוטוקול לא מושלם.</p>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            {WHY_STACK.map((w) => (
+              <div key={w.tag} className="bg-white/[0.03] border border-white/10 rounded-2xl p-6 text-center hover:border-white/20 transition">
+                <div className="mx-auto w-14 h-14 rounded-2xl flex items-center justify-center mb-4" style={{ background: `${GOLD}1a`, color: GOLD, border: `1px solid ${GOLD}40` }}>
+                  <w.icon className="w-7 h-7" />
+                </div>
+                <div className="text-[11px] tracking-[0.3em] uppercase font-black mb-1" style={{ color: GOLD }}>{w.tag}</div>
+                <div className="text-lg md:text-xl font-black mb-2">{w.title}</div>
+                <p className="text-sm text-white/65 leading-relaxed">{w.desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* PROBLEM & AGITATION */}
       <section className="px-5 py-16 md:py-24">
         <div className="max-w-3xl mx-auto">
