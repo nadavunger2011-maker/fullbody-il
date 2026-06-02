@@ -922,6 +922,9 @@ export default function AdminDashboard() {
           {/* Recipes Tab */}
           {activeTab === 'recipes' && <AdminRecipes />}
 
+          {/* Blog Webhook Tab */}
+          {activeTab === 'blog' && <AdminBlogWebhook />}
+
           {/* Reviews Tab */}
           {activeTab === 'reviews' && (
             <div className="bg-white/[0.03] rounded-2xl border border-white/5 p-6">
