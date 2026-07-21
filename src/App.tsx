@@ -55,6 +55,13 @@ const ChocolateCakeProtocol = lazy(() => import("./pages/ChocolateCakeProtocol")
 const CartPage = lazy(() => import("./pages/CartPage"));
 const FirstVisitModal = lazy(() => import("@/components/FirstVisitModal"));
 
+// Sweets sub-site
+const SweetsHome = lazy(() => import("./pages/sweets/SweetsHome"));
+const SweetsProducts = lazy(() => import("./pages/sweets/SweetsProducts"));
+const SweetsStory = lazy(() => import("./pages/sweets/SweetsStory"));
+const SweetsShipping = lazy(() => import("./pages/sweets/SweetsShipping"));
+const SweetsContact = lazy(() => import("./pages/sweets/SweetsContact"));
+
 const queryClient = new QueryClient();
 
 const GA4_MEASUREMENT_ID = "G-FJ5SDNJCE1";
@@ -105,6 +112,16 @@ function AppContent() {
           <Route path="/protocol-thank-you" element={<ProtocolThankYou />} />
           <Route path="/blog/chocolate-cake-protocol" element={<ChocolateCakeProtocol />} />
           <Route path="/cart" element={<CartPage />} />
+
+          {/* Sweets sub-site (ready for sweets.fullbody.co.il) */}
+          <Route path="/sweets" element={<SweetsHome />} />
+          <Route path="/sweets/products" element={<SweetsProducts />} />
+          <Route path="/sweets/category/:categoryId" element={<SweetsProducts />} />
+          <Route path="/sweets/product/:handle" element={<SweetsProducts />} />
+          <Route path="/sweets/story" element={<SweetsStory />} />
+          <Route path="/sweets/shipping" element={<SweetsShipping />} />
+          <Route path="/sweets/contact" element={<SweetsContact />} />
+
           <Route path="/articles" element={<Navigate to="/blog" replace />} />
           <Route path="/product/:handle" element={<ProProductDetail />} />
           <Route path="/blog" element={<ProBlog />} />
