@@ -35,14 +35,21 @@ export default function SweetsHeader() {
             <Menu className="w-6 h-6" />
           </button>
 
-          {/* Logo */}
-          <Link to="/sweets" className="flex items-center gap-3">
-            <img src={greenLogo} alt="FullBody מתוקים" className="h-10 w-auto" width={120} height={40} />
-            <div className="hidden sm:flex flex-col leading-tight">
-              <span className="text-lg font-black text-primary">מתוקים</span>
-              <span className="text-[10px] text-muted-foreground">by FullBody</span>
-            </div>
+          {/* Integrated Sweets logo lockup */}
+          <Link to="/sweets" className="flex items-center gap-2 group" aria-label="FullBody מתוקים">
+            <img src={greenLogo} alt="FullBody מתוקים" className="h-10 md:h-12 w-auto" width={140} height={48} />
+            <span className="hidden xs:inline-block h-8 w-px bg-primary/30" aria-hidden />
+            <span
+              className="text-primary font-black text-xl md:text-2xl tracking-tight leading-none"
+              style={{ fontFamily: "'Open Sans', sans-serif", letterSpacing: '-0.02em' }}
+            >
+              מתוקים
+              <span className="block text-[9px] md:text-[10px] font-semibold text-muted-foreground tracking-widest mt-1">
+                SWEETS
+              </span>
+            </span>
           </Link>
+
 
           {/* Desktop nav */}
           <nav className="hidden md:flex items-center gap-6 text-sm font-bold">

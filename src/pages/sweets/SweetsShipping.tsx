@@ -5,7 +5,7 @@ import SweetsFooter from '@/components/sweets/SweetsFooter';
 
 export default function SweetsShipping() {
   return (
-    <div dir="rtl" className="font-sans text-foreground bg-background min-h-screen">
+    <div dir="rtl" className="sweets-theme font-sans text-foreground bg-background min-h-screen">
       <Helmet>
         <title>משלוחים | FullBody מתוקים</title>
         <meta name="description" content="מדיניות משלוחים של FullBody מתוקים - משלוח לכל הארץ, כולל אזור השרון ב-30 ש״ח, וחינם מעל 300 ש״ח." />
