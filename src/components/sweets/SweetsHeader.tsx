@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Link, NavLink } from 'react-router-dom';
 import { Menu, X, ShoppingBag, ChevronDown } from 'lucide-react';
-import greenLogo from '@/assets/logo-green.webp';
+import fullbodyLogo from '@/assets/fullbody-logo-sweets.png.asset.json';
 import { useCartStore } from '@/stores/cartStore';
 
 const SWEETS_CATEGORIES = [
@@ -35,19 +35,9 @@ export default function SweetsHeader() {
             <Menu className="w-6 h-6" />
           </button>
 
-          {/* Integrated Sweets logo lockup */}
-          <Link to="/sweets" className="flex items-center gap-2 group" aria-label="FullBody מתוקים">
-            <img src={greenLogo} alt="FullBody מתוקים" className="h-10 md:h-12 w-auto" width={140} height={48} />
-            <span className="hidden xs:inline-block h-8 w-px bg-primary/30" aria-hidden />
-            <span
-              className="text-primary font-black text-xl md:text-2xl tracking-tight leading-none"
-              style={{ fontFamily: "'Open Sans', sans-serif", letterSpacing: '-0.02em' }}
-            >
-              מתוקים
-              <span className="block text-[9px] md:text-[10px] font-semibold text-muted-foreground tracking-widest mt-1">
-                SWEETS
-              </span>
-            </span>
+          {/* Logo */}
+          <Link to="/sweets" className="flex items-center group" aria-label="FullBody">
+            <img src={fullbodyLogo.url} alt="FullBody" className="h-10 md:h-12 w-auto" width={140} height={48} />
           </Link>
 
 
