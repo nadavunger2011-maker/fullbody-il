@@ -16,7 +16,6 @@ export default function SweetsHeader() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [shopOpen, setShopOpen] = useState(false);
   const cartCount = useCartStore((s) => s.items.reduce((sum, i) => sum + i.quantity, 0));
-  const openCart = useCartStore((s) => s.openCart);
 
   return (
     <>
@@ -77,8 +76,8 @@ export default function SweetsHeader() {
           </nav>
 
           {/* Cart */}
-          <button
-            onClick={openCart}
+          <Link
+            to="/cart"
             className="relative text-foreground hover:text-accent transition-colors"
             aria-label="פתח עגלה"
           >
@@ -88,7 +87,7 @@ export default function SweetsHeader() {
                 {cartCount}
               </span>
             )}
-          </button>
+          </Link>
         </div>
       </header>
 
