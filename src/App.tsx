@@ -61,6 +61,7 @@ const SweetsProducts = lazy(() => import("./pages/sweets/SweetsProducts"));
 const SweetsStory = lazy(() => import("./pages/sweets/SweetsStory"));
 const SweetsShipping = lazy(() => import("./pages/sweets/SweetsShipping"));
 const SweetsContact = lazy(() => import("./pages/sweets/SweetsContact"));
+const SweetsProductDetail = lazy(() => import("./pages/sweets/SweetsProductDetail"));
 
 const queryClient = new QueryClient();
 
@@ -117,7 +118,7 @@ function AppContent() {
           <Route path="/sweets" element={<SweetsHome />} />
           <Route path="/sweets/products" element={<SweetsProducts />} />
           <Route path="/sweets/category/:categoryId" element={<SweetsProducts />} />
-          <Route path="/sweets/product/:handle" element={<SweetsProducts />} />
+          <Route path="/sweets/product/:handle" element={<SweetsProductDetail />} />
           <Route path="/sweets/story" element={<SweetsStory />} />
           <Route path="/sweets/shipping" element={<SweetsShipping />} />
           <Route path="/sweets/contact" element={<SweetsContact />} />
