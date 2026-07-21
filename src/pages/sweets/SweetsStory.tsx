@@ -6,7 +6,7 @@ import SweetsFooter from '@/components/sweets/SweetsFooter';
 
 export default function SweetsStory() {
   return (
-    <div dir="rtl" className="font-sans text-foreground bg-background min-h-screen">
+    <div dir="rtl" className="sweets-theme font-sans text-foreground bg-background min-h-screen">
       <Helmet>
         <title>הסיפור שלנו | FullBody מתוקים</title>
         <meta name="description" content="איך הפכנו מחנות תוספי תזונה ספורטיביים גם למותג של מתוקים בריאים - הסיפור מאחורי FullBody מתוקים." />

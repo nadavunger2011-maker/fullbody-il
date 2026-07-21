@@ -58,7 +58,7 @@ export default function SweetsHome() {
   };
 
   return (
-    <div dir="rtl" className="font-sans text-foreground bg-background min-h-screen">
+    <div dir="rtl" className="sweets-theme font-sans text-foreground bg-background min-h-screen">
       <Helmet>
         <title>FullBody מתוקים - חטיפים ומתוקים בריאים עם חלבון | FullBody</title>
         <meta

@@ -5,7 +5,7 @@ import SweetsFooter from '@/components/sweets/SweetsFooter';
 
 export default function SweetsContact() {
   return (
-    <div dir="rtl" className="font-sans text-foreground bg-background min-h-screen">
+    <div dir="rtl" className="sweets-theme font-sans text-foreground bg-background min-h-screen">
       <Helmet>
         <title>צור קשר | FullBody מתוקים</title>
         <meta name="description" content="דברו איתנו - FullBody מתוקים. טלפון, מייל וכתובת." />
