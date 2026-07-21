@@ -95,6 +95,7 @@ function AppContent() {
   const isRecipes = location.pathname === "/recipes";
   const isProtocol = location.pathname === "/protocol";
   const isChocolateCake = location.pathname === "/blog/chocolate-cake-protocol";
+  const isSweets = location.pathname.startsWith("/sweets");
   useCartSync();
 
   return (
@@ -160,8 +161,8 @@ function AppContent() {
         </Routes>
       </Suspense>
       <Suspense fallback={null}>
-        {!isCalculator && !isRecipes && !isProtocol && !isChocolateCake && <WhatsAppButton />}
-        {!isCalculator && !isRecipes && !isProtocol && !isChocolateCake && <FirstVisitModal />}
+        {!isCalculator && !isRecipes && !isProtocol && !isChocolateCake && !isSweets && <WhatsAppButton />}
+        {!isCalculator && !isRecipes && !isProtocol && !isChocolateCake && !isSweets && <FirstVisitModal />}
         <CookieNotice />
       </Suspense>
     </>
