@@ -619,6 +619,35 @@ export default function PlanWizard() {
               </div>
             </div>
 
+            {/* flavor - last step, after the plan itself */}
+            <div className="rounded-2xl border border-primary/30 bg-primary/5 p-5">
+              <h2 className="text-xl font-bold text-foreground">השלב האחרון: בחרו טעם לשייק</h2>
+              <p className="text-sm text-muted-foreground mt-1">
+                הטעם משפיע על התפריט ועל המוצרים שנמליץ. אפשר לשנות בכל רגע.
+              </p>
+              <div className="mt-3 flex flex-wrap gap-2">
+                {FLAVORS.map((fl) => (
+                  <button
+                    key={fl}
+                    onClick={() => pickFlavor(fl)}
+                    className={`rounded-full border px-4 py-2 text-sm font-semibold transition ${
+                      form.flavor === fl ? "border-primary bg-primary text-primary-foreground" : "border-border bg-card text-foreground hover:border-primary/50"
+                    }`}
+                  >
+                    {fl}
+                  </button>
+                ))}
+              </div>
+              {form.sensitivities.length > 0 && (
+                <p className="mt-3 text-xs text-muted-foreground">
+                  התפריט הותאם לרגישויות שסימנתם: {form.sensitivities.map((id) => SENSITIVITIES.find((s) => s.id === id)?.name).filter(Boolean).join(", ")}
+                  {form.sensitivitiesOther ? `, ${form.sensitivitiesOther}` : ""}
+                </p>
+              )}
+            </div>
+
+
+
             {/* products */}
             <div>
               <h2 className="text-xl font-bold text-foreground mb-3">המוצרים שמתאימים לתוכנית שלך</h2>
