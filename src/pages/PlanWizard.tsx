@@ -240,8 +240,9 @@ export default function PlanWizard() {
       if (raw) {
         const parsed = JSON.parse(raw);
         if (parsed?.form && parsed?.results) {
-          setSaved(parsed);
-          setForm(parsed.form);
+          setSaved({ ...parsed, form: { ...emptyForm, ...parsed.form } });
+          setForm({ ...emptyForm, ...parsed.form });
+
           setStep(4);
         }
       }
