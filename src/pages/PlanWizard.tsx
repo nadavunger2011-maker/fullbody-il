@@ -457,7 +457,7 @@ export default function PlanWizard() {
         {step === 2 && (
           <section className="space-y-6">
             <h1 className="text-2xl font-extrabold text-foreground flex items-center gap-2">
-              <Dumbbell className="w-6 h-6 text-primary" /> העדפות אימון
+              <Dumbbell className="w-6 h-6 text-primary" /> העדפות ורגישויות
             </h1>
 
             <div>
@@ -478,21 +478,37 @@ export default function PlanWizard() {
             </div>
 
             <div>
-              <h2 className="text-lg font-bold text-foreground mb-3">טעם השייק המועדף</h2>
-              <div className="flex flex-wrap gap-2">
-                {FLAVORS.map((fl) => (
-                  <button
-                    key={fl}
-                    onClick={() => set("flavor", fl)}
-                    className={`rounded-full border px-4 py-2 text-sm font-semibold transition ${
-                      form.flavor === fl ? "border-primary bg-primary text-primary-foreground" : "border-border bg-card text-foreground hover:border-primary/50"
-                    }`}
-                  >
-                    {fl}
-                  </button>
-                ))}
+              <h2 className="text-lg font-bold text-foreground mb-1">רגישויות והעדפות תזונה</h2>
+              <p className="text-sm text-muted-foreground mb-3">אפשר לסמן כמה שרוצים, נתאים את התפריט וההמלצות בהתאם.</p>
+              <div className="grid sm:grid-cols-2 gap-3">
+                {SENSITIVITIES.map((sv) => {
+                  const active = form.sensitivities.includes(sv.id);
+                  return (
+                    <button
+                      key={sv.id}
+                      type="button"
+                      onClick={() => toggleSensitivity(sv.id)}
+                      className={`text-right rounded-xl border p-4 transition-all ${
+                        active ? "border-primary bg-primary/5 shadow-cta" : "border-border bg-card hover:border-primary/50"
+                      }`}
+                    >
+                      <span className={`block font-bold ${active ? "text-primary" : "text-foreground"}`}>{sv.name}</span>
+                      <span className="block text-sm text-muted-foreground mt-0.5">{sv.desc}</span>
+                    </button>
+                  );
+                })}
+              </div>
+              <div className="mt-3">
+                <Field
+                  label="רגישות אחרת (לא חובה)"
+                  value={form.sensitivitiesOther}
+                  onChange={(e) => set("sensitivitiesOther", e.target.value)}
+                  placeholder="לדוגמה: רגישות לשומשום, צליאק, אלרגיה לתותים"
+                  maxLength={200}
+                />
               </div>
             </div>
+
 
             <label className="flex items-start gap-3 rounded-xl border border-border bg-card p-4 cursor-pointer">
               <input
