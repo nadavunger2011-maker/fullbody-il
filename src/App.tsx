@@ -116,6 +116,8 @@ function AppContent() {
           <Route path="/protocol-thank-you" element={<ProtocolThankYou />} />
           <Route path="/blog/chocolate-cake-protocol" element={<ChocolateCakeProtocol />} />
           <Route path="/cart" element={<CartPage />} />
+          <Route path="/plan" element={<PlanWizard />} />
+
 
           {/* Sweets sub-site (ready for sweets.fullbody.co.il) */}
           <Route path="/sweets" element={<SweetsHome />} />
