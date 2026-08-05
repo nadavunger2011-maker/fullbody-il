@@ -257,8 +257,8 @@ export default function PlanWizard() {
       await supabase.from("plans").insert([
         {
           lead_id: lead.id,
-          form_data: form as unknown as Record<string, unknown>,
-          results_data: computed as unknown as Record<string, unknown>,
+          form_data: form as unknown as never,
+          results_data: computed as unknown as never,
         },
       ]);
 
