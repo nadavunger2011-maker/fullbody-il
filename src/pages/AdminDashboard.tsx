@@ -17,7 +17,7 @@ import AIConsultantChat from '@/components/admin/AIConsultantChat';
 import AdminRecipes from '@/components/admin/AdminRecipes';
 import AdminLeads from '@/components/admin/AdminLeads';
 import AdminBlogWebhook from '@/components/admin/AdminBlogWebhook';
-import { BookOpen, Webhook } from 'lucide-react';
+import { BookOpen, Webhook, ClipboardList } from 'lucide-react';
 
 type DateRange = '7d' | '30d' | '90d' | 'all';
 
