@@ -236,6 +236,92 @@ export type Database = {
         }
         Relationships: []
       }
+      leads: {
+        Row: {
+          activity: number | null
+          age: number | null
+          created_at: string
+          days: number | null
+          email: string | null
+          flavor: string | null
+          gender: string | null
+          goal: string | null
+          height: number | null
+          id: string
+          kosher: boolean | null
+          name: string
+          phone: string
+          target_calories: number | null
+          weight: number | null
+        }
+        Insert: {
+          activity?: number | null
+          age?: number | null
+          created_at?: string
+          days?: number | null
+          email?: string | null
+          flavor?: string | null
+          gender?: string | null
+          goal?: string | null
+          height?: number | null
+          id?: string
+          kosher?: boolean | null
+          name: string
+          phone: string
+          target_calories?: number | null
+          weight?: number | null
+        }
+        Update: {
+          activity?: number | null
+          age?: number | null
+          created_at?: string
+          days?: number | null
+          email?: string | null
+          flavor?: string | null
+          gender?: string | null
+          goal?: string | null
+          height?: number | null
+          id?: string
+          kosher?: boolean | null
+          name?: string
+          phone?: string
+          target_calories?: number | null
+          weight?: number | null
+        }
+        Relationships: []
+      }
+      plans: {
+        Row: {
+          created_at: string
+          form_data: Json | null
+          id: string
+          lead_id: string | null
+          results_data: Json | null
+        }
+        Insert: {
+          created_at?: string
+          form_data?: Json | null
+          id?: string
+          lead_id?: string | null
+          results_data?: Json | null
+        }
+        Update: {
+          created_at?: string
+          form_data?: Json | null
+          id?: string
+          lead_id?: string | null
+          results_data?: Json | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "plans_lead_id_fkey"
+            columns: ["lead_id"]
+            isOneToOne: false
+            referencedRelation: "leads"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       product_reviews: {
         Row: {
           content: string
