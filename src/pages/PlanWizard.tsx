@@ -220,7 +220,9 @@ const emptyForm: FormData = {
   days: 3,
   flavor: "וניל",
   kosher: false,
-  name: "",
+  sensitivities: [],
+  sensitivitiesOther: "",
+
   phone: "",
   email: "",
 };
