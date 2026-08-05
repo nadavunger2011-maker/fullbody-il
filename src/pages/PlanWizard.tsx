@@ -26,6 +26,8 @@ interface FormData {
   days: number;
   flavor: string;
   kosher: boolean;
+  sensitivities: string[];
+  sensitivitiesOther: string;
   name: string;
   phone: string;
   email: string;
@@ -46,9 +48,21 @@ const ACTIVITIES = [
 
 const FLAVORS = ["וניל", "שוקולד", "עוגיות", "בננה", "פירות יער", "מנגו", "לאטה"];
 
-const STEP_TITLES = ["פתיחה", "פרטים אישיים", "העדפות אימון", "פרטי קשר", "התוכנית שלך"];
+const SENSITIVITIES: { id: string; name: string; desc: string }[] = [
+  { id: "lactose", name: "רגישות ללקטוז", desc: "נחליף חלב במשקה שקדים / סויה או חלב ללא לקטוז" },
+  { id: "gluten", name: "רגישות לגלוטן", desc: "נשתמש בדגנים ללא גלוטן בלבד" },
+  { id: "soy", name: "רגישות לסויה", desc: "בלי סויה, טופו או משקה סויה" },
+  { id: "nuts", name: "רגישות לאגוזים", desc: "נחליף אגוזים בזרעים (חמניה, דלעת)" },
+  { id: "eggs", name: "רגישות לביצים", desc: "נציע חלופות חלבון ללא ביצים" },
+  { id: "vegan", name: "צמחוני / טבעוני", desc: "מקורות חלבון מהצומח בלבד" },
+  { id: "sugar", name: "רגישות לסוכר / סוכרת", desc: "נשמור על פחמימות מורכבות ומדד גליקמי נמוך" },
+  { id: "fish", name: "רגישות לדגים", desc: "בלי דגים ופירות ים" },
+];
+
+const STEP_TITLES = ["פתיחה", "פרטים אישיים", "העדפות ורגישויות", "פרטי קשר", "התוכנית שלך"];
 
 const LS_KEY = "fullbody_plan_v1";
+
 
 /* ---------- calculation logic ---------- */
 
