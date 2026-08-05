@@ -252,7 +252,31 @@ export default function PlanWizard() {
 
   const set = <K extends keyof FormData>(k: K, v: FormData[K]) => setForm((p) => ({ ...p, [k]: v }));
 
-  const results = useMemo(() => (saved ? saved.results : buildPlan(form)), [form, saved]);
+  const toggleSensitivity = (id: string) =>
+    setForm((p) => ({
+      ...p,
+      sensitivities: p.sensitivities.includes(id) ? p.sensitivities.filter((x) => x !== id) : [...p.sensitivities, id],
+    }));
+
+  // recomputed live, so the flavor picked at the end updates the menu and products
+  const results = useMemo(() => buildPlan(form), [form]);
+
+  const pickFlavor = (fl: string) => {
+    set("flavor", fl);
+    if (saved) {
+      const next = { ...form, flavor: fl };
+      const computed = buildPlan(next);
+      setSaved({ form: next, results: computed });
+      try {
+        const raw = localStorage.getItem(LS_KEY);
+        const prev = raw ? JSON.parse(raw) : {};
+        localStorage.setItem(LS_KEY, JSON.stringify({ ...prev, form: next, results: computed }));
+      } catch {
+        /* ignore */
+      }
+    }
+  };
+
 
   const recommended: HerbalifeProduct[] = useMemo(
     () => results.productHandles.map((h) => herbalifeProducts.find((p) => p.handle === h)).filter(Boolean) as HerbalifeProduct[],
