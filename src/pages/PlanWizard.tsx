@@ -222,8 +222,9 @@ const emptyForm: FormData = {
   kosher: false,
   sensitivities: [],
   sensitivitiesOther: "",
-
+  name: "",
   phone: "",
+
   email: "",
 };
 
