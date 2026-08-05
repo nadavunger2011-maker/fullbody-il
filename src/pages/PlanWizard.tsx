@@ -128,14 +128,32 @@ function buildPlan(f: FormData): PlanResults {
   const reps = f.goal === "muscle" ? "6-10 חזרות, 4 סטים" : f.goal === "toning" ? "10-12 חזרות, 3-4 סטים" : "12-15 חזרות, 3 סטים";
   const rest = f.goal === "muscle" ? "90-120 שניות מנוחה" : f.goal === "toning" ? "60-75 שניות מנוחה" : "30-45 שניות מנוחה";
 
-  /* sample daily menu */
+  /* sample daily menu, adjusted to sensitivities */
+  const s = (id: string) => f.sensitivities?.includes(id);
+  const milk = s("lactose")
+    ? s("soy") ? 'משקה שקדים או חלב ללא לקטוז' : 'משקה סויה או חלב ללא לקטוז'
+    : 'חלב 1% או 3%';
+  const grain = s("gluten") ? "כף קוואקר ללא גלוטן או קינואה תפוחה" : "כף שיבולת שועל";
+  const snackFat = s("nuts") ? "חופן זרעי דלעת או חמניה" : "חופן שקדים";
+  const lunchProtein = s("vegan")
+    ? s("soy") ? "עדשים, חומוס או שעועית" : "טופו, עדשים או שעועית"
+    : s("fish") ? "עוף או הודו רזה" : "עוף, דג או הודו רזה";
+  const lunchCarb = s("sugar") ? "קינואה או אורז מלא במידה מדודה" : "אורז מלא או קינואה";
+  const preWorkout = s("gluten") ? "פריכיות אורז עם ממרח חלבוני או משקה חלבון קל" : "פרוסת לחם מלא עם ממרח חלבוני או משקה חלבון קל";
+  const dinner = s("vegan")
+    ? "יוגורט על בסיס צמחי / חלבון מהצומח + ירקות מאודים"
+    : s("eggs")
+      ? s("lactose") ? "עוף בגריל + ירקות מאודים" : "יוגורט יווני או גבינה רזה + ירקות מאודים"
+      : s("lactose") ? "חביתה + ירקות מאודים" : "חביתה / יוגורט יווני / דג אפוי + ירקות מאודים";
+
   const meals = [
-    { name: "ארוחת בוקר", time: "07:00", content: `שייק פורמולה 1 בטעם ${f.flavor} עם 250 מ"ל חלב או משקה סויה + כף שיבולת שועל` },
-    { name: "ביניים", time: "10:30", content: "פרי עונתי + חופן שקדים או חטיף חלבון" },
-    { name: "צהריים", time: "13:00", content: `${Math.round(weight * 2)} גרם חלבון רזה (עוף/דג/טופו) + אורז מלא או קינואה + סלט ירקות בשמן זית` },
-    { name: "לפני האימון", time: "16:30", content: "פרוסת לחם מלא עם ממרח חלבוני או משקה חלבון קל" },
-    { name: "ערב", time: "19:30", content: "חביתה / יוגורט יווני / דג אפוי + ירקות מאודים" },
+    { name: "ארוחת בוקר", time: "07:00", content: `שייק פורמולה 1 בטעם ${f.flavor} עם 250 מ"ל ${milk} + ${grain}` },
+    { name: "ביניים", time: "10:30", content: `פרי עונתי + ${snackFat}` },
+    { name: "צהריים", time: "13:00", content: `${Math.round(weight * 2)} גרם חלבון רזה (${lunchProtein}) + ${lunchCarb} + סלט ירקות בשמן זית` },
+    { name: "לפני האימון", time: "16:30", content: preWorkout },
+    { name: "ערב", time: "19:30", content: dinner },
   ];
+
 
   /* product recommendations from the existing catalog */
   const pool = herbalifeProducts.filter((p) => (f.kosher ? p.isKosherMehadrin : true));
