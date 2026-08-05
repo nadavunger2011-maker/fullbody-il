@@ -254,11 +254,14 @@ export default function PlanWizard() {
         .single();
       if (error) throw error;
 
-      await supabase.from("plans").insert({
-        lead_id: lead.id,
-        form_data: form as unknown as Record<string, unknown>,
-        results_data: computed as unknown as Record<string, unknown>,
-      });
+      await supabase.from("plans").insert([
+        {
+          lead_id: lead.id,
+          form_data: form as unknown as Record<string, unknown>,
+          results_data: computed as unknown as Record<string, unknown>,
+        },
+      ]);
+
 
       localStorage.setItem("fullbody_lead_id", lead.id);
       localStorage.setItem(LS_KEY, JSON.stringify({ form, results: computed, lead_id: lead.id }));
