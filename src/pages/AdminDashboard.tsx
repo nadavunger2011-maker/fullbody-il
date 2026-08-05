@@ -15,6 +15,7 @@ import ReactMarkdown from 'react-markdown';
 import AdminReviews from '@/components/admin/AdminReviews';
 import AIConsultantChat from '@/components/admin/AIConsultantChat';
 import AdminRecipes from '@/components/admin/AdminRecipes';
+import AdminLeads from '@/components/admin/AdminLeads';
 import AdminBlogWebhook from '@/components/admin/AdminBlogWebhook';
 import { BookOpen, Webhook } from 'lucide-react';
 
@@ -60,7 +61,7 @@ export default function AdminDashboard() {
   const [adSpend, setAdSpend] = useState<AdSpendRow[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [dateRange, setDateRange] = useState<DateRange>('30d');
-  const [activeTab, setActiveTab] = useState<'overview' | 'products' | 'traffic' | 'funnel' | 'adspend' | 'ai' | 'consultant' | 'api' | 'reviews' | 'recipes' | 'blog'>('overview');
+  const [activeTab, setActiveTab] = useState<'overview' | 'products' | 'traffic' | 'funnel' | 'adspend' | 'ai' | 'consultant' | 'api' | 'reviews' | 'recipes' | 'blog' | 'leads'>('overview');
   const [apiCredentials, setApiCredentials] = useState<{ supabase_url: string; service_role_key: string; anon_key: string } | null>(null);
   const [isApiLoading, setIsApiLoading] = useState(false);
   const [aiAnalysis, setAiAnalysis] = useState<string>('');
@@ -375,6 +376,7 @@ export default function AdminDashboard() {
     { id: 'consultant' as const, label: '🤖 יועץ AI', icon: MessageSquare },
     { id: 'overview' as const, label: 'סקירה כללית', icon: BarChart3 },
     { id: 'funnel' as const, label: 'משפך ונטישה', icon: Users },
+    { id: 'leads' as const, label: 'נרשמים לתוכנית', icon: ClipboardList },
     { id: 'products' as const, label: 'מוצרים', icon: Package },
     { id: 'recipes' as const, label: 'מתכונים', icon: BookOpen },
     { id: 'blog' as const, label: 'בלוג / Webhook', icon: Webhook },
@@ -920,6 +922,8 @@ export default function AdminDashboard() {
           )}
 
           {/* Recipes Tab */}
+          {activeTab === 'leads' && <AdminLeads />}
+
           {activeTab === 'recipes' && <AdminRecipes />}
 
           {/* Blog Webhook Tab */}
