@@ -43,6 +43,17 @@ const activityLabels: Record<string, string> = {
   '1.9': 'ספורטיבי מאוד',
 };
 
+const sensitivityLabels: Record<string, string> = {
+  lactose: 'לקטוז',
+  gluten: 'גלוטן',
+  soy: 'סויה',
+  nuts: 'אגוזים',
+  eggs: 'ביצים',
+  vegan: 'צמחוני/טבעוני',
+  sugar: 'סוכר/סוכרת',
+  fish: 'דגים',
+};
+
 function fmt(d: string) {
   return new Date(d).toLocaleString('he-IL', { dateStyle: 'short', timeStyle: 'short' });
 }
