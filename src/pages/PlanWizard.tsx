@@ -26,6 +26,8 @@ interface FormData {
   days: number;
   flavor: string;
   kosher: boolean;
+  sensitivities: string[];
+  sensitivitiesOther: string;
   name: string;
   phone: string;
   email: string;
@@ -46,9 +48,21 @@ const ACTIVITIES = [
 
 const FLAVORS = ["וניל", "שוקולד", "עוגיות", "בננה", "פירות יער", "מנגו", "לאטה"];
 
-const STEP_TITLES = ["פתיחה", "פרטים אישיים", "העדפות אימון", "פרטי קשר", "התוכנית שלך"];
+const SENSITIVITIES: { id: string; name: string; desc: string }[] = [
+  { id: "lactose", name: "רגישות ללקטוז", desc: "נחליף חלב במשקה שקדים / סויה או חלב ללא לקטוז" },
+  { id: "gluten", name: "רגישות לגלוטן", desc: "נשתמש בדגנים ללא גלוטן בלבד" },
+  { id: "soy", name: "רגישות לסויה", desc: "בלי סויה, טופו או משקה סויה" },
+  { id: "nuts", name: "רגישות לאגוזים", desc: "נחליף אגוזים בזרעים (חמניה, דלעת)" },
+  { id: "eggs", name: "רגישות לביצים", desc: "נציע חלופות חלבון ללא ביצים" },
+  { id: "vegan", name: "צמחוני / טבעוני", desc: "מקורות חלבון מהצומח בלבד" },
+  { id: "sugar", name: "רגישות לסוכר / סוכרת", desc: "נשמור על פחמימות מורכבות ומדד גליקמי נמוך" },
+  { id: "fish", name: "רגישות לדגים", desc: "בלי דגים ופירות ים" },
+];
+
+const STEP_TITLES = ["פתיחה", "פרטים אישיים", "העדפות ורגישויות", "פרטי קשר", "התוכנית שלך"];
 
 const LS_KEY = "fullbody_plan_v1";
+
 
 /* ---------- calculation logic ---------- */
 
@@ -114,14 +128,32 @@ function buildPlan(f: FormData): PlanResults {
   const reps = f.goal === "muscle" ? "6-10 חזרות, 4 סטים" : f.goal === "toning" ? "10-12 חזרות, 3-4 סטים" : "12-15 חזרות, 3 סטים";
   const rest = f.goal === "muscle" ? "90-120 שניות מנוחה" : f.goal === "toning" ? "60-75 שניות מנוחה" : "30-45 שניות מנוחה";
 
-  /* sample daily menu */
+  /* sample daily menu, adjusted to sensitivities */
+  const s = (id: string) => f.sensitivities?.includes(id);
+  const milk = s("lactose")
+    ? s("soy") ? 'משקה שקדים או חלב ללא לקטוז' : 'משקה סויה או חלב ללא לקטוז'
+    : 'חלב 1% או 3%';
+  const grain = s("gluten") ? "כף קוואקר ללא גלוטן או קינואה תפוחה" : "כף שיבולת שועל";
+  const snackFat = s("nuts") ? "חופן זרעי דלעת או חמניה" : "חופן שקדים";
+  const lunchProtein = s("vegan")
+    ? s("soy") ? "עדשים, חומוס או שעועית" : "טופו, עדשים או שעועית"
+    : s("fish") ? "עוף או הודו רזה" : "עוף, דג או הודו רזה";
+  const lunchCarb = s("sugar") ? "קינואה או אורז מלא במידה מדודה" : "אורז מלא או קינואה";
+  const preWorkout = s("gluten") ? "פריכיות אורז עם ממרח חלבוני או משקה חלבון קל" : "פרוסת לחם מלא עם ממרח חלבוני או משקה חלבון קל";
+  const dinner = s("vegan")
+    ? "יוגורט על בסיס צמחי / חלבון מהצומח + ירקות מאודים"
+    : s("eggs")
+      ? s("lactose") ? "עוף בגריל + ירקות מאודים" : "יוגורט יווני או גבינה רזה + ירקות מאודים"
+      : s("lactose") ? "חביתה + ירקות מאודים" : "חביתה / יוגורט יווני / דג אפוי + ירקות מאודים";
+
   const meals = [
-    { name: "ארוחת בוקר", time: "07:00", content: `שייק פורמולה 1 בטעם ${f.flavor} עם 250 מ"ל חלב או משקה סויה + כף שיבולת שועל` },
-    { name: "ביניים", time: "10:30", content: "פרי עונתי + חופן שקדים או חטיף חלבון" },
-    { name: "צהריים", time: "13:00", content: `${Math.round(weight * 2)} גרם חלבון רזה (עוף/דג/טופו) + אורז מלא או קינואה + סלט ירקות בשמן זית` },
-    { name: "לפני האימון", time: "16:30", content: "פרוסת לחם מלא עם ממרח חלבוני או משקה חלבון קל" },
-    { name: "ערב", time: "19:30", content: "חביתה / יוגורט יווני / דג אפוי + ירקות מאודים" },
+    { name: "ארוחת בוקר", time: "07:00", content: `שייק פורמולה 1 בטעם ${f.flavor} עם 250 מ"ל ${milk} + ${grain}` },
+    { name: "ביניים", time: "10:30", content: `פרי עונתי + ${snackFat}` },
+    { name: "צהריים", time: "13:00", content: `${Math.round(weight * 2)} גרם חלבון רזה (${lunchProtein}) + ${lunchCarb} + סלט ירקות בשמן זית` },
+    { name: "לפני האימון", time: "16:30", content: preWorkout },
+    { name: "ערב", time: "19:30", content: dinner },
   ];
+
 
   /* product recommendations from the existing catalog */
   const pool = herbalifeProducts.filter((p) => (f.kosher ? p.isKosherMehadrin : true));
@@ -188,8 +220,11 @@ const emptyForm: FormData = {
   days: 3,
   flavor: "וניל",
   kosher: false,
+  sensitivities: [],
+  sensitivitiesOther: "",
   name: "",
   phone: "",
+
   email: "",
 };
 
@@ -205,8 +240,9 @@ export default function PlanWizard() {
       if (raw) {
         const parsed = JSON.parse(raw);
         if (parsed?.form && parsed?.results) {
-          setSaved(parsed);
-          setForm(parsed.form);
+          setSaved({ ...parsed, form: { ...emptyForm, ...parsed.form } });
+          setForm({ ...emptyForm, ...parsed.form });
+
           setStep(4);
         }
       }
@@ -217,7 +253,31 @@ export default function PlanWizard() {
 
   const set = <K extends keyof FormData>(k: K, v: FormData[K]) => setForm((p) => ({ ...p, [k]: v }));
 
-  const results = useMemo(() => (saved ? saved.results : buildPlan(form)), [form, saved]);
+  const toggleSensitivity = (id: string) =>
+    setForm((p) => ({
+      ...p,
+      sensitivities: p.sensitivities.includes(id) ? p.sensitivities.filter((x) => x !== id) : [...p.sensitivities, id],
+    }));
+
+  // recomputed live, so the flavor picked at the end updates the menu and products
+  const results = useMemo(() => buildPlan(form), [form]);
+
+  const pickFlavor = (fl: string) => {
+    set("flavor", fl);
+    if (saved) {
+      const next = { ...form, flavor: fl };
+      const computed = buildPlan(next);
+      setSaved({ form: next, results: computed });
+      try {
+        const raw = localStorage.getItem(LS_KEY);
+        const prev = raw ? JSON.parse(raw) : {};
+        localStorage.setItem(LS_KEY, JSON.stringify({ ...prev, form: next, results: computed }));
+      } catch {
+        /* ignore */
+      }
+    }
+  };
+
 
   const recommended: HerbalifeProduct[] = useMemo(
     () => results.productHandles.map((h) => herbalifeProducts.find((p) => p.handle === h)).filter(Boolean) as HerbalifeProduct[],
@@ -397,7 +457,7 @@ export default function PlanWizard() {
         {step === 2 && (
           <section className="space-y-6">
             <h1 className="text-2xl font-extrabold text-foreground flex items-center gap-2">
-              <Dumbbell className="w-6 h-6 text-primary" /> העדפות אימון
+              <Dumbbell className="w-6 h-6 text-primary" /> העדפות ורגישויות
             </h1>
 
             <div>
@@ -418,21 +478,37 @@ export default function PlanWizard() {
             </div>
 
             <div>
-              <h2 className="text-lg font-bold text-foreground mb-3">טעם השייק המועדף</h2>
-              <div className="flex flex-wrap gap-2">
-                {FLAVORS.map((fl) => (
-                  <button
-                    key={fl}
-                    onClick={() => set("flavor", fl)}
-                    className={`rounded-full border px-4 py-2 text-sm font-semibold transition ${
-                      form.flavor === fl ? "border-primary bg-primary text-primary-foreground" : "border-border bg-card text-foreground hover:border-primary/50"
-                    }`}
-                  >
-                    {fl}
-                  </button>
-                ))}
+              <h2 className="text-lg font-bold text-foreground mb-1">רגישויות והעדפות תזונה</h2>
+              <p className="text-sm text-muted-foreground mb-3">אפשר לסמן כמה שרוצים, נתאים את התפריט וההמלצות בהתאם.</p>
+              <div className="grid sm:grid-cols-2 gap-3">
+                {SENSITIVITIES.map((sv) => {
+                  const active = form.sensitivities.includes(sv.id);
+                  return (
+                    <button
+                      key={sv.id}
+                      type="button"
+                      onClick={() => toggleSensitivity(sv.id)}
+                      className={`text-right rounded-xl border p-4 transition-all ${
+                        active ? "border-primary bg-primary/5 shadow-cta" : "border-border bg-card hover:border-primary/50"
+                      }`}
+                    >
+                      <span className={`block font-bold ${active ? "text-primary" : "text-foreground"}`}>{sv.name}</span>
+                      <span className="block text-sm text-muted-foreground mt-0.5">{sv.desc}</span>
+                    </button>
+                  );
+                })}
+              </div>
+              <div className="mt-3">
+                <Field
+                  label="רגישות אחרת (לא חובה)"
+                  value={form.sensitivitiesOther}
+                  onChange={(e) => set("sensitivitiesOther", e.target.value)}
+                  placeholder="לדוגמה: רגישות לשומשום, צליאק, אלרגיה לתותים"
+                  maxLength={200}
+                />
               </div>
             </div>
+
 
             <label className="flex items-start gap-3 rounded-xl border border-border bg-card p-4 cursor-pointer">
               <input
@@ -542,6 +618,35 @@ export default function PlanWizard() {
                 ))}
               </div>
             </div>
+
+            {/* flavor - last step, after the plan itself */}
+            <div className="rounded-2xl border border-primary/30 bg-primary/5 p-5">
+              <h2 className="text-xl font-bold text-foreground">השלב האחרון: בחרו טעם לשייק</h2>
+              <p className="text-sm text-muted-foreground mt-1">
+                הטעם משפיע על התפריט ועל המוצרים שנמליץ. אפשר לשנות בכל רגע.
+              </p>
+              <div className="mt-3 flex flex-wrap gap-2">
+                {FLAVORS.map((fl) => (
+                  <button
+                    key={fl}
+                    onClick={() => pickFlavor(fl)}
+                    className={`rounded-full border px-4 py-2 text-sm font-semibold transition ${
+                      form.flavor === fl ? "border-primary bg-primary text-primary-foreground" : "border-border bg-card text-foreground hover:border-primary/50"
+                    }`}
+                  >
+                    {fl}
+                  </button>
+                ))}
+              </div>
+              {form.sensitivities.length > 0 && (
+                <p className="mt-3 text-xs text-muted-foreground">
+                  התפריט הותאם לרגישויות שסימנתם: {form.sensitivities.map((id) => SENSITIVITIES.find((s) => s.id === id)?.name).filter(Boolean).join(", ")}
+                  {form.sensitivitiesOther ? `, ${form.sensitivitiesOther}` : ""}
+                </p>
+              )}
+            </div>
+
+
 
             {/* products */}
             <div>

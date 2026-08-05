@@ -43,6 +43,17 @@ const activityLabels: Record<string, string> = {
   '1.9': 'ספורטיבי מאוד',
 };
 
+const sensitivityLabels: Record<string, string> = {
+  lactose: 'לקטוז',
+  gluten: 'גלוטן',
+  soy: 'סויה',
+  nuts: 'אגוזים',
+  eggs: 'ביצים',
+  vegan: 'צמחוני/טבעוני',
+  sugar: 'סוכר/סוכרת',
+  fish: 'דגים',
+};
+
 function fmt(d: string) {
   return new Date(d).toLocaleString('he-IL', { dateStyle: 'short', timeStyle: 'short' });
 }
@@ -154,6 +165,21 @@ export default function AdminLeads() {
                       </div>
                     ))}
                   </div>
+
+                  {(plan?.form_data?.sensitivities?.length > 0 || plan?.form_data?.sensitivitiesOther) && (
+                    <div>
+                      <p className="text-xs text-gray-400 mb-2">רגישויות והעדפות תזונה</p>
+                      <div className="flex flex-wrap gap-2 text-xs">
+                        {(plan?.form_data?.sensitivities || []).map((s: string) => (
+                          <span key={s} className="bg-amber-500/10 text-amber-300 rounded-lg px-2.5 py-1">{sensitivityLabels[s] || s}</span>
+                        ))}
+                        {plan?.form_data?.sensitivitiesOther && (
+                          <span className="bg-amber-500/10 text-amber-300 rounded-lg px-2.5 py-1">{plan.form_data.sensitivitiesOther}</span>
+                        )}
+                      </div>
+                    </div>
+                  )}
+
 
                   {plan?.results_data?.macros && (
                     <div>
