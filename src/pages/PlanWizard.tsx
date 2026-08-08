@@ -193,6 +193,8 @@ function buildPlan(f: FormData, week = 1): PlanResults {
   });
 
   return {
+    isBasePhase,
+
     bmr: Math.round(bmr),
     tdee: Math.round(tdee),
     targetCalories: Math.round(targetCalories),
