@@ -337,15 +337,17 @@ export default function PlanWizard() {
   const handleSubmit = async () => {
     if (!form.name.trim()) return toast.error("נא למלא שם מלא");
     if (!phoneValid) return toast.error("נא למלא מספר טלפון תקין");
+    if (!emailValid) return toast.error("נא למלא כתובת אימייל תקינה");
     setSaving(true);
-    const computed = buildPlan(form);
+    const today = new Date().toISOString().slice(0, 10);
+    const computed = buildPlan(form, 1);
     try {
       const { data: lead, error } = await supabase
         .from("leads")
         .insert({
           name: form.name.trim(),
           phone: form.phone.trim(),
-          email: form.email.trim() || null,
+          email: form.email.trim(),
           goal: form.goal,
           gender: form.gender,
           age: parseInt(form.age),
@@ -356,6 +358,9 @@ export default function PlanWizard() {
           kosher: form.kosher,
           flavor: form.flavor,
           target_calories: computed.targetCalories,
+          experience_level: form.experience || null,
+          program_start_date: today,
+          last_seen_at: new Date().toISOString(),
         })
         .select("id")
         .single();
@@ -371,10 +376,15 @@ export default function PlanWizard() {
 
 
       localStorage.setItem("fullbody_lead_id", lead.id);
-      localStorage.setItem(LS_KEY, JSON.stringify({ form, results: computed, lead_id: lead.id }));
+      localStorage.setItem(
+        LS_KEY,
+        JSON.stringify({ form, results: computed, lead_id: lead.id, program_start_date: today })
+      );
+      setStartDate(today);
       setSaved({ form, results: computed });
       setStep(4);
       window.scrollTo({ top: 0, behavior: "smooth" });
+
     } catch (e) {
       console.error(e);
       toast.error("אירעה שגיאה בשמירת התוכנית, נסו שוב");
