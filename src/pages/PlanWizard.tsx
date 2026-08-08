@@ -795,7 +795,7 @@ export default function PlanWizard() {
             </button>
             <button
               onClick={() => {
-                if (step === 1 && !step1Valid) return toast.error("נא למלא גיל, גובה ומשקל");
+                if (step === 1 && !step1Valid) return toast.error("נא למלא גיל, גובה, משקל ורמת ניסיון");
                 setStep((s) => s + 1);
               }}
               className="flex-1 rounded-xl bg-primary text-primary-foreground px-6 py-3 font-bold shadow-cta hover:opacity-90 transition inline-flex items-center justify-center gap-1"
