@@ -104,9 +104,10 @@ interface PlanResults {
   workouts: WorkoutDay[];
   meals: { name: string; time: string; content: string }[];
   productHandles: string[];
+  isBasePhase: boolean;
 }
 
-function buildPlan(f: FormData): PlanResults {
+function buildPlan(f: FormData, week = 1): PlanResults {
   const weight = parseFloat(f.weight) || 0;
   const height = parseFloat(f.height) || 0;
   const age = parseFloat(f.age) || 0;
@@ -120,11 +121,12 @@ function buildPlan(f: FormData): PlanResults {
   const fat = (targetCalories * 0.25) / 9;
   const carbs = (targetCalories - protein * 4 - fat * 9) / 4;
 
-  /* workout split */
+  /* workout split - beginners start with 4 weeks of full body */
+  const isBasePhase = f.experience === "beginner" && week <= BASE_WEEKS;
   let splitName = "אימון גוף מלא";
   let workouts: WorkoutDay[] = [];
-  if (f.days <= 3) {
-    splitName = "גוף מלא (Full Body)";
+  if (isBasePhase || f.days <= 3) {
+    splitName = isBasePhase ? "גוף מלא (Full Body) - שלב בניית הבסיס" : "גוף מלא (Full Body)";
     workouts = Array.from({ length: f.days }, (_, i) => ({
       name: `אימון ${i + 1}`,
       focus: "גוף מלא",
@@ -147,6 +149,7 @@ function buildPlan(f: FormData): PlanResults {
     ];
     workouts = Array.from({ length: f.days }, (_, i) => ({ ...base[i % 3], name: `יום ${i + 1} - ${base[i % 3].name}` }));
   }
+
 
   const reps = f.goal === "muscle" ? "6-10 חזרות, 4 סטים" : f.goal === "toning" ? "10-12 חזרות, 3-4 סטים" : "12-15 חזרות, 3 סטים";
   const rest = f.goal === "muscle" ? "90-120 שניות מנוחה" : f.goal === "toning" ? "60-75 שניות מנוחה" : "30-45 שניות מנוחה";
