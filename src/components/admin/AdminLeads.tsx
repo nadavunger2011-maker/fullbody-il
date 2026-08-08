@@ -33,6 +33,15 @@ type Plan = {
   created_at: string;
 };
 
+type Checkin = {
+  id: string;
+  lead_id: string | null;
+  checkin_date: string;
+  shake_done: boolean;
+  workout_done: boolean;
+  diet_done: boolean;
+};
+
 type EmailSend = {
   id: string;
   lead_id: string | null;
@@ -113,6 +122,7 @@ export default function AdminLeads() {
   const [leads, setLeads] = useState<Lead[]>([]);
   const [plans, setPlans] = useState<Plan[]>([]);
   const [emails, setEmails] = useState<EmailSend[]>([]);
+  const [checkins, setCheckins] = useState<Checkin[]>([]);
   const [sending, setSending] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const [open, setOpen] = useState<string | null>(null);
@@ -123,19 +133,39 @@ export default function AdminLeads() {
 
   useEffect(() => {
     (async () => {
-      const [{ data: l }, { data: p }, { data: e }] = await Promise.all([
+      const [{ data: l }, { data: p }, { data: e }, { data: c }] = await Promise.all([
         supabase.from('leads').select('*').order('created_at', { ascending: false }).limit(500),
         supabase.from('plans').select('*').order('created_at', { ascending: false }).limit(500),
         supabase.from('email_sends').select('*').order('created_at', { ascending: false }).limit(1000),
+        supabase.from('daily_checkins').select('*').order('checkin_date', { ascending: false }).limit(3000),
       ]);
       setLeads((l as Lead[]) || []);
       setPlans((p as Plan[]) || []);
       setEmails((e as EmailSend[]) || []);
+      setCheckins((c as Checkin[]) || []);
       setLoading(false);
     })();
   }, []);
 
   const emailsFor = (leadId: string) => emails.filter(e => e.lead_id === leadId);
+  const checkinsFor = (leadId: string) => checkins.filter(c => c.lead_id === leadId);
+
+  function streakFor(leadId: string) {
+    const good = new Set(
+      checkinsFor(leadId)
+        .filter(c => [c.shake_done, c.workout_done, c.diet_done].filter(Boolean).length >= 2)
+        .map(c => c.checkin_date)
+    );
+    let streak = 0;
+    const d = new Date();
+    for (let i = 0; i < 400; i++) {
+      const key = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+      if (good.has(key)) streak++;
+      else if (i > 0) break;
+      d.setDate(d.getDate() - 1);
+    }
+    return streak;
+  }
 
   async function sendEmail(lead: Lead, template: 'plan-summary' | 'plan-reminder') {
     if (!lead.email) return toast.error('אין כתובת אימייל לליד הזה');
@@ -351,6 +381,30 @@ export default function AdminLeads() {
                   </div>
 
 
+
+                  <div>
+                    <p className="text-xs text-gray-400 mb-2">
+                      צ'ק-אינים יומיים · רצף נוכחי: {streakFor(l.id)} ימים 🔥
+                    </p>
+                    {checkinsFor(l.id).length === 0 ? (
+                      <p className="text-[11px] text-gray-600">אין צ'ק-אינים לליד הזה</p>
+                    ) : (
+                      <div className="space-y-1 max-h-56 overflow-auto pl-1">
+                        {checkinsFor(l.id).map(c => (
+                          <div key={c.id} className="flex items-center justify-between gap-2 text-[11px] bg-white/[0.03] rounded-lg px-2.5 py-1.5">
+                            <span className="text-gray-300">
+                              {new Date(c.checkin_date).toLocaleDateString('he-IL', { day: '2-digit', month: '2-digit', year: '2-digit' })}
+                            </span>
+                            <span className="flex gap-2">
+                              <span className={c.shake_done ? 'text-emerald-400' : 'text-gray-600'}>שייק</span>
+                              <span className={c.workout_done ? 'text-emerald-400' : 'text-gray-600'}>אימון</span>
+                              <span className={c.diet_done ? 'text-emerald-400' : 'text-gray-600'}>תפריט</span>
+                            </span>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
 
                   {(plan?.form_data?.sensitivities?.length > 0 || plan?.form_data?.sensitivitiesOther) && (
                     <div>

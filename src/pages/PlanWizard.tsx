@@ -17,7 +17,7 @@ type Goal = "weight-loss" | "toning" | "muscle";
 type Gender = "male" | "female";
 type Experience = "beginner" | "intermediate" | "advanced";
 
-interface FormData {
+export interface FormData {
   goal: Goal;
   gender: Gender;
   age: string;
@@ -57,12 +57,12 @@ const EXPERIENCES: { id: Experience; name: string; desc: string }[] = [
   { id: "advanced", name: "מתקדם/ת", desc: "שנתיים ומעלה" },
 ];
 
-const EXPERIENCE_NAME = (id?: string) => EXPERIENCES.find((e) => e.id === id)?.name || "";
+export const EXPERIENCE_NAME = (id?: string) => EXPERIENCES.find((e) => e.id === id)?.name || "";
 
-const BASE_WEEKS = 4;
+export const BASE_WEEKS = 4;
 
 /** which week of the program the user is in, 1-based */
-function weekInProgram(startDate?: string | null): number {
+export function weekInProgram(startDate?: string | null): number {
   if (!startDate) return 1;
   const start = new Date(startDate).getTime();
   if (Number.isNaN(start)) return 1;
@@ -89,8 +89,8 @@ const LS_KEY = "fullbody_plan_v1";
 
 /* ---------- calculation logic ---------- */
 
-interface WorkoutDay { name: string; focus: string; exercises: string[] }
-interface PlanResults {
+export interface WorkoutDay { name: string; focus: string; exercises: string[] }
+export interface PlanResults {
   bmr: number;
   tdee: number;
   targetCalories: number;
@@ -107,7 +107,7 @@ interface PlanResults {
   isBasePhase: boolean;
 }
 
-function buildPlan(f: FormData, week = 1): PlanResults {
+export function buildPlan(f: FormData, week = 1): PlanResults {
   const weight = parseFloat(f.weight) || 0;
   const height = parseFloat(f.height) || 0;
   const age = parseFloat(f.age) || 0;

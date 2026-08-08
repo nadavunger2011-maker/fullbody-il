@@ -236,6 +236,47 @@ export type Database = {
         }
         Relationships: []
       }
+      daily_checkins: {
+        Row: {
+          checkin_date: string
+          created_at: string
+          diet_done: boolean
+          id: string
+          lead_id: string | null
+          shake_done: boolean
+          updated_at: string
+          workout_done: boolean
+        }
+        Insert: {
+          checkin_date: string
+          created_at?: string
+          diet_done?: boolean
+          id?: string
+          lead_id?: string | null
+          shake_done?: boolean
+          updated_at?: string
+          workout_done?: boolean
+        }
+        Update: {
+          checkin_date?: string
+          created_at?: string
+          diet_done?: boolean
+          id?: string
+          lead_id?: string | null
+          shake_done?: boolean
+          updated_at?: string
+          workout_done?: boolean
+        }
+        Relationships: [
+          {
+            foreignKeyName: "daily_checkins_lead_id_fkey"
+            columns: ["lead_id"]
+            isOneToOne: false
+            referencedRelation: "leads"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       email_sends: {
         Row: {
           created_at: string

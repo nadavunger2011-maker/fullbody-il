@@ -54,6 +54,7 @@ const ProtocolThankYou = lazy(() => import("./pages/ProtocolThankYou"));
 const ChocolateCakeProtocol = lazy(() => import("./pages/ChocolateCakeProtocol"));
 const CartPage = lazy(() => import("./pages/CartPage"));
 const PlanWizard = lazy(() => import("./pages/PlanWizard"));
+const DailyDashboard = lazy(() => import("./pages/DailyDashboard"));
 const FirstVisitModal = lazy(() => import("@/components/FirstVisitModal"));
 
 
@@ -117,6 +118,8 @@ function AppContent() {
           <Route path="/blog/chocolate-cake-protocol" element={<ChocolateCakeProtocol />} />
           <Route path="/cart" element={<CartPage />} />
           <Route path="/plan" element={<PlanWizard />} />
+          <Route path="/dashboard" element={<DailyDashboard />} />
+
 
 
           {/* Sweets sub-site (ready for sweets.fullbody.co.il) */}
