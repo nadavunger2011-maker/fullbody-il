@@ -51,6 +51,26 @@ const ACTIVITIES = [
 
 const FLAVORS = ["וניל", "שוקולד", "עוגיות", "בננה", "פירות יער", "מנגו", "לאטה"];
 
+const EXPERIENCES: { id: Experience; name: string; desc: string }[] = [
+  { id: "beginner", name: "מתחיל/ה", desc: "עד חצי שנה של אימונים" },
+  { id: "intermediate", name: "בינוני/ת", desc: "בין חצי שנה לשנתיים" },
+  { id: "advanced", name: "מתקדם/ת", desc: "שנתיים ומעלה" },
+];
+
+const EXPERIENCE_NAME = (id?: string) => EXPERIENCES.find((e) => e.id === id)?.name || "";
+
+const BASE_WEEKS = 4;
+
+/** which week of the program the user is in, 1-based */
+function weekInProgram(startDate?: string | null): number {
+  if (!startDate) return 1;
+  const start = new Date(startDate).getTime();
+  if (Number.isNaN(start)) return 1;
+  const diffDays = Math.floor((Date.now() - start) / 86400000);
+  return Math.max(1, Math.floor(diffDays / 7) + 1);
+}
+
+
 const SENSITIVITIES: { id: string; name: string; desc: string }[] = [
   { id: "lactose", name: "רגישות ללקטוז", desc: "נחליף חלב במשקה שקדים / סויה או חלב ללא לקטוז" },
   { id: "gluten", name: "רגישות לגלוטן", desc: "נשתמש בדגנים ללא גלוטן בלבד" },
