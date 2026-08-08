@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import {
   ArrowRight, ArrowLeft, Sparkles, Target, User, Dumbbell,
-  Phone, CheckCircle2, Flame, Utensils, RefreshCw, Loader2,
+  Phone, CheckCircle2, Flame, Utensils, RefreshCw, Loader2, TrendingUp,
 } from "lucide-react";
 import { herbalifeProducts, type HerbalifeProduct } from "@/data/herbalifeProducts";
 import ProFooter from "@/components/ProFooter";
