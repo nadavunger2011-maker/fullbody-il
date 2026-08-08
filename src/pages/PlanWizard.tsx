@@ -399,7 +399,7 @@ export default function PlanWizard() {
                 .map((h) => herbalifeProducts.find((p) => p.handle === h))
                 .filter(Boolean)
                 .slice(0, 3)
-                .map((p) => ({ name: p!.name, handle: p!.handle })),
+                .map((p) => ({ name: p!.title, handle: p!.handle })),
             },
           },
         })
