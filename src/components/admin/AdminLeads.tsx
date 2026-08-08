@@ -167,7 +167,21 @@ export default function AdminLeads() {
             className="w-full bg-white/[0.03] border border-white/10 rounded-lg py-2 pr-9 pl-3 text-sm text-white outline-none focus:border-blue-500"
           />
         </div>
+        <select value={goalFilter} onChange={e => setGoalFilter(e.target.value)} className="bg-white/[0.03] border border-white/10 rounded-lg px-2 py-2 text-xs text-white outline-none">
+          <option value="all">כל המטרות</option>
+          {goalOptions.map(g => <option key={g} value={g}>{goalLabels[g] || g}</option>)}
+        </select>
+        <select value={expFilter} onChange={e => setExpFilter(e.target.value)} className="bg-white/[0.03] border border-white/10 rounded-lg px-2 py-2 text-xs text-white outline-none">
+          <option value="all">כל הרמות</option>
+          {Object.entries(experienceLabels).map(([k, v]) => <option key={k} value={k}>{v}</option>)}
+        </select>
+        <select value={sortBy} onChange={e => setSortBy(e.target.value as 'created' | 'seen' | 'name')} className="bg-white/[0.03] border border-white/10 rounded-lg px-2 py-2 text-xs text-white outline-none">
+          <option value="created">מיון: תאריך הרשמה</option>
+          <option value="seen">מיון: נכנס לאחרונה</option>
+          <option value="name">מיון: שם</option>
+        </select>
         <span className="text-xs text-gray-500">{filtered.length} נרשמים</span>
+
         <button onClick={exportCsv} className="flex items-center gap-1.5 bg-white/[0.06] hover:bg-white/[0.1] border border-white/10 rounded-lg px-3 py-2 text-xs">
           <Download className="w-3.5 h-3.5" /> ייצוא CSV
         </button>
