@@ -397,6 +397,8 @@ export default function PlanWizard() {
     localStorage.removeItem(LS_KEY);
     localStorage.removeItem("fullbody_lead_id");
     setSaved(null);
+    setStartDate(null);
+
     setForm(emptyForm);
     setStep(0);
     window.scrollTo({ top: 0, behavior: "smooth" });
