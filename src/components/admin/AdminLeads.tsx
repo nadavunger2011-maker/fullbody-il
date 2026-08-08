@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { supabase } from '@/integrations/supabase/client';
-import { Loader2, ChevronDown, ChevronUp, Search, Download } from 'lucide-react';
+import { Loader2, ChevronDown, ChevronUp, Search, Download, Mail, Send } from 'lucide-react';
+import { toast } from 'sonner';
 
 type Lead = {
   id: string;
