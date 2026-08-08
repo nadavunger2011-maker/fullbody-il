@@ -97,7 +97,7 @@ export default function DailyDashboard() {
         return;
       }
 
-      const f = (plan?.form_data as FormData | null) || localForm;
+      const f = ((plan?.form_data as unknown) as FormData | null) || localForm;
       setForm(f);
       setName(lead.name || "");
       setExperience(lead.experience_level || f?.experience || "");
