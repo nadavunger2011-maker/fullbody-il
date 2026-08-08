@@ -58,9 +58,39 @@ const sensitivityLabels: Record<string, string> = {
   fish: 'דגים',
 };
 
+const experienceLabels: Record<string, string> = {
+  beginner: 'מתחיל/ה',
+  intermediate: 'בינוני/ת',
+  advanced: 'מתקדם/ת',
+};
+
 function fmt(d: string) {
   return new Date(d).toLocaleString('he-IL', { dateStyle: 'short', timeStyle: 'short' });
 }
+
+function relTime(d?: string | null) {
+  if (!d) return 'מעולם';
+  const diff = Date.now() - new Date(d).getTime();
+  if (Number.isNaN(diff)) return '—';
+  const m = Math.floor(diff / 60000);
+  if (m < 1) return 'עכשיו';
+  if (m < 60) return `לפני ${m} דקות`;
+  const h = Math.floor(m / 60);
+  if (h < 24) return `לפני ${h} שעות`;
+  const days = Math.floor(h / 24);
+  if (days === 1) return 'לפני יום';
+  if (days < 30) return `לפני ${days} ימים`;
+  const months = Math.floor(days / 30);
+  return months === 1 ? 'לפני חודש' : `לפני ${months} חודשים`;
+}
+
+function weekInProgram(start?: string | null) {
+  if (!start) return null;
+  const t = new Date(start).getTime();
+  if (Number.isNaN(t)) return null;
+  return Math.max(1, Math.floor(Math.floor((Date.now() - t) / 86400000) / 7) + 1);
+}
+
 
 export default function AdminLeads() {
   const [leads, setLeads] = useState<Lead[]>([]);
