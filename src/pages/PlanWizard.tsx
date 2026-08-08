@@ -263,6 +263,7 @@ export default function PlanWizard() {
   const [form, setForm] = useState<FormData>(emptyForm);
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState<{ form: FormData; results: PlanResults } | null>(null);
+  const [startDate, setStartDate] = useState<string | null>(null);
 
   useEffect(() => {
     try {
@@ -272,12 +273,22 @@ export default function PlanWizard() {
         if (parsed?.form && parsed?.results) {
           setSaved({ ...parsed, form: { ...emptyForm, ...parsed.form } });
           setForm({ ...emptyForm, ...parsed.form });
-
+          if (parsed.program_start_date) setStartDate(parsed.program_start_date);
           setStep(4);
         }
       }
     } catch {
       /* ignore */
+    }
+
+    // touch last_seen_at for returning registrants
+    const leadId = localStorage.getItem("fullbody_lead_id");
+    if (leadId) {
+      supabase
+        .from("leads")
+        .update({ last_seen_at: new Date().toISOString() })
+        .eq("id", leadId)
+        .then(() => undefined);
     }
   }, []);
 
@@ -289,14 +300,17 @@ export default function PlanWizard() {
       sensitivities: p.sensitivities.includes(id) ? p.sensitivities.filter((x) => x !== id) : [...p.sensitivities, id],
     }));
 
+  const week = useMemo(() => weekInProgram(startDate), [startDate]);
+
   // recomputed live, so the flavor picked at the end updates the menu and products
-  const results = useMemo(() => buildPlan(form), [form]);
+  const results = useMemo(() => buildPlan(form, week), [form, week]);
+  const graduated = form.experience === "beginner" && week > BASE_WEEKS;
 
   const pickFlavor = (fl: string) => {
     set("flavor", fl);
     if (saved) {
       const next = { ...form, flavor: fl };
-      const computed = buildPlan(next);
+      const computed = buildPlan(next, week);
       setSaved({ form: next, results: computed });
       try {
         const raw = localStorage.getItem(LS_KEY);
@@ -314,8 +328,11 @@ export default function PlanWizard() {
     [results.productHandles]
   );
 
-  const step1Valid = form.age && form.height && form.weight && +form.age > 0 && +form.height > 0 && +form.weight > 0;
+  const step1Valid =
+    form.age && form.height && form.weight && +form.age > 0 && +form.height > 0 && +form.weight > 0 && !!form.experience;
   const phoneValid = /^0\d{1,2}-?\d{7}$/.test(form.phone.replace(/\s/g, ""));
+  const emailValid = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(form.email.trim());
+
 
   const handleSubmit = async () => {
     if (!form.name.trim()) return toast.error("נא למלא שם מלא");
