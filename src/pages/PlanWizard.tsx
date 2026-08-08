@@ -601,7 +601,7 @@ export default function PlanWizard() {
             <p className="text-muted-foreground">התוכנית תוצג מיד על המסך. נשמח גם ליצור קשר לליווי אישי במידת הצורך.</p>
             <Field label="שם מלא *" value={form.name} onChange={(e) => set("name", e.target.value)} placeholder="ישראל ישראלי" maxLength={80} />
             <Field label="טלפון *" type="tel" inputMode="tel" value={form.phone} onChange={(e) => set("phone", e.target.value)} placeholder="050-0000000" maxLength={20} />
-            <Field label="אימייל (לא חובה)" type="email" value={form.email} onChange={(e) => set("email", e.target.value)} placeholder="mail@example.com" maxLength={120} />
+            <Field label="אימייל *" type="email" value={form.email} onChange={(e) => set("email", e.target.value)} placeholder="mail@example.com" maxLength={120} />
             <button
               onClick={handleSubmit}
               disabled={saving}
