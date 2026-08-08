@@ -54,6 +54,7 @@ const ProtocolThankYou = lazy(() => import("./pages/ProtocolThankYou"));
 const ChocolateCakeProtocol = lazy(() => import("./pages/ChocolateCakeProtocol"));
 const CartPage = lazy(() => import("./pages/CartPage"));
 const PlanWizard = lazy(() => import("./pages/PlanWizard"));
+const DailyDashboard = lazy(() => import("./pages/DailyDashboard"));
 const FirstVisitModal = lazy(() => import("@/components/FirstVisitModal"));
 
 
