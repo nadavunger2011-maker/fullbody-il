@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import {
   ArrowRight, ArrowLeft, Sparkles, Target, User, Dumbbell,
-  Phone, CheckCircle2, Flame, Utensils, RefreshCw, Loader2,
+  Phone, CheckCircle2, Flame, Utensils, RefreshCw, Loader2, TrendingUp,
 } from "lucide-react";
 import { herbalifeProducts, type HerbalifeProduct } from "@/data/herbalifeProducts";
 import ProFooter from "@/components/ProFooter";
@@ -15,6 +15,7 @@ import greenLogo from "@/assets/logo-green.webp";
 
 type Goal = "weight-loss" | "toning" | "muscle";
 type Gender = "male" | "female";
+type Experience = "beginner" | "intermediate" | "advanced";
 
 interface FormData {
   goal: Goal;
@@ -24,6 +25,7 @@ interface FormData {
   weight: string;
   activity: number;
   days: number;
+  experience: Experience | "";
   flavor: string;
   kosher: boolean;
   sensitivities: string[];
@@ -32,6 +34,7 @@ interface FormData {
   phone: string;
   email: string;
 }
+
 
 const GOALS: { id: Goal; name: string; desc: string; calorieFactor: number; proteinPerKg: number; productGoal: string }[] = [
   { id: "weight-loss", name: "ירידה במשקל", desc: "גירעון קלורי מבוקר", calorieFactor: 0.8, proteinPerKg: 2.0, productGoal: "weight-loss" },
@@ -47,6 +50,26 @@ const ACTIVITIES = [
 ];
 
 const FLAVORS = ["וניל", "שוקולד", "עוגיות", "בננה", "פירות יער", "מנגו", "לאטה"];
+
+const EXPERIENCES: { id: Experience; name: string; desc: string }[] = [
+  { id: "beginner", name: "מתחיל/ה", desc: "עד חצי שנה של אימונים" },
+  { id: "intermediate", name: "בינוני/ת", desc: "בין חצי שנה לשנתיים" },
+  { id: "advanced", name: "מתקדם/ת", desc: "שנתיים ומעלה" },
+];
+
+const EXPERIENCE_NAME = (id?: string) => EXPERIENCES.find((e) => e.id === id)?.name || "";
+
+const BASE_WEEKS = 4;
+
+/** which week of the program the user is in, 1-based */
+function weekInProgram(startDate?: string | null): number {
+  if (!startDate) return 1;
+  const start = new Date(startDate).getTime();
+  if (Number.isNaN(start)) return 1;
+  const diffDays = Math.floor((Date.now() - start) / 86400000);
+  return Math.max(1, Math.floor(diffDays / 7) + 1);
+}
+
 
 const SENSITIVITIES: { id: string; name: string; desc: string }[] = [
   { id: "lactose", name: "רגישות ללקטוז", desc: "נחליף חלב במשקה שקדים / סויה או חלב ללא לקטוז" },
@@ -81,9 +104,10 @@ interface PlanResults {
   workouts: WorkoutDay[];
   meals: { name: string; time: string; content: string }[];
   productHandles: string[];
+  isBasePhase: boolean;
 }
 
-function buildPlan(f: FormData): PlanResults {
+function buildPlan(f: FormData, week = 1): PlanResults {
   const weight = parseFloat(f.weight) || 0;
   const height = parseFloat(f.height) || 0;
   const age = parseFloat(f.age) || 0;
@@ -97,11 +121,12 @@ function buildPlan(f: FormData): PlanResults {
   const fat = (targetCalories * 0.25) / 9;
   const carbs = (targetCalories - protein * 4 - fat * 9) / 4;
 
-  /* workout split */
+  /* workout split - beginners start with 4 weeks of full body */
+  const isBasePhase = f.experience === "beginner" && week <= BASE_WEEKS;
   let splitName = "אימון גוף מלא";
   let workouts: WorkoutDay[] = [];
-  if (f.days <= 3) {
-    splitName = "גוף מלא (Full Body)";
+  if (isBasePhase || f.days <= 3) {
+    splitName = isBasePhase ? "גוף מלא (Full Body) - שלב בניית הבסיס" : "גוף מלא (Full Body)";
     workouts = Array.from({ length: f.days }, (_, i) => ({
       name: `אימון ${i + 1}`,
       focus: "גוף מלא",
@@ -124,6 +149,7 @@ function buildPlan(f: FormData): PlanResults {
     ];
     workouts = Array.from({ length: f.days }, (_, i) => ({ ...base[i % 3], name: `יום ${i + 1} - ${base[i % 3].name}` }));
   }
+
 
   const reps = f.goal === "muscle" ? "6-10 חזרות, 4 סטים" : f.goal === "toning" ? "10-12 חזרות, 3-4 סטים" : "12-15 חזרות, 3 סטים";
   const rest = f.goal === "muscle" ? "90-120 שניות מנוחה" : f.goal === "toning" ? "60-75 שניות מנוחה" : "30-45 שניות מנוחה";
@@ -167,6 +193,8 @@ function buildPlan(f: FormData): PlanResults {
   });
 
   return {
+    isBasePhase,
+
     bmr: Math.round(bmr),
     tdee: Math.round(tdee),
     targetCalories: Math.round(targetCalories),
@@ -218,7 +246,9 @@ const emptyForm: FormData = {
   weight: "",
   activity: 1.375,
   days: 3,
+  experience: "",
   flavor: "וניל",
+
   kosher: false,
   sensitivities: [],
   sensitivitiesOther: "",
@@ -233,6 +263,7 @@ export default function PlanWizard() {
   const [form, setForm] = useState<FormData>(emptyForm);
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState<{ form: FormData; results: PlanResults } | null>(null);
+  const [startDate, setStartDate] = useState<string | null>(null);
 
   useEffect(() => {
     try {
@@ -242,12 +273,22 @@ export default function PlanWizard() {
         if (parsed?.form && parsed?.results) {
           setSaved({ ...parsed, form: { ...emptyForm, ...parsed.form } });
           setForm({ ...emptyForm, ...parsed.form });
-
+          if (parsed.program_start_date) setStartDate(parsed.program_start_date);
           setStep(4);
         }
       }
     } catch {
       /* ignore */
+    }
+
+    // touch last_seen_at for returning registrants
+    const leadId = localStorage.getItem("fullbody_lead_id");
+    if (leadId) {
+      supabase
+        .from("leads")
+        .update({ last_seen_at: new Date().toISOString() })
+        .eq("id", leadId)
+        .then(() => undefined);
     }
   }, []);
 
@@ -259,14 +300,17 @@ export default function PlanWizard() {
       sensitivities: p.sensitivities.includes(id) ? p.sensitivities.filter((x) => x !== id) : [...p.sensitivities, id],
     }));
 
+  const week = useMemo(() => weekInProgram(startDate), [startDate]);
+
   // recomputed live, so the flavor picked at the end updates the menu and products
-  const results = useMemo(() => buildPlan(form), [form]);
+  const results = useMemo(() => buildPlan(form, week), [form, week]);
+  const graduated = form.experience === "beginner" && week > BASE_WEEKS;
 
   const pickFlavor = (fl: string) => {
     set("flavor", fl);
     if (saved) {
       const next = { ...form, flavor: fl };
-      const computed = buildPlan(next);
+      const computed = buildPlan(next, week);
       setSaved({ form: next, results: computed });
       try {
         const raw = localStorage.getItem(LS_KEY);
@@ -284,21 +328,26 @@ export default function PlanWizard() {
     [results.productHandles]
   );
 
-  const step1Valid = form.age && form.height && form.weight && +form.age > 0 && +form.height > 0 && +form.weight > 0;
+  const step1Valid =
+    form.age && form.height && form.weight && +form.age > 0 && +form.height > 0 && +form.weight > 0 && !!form.experience;
   const phoneValid = /^0\d{1,2}-?\d{7}$/.test(form.phone.replace(/\s/g, ""));
+  const emailValid = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(form.email.trim());
+
 
   const handleSubmit = async () => {
     if (!form.name.trim()) return toast.error("נא למלא שם מלא");
     if (!phoneValid) return toast.error("נא למלא מספר טלפון תקין");
+    if (!emailValid) return toast.error("נא למלא כתובת אימייל תקינה");
     setSaving(true);
-    const computed = buildPlan(form);
+    const today = new Date().toISOString().slice(0, 10);
+    const computed = buildPlan(form, 1);
     try {
       const { data: lead, error } = await supabase
         .from("leads")
         .insert({
           name: form.name.trim(),
           phone: form.phone.trim(),
-          email: form.email.trim() || null,
+          email: form.email.trim(),
           goal: form.goal,
           gender: form.gender,
           age: parseInt(form.age),
@@ -309,6 +358,9 @@ export default function PlanWizard() {
           kosher: form.kosher,
           flavor: form.flavor,
           target_calories: computed.targetCalories,
+          experience_level: form.experience || null,
+          program_start_date: today,
+          last_seen_at: new Date().toISOString(),
         })
         .select("id")
         .single();
@@ -324,10 +376,15 @@ export default function PlanWizard() {
 
 
       localStorage.setItem("fullbody_lead_id", lead.id);
-      localStorage.setItem(LS_KEY, JSON.stringify({ form, results: computed, lead_id: lead.id }));
+      localStorage.setItem(
+        LS_KEY,
+        JSON.stringify({ form, results: computed, lead_id: lead.id, program_start_date: today })
+      );
+      setStartDate(today);
       setSaved({ form, results: computed });
       setStep(4);
       window.scrollTo({ top: 0, behavior: "smooth" });
+
     } catch (e) {
       console.error(e);
       toast.error("אירעה שגיאה בשמירת התוכנית, נסו שוב");
@@ -340,6 +397,8 @@ export default function PlanWizard() {
     localStorage.removeItem(LS_KEY);
     localStorage.removeItem("fullbody_lead_id");
     setSaved(null);
+    setStartDate(null);
+
     setForm(emptyForm);
     setStep(0);
     window.scrollTo({ top: 0, behavior: "smooth" });
@@ -444,6 +503,14 @@ export default function PlanWizard() {
               <Field label={'משקל (ק"ג)'} type="number" inputMode="decimal" value={form.weight} onChange={(e) => set("weight", e.target.value)} placeholder="80" />
             </div>
 
+            <h2 className="text-lg font-bold text-foreground pt-2">מה רמת הניסיון שלך באימונים?</h2>
+            <div className="grid sm:grid-cols-3 gap-3">
+              {EXPERIENCES.map((e) => (
+                <OptionCard key={e.id} active={form.experience === e.id} title={e.name} desc={e.desc} onClick={() => set("experience", e.id)} />
+              ))}
+            </div>
+
+
             <h2 className="text-lg font-bold text-foreground pt-2">רמת פעילות</h2>
             <div className="grid sm:grid-cols-2 gap-3">
               {ACTIVITIES.map((a) => (
@@ -534,7 +601,7 @@ export default function PlanWizard() {
             <p className="text-muted-foreground">התוכנית תוצג מיד על המסך. נשמח גם ליצור קשר לליווי אישי במידת הצורך.</p>
             <Field label="שם מלא *" value={form.name} onChange={(e) => set("name", e.target.value)} placeholder="ישראל ישראלי" maxLength={80} />
             <Field label="טלפון *" type="tel" inputMode="tel" value={form.phone} onChange={(e) => set("phone", e.target.value)} placeholder="050-0000000" maxLength={20} />
-            <Field label="אימייל (לא חובה)" type="email" value={form.email} onChange={(e) => set("email", e.target.value)} placeholder="mail@example.com" maxLength={120} />
+            <Field label="אימייל *" type="email" value={form.email} onChange={(e) => set("email", e.target.value)} placeholder="mail@example.com" maxLength={120} />
             <button
               onClick={handleSubmit}
               disabled={saving}
@@ -559,8 +626,43 @@ export default function PlanWizard() {
               </h1>
               <p className="text-muted-foreground mt-2">
                 מטרה: {goalName} · {form.days} אימונים בשבוע
+                {form.experience ? ` · רמה: ${EXPERIENCE_NAME(form.experience)}` : ""}
               </p>
             </div>
+
+            {/* progress banner */}
+            <div className={`rounded-2xl border p-5 ${graduated ? "border-primary bg-primary/10" : "border-border bg-card"} shadow-card`}>
+              <div className="flex items-center gap-2">
+                <TrendingUp className="w-5 h-5 text-primary" />
+                <h2 className="font-bold text-foreground">
+                  {results.isBasePhase
+                    ? `שבוע ${week} מתוך ${BASE_WEEKS} - שלב בניית הבסיס`
+                    : graduated
+                      ? "מוכנים לשלב הבא! עברת לתוכנית פיצול שרירים"
+                      : `שבוע ${week} בתוכנית`}
+                </h2>
+              </div>
+              {results.isBasePhase && (
+                <>
+                  <div className="mt-3 h-2 w-full rounded-full bg-muted overflow-hidden">
+                    <div className="h-full bg-primary rounded-full transition-all" style={{ width: `${Math.min(100, (week / BASE_WEEKS) * 100)}%` }} />
+                  </div>
+                  <p className="mt-2 text-sm text-muted-foreground">
+                    בשלב הזה מתאמנים בגוף מלא כדי ללמוד תנועה נכונה. בתום {BASE_WEEKS} שבועות נעבור אוטומטית לתוכנית פיצול לפי {form.days} ימי האימון שלך.
+                  </p>
+                </>
+              )}
+              {graduated && (
+                <p className="mt-2 text-sm text-muted-foreground">
+                  סיימת את שלב בניית הבסיס. התוכנית למטה כבר מעודכנת לפיצול: {results.splitName}.
+                </p>
+              )}
+              {!results.isBasePhase && !graduated && (
+                <p className="mt-2 text-sm text-muted-foreground">ממשיכים לפי הפיצול שלך: {results.splitName}.</p>
+              )}
+            </div>
+
+
 
             {/* numbers */}
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
@@ -693,7 +795,7 @@ export default function PlanWizard() {
             </button>
             <button
               onClick={() => {
-                if (step === 1 && !step1Valid) return toast.error("נא למלא גיל, גובה ומשקל");
+                if (step === 1 && !step1Valid) return toast.error("נא למלא גיל, גובה, משקל ורמת ניסיון");
                 setStep((s) => s + 1);
               }}
               className="flex-1 rounded-xl bg-primary text-primary-foreground px-6 py-3 font-bold shadow-cta hover:opacity-90 transition inline-flex items-center justify-center gap-1"

@@ -17,8 +17,12 @@ type Lead = {
   kosher: boolean | null;
   flavor: string | null;
   target_calories: number | null;
+  experience_level: string | null;
+  program_start_date: string | null;
+  last_seen_at: string | null;
   created_at: string;
 };
+
 
 type Plan = {
   id: string;
@@ -54,9 +58,39 @@ const sensitivityLabels: Record<string, string> = {
   fish: 'דגים',
 };
 
+const experienceLabels: Record<string, string> = {
+  beginner: 'מתחיל/ה',
+  intermediate: 'בינוני/ת',
+  advanced: 'מתקדם/ת',
+};
+
 function fmt(d: string) {
   return new Date(d).toLocaleString('he-IL', { dateStyle: 'short', timeStyle: 'short' });
 }
+
+function relTime(d?: string | null) {
+  if (!d) return 'מעולם';
+  const diff = Date.now() - new Date(d).getTime();
+  if (Number.isNaN(diff)) return '—';
+  const m = Math.floor(diff / 60000);
+  if (m < 1) return 'עכשיו';
+  if (m < 60) return `לפני ${m} דקות`;
+  const h = Math.floor(m / 60);
+  if (h < 24) return `לפני ${h} שעות`;
+  const days = Math.floor(h / 24);
+  if (days === 1) return 'לפני יום';
+  if (days < 30) return `לפני ${days} ימים`;
+  const months = Math.floor(days / 30);
+  return months === 1 ? 'לפני חודש' : `לפני ${months} חודשים`;
+}
+
+function weekInProgram(start?: string | null) {
+  if (!start) return null;
+  const t = new Date(start).getTime();
+  if (Number.isNaN(t)) return null;
+  return Math.max(1, Math.floor(Math.floor((Date.now() - t) / 86400000) / 7) + 1);
+}
+
 
 export default function AdminLeads() {
   const [leads, setLeads] = useState<Lead[]>([]);
@@ -64,6 +98,9 @@ export default function AdminLeads() {
   const [loading, setLoading] = useState(true);
   const [open, setOpen] = useState<string | null>(null);
   const [q, setQ] = useState('');
+  const [goalFilter, setGoalFilter] = useState('all');
+  const [expFilter, setExpFilter] = useState('all');
+  const [sortBy, setSortBy] = useState<'created' | 'seen' | 'name'>('created');
 
   useEffect(() => {
     (async () => {
@@ -77,21 +114,34 @@ export default function AdminLeads() {
     })();
   }, []);
 
-  const filtered = leads.filter(l => {
-    if (!q.trim()) return true;
-    const s = q.toLowerCase();
-    return [l.name, l.phone, l.email].some(v => (v || '').toLowerCase().includes(s));
-  });
+  const goalOptions = Array.from(new Set(leads.map(l => l.goal).filter(Boolean))) as string[];
+
+  const filtered = leads
+    .filter(l => {
+      if (goalFilter !== 'all' && l.goal !== goalFilter) return false;
+      if (expFilter !== 'all' && (l.experience_level || '') !== expFilter) return false;
+      if (!q.trim()) return true;
+      const s = q.toLowerCase();
+      return [l.name, l.phone, l.email].some(v => (v || '').toLowerCase().includes(s));
+    })
+    .sort((a, b) => {
+      if (sortBy === 'name') return a.name.localeCompare(b.name, 'he');
+      if (sortBy === 'seen') return new Date(b.last_seen_at || 0).getTime() - new Date(a.last_seen_at || 0).getTime();
+      return new Date(b.created_at).getTime() - new Date(a.created_at).getTime();
+    });
 
   const planFor = (leadId: string) => plans.find(p => p.lead_id === leadId);
 
   function exportCsv() {
-    const headers = ['תאריך', 'שם', 'טלפון', 'אימייל', 'מטרה', 'מין', 'גיל', 'גובה', 'משקל', 'ימי אימון', 'כשר', 'טעם', 'קלוריות יעד'];
+    const headers = ['תאריך', 'שם', 'טלפון', 'אימייל', 'מטרה', 'רמת ניסיון', 'מין', 'גיל', 'גובה', 'משקל', 'ימי אימון', 'כשר', 'טעם', 'קלוריות יעד', 'נכנס לאחרונה'];
     const rows = filtered.map(l => [
       fmt(l.created_at), l.name, l.phone, l.email || '', goalLabels[l.goal || ''] || l.goal || '',
+      experienceLabels[l.experience_level || ''] || l.experience_level || '',
       l.gender === 'male' ? 'גבר' : l.gender === 'female' ? 'אישה' : '', l.age ?? '', l.height ?? '',
       l.weight ?? '', l.days ?? '', l.kosher ? 'כן' : 'לא', l.flavor || '', l.target_calories ?? '',
+      l.last_seen_at ? fmt(l.last_seen_at) : '',
     ]);
+
     const csv = '\uFEFF' + [headers, ...rows].map(r => r.map(c => `"${String(c).replace(/"/g, '""')}"`).join(',')).join('\n');
     const url = URL.createObjectURL(new Blob([csv], { type: 'text/csv;charset=utf-8;' }));
     const a = document.createElement('a');
@@ -117,7 +167,21 @@ export default function AdminLeads() {
             className="w-full bg-white/[0.03] border border-white/10 rounded-lg py-2 pr-9 pl-3 text-sm text-white outline-none focus:border-blue-500"
           />
         </div>
+        <select value={goalFilter} onChange={e => setGoalFilter(e.target.value)} className="bg-white/[0.03] border border-white/10 rounded-lg px-2 py-2 text-xs text-white outline-none">
+          <option value="all">כל המטרות</option>
+          {goalOptions.map(g => <option key={g} value={g}>{goalLabels[g] || g}</option>)}
+        </select>
+        <select value={expFilter} onChange={e => setExpFilter(e.target.value)} className="bg-white/[0.03] border border-white/10 rounded-lg px-2 py-2 text-xs text-white outline-none">
+          <option value="all">כל הרמות</option>
+          {Object.entries(experienceLabels).map(([k, v]) => <option key={k} value={k}>{v}</option>)}
+        </select>
+        <select value={sortBy} onChange={e => setSortBy(e.target.value as 'created' | 'seen' | 'name')} className="bg-white/[0.03] border border-white/10 rounded-lg px-2 py-2 text-xs text-white outline-none">
+          <option value="created">מיון: תאריך הרשמה</option>
+          <option value="seen">מיון: נכנס לאחרונה</option>
+          <option value="name">מיון: שם</option>
+        </select>
         <span className="text-xs text-gray-500">{filtered.length} נרשמים</span>
+
         <button onClick={exportCsv} className="flex items-center gap-1.5 bg-white/[0.06] hover:bg-white/[0.1] border border-white/10 rounded-lg px-3 py-2 text-xs">
           <Download className="w-3.5 h-3.5" /> ייצוא CSV
         </button>
@@ -137,8 +201,11 @@ export default function AdminLeads() {
                   <p className="text-sm font-semibold truncate">{l.name} <span className="text-gray-500 font-normal" dir="ltr">{l.phone}</span></p>
                   <p className="text-xs text-gray-500 mt-0.5">
                     {fmt(l.created_at)} · {goalLabels[l.goal || ''] || l.goal || 'ללא מטרה'}
+                    {l.experience_level ? ` · ${experienceLabels[l.experience_level] || l.experience_level}` : ''}
                     {l.target_calories ? ` · ${l.target_calories} קק"ל` : ''}
                   </p>
+                  <p className="text-[11px] text-gray-600 mt-0.5">נכנס לאחרונה: {relTime(l.last_seen_at)}</p>
+
                 </div>
                 {isOpen ? <ChevronUp className="w-4 h-4 text-gray-500 shrink-0" /> : <ChevronDown className="w-4 h-4 text-gray-500 shrink-0" />}
               </button>
@@ -158,6 +225,11 @@ export default function AdminLeads() {
                       ['טעם מועדף', l.flavor || '—'],
                       ['קלוריות יעד', l.target_calories ?? '—'],
                       ['זמן כניסה לתוכנית', plan ? fmt(plan.created_at) : '—'],
+                      ['רמת ניסיון', experienceLabels[l.experience_level || ''] || l.experience_level || '—'],
+                      ['תחילת התוכנית', l.program_start_date || '—'],
+                      ['שבוע בתוכנית', weekInProgram(l.program_start_date) ?? '—'],
+                      ['נכנס לאחרונה', relTime(l.last_seen_at)],
+
                     ].map(([k, v]) => (
                       <div key={String(k)} className="bg-white/[0.03] rounded-lg p-2.5">
                         <p className="text-gray-500">{k}</p>

@@ -243,14 +243,17 @@ export type Database = {
           created_at: string
           days: number | null
           email: string | null
+          experience_level: string | null
           flavor: string | null
           gender: string | null
           goal: string | null
           height: number | null
           id: string
           kosher: boolean | null
+          last_seen_at: string | null
           name: string
           phone: string
+          program_start_date: string | null
           target_calories: number | null
           weight: number | null
         }
@@ -260,14 +263,17 @@ export type Database = {
           created_at?: string
           days?: number | null
           email?: string | null
+          experience_level?: string | null
           flavor?: string | null
           gender?: string | null
           goal?: string | null
           height?: number | null
           id?: string
           kosher?: boolean | null
+          last_seen_at?: string | null
           name: string
           phone: string
+          program_start_date?: string | null
           target_calories?: number | null
           weight?: number | null
         }
@@ -277,14 +283,17 @@ export type Database = {
           created_at?: string
           days?: number | null
           email?: string | null
+          experience_level?: string | null
           flavor?: string | null
           gender?: string | null
           goal?: string | null
           height?: number | null
           id?: string
           kosher?: boolean | null
+          last_seen_at?: string | null
           name?: string
           phone?: string
+          program_start_date?: string | null
           target_calories?: number | null
           weight?: number | null
         }
