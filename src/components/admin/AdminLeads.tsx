@@ -112,6 +112,8 @@ function weekInProgram(start?: string | null) {
 export default function AdminLeads() {
   const [leads, setLeads] = useState<Lead[]>([]);
   const [plans, setPlans] = useState<Plan[]>([]);
+  const [emails, setEmails] = useState<EmailSend[]>([]);
+  const [sending, setSending] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const [open, setOpen] = useState<string | null>(null);
   const [q, setQ] = useState('');
@@ -121,15 +123,67 @@ export default function AdminLeads() {
 
   useEffect(() => {
     (async () => {
-      const [{ data: l }, { data: p }] = await Promise.all([
+      const [{ data: l }, { data: p }, { data: e }] = await Promise.all([
         supabase.from('leads').select('*').order('created_at', { ascending: false }).limit(500),
         supabase.from('plans').select('*').order('created_at', { ascending: false }).limit(500),
+        supabase.from('email_sends').select('*').order('created_at', { ascending: false }).limit(1000),
       ]);
       setLeads((l as Lead[]) || []);
       setPlans((p as Plan[]) || []);
+      setEmails((e as EmailSend[]) || []);
       setLoading(false);
     })();
   }, []);
+
+  const emailsFor = (leadId: string) => emails.filter(e => e.lead_id === leadId);
+
+  async function sendEmail(lead: Lead, template: 'plan-summary' | 'plan-reminder') {
+    if (!lead.email) return toast.error('אין כתובת אימייל לליד הזה');
+    setSending(`${lead.id}-${template}`);
+    const plan = plans.find(p => p.lead_id === lead.id);
+    const r = plan?.results_data || {};
+    const daysInactive = lead.last_seen_at
+      ? Math.floor((Date.now() - new Date(lead.last_seen_at).getTime()) / 86400000)
+      : undefined;
+    try {
+      const { error } = await supabase.functions.invoke('send-plan-email', {
+        body: {
+          template,
+          recipient: lead.email,
+          leadId: lead.id,
+          data: {
+            name: lead.name,
+            goalLabel: goalLabels[lead.goal || ''] || lead.goal || '',
+            experienceLabel: experienceLabels[lead.experience_level || ''] || '',
+            isBeginnerBasePhase: lead.experience_level === 'beginner',
+            week: weekInProgram(lead.program_start_date) ?? 1,
+            targetCalories: lead.target_calories ?? r.targetCalories,
+            protein: r.protein,
+            carbs: r.carbs,
+            fat: r.fat,
+            water: r.water,
+            days: lead.days ?? r.days,
+            splitName: r.splitName,
+            daysInactive,
+          },
+        },
+      });
+      if (error) throw error;
+      toast.success('המייל נשלח');
+      const { data: e } = await supabase
+        .from('email_sends')
+        .select('*')
+        .order('created_at', { ascending: false })
+        .limit(1000);
+      setEmails((e as EmailSend[]) || []);
+    } catch (err) {
+      console.error(err);
+      toast.error('שליחת המייל נכשלה');
+    } finally {
+      setSending(null);
+    }
+  }
+
 
   const goalOptions = Array.from(new Set(leads.map(l => l.goal).filter(Boolean))) as string[];
 
