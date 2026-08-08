@@ -626,8 +626,43 @@ export default function PlanWizard() {
               </h1>
               <p className="text-muted-foreground mt-2">
                 מטרה: {goalName} · {form.days} אימונים בשבוע
+                {form.experience ? ` · רמה: ${EXPERIENCE_NAME(form.experience)}` : ""}
               </p>
             </div>
+
+            {/* progress banner */}
+            <div className={`rounded-2xl border p-5 ${graduated ? "border-primary bg-primary/10" : "border-border bg-card"} shadow-card`}>
+              <div className="flex items-center gap-2">
+                <TrendingUp className="w-5 h-5 text-primary" />
+                <h2 className="font-bold text-foreground">
+                  {results.isBasePhase
+                    ? `שבוע ${week} מתוך ${BASE_WEEKS} - שלב בניית הבסיס`
+                    : graduated
+                      ? "מוכנים לשלב הבא! עברת לתוכנית פיצול שרירים"
+                      : `שבוע ${week} בתוכנית`}
+                </h2>
+              </div>
+              {results.isBasePhase && (
+                <>
+                  <div className="mt-3 h-2 w-full rounded-full bg-muted overflow-hidden">
+                    <div className="h-full bg-primary rounded-full transition-all" style={{ width: `${Math.min(100, (week / BASE_WEEKS) * 100)}%` }} />
+                  </div>
+                  <p className="mt-2 text-sm text-muted-foreground">
+                    בשלב הזה מתאמנים בגוף מלא כדי ללמוד תנועה נכונה. בתום {BASE_WEEKS} שבועות נעבור אוטומטית לתוכנית פיצול לפי {form.days} ימי האימון שלך.
+                  </p>
+                </>
+              )}
+              {graduated && (
+                <p className="mt-2 text-sm text-muted-foreground">
+                  סיימת את שלב בניית הבסיס. התוכנית למטה כבר מעודכנת לפיצול: {results.splitName}.
+                </p>
+              )}
+              {!results.isBasePhase && !graduated && (
+                <p className="mt-2 text-sm text-muted-foreground">ממשיכים לפי הפיצול שלך: {results.splitName}.</p>
+              )}
+            </div>
+
+
 
             {/* numbers */}
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
