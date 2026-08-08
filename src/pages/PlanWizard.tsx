@@ -503,6 +503,14 @@ export default function PlanWizard() {
               <Field label={'משקל (ק"ג)'} type="number" inputMode="decimal" value={form.weight} onChange={(e) => set("weight", e.target.value)} placeholder="80" />
             </div>
 
+            <h2 className="text-lg font-bold text-foreground pt-2">מה רמת הניסיון שלך באימונים?</h2>
+            <div className="grid sm:grid-cols-3 gap-3">
+              {EXPERIENCES.map((e) => (
+                <OptionCard key={e.id} active={form.experience === e.id} title={e.name} desc={e.desc} onClick={() => set("experience", e.id)} />
+              ))}
+            </div>
+
+
             <h2 className="text-lg font-bold text-foreground pt-2">רמת פעילות</h2>
             <div className="grid sm:grid-cols-2 gap-3">
               {ACTIVITIES.map((a) => (
