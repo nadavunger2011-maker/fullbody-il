@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { supabase } from '@/integrations/supabase/client';
-import { Loader2, ChevronDown, ChevronUp, Search, Download } from 'lucide-react';
+import { Loader2, ChevronDown, ChevronUp, Search, Download, Mail, Send } from 'lucide-react';
+import { toast } from 'sonner';
 
 type Lead = {
   id: string;
@@ -31,6 +32,22 @@ type Plan = {
   results_data: any;
   created_at: string;
 };
+
+type EmailSend = {
+  id: string;
+  lead_id: string | null;
+  template: string;
+  recipient: string;
+  status: string;
+  error: string | null;
+  created_at: string;
+};
+
+const templateLabels: Record<string, string> = {
+  'plan-summary': 'סיכום התוכנית',
+  'plan-reminder': 'תזכורת',
+};
+
 
 const goalLabels: Record<string, string> = {
   lose: 'ירידה במשקל',
@@ -95,6 +112,8 @@ function weekInProgram(start?: string | null) {
 export default function AdminLeads() {
   const [leads, setLeads] = useState<Lead[]>([]);
   const [plans, setPlans] = useState<Plan[]>([]);
+  const [emails, setEmails] = useState<EmailSend[]>([]);
+  const [sending, setSending] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const [open, setOpen] = useState<string | null>(null);
   const [q, setQ] = useState('');
@@ -104,15 +123,67 @@ export default function AdminLeads() {
 
   useEffect(() => {
     (async () => {
-      const [{ data: l }, { data: p }] = await Promise.all([
+      const [{ data: l }, { data: p }, { data: e }] = await Promise.all([
         supabase.from('leads').select('*').order('created_at', { ascending: false }).limit(500),
         supabase.from('plans').select('*').order('created_at', { ascending: false }).limit(500),
+        supabase.from('email_sends').select('*').order('created_at', { ascending: false }).limit(1000),
       ]);
       setLeads((l as Lead[]) || []);
       setPlans((p as Plan[]) || []);
+      setEmails((e as EmailSend[]) || []);
       setLoading(false);
     })();
   }, []);
+
+  const emailsFor = (leadId: string) => emails.filter(e => e.lead_id === leadId);
+
+  async function sendEmail(lead: Lead, template: 'plan-summary' | 'plan-reminder') {
+    if (!lead.email) return toast.error('אין כתובת אימייל לליד הזה');
+    setSending(`${lead.id}-${template}`);
+    const plan = plans.find(p => p.lead_id === lead.id);
+    const r = plan?.results_data || {};
+    const daysInactive = lead.last_seen_at
+      ? Math.floor((Date.now() - new Date(lead.last_seen_at).getTime()) / 86400000)
+      : undefined;
+    try {
+      const { error } = await supabase.functions.invoke('send-plan-email', {
+        body: {
+          template,
+          recipient: lead.email,
+          leadId: lead.id,
+          data: {
+            name: lead.name,
+            goalLabel: goalLabels[lead.goal || ''] || lead.goal || '',
+            experienceLabel: experienceLabels[lead.experience_level || ''] || '',
+            isBeginnerBasePhase: lead.experience_level === 'beginner',
+            week: weekInProgram(lead.program_start_date) ?? 1,
+            targetCalories: lead.target_calories ?? r.targetCalories,
+            protein: r.protein,
+            carbs: r.carbs,
+            fat: r.fat,
+            water: r.water,
+            days: lead.days ?? r.days,
+            splitName: r.splitName,
+            daysInactive,
+          },
+        },
+      });
+      if (error) throw error;
+      toast.success('המייל נשלח');
+      const { data: e } = await supabase
+        .from('email_sends')
+        .select('*')
+        .order('created_at', { ascending: false })
+        .limit(1000);
+      setEmails((e as EmailSend[]) || []);
+    } catch (err) {
+      console.error(err);
+      toast.error('שליחת המייל נכשלה');
+    } finally {
+      setSending(null);
+    }
+  }
+
 
   const goalOptions = Array.from(new Set(leads.map(l => l.goal).filter(Boolean))) as string[];
 
@@ -237,6 +308,49 @@ export default function AdminLeads() {
                       </div>
                     ))}
                   </div>
+
+                  <div>
+                    <p className="text-xs text-gray-400 mb-2 flex items-center gap-1.5"><Mail className="w-3.5 h-3.5" /> מיילים</p>
+                    <div className="flex flex-wrap gap-2 mb-2">
+                      <button
+                        onClick={() => sendEmail(l, 'plan-summary')}
+                        disabled={!l.email || sending === `${l.id}-plan-summary`}
+                        className="flex items-center gap-1.5 bg-white/[0.06] hover:bg-white/[0.1] disabled:opacity-40 border border-white/10 rounded-lg px-3 py-1.5 text-xs"
+                      >
+                        {sending === `${l.id}-plan-summary`
+                          ? <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                          : <Send className="w-3.5 h-3.5" />}
+                        שליחת סיכום התוכנית
+                      </button>
+                      <button
+                        onClick={() => sendEmail(l, 'plan-reminder')}
+                        disabled={!l.email || sending === `${l.id}-plan-reminder`}
+                        className="flex items-center gap-1.5 bg-white/[0.06] hover:bg-white/[0.1] disabled:opacity-40 border border-white/10 rounded-lg px-3 py-1.5 text-xs"
+                      >
+                        {sending === `${l.id}-plan-reminder`
+                          ? <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                          : <Send className="w-3.5 h-3.5" />}
+                        שליחת תזכורת
+                      </button>
+                    </div>
+                    {emailsFor(l.id).length === 0 ? (
+                      <p className="text-[11px] text-gray-600">לא נשלחו מיילים לליד הזה</p>
+                    ) : (
+                      <div className="space-y-1">
+                        {emailsFor(l.id).map(e => (
+                          <div key={e.id} className="flex items-center justify-between gap-2 text-[11px] bg-white/[0.03] rounded-lg px-2.5 py-1.5">
+                            <span className="text-gray-300">{templateLabels[e.template] || e.template}</span>
+                            <span className="text-gray-500">{fmt(e.created_at)}</span>
+                            <span className={e.status === 'sent' ? 'text-emerald-400' : 'text-red-400'}>
+                              {e.status === 'sent' ? 'נשלח' : 'נכשל'}
+                            </span>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+
+
 
                   {(plan?.form_data?.sensitivities?.length > 0 || plan?.form_data?.sensitivitiesOther) && (
                     <div>
