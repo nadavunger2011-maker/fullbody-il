@@ -246,7 +246,9 @@ const emptyForm: FormData = {
   weight: "",
   activity: 1.375,
   days: 3,
+  experience: "",
   flavor: "וניל",
+
   kosher: false,
   sensitivities: [],
   sensitivitiesOther: "",
