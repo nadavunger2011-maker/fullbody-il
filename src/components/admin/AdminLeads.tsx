@@ -33,6 +33,22 @@ type Plan = {
   created_at: string;
 };
 
+type EmailSend = {
+  id: string;
+  lead_id: string | null;
+  template: string;
+  recipient: string;
+  status: string;
+  error: string | null;
+  created_at: string;
+};
+
+const templateLabels: Record<string, string> = {
+  'plan-summary': 'סיכום התוכנית',
+  'plan-reminder': 'תזכורת',
+};
+
+
 const goalLabels: Record<string, string> = {
   lose: 'ירידה במשקל',
   gain: 'עלייה במסה',
