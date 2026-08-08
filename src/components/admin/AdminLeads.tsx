@@ -98,6 +98,9 @@ export default function AdminLeads() {
   const [loading, setLoading] = useState(true);
   const [open, setOpen] = useState<string | null>(null);
   const [q, setQ] = useState('');
+  const [goalFilter, setGoalFilter] = useState('all');
+  const [expFilter, setExpFilter] = useState('all');
+  const [sortBy, setSortBy] = useState<'created' | 'seen' | 'name'>('created');
 
   useEffect(() => {
     (async () => {
@@ -111,21 +114,34 @@ export default function AdminLeads() {
     })();
   }, []);
 
-  const filtered = leads.filter(l => {
-    if (!q.trim()) return true;
-    const s = q.toLowerCase();
-    return [l.name, l.phone, l.email].some(v => (v || '').toLowerCase().includes(s));
-  });
+  const goalOptions = Array.from(new Set(leads.map(l => l.goal).filter(Boolean))) as string[];
+
+  const filtered = leads
+    .filter(l => {
+      if (goalFilter !== 'all' && l.goal !== goalFilter) return false;
+      if (expFilter !== 'all' && (l.experience_level || '') !== expFilter) return false;
+      if (!q.trim()) return true;
+      const s = q.toLowerCase();
+      return [l.name, l.phone, l.email].some(v => (v || '').toLowerCase().includes(s));
+    })
+    .sort((a, b) => {
+      if (sortBy === 'name') return a.name.localeCompare(b.name, 'he');
+      if (sortBy === 'seen') return new Date(b.last_seen_at || 0).getTime() - new Date(a.last_seen_at || 0).getTime();
+      return new Date(b.created_at).getTime() - new Date(a.created_at).getTime();
+    });
 
   const planFor = (leadId: string) => plans.find(p => p.lead_id === leadId);
 
   function exportCsv() {
-    const headers = ['תאריך', 'שם', 'טלפון', 'אימייל', 'מטרה', 'מין', 'גיל', 'גובה', 'משקל', 'ימי אימון', 'כשר', 'טעם', 'קלוריות יעד'];
+    const headers = ['תאריך', 'שם', 'טלפון', 'אימייל', 'מטרה', 'רמת ניסיון', 'מין', 'גיל', 'גובה', 'משקל', 'ימי אימון', 'כשר', 'טעם', 'קלוריות יעד', 'נכנס לאחרונה'];
     const rows = filtered.map(l => [
       fmt(l.created_at), l.name, l.phone, l.email || '', goalLabels[l.goal || ''] || l.goal || '',
+      experienceLabels[l.experience_level || ''] || l.experience_level || '',
       l.gender === 'male' ? 'גבר' : l.gender === 'female' ? 'אישה' : '', l.age ?? '', l.height ?? '',
       l.weight ?? '', l.days ?? '', l.kosher ? 'כן' : 'לא', l.flavor || '', l.target_calories ?? '',
+      l.last_seen_at ? fmt(l.last_seen_at) : '',
     ]);
+
     const csv = '\uFEFF' + [headers, ...rows].map(r => r.map(c => `"${String(c).replace(/"/g, '""')}"`).join(',')).join('\n');
     const url = URL.createObjectURL(new Blob([csv], { type: 'text/csv;charset=utf-8;' }));
     const a = document.createElement('a');
