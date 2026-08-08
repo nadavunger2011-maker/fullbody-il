@@ -201,8 +201,11 @@ export default function AdminLeads() {
                   <p className="text-sm font-semibold truncate">{l.name} <span className="text-gray-500 font-normal" dir="ltr">{l.phone}</span></p>
                   <p className="text-xs text-gray-500 mt-0.5">
                     {fmt(l.created_at)} · {goalLabels[l.goal || ''] || l.goal || 'ללא מטרה'}
+                    {l.experience_level ? ` · ${experienceLabels[l.experience_level] || l.experience_level}` : ''}
                     {l.target_calories ? ` · ${l.target_calories} קק"ל` : ''}
                   </p>
+                  <p className="text-[11px] text-gray-600 mt-0.5">נכנס לאחרונה: {relTime(l.last_seen_at)}</p>
+
                 </div>
                 {isOpen ? <ChevronUp className="w-4 h-4 text-gray-500 shrink-0" /> : <ChevronDown className="w-4 h-4 text-gray-500 shrink-0" />}
               </button>
