@@ -375,6 +375,38 @@ export default function PlanWizard() {
       ]);
 
 
+      // best-effort welcome email, must never block the results view
+      supabase.functions
+        .invoke("send-plan-email", {
+          body: {
+            template: "plan-summary",
+            recipient: form.email.trim(),
+            leadId: lead.id,
+            data: {
+              name: form.name.trim(),
+              goalLabel: GOALS.find((g) => g.id === form.goal)?.name,
+              experienceLabel: EXPERIENCE_NAME(form.experience),
+              isBeginnerBasePhase: form.experience === "beginner",
+              week: 1,
+              targetCalories: computed.targetCalories,
+              protein: computed.protein,
+              carbs: computed.carbs,
+              fat: computed.fat,
+              water: computed.water,
+              days: form.days,
+              splitName: computed.splitName,
+              products: computed.productHandles
+                .map((h) => herbalifeProducts.find((p) => p.handle === h))
+                .filter(Boolean)
+                .slice(0, 3)
+                .map((p) => ({ name: p!.name, handle: p!.handle })),
+            },
+          },
+        })
+        .then(({ error: mailError }) => {
+          if (mailError) console.error("send-plan-email failed:", mailError);
+        });
+
       localStorage.setItem("fullbody_lead_id", lead.id);
       localStorage.setItem(
         LS_KEY,
@@ -384,6 +416,8 @@ export default function PlanWizard() {
       setSaved({ form, results: computed });
       setStep(4);
       window.scrollTo({ top: 0, behavior: "smooth" });
+
+
 
     } catch (e) {
       console.error(e);
