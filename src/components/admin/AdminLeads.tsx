@@ -225,6 +225,11 @@ export default function AdminLeads() {
                       ['טעם מועדף', l.flavor || '—'],
                       ['קלוריות יעד', l.target_calories ?? '—'],
                       ['זמן כניסה לתוכנית', plan ? fmt(plan.created_at) : '—'],
+                      ['רמת ניסיון', experienceLabels[l.experience_level || ''] || l.experience_level || '—'],
+                      ['תחילת התוכנית', l.program_start_date || '—'],
+                      ['שבוע בתוכנית', weekInProgram(l.program_start_date) ?? '—'],
+                      ['נכנס לאחרונה', relTime(l.last_seen_at)],
+
                     ].map(([k, v]) => (
                       <div key={String(k)} className="bg-white/[0.03] rounded-lg p-2.5">
                         <p className="text-gray-500">{k}</p>
