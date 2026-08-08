@@ -15,6 +15,7 @@ import greenLogo from "@/assets/logo-green.webp";
 
 type Goal = "weight-loss" | "toning" | "muscle";
 type Gender = "male" | "female";
+type Experience = "beginner" | "intermediate" | "advanced";
 
 interface FormData {
   goal: Goal;
@@ -24,6 +25,7 @@ interface FormData {
   weight: string;
   activity: number;
   days: number;
+  experience: Experience | "";
   flavor: string;
   kosher: boolean;
   sensitivities: string[];
@@ -32,6 +34,7 @@ interface FormData {
   phone: string;
   email: string;
 }
+
 
 const GOALS: { id: Goal; name: string; desc: string; calorieFactor: number; proteinPerKg: number; productGoal: string }[] = [
   { id: "weight-loss", name: "ירידה במשקל", desc: "גירעון קלורי מבוקר", calorieFactor: 0.8, proteinPerKg: 2.0, productGoal: "weight-loss" },
