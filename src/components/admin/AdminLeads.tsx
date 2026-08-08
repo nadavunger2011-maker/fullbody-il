@@ -309,6 +309,49 @@ export default function AdminLeads() {
                     ))}
                   </div>
 
+                  <div>
+                    <p className="text-xs text-gray-400 mb-2 flex items-center gap-1.5"><Mail className="w-3.5 h-3.5" /> מיילים</p>
+                    <div className="flex flex-wrap gap-2 mb-2">
+                      <button
+                        onClick={() => sendEmail(l, 'plan-summary')}
+                        disabled={!l.email || sending === `${l.id}-plan-summary`}
+                        className="flex items-center gap-1.5 bg-white/[0.06] hover:bg-white/[0.1] disabled:opacity-40 border border-white/10 rounded-lg px-3 py-1.5 text-xs"
+                      >
+                        {sending === `${l.id}-plan-summary`
+                          ? <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                          : <Send className="w-3.5 h-3.5" />}
+                        שליחת סיכום התוכנית
+                      </button>
+                      <button
+                        onClick={() => sendEmail(l, 'plan-reminder')}
+                        disabled={!l.email || sending === `${l.id}-plan-reminder`}
+                        className="flex items-center gap-1.5 bg-white/[0.06] hover:bg-white/[0.1] disabled:opacity-40 border border-white/10 rounded-lg px-3 py-1.5 text-xs"
+                      >
+                        {sending === `${l.id}-plan-reminder`
+                          ? <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                          : <Send className="w-3.5 h-3.5" />}
+                        שליחת תזכורת
+                      </button>
+                    </div>
+                    {emailsFor(l.id).length === 0 ? (
+                      <p className="text-[11px] text-gray-600">לא נשלחו מיילים לליד הזה</p>
+                    ) : (
+                      <div className="space-y-1">
+                        {emailsFor(l.id).map(e => (
+                          <div key={e.id} className="flex items-center justify-between gap-2 text-[11px] bg-white/[0.03] rounded-lg px-2.5 py-1.5">
+                            <span className="text-gray-300">{templateLabels[e.template] || e.template}</span>
+                            <span className="text-gray-500">{fmt(e.created_at)}</span>
+                            <span className={e.status === 'sent' ? 'text-emerald-400' : 'text-red-400'}>
+                              {e.status === 'sent' ? 'נשלח' : 'נכשל'}
+                            </span>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+
+
+
                   {(plan?.form_data?.sensitivities?.length > 0 || plan?.form_data?.sensitivitiesOther) && (
                     <div>
                       <p className="text-xs text-gray-400 mb-2">רגישויות והעדפות תזונה</p>
