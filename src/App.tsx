@@ -118,6 +118,8 @@ function AppContent() {
           <Route path="/blog/chocolate-cake-protocol" element={<ChocolateCakeProtocol />} />
           <Route path="/cart" element={<CartPage />} />
           <Route path="/plan" element={<PlanWizard />} />
+          <Route path="/dashboard" element={<DailyDashboard />} />
+
 
 
           {/* Sweets sub-site (ready for sweets.fullbody.co.il) */}
