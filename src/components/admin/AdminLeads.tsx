@@ -17,8 +17,12 @@ type Lead = {
   kosher: boolean | null;
   flavor: string | null;
   target_calories: number | null;
+  experience_level: string | null;
+  program_start_date: string | null;
+  last_seen_at: string | null;
   created_at: string;
 };
+
 
 type Plan = {
   id: string;
