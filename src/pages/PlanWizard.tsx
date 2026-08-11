@@ -284,12 +284,9 @@ export default function PlanWizard() {
     // touch last_seen_at for returning registrants
     const leadId = localStorage.getItem("fullbody_lead_id");
     if (leadId) {
-      supabase
-        .from("leads")
-        .update({ last_seen_at: new Date().toISOString() })
-        .eq("id", leadId)
-        .then(() => undefined);
+      supabase.rpc("touch_lead_seen", { _lead_id: leadId }).then(() => undefined);
     }
+
   }, []);
 
   // every step change starts at the top of the content, never mid-page near the footer
