@@ -86,22 +86,27 @@ export default function DailyDashboard() {
         if (raw) localForm = JSON.parse(raw)?.form ?? null;
       } catch { /* ignore */ }
 
-      const [{ data: lead }, { data: plan }, { data: checkins }] = await Promise.all([
-        supabase.from("leads").select("*").eq("id", id).maybeSingle(),
-        supabase.from("plans").select("*").eq("lead_id", id).order("created_at", { ascending: false }).limit(1).maybeSingle(),
+      const [{ data: dash }, { data: checkins }] = await Promise.all([
+        supabase.rpc("get_lead_dashboard", { _lead_id: id }),
         supabase.from("daily_checkins").select("checkin_date, shake_done, workout_done, diet_done").eq("lead_id", id).order("checkin_date", { ascending: false }).limit(400),
       ]);
+
+      const payload = (dash as unknown) as {
+        lead?: { name?: string; experience_level?: string | null; program_start_date?: string | null; days?: number | null };
+        plan?: { form_data?: unknown } | null;
+      } | null;
+      const lead = payload?.lead;
 
       if (!lead) {
         navigate("/plan", { replace: true });
         return;
       }
 
-      const f = ((plan?.form_data as unknown) as FormData | null) || localForm;
+      const f = ((payload?.plan?.form_data as unknown) as FormData | null) || localForm;
       setForm(f);
       setName(lead.name || "");
       setExperience(lead.experience_level || f?.experience || "");
-      setStartDate(lead.program_start_date || lead.created_at?.slice(0, 10) || null);
+      setStartDate(lead.program_start_date || null);
 
       const list = (checkins as Checkin[]) || [];
       setRows(list);
@@ -109,7 +114,8 @@ export default function DailyDashboard() {
       if (t) setToday(t);
 
       // touch last seen
-      supabase.from("leads").update({ last_seen_at: new Date().toISOString() }).eq("id", id).then(() => {});
+      supabase.rpc("touch_lead_seen", { _lead_id: id }).then(() => {});
+
 
       setLoading(false);
     })();

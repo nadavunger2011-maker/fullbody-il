@@ -520,7 +520,30 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      create_plan_lead: {
+        Args: {
+          _activity: number
+          _age: number
+          _days: number
+          _email: string
+          _experience_level: string
+          _flavor: string
+          _form_data?: Json
+          _gender: string
+          _goal: string
+          _height: number
+          _kosher: boolean
+          _name: string
+          _phone: string
+          _program_start_date: string
+          _results_data?: Json
+          _target_calories: number
+          _weight: number
+        }
+        Returns: string
+      }
+      get_lead_dashboard: { Args: { _lead_id: string }; Returns: Json }
+      touch_lead_seen: { Args: { _lead_id: string }; Returns: undefined }
     }
     Enums: {
       [_ in never]: never
