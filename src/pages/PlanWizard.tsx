@@ -415,7 +415,9 @@ export default function PlanWizard() {
 
     } catch (e) {
       console.error(e);
-      toast.error("אירעה שגיאה בשמירת התוכנית, נסו שוב");
+      const msg = (e as { message?: string })?.message;
+      toast.error(msg ? `שגיאה בשמירת התוכנית: ${msg}` : "אירעה שגיאה בשמירת התוכנית, נסו שוב");
+
     } finally {
       setSaving(false);
     }
