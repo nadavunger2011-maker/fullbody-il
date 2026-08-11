@@ -169,7 +169,7 @@ function AppContent() {
       </Suspense>
       <Suspense fallback={null}>
         {!isCalculator && !isRecipes && !isProtocol && !isChocolateCake && !isSweets && <WhatsAppButton />}
-        {!isCalculator && !isRecipes && !isProtocol && !isChocolateCake && !isSweets && <FirstVisitModal />}
+        {location.pathname === "/" && <FirstVisitModal />}
         <CookieNotice />
       </Suspense>
     </>
