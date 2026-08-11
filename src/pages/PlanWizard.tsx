@@ -348,37 +348,28 @@ export default function PlanWizard() {
     const today = new Date().toISOString().slice(0, 10);
     const computed = buildPlan(form, 1);
     try {
-      const { data: lead, error } = await supabase
-        .from("leads")
-        .insert({
-          name: form.name.trim(),
-          phone: form.phone.trim(),
-          email: form.email.trim(),
-          goal: form.goal,
-          gender: form.gender,
-          age: parseInt(form.age),
-          height: parseFloat(form.height),
-          weight: parseFloat(form.weight),
-          activity: form.activity,
-          days: form.days,
-          kosher: form.kosher,
-          flavor: form.flavor,
-          target_calories: computed.targetCalories,
-          experience_level: form.experience || null,
-          program_start_date: today,
-          last_seen_at: new Date().toISOString(),
-        })
-        .select("id")
-        .single();
+      const { data: newLeadId, error } = await supabase.rpc("create_plan_lead", {
+        _name: form.name.trim(),
+        _phone: form.phone.trim(),
+        _email: form.email.trim(),
+        _goal: form.goal,
+        _gender: form.gender,
+        _age: parseInt(form.age),
+        _height: parseFloat(form.height),
+        _weight: parseFloat(form.weight),
+        _activity: form.activity,
+        _days: form.days,
+        _kosher: form.kosher,
+        _flavor: form.flavor,
+        _target_calories: computed.targetCalories,
+        _experience_level: form.experience || null,
+        _program_start_date: today,
+        _form_data: form as unknown as never,
+        _results_data: computed as unknown as never,
+      });
       if (error) throw error;
+      const lead = { id: newLeadId as string };
 
-      await supabase.from("plans").insert([
-        {
-          lead_id: lead.id,
-          form_data: form as unknown as never,
-          results_data: computed as unknown as never,
-        },
-      ]);
 
 
       // best-effort welcome email, must never block the results view
