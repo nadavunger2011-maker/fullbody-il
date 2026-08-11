@@ -292,7 +292,13 @@ export default function PlanWizard() {
     }
   }, []);
 
+  // every step change starts at the top of the content, never mid-page near the footer
+  useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+  }, [step]);
+
   const set = <K extends keyof FormData>(k: K, v: FormData[K]) => setForm((p) => ({ ...p, [k]: v }));
+
 
   const toggleSensitivity = (id: string) =>
     setForm((p) => ({
