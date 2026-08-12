@@ -20,6 +20,7 @@ import { trackAddToCartEvent } from '@/lib/analytics';
 import { trackFlashyAddedToCart } from '@/lib/flashyEvents';
 import { normalizeBlogContent, splitContentByH2, pickContextualProducts, appendDisclaimer } from '@/lib/blogContent';
 import BlogProductCard from '@/components/BlogProductCard';
+import BlogCTAWidget from '@/components/BlogCTAWidget';
 
 export default function ProBlogPost() {
   const { slug } = useParams();
@@ -215,8 +216,18 @@ export default function ProBlogPost() {
                   {i === midIndex - 1 && inlineProducts.map(p => (
                     <BlogProductCard key={p.handle} product={p} variant="inline" onAddToCart={handleAddToCart} />
                   ))}
+                  {i === Math.min(1, contentChunks.length - 1) && (
+                    <BlogCTAWidget variant="inline" source={post.slug} />
+                  )}
                 </div>
               ))}
+              <BlogCTAWidget
+                variant="conclusion"
+                source={post.slug}
+                title="סיימת לקרוא? עכשיו תורך ליישם"
+                description="קבל תוכנית תזונה ואימונים אישית, מבוססת על הנתונים שלך, בלי לנחש."
+                buttonText="קבל את התוכנית שלי"
+              />
               <div dangerouslySetInnerHTML={{ __html: appendDisclaimer('') }} />
             </div>
           </div>
@@ -284,6 +295,8 @@ export default function ProBlogPost() {
         </div>
       </section>
 
+      <BlogCTAWidget variant="sticky" source={post.slug} />
+      <div className="h-20 lg:hidden" />
       <ProFooter />
     </div>
   );
