@@ -45,6 +45,8 @@ const ProShippingPolicy = lazy(() => import("./pages/ProShippingPolicy"));
 const ProReturnPolicy = lazy(() => import("./pages/ProReturnPolicy"));
 const ProPrivacyPolicy = lazy(() => import("./pages/ProPrivacyPolicy"));
 const ProTerms = lazy(() => import("./pages/ProTerms"));
+const ProAbout = lazy(() => import("./pages/ProAbout"));
+const ProAccessibility = lazy(() => import("./pages/ProAccessibility"));
 const ProProducts = lazy(() => import("./pages/ProProducts"));
 const ProBundles = lazy(() => import("./pages/ProBundles"));
 const ProteinCalculator = lazy(() => import("./pages/ProteinCalculator"));
@@ -140,6 +142,8 @@ function AppContent() {
           <Route path="/return-policy" element={<ProReturnPolicy />} />
           <Route path="/privacy-policy" element={<ProPrivacyPolicy />} />
           <Route path="/terms-of-use" element={<ProTerms />} />
+          <Route path="/about" element={<ProAbout />} />
+          <Route path="/accessibility" element={<ProAccessibility />} />
           <Route path="/products/:handle" element={<LegacyProductRedirect />} />
 
           {/* NAVA — original FullBody site */}
