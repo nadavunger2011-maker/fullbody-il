@@ -36,6 +36,7 @@ export default function ProFooter() {
                 <li><Link to="/products" className="hover:text-primary-foreground transition">חנות מוצרים</Link></li>
                 <li><Link to="/bundles" className="hover:text-primary-foreground transition">חבילות במחיר מיוחד</Link></li>
                 <li><Link to="/blog" className="hover:text-primary-foreground transition">מאמרים</Link></li>
+                <li><Link to="/about" className="hover:text-primary-foreground transition">אודות ופרטי העסק</Link></li>
                 <li><Link to="/contact" className="hover:text-primary-foreground transition">צור קשר</Link></li>
               </ul>
             </div>
@@ -56,11 +57,11 @@ export default function ProFooter() {
             <div>
               <h4 className="font-bold text-lg mb-4 text-accent">יצירת קשר</h4>
               <div className="text-sm text-primary-foreground/80 space-y-2">
-                <p className="font-bold text-primary-foreground">נדב אונגר - מפיץ עצמאי הרבלייף</p>
-                <p>ח.פ: 200353720</p>
+                <p className="font-bold text-primary-foreground">FullBody - נדב אונגר, מפיץ עצמאי הרבלייף</p>
+                <p>עוסק מורשה / ח.פ: 200353720</p>
                 <div className="flex items-center gap-2">
                   <MapPin className="w-4 h-4 shrink-0" />
-                  <span>זרחין 1, רעננה</span>
+                  <span>רחוב זרחין 1, רעננה, ישראל</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <Mail className="w-4 h-4 shrink-0" />
@@ -69,11 +70,18 @@ export default function ProFooter() {
                 <div className="flex items-center gap-2">
                   <Phone className="w-4 h-4 shrink-0" />
                   <a href="tel:0524487537" className="hover:text-primary-foreground transition">052-4487537</a>
+                  <span className="opacity-50">|</span>
+                  <a href="tel:0542008578" className="hover:text-primary-foreground transition">054-2008578</a>
                 </div>
                 <div className="mt-3 text-xs text-primary-foreground/60">
                   <p className="font-bold text-primary-foreground/70">שעות פעילות:</p>
                   <p>א'-ה': 09:00-18:00</p>
                   <p>ו': 09:00-13:00</p>
+                </div>
+                <div className="mt-3 text-xs text-primary-foreground/60 leading-relaxed">
+                  <p>חנות אונליין ומשלוחים בלבד לכל רחבי ישראל, ללא חנות פיזית לביקור לקוחות.</p>
+                  <p>אמצעי תשלום: כרטיסי אשראי, PayPal ו-Bit, בעמוד תשלום מאובטח בהצפנת SSL.</p>
+                  <p>מטבע החיוב: שקל חדש (ILS), כולל מע"מ.</p>
                 </div>
               </div>
             </div>
