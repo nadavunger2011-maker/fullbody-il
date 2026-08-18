@@ -36,7 +36,6 @@ const STOREFRONT_QUERY = `
                 sku
                 barcode
                 availableForSale
-                quantityAvailable
                 price { amount currencyCode }
                 compareAtPrice { amount currencyCode }
                 image { url }
@@ -56,7 +55,6 @@ interface Variant {
   sku: string | null;
   barcode: string | null;
   availableForSale: boolean;
-  quantityAvailable: number | null;
   price: { amount: string; currencyCode: string };
   compareAtPrice: { amount: string; currencyCode: string } | null;
   image: { url: string } | null;
