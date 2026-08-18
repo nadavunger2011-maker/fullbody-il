@@ -14,8 +14,15 @@ serve(async (req) => {
 
   const staticPages = [
     { loc: "/", changefreq: "daily", priority: "1.0" },
+    { loc: "/products", changefreq: "daily", priority: "0.9" },
     { loc: "/blog", changefreq: "daily", priority: "0.9" },
+    { loc: "/about", changefreq: "monthly", priority: "0.8" },
     { loc: "/contact", changefreq: "monthly", priority: "0.7" },
+    { loc: "/shipping-policy", changefreq: "yearly", priority: "0.5" },
+    { loc: "/return-policy", changefreq: "yearly", priority: "0.5" },
+    { loc: "/terms-of-use", changefreq: "yearly", priority: "0.4" },
+    { loc: "/privacy-policy", changefreq: "yearly", priority: "0.4" },
+    { loc: "/accessibility", changefreq: "yearly", priority: "0.3" },
   ];
 
   // Known product handles for sitemap
