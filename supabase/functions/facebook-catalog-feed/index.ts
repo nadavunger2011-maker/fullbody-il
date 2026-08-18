@@ -1,11 +1,12 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
+import { productUrl, brandFor } from "../_shared/product-links.ts";
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 };
 
-const SHOPIFY_STORE_DOMAIN = 'fullbody-il.myshopify.com';
+const SHOPIFY_STORE_DOMAIN = 'fullbody-new.myshopify.com';
 const SHOPIFY_API_VERSION = '2025-07';
 const SHOPIFY_STOREFRONT_URL = `https://${SHOPIFY_STORE_DOMAIN}/api/${SHOPIFY_API_VERSION}/graphql.json`;
 const STORE_URL = 'https://fullbody.co.il';
@@ -120,11 +121,11 @@ function generateProductXml(product: ShopifyProduct): string {
       <g:id>${escapeXml(productId || node.handle)}</g:id>
       <g:title>${escapeXml(node.title)}</g:title>
       <g:description>${escapeXml(node.description || node.title)}</g:description>
-      <g:link>${STORE_URL}/product/${escapeXml(node.handle)}</g:link>
+      <g:link>${escapeXml(productUrl(node.handle))}</g:link>
       <g:image_link>${escapeXml(image?.url || '')}</g:image_link>
       <g:availability>${availability}</g:availability>
       <g:price>${price} ${currency}</g:price>
-      <g:brand>${escapeXml(node.vendor || 'FullBody')}</g:brand>
+      <g:brand>${escapeXml(brandFor(node.handle, node.vendor))}</g:brand>
       <g:condition>new</g:condition>
       ${node.productType ? `<g:google_product_category>${escapeXml(node.productType)}</g:google_product_category>` : ''}
     </item>`;

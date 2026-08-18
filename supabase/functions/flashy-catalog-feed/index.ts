@@ -1,11 +1,12 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
+import { productUrl, brandFor } from "../_shared/product-links.ts";
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 };
 
-const SHOPIFY_STORE_DOMAIN = 'fullbody-il.myshopify.com';
+const SHOPIFY_STORE_DOMAIN = 'fullbody-new.myshopify.com';
 const SHOPIFY_API_VERSION = '2025-07';
 const SHOPIFY_STOREFRONT_URL = `https://${SHOPIFY_STORE_DOMAIN}/api/${SHOPIFY_API_VERSION}/graphql.json`;
 const STORE_URL = 'https://fullbody.co.il';
@@ -171,14 +172,14 @@ function generateProductXml(product: ShopifyProduct): string {
       <parent_id>${escapeXml(productId || node.handle)}</parent_id>
       <title>${escapeXml(variantTitle)}</title>
       <description>${escapeXml(node.description || node.title)}</description>
-      <link>${STORE_URL}/product/${escapeXml(node.handle)}</link>
+      <link>${escapeXml(productUrl(node.handle))}</link>
       <image_link>${escapeXml(mainImage)}</image_link>
       ${additionalImages.map((img, i) => `<additional_image_link_${i + 1}>${escapeXml(img)}</additional_image_link_${i + 1}>`).join('\n      ')}
       <availability>${availability}</availability>
       <price>${price} ${currency}</price>
       ${compareAtPrice && parseFloat(compareAtPrice) > parseFloat(price) ? `<sale_price>${price} ${currency}</sale_price>
       <regular_price>${compareAtPrice} ${currency}</regular_price>` : ''}
-      <brand>${escapeXml(node.vendor || 'FullBody')}</brand>
+      <brand>${escapeXml(brandFor(node.handle, node.vendor))}</brand>
       <sku>${escapeXml(variant.sku || variantId || '')}</sku>
       <condition>new</condition>
       ${node.productType ? `<category>${escapeXml(node.productType)}</category>` : ''}
