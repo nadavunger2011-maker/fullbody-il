@@ -10,7 +10,9 @@ serve(async (req) => {
     .from("blog_posts")
     .select("slug, date, updated_at")
     .eq("published", true)
-    .order("date", { ascending: false });
+    .eq("noindex", false)
+    .order("date", { ascending: false })
+    .limit(2000);
 
   const staticPages = [
     { loc: "/", changefreq: "daily", priority: "1.0" },
