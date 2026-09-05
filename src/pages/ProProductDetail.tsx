@@ -15,6 +15,7 @@ import { fetchProductByHandle, ShopifyProduct, getFirstAvailableVariant } from '
 import ProFooter from '@/components/ProFooter';
 
 import TrustFactors from '@/components/TrustFactors';
+import GoldStandardBadge from '@/components/GoldStandardBadge';
 import { TestimonialSlider, mapCategoryToTestimonialFilter } from '@/components/SocialProofSection';
 
 import CartDrawer from '@/components/CartDrawer';
@@ -363,6 +364,8 @@ export default function ProProductDetail() {
                 </div>
               </div>
 
+              <GoldStandardBadge className="mb-4" />
+
               {/* Add to Cart Button — high-contrast bright green CTA */}
               <button
                 ref={ctaRef}
@@ -388,7 +391,7 @@ export default function ProProductDetail() {
                 className="w-full mt-3 border border-[hsl(142,70%,35%)] text-[hsl(142,70%,35%)] font-bold py-3 px-8 rounded-xl text-center transition-all flex items-center justify-center gap-3 hover:bg-[hsl(142,70%,35%)]/5"
               >
                 <MessageCircle className="w-5 h-5" />
-                שאלות? דברו איתנו
+                הזמנה טלפונית / ייעוץ ב-WhatsApp
               </a>
             </div>
 

@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { ShieldCheck, Truck, Award, CreditCard, Phone, Mail, MapPin } from 'lucide-react';
+import { ShieldCheck, Truck, Award, CreditCard, Phone, Mail, MapPin, Lock } from 'lucide-react';
 
 export default function ProFooter() {
   return (
@@ -46,7 +46,8 @@ export default function ProFooter() {
               <h4 className="font-bold text-lg mb-4 text-accent">מדיניות משפטית</h4>
               <ul className="space-y-2 text-sm text-primary-foreground/80">
                 <li><Link to="/shipping-policy" className="hover:text-primary-foreground transition">מדיניות משלוחים</Link></li>
-                <li><Link to="/return-policy" className="hover:text-primary-foreground transition">מדיניות החזרים וביטולים</Link></li>
+                <li><Link to="/return-policy" className="hover:text-primary-foreground transition">מדיניות החזרות וביטולים (30 יום)</Link></li>
+                <li><Link to="/refund-policy" className="hover:text-primary-foreground transition">מדיניות החזרים כספיים</Link></li>
                 <li><Link to="/terms-of-use" className="hover:text-primary-foreground transition">תנאי שימוש</Link></li>
                 <li><Link to="/privacy-policy" className="hover:text-primary-foreground transition">מדיניות פרטיות</Link></li>
                 <li><Link to="/accessibility" className="hover:text-primary-foreground transition">הצהרת נגישות</Link></li>
@@ -57,33 +58,49 @@ export default function ProFooter() {
             <div>
               <h4 className="font-bold text-lg mb-4 text-accent">יצירת קשר</h4>
               <div className="text-sm text-primary-foreground/80 space-y-2">
-                <p className="font-bold text-primary-foreground">FullBody - נדב אונגר, מפיץ עצמאי הרבלייף</p>
-                <p>עוסק מורשה / ח.פ: 200353720</p>
-                <div className="flex items-center gap-2">
-                  <MapPin className="w-4 h-4 shrink-0" />
-                  <span>רחוב זרחין 1, רעננה, ישראל</span>
+                <p className="font-bold text-primary-foreground">FullBody – נדב אונגר, משווק עצמאי של מוצרי הרבלייף בישראל</p>
+                <p>ח.פ / עוסק מורשה: 200353720</p>
+                <div className="flex items-start gap-2">
+                  <MapPin className="w-4 h-4 shrink-0 mt-0.5" />
+                  <span>רחוב זרחין 1, קומה 3, בניין גב ים, רעננה, ישראל (מיקוד 4366238)</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <Mail className="w-4 h-4 shrink-0" />
-                  <a href="mailto:info@fullbody.co.il" className="hover:text-primary-foreground transition">info@fullbody.co.il</a>
+                  <a href="mailto:Nadav@nadavunger.com" className="hover:text-primary-foreground transition">Nadav@nadavunger.com</a>
                 </div>
                 <div className="flex items-center gap-2">
                   <Phone className="w-4 h-4 shrink-0" />
-                  <a href="tel:0524487537" className="hover:text-primary-foreground transition">052-4487537</a>
-                  <span className="opacity-50">|</span>
                   <a href="tel:0542008578" className="hover:text-primary-foreground transition">054-2008578</a>
                 </div>
                 <div className="mt-3 text-xs text-primary-foreground/60">
                   <p className="font-bold text-primary-foreground/70">שעות פעילות:</p>
-                  <p>א'-ה': 09:00-18:00</p>
-                  <p>ו': 09:00-13:00</p>
+                  <p>ימים א'-ה' 09:00 - 19:00</p>
+                  <p>יום ו' 09:00 - 13:00</p>
                 </div>
                 <div className="mt-3 text-xs text-primary-foreground/60 leading-relaxed">
                   <p>חנות אונליין ומשלוחים בלבד לכל רחבי ישראל, ללא חנות פיזית לביקור לקוחות.</p>
-                  <p>אמצעי תשלום: כרטיסי אשראי, PayPal ו-Bit, בעמוד תשלום מאובטח בהצפנת SSL.</p>
+                  <p>משלוח חינם בהזמנות מעל ₪299, אחרת ₪35. אספקה 2-5 ימי עסקים.</p>
                   <p>מטבע החיוב: שקל חדש (ILS), כולל מע"מ.</p>
                 </div>
               </div>
+            </div>
+          </div>
+
+          {/* Payment & Security Icons */}
+          <div className="border-t border-primary-foreground/20 pt-6 pb-6">
+            <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-3">
+              <span className="flex items-center gap-1.5 text-xs font-bold bg-white/10 border border-white/20 rounded-md px-3 py-1.5">
+                <Lock className="w-3.5 h-3.5" />
+                SSL 256-bit Secure
+              </span>
+              {["Visa", "Mastercard", "Isracard", "Bit", "Apple Pay"].map((label) => (
+                <span
+                  key={label}
+                  className="text-xs font-bold bg-white/10 border border-white/20 rounded-md px-3 py-1.5"
+                >
+                  {label}
+                </span>
+              ))}
             </div>
           </div>
 
@@ -91,14 +108,15 @@ export default function ProFooter() {
           <div className="border-t border-primary-foreground/20 pt-8">
             <div className="max-w-3xl mx-auto text-center space-y-3">
               <p className="text-xs text-primary-foreground/60 leading-relaxed">
+                פול באדי (FullBody) הינו משווק עצמאי של מוצרי הרבלייף בישראל (Independent Distributor). מוצרים אלו אינם תרופה ואינם מיועדים לאבחן, לטפל, לרפא או למנוע מחלה כלשהי. נשים בהריון, מניקות ואנשים הנוטלים תרופות מרשם – יש להיוועץ ברופא לפני השימוש. התוצאות אישיות ועשויות להשתנות מאדם לאדם.
+              </p>
+              <p className="text-xs text-primary-foreground/60 leading-relaxed">
                 כל ההתייחסויות לבקרת משקל קשורות לתוכנית בקרת המשקל של הרבלייף הכוללת, בין היתר, תזונה מאוזנת, פעילות גופנית קבועה, שתיית נוזלים מספקת, תוספי תזונה במידת הצורך ומנוחה נאותה. התוצאות הן אישיות ועשויות להשתנות.
               </p>
               <p className="text-xs text-primary-foreground/60 leading-relaxed">
-                מוצרי הרבלייף אינם מיועדים לדיאגנוזה, לטיפול, לריפוי או למניעה של מחלות. האתר מופעל ע"י מפיץ עצמאי ואינו האתר הרשמי של חברת הרבלייף ישראל.
+                האתר מופעל ע"י משווק עצמאי של מוצרי הרבלייף בישראל ואינו האתר הרשמי של חברת הרבלייף ישראל.
               </p>
-              <p className="text-xs text-primary-foreground/60 leading-relaxed">
-                נשים בהריון, נשים מניקות, אנשים הנוטלים תרופות מרשם וילדים – יש להיוועץ ברופא לפני השימוש.
-              </p>
+
               <div className="text-xs text-primary-foreground/60 leading-relaxed space-y-2 text-right pt-2">
                 <div>
                   <p className="font-bold text-primary-foreground/70">דיסקליימר תוצאות (עבור תוצאות במלל ו/או בתמונות):</p>
