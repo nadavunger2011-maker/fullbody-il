@@ -140,6 +140,8 @@ function AppContent() {
           <Route path="/contact" element={<ProContact />} />
           <Route path="/shipping-policy" element={<ProShippingPolicy />} />
           <Route path="/return-policy" element={<ProReturnPolicy />} />
+          <Route path="/refund-policy" element={<ProReturnPolicy />} />
+
           <Route path="/privacy-policy" element={<ProPrivacyPolicy />} />
           <Route path="/terms-of-use" element={<ProTerms />} />
           <Route path="/about" element={<ProAbout />} />
