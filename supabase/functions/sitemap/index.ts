@@ -20,6 +20,7 @@ serve(async (req) => {
     { loc: "/contact", changefreq: "monthly", priority: "0.7" },
     { loc: "/shipping-policy", changefreq: "yearly", priority: "0.5" },
     { loc: "/return-policy", changefreq: "yearly", priority: "0.5" },
+    { loc: "/refund-policy", changefreq: "yearly", priority: "0.5" },
     { loc: "/terms-of-use", changefreq: "yearly", priority: "0.4" },
     { loc: "/privacy-policy", changefreq: "yearly", priority: "0.4" },
     { loc: "/accessibility", changefreq: "yearly", priority: "0.3" },
