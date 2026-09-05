@@ -31,12 +31,18 @@ export default function ProBlogPost() {
   const cartCount = cartItems.reduce((s, i) => s + i.quantity, 0);
 
   const { post, isLoading } = useBlogPostBySlug(slug);
+  const { redirectTo, isLoading: redirectLoading } = useBlogRedirect(slug, !isLoading && !post);
 
   useEffect(() => {
-    if (!isLoading && !post) navigate('/blog');
-  }, [post, isLoading, navigate]);
+    if (isLoading || post) return;
+    if (redirectTo) {
+      navigate(redirectTo === 'blog' ? '/blog' : `/blog/${redirectTo}`, { replace: true });
+      return;
+    }
+    if (!redirectLoading) navigate('/blog', { replace: true });
+  }, [post, isLoading, redirectTo, redirectLoading, navigate]);
 
-  if (isLoading) return <div className="min-h-screen bg-background flex items-center justify-center"><Skeleton className="w-32 h-8" /></div>;
+  if (isLoading || redirectLoading) return <div className="min-h-screen bg-background flex items-center justify-center"><Skeleton className="w-32 h-8" /></div>;
   if (!post) return null;
 
   const normalizedContent = normalizeBlogContent(post.content);
@@ -44,8 +50,9 @@ export default function ProBlogPost() {
   const midIndex = Math.max(1, Math.floor(contentChunks.length / 2));
   const articleImage = post.image || '/placeholder.svg';
   const category = proBlogCategories.find(c => c.id === post.categoryId);
-  const relatedProducts = post.relatedProductHandles.map(h => getProductByHandle(h)).filter(Boolean) as HerbalifeProduct[];
+  const relatedProducts = getMinimumRelatedProducts(post.relatedProductHandles, post.categoryId, 3);
   const inlineProducts = pickContextualProducts(normalizedContent, post.relatedProductHandles, 2);
+
 
   const handleAddToCart = async (product: HerbalifeProduct) => {
     const shopifyProduct = await fetchProductByHandle(product.shopifyHandle);
