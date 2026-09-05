@@ -27,6 +27,7 @@ import ProProductFilters, { type ActiveFilters } from './ProProductFilters';
 import { TestimonialSlider, SuccessByNumbers, CrossCategoryFitness } from './SocialProofSection';
 import HomepageReviews from './HomepageReviews';
 import TrustFactors from './TrustFactors';
+import GoldStandardBadge from './GoldStandardBadge';
 import TestimonialsGrid from './TestimonialsGrid';
 import { PRICE_RANGES } from '@/data/herbalifeProducts';
 
@@ -373,6 +374,11 @@ export default function ProBody() {
       <HeroCarousel />
 
       {/* Premium Trust Factors Section - directly below hero */}
+      {/* Gold Standard guarantee badge */}
+      <div className="container mx-auto px-4 pt-6">
+        <GoldStandardBadge className="max-w-2xl mx-auto" />
+      </div>
+
       <TrustFactors />
 
       {/* Trust Badges */}
