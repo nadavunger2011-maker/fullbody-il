@@ -1,7 +1,7 @@
 import { useState, useMemo } from "react";
 import { Link } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
-import { ArrowRight, ArrowLeft, ShoppingBag, Search, Menu, X } from "lucide-react";
+import { ArrowRight, ArrowLeft, ShoppingBag, Search, Menu, X, MessageCircle } from "lucide-react";
 import { herbalifeProducts, PRO_PRODUCT_CATEGORIES, PRICE_RANGES } from "@/data/herbalifeProducts";
 import ProProductFilters, { type ActiveFilters } from "@/components/ProProductFilters";
 import ProFooter from "@/components/ProFooter";
@@ -149,36 +149,47 @@ export default function ProProducts() {
             ) : (
               <div className="grid grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
                 {filtered.map((product, index) => (
-                  <Link
+                  <div
                     key={product.handle}
-                    to={`/product/${product.handle}`}
                     className="group bg-card rounded-xl overflow-hidden hover:shadow-hover transition-all border border-border flex flex-col animate-fade-in"
                     style={{ animationDelay: `${index * 0.03}s` }}
                   >
-                    <div className="relative overflow-hidden aspect-square bg-secondary/20 flex items-center justify-center p-4">
-                      <img
-                        src={product.image}
-                        alt={product.title}
-                        loading="lazy"
-                        className="max-w-[80%] max-h-[80%] object-contain transform group-hover:scale-105 transition-transform duration-500"
-                      />
-                      <span className="absolute top-2 right-2 bg-[hsl(142,70%,35%)] text-white text-[10px] font-bold px-2 py-1 rounded-full">
-                        {product.category}
-                      </span>
-                    </div>
-                    <div className="p-3 flex-1 flex flex-col">
-                      <h3 className="font-bold text-sm sm:text-base text-foreground mb-1 line-clamp-2 group-hover:text-[hsl(142,70%,35%)] transition-colors">
-                        {product.title}
-                      </h3>
-                      <p className="text-xs text-muted-foreground line-clamp-2 mb-2">{product.shortHook}</p>
-                      <div className="mt-auto flex items-center justify-between">
-                        <span className="font-black text-[hsl(142,70%,35%)]">₪{product.price}</span>
-                        <ArrowLeft className="w-4 h-4 text-[hsl(142,70%,35%)]" />
+                    <Link to={`/product/${product.handle}`} className="flex flex-col flex-1">
+                      <div className="relative overflow-hidden aspect-square bg-secondary/20 flex items-center justify-center p-4">
+                        <img
+                          src={product.image}
+                          alt={product.title}
+                          loading="lazy"
+                          className="max-w-[80%] max-h-[80%] object-contain transform group-hover:scale-105 transition-transform duration-500"
+                        />
+                        <span className="absolute top-2 right-2 bg-[hsl(142,70%,35%)] text-white text-[10px] font-bold px-2 py-1 rounded-full">
+                          {product.category}
+                        </span>
                       </div>
-                    </div>
-                  </Link>
+                      <div className="p-3 flex-1 flex flex-col">
+                        <h3 className="font-bold text-sm sm:text-base text-foreground mb-1 line-clamp-2 group-hover:text-[hsl(142,70%,35%)] transition-colors">
+                          {product.title}
+                        </h3>
+                        <p className="text-xs text-muted-foreground line-clamp-2 mb-2">{product.shortHook}</p>
+                        <div className="mt-auto flex items-center justify-between">
+                          <span className="font-black text-[hsl(142,70%,35%)]">₪{product.price}</span>
+                          <ArrowLeft className="w-4 h-4 text-[hsl(142,70%,35%)]" />
+                        </div>
+                      </div>
+                    </Link>
+                    <a
+                      href={`https://wa.me/972542008578?text=${encodeURIComponent(`היי נדב, אשמח לייעוץ והזמנה טלפונית עבור ${product.title}`)}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="m-3 mt-0 flex items-center justify-center gap-1.5 border border-[hsl(142,70%,35%)] text-[hsl(142,70%,35%)] text-[11px] sm:text-xs font-bold py-2 rounded-lg hover:bg-[hsl(142,70%,35%)]/5 transition-colors"
+                    >
+                      <MessageCircle className="w-3.5 h-3.5" />
+                      הזמנה טלפונית / ייעוץ ב-WhatsApp
+                    </a>
+                  </div>
                 ))}
               </div>
+
             )}
           </div>
         </div>
