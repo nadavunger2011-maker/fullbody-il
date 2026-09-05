@@ -265,17 +265,17 @@ export default function ProBody() {
     <div dir="rtl" className="font-sans text-foreground bg-background min-h-screen">
       <Helmet>
         <title>FullBody - תזונת פרימיום, Wellness ומוצרי הרבלייף בכשר למהדרין</title>
-        <meta name="description" content="מפיץ מורשה של Herbalife בישראל. שייקי חלבון, ויטמינים ותוספי תזונה לכושר ובריאות. משלוח חינם מעל ₪299." />
+        <meta name="description" content="משווק עצמאי של מוצרי הרבלייף בישראל. שייקי חלבון, ויטמינים ותוספי תזונה לכושר ובריאות. משלוח חינם מעל ₪299." />
         <link rel="canonical" href="https://fullbody.co.il/" />
         <meta property="og:title" content="פולבאדי - תוספי תזונה ואבקות חלבון למתאמנים" />
-        <meta property="og:description" content="מפיץ מורשה של Herbalife. שייקי חלבון, ויטמינים ותוספי תזונה. משלוח חינם מעל ₪299." />
+        <meta property="og:description" content="משווק עצמאי של מוצרי הרבלייף בישראל. שייקי חלבון, ויטמינים ותוספי תזונה. משלוח חינם מעל ₪299." />
         <meta property="og:type" content="website" />
         <meta property="og:url" content="https://fullbody.co.il/" />
         <meta property="og:locale" content="he_IL" />
         <meta property="og:image" content="https://fullbody.co.il/og-image.jpg" />
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content="פולבאדי - תוספי תזונה ואבקות חלבון למתאמנים" />
-        <meta name="twitter:description" content="מפיץ מורשה של Herbalife. שייקי חלבון, ויטמינים ותוספי תזונה." />
+        <meta name="twitter:description" content="משווק עצמאי של מוצרי הרבלייף בישראל. שייקי חלבון, ויטמינים ותוספי תזונה." />
         <meta name="twitter:image" content="https://fullbody.co.il/og-image.jpg" />
       </Helmet>
 
@@ -297,7 +297,7 @@ export default function ProBody() {
 
           <Link to="/" className="flex items-center relative z-10">
             <div className="flex flex-col items-start">
-              <img src={greenLogo} alt="פולבאדי - מפיץ מורשה Herbalife בישראל" className="h-12 md:h-14 w-auto" />
+              <img src={greenLogo} alt="פולבאדי - משווק עצמאי של מוצרי הרבלייף בישראל" className="h-12 md:h-14 w-auto" />
               <span className="text-[10px] md:text-[11px] font-medium text-muted-foreground mt-0.5 tracking-wide leading-tight">
                 נדב אונגר · 054-2008578
               </span>
