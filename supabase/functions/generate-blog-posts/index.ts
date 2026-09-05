@@ -82,13 +82,37 @@ function getCategoryImage(categoryId: string, existingImages: string[]): string 
   return pick;
 }
 
-function generateSlug(title: string): string {
-  return title
-    .replace(/[^\u0590-\u05FFa-zA-Z0-9\s-]/g, "")
+function sanitizeEnglishSlug(raw: string): string {
+  return (raw || "")
+    .toLowerCase()
+    .replace(/[^a-z0-9\s-]/g, "")
     .trim()
     .replace(/\s+/g, "-")
-    .toLowerCase()
-    .slice(0, 80) + "-" + Date.now().toString(36);
+    .replace(/-+/g, "-")
+    .replace(/^-|-$/g, "")
+    .slice(0, 70)
+    .replace(/-$/, "");
+}
+
+/** Build a clean, readable English slug. Falls back to the category when the model omits it. */
+async function buildUniqueSlug(
+  supabase: any,
+  englishSlug: string,
+  categoryId: string,
+): Promise<string> {
+  let base = sanitizeEnglishSlug(englishSlug);
+  if (base.split("-").filter(Boolean).length < 2) {
+    base = sanitizeEnglishSlug(`${categoryId}-guide`);
+  }
+  let candidate = base;
+  for (let n = 2; n < 40; n++) {
+    const { data } = await supabase.from("blog_posts").select("id").eq("slug", candidate).maybeSingle();
+    const { data: red } = await supabase
+      .from("blog_redirects").select("old_slug").eq("old_slug", candidate).maybeSingle();
+    if (!data && !red) return candidate;
+    candidate = `${base}-${n}`;
+  }
+  return `${base}-${Date.now().toString(36)}`;
 }
 
 // Short FAQ-style questions people commonly search for
@@ -176,6 +200,7 @@ ${existingTitles.map(t => `- "${t}"`).join("\n")}
 
 ## דרישות טכניות:
 - השדה "title" הוא כותרת העמוד וה-H1 היחיד (עד 60 תווים).
+- השדה "englishSlug" חייב להיות סלאג באנגלית בלבד, קריא, 2-5 מילים, מופרד במקפים, בלי מספרים אקראיים (לדוגמה: healthy-eating-guide).
 - השדה "content" חייב להתחיל ישירות בפסקה או ב-H2, בלי <h1> בכלל.
 - כותרות H2/H3 ברורות כל 200-300 מילים.
 - פסקאות קצרות ותכליתיות.
@@ -189,6 +214,7 @@ ${existingTitles.map(t => `- "${t}"`).join("\n")}
 החזר JSON בלבד בפורמט הבא (בלי markdown, בלי backticks):
 {
   "title": "...",
+  "englishSlug": "clean-english-seo-slug",
   "excerpt": "...",
   "content": "<p>...</p><h2>...</h2>...",
   "readTime": 5,
@@ -217,6 +243,7 @@ function buildFaqPostPrompt(question: string, categoryName: string): string {
 - CTA רך למוצרי Full Body.
 - קרדיט: "המדריך נכתב בליווי מקצועי של שי, מומחה תזונה ויזמות בריאות."
 - השדה "content" חייב להיות בלי <h1>; ה-H1 מגיע רק מהשדה "title".
+- השדה "englishSlug": סלאג באנגלית קריא, 2-5 מילים מופרדות במקפים, בלי קוד אקראי.
 
 ## כיתובים לרשתות חברתיות:
 - ig_caption: אינסטגרם - עד 300 תווים, 5-8 האשטגים, אימוג'ים.
@@ -226,6 +253,7 @@ function buildFaqPostPrompt(question: string, categoryName: string): string {
 החזר JSON בלבד (בלי markdown, בלי backticks):
 {
   "title": "...",
+  "englishSlug": "clean-english-seo-slug",
   "excerpt": "...",
   "content": "<p>...</p><h2>...</h2>...",
   "readTime": 3,
@@ -324,7 +352,7 @@ serve(async (req) => {
         continue;
       }
 
-      const slug = generateSlug(article.title);
+      const slug = await buildUniqueSlug(supabase, article.englishSlug, category.id);
       const image = getCategoryImage(category.id, existingImages);
 
       const { error } = await supabase.from("blog_posts").insert({
