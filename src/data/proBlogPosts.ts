@@ -12,6 +12,7 @@ export interface ProBlogPost {
   relatedProductHandles: string[]; // silo links to products
   faq: { question: string; answer: string }[];
   metaDescription: string;
+  noindex?: boolean;
 }
 
 export interface ProBlogCategory {

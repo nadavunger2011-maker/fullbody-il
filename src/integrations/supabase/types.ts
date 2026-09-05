@@ -182,12 +182,16 @@ export type Database = {
           image: string | null
           is_social_synced: boolean
           li_caption: string | null
+          merged_into: string | null
           meta_description: string
+          noindex: boolean
+          proposed_slug: string | null
           published: boolean
           read_time: number
           related_product_handles: string[] | null
           slug: string
           title: string
+          topic_key: string | null
           updated_at: string
         }
         Insert: {
@@ -204,12 +208,16 @@ export type Database = {
           image?: string | null
           is_social_synced?: boolean
           li_caption?: string | null
+          merged_into?: string | null
           meta_description: string
+          noindex?: boolean
+          proposed_slug?: string | null
           published?: boolean
           read_time?: number
           related_product_handles?: string[] | null
           slug: string
           title: string
+          topic_key?: string | null
           updated_at?: string
         }
         Update: {
@@ -226,13 +234,38 @@ export type Database = {
           image?: string | null
           is_social_synced?: boolean
           li_caption?: string | null
+          merged_into?: string | null
           meta_description?: string
+          noindex?: boolean
+          proposed_slug?: string | null
           published?: boolean
           read_time?: number
           related_product_handles?: string[] | null
           slug?: string
           title?: string
+          topic_key?: string | null
           updated_at?: string
+        }
+        Relationships: []
+      }
+      blog_redirects: {
+        Row: {
+          created_at: string
+          new_slug: string
+          old_slug: string
+          reason: string
+        }
+        Insert: {
+          created_at?: string
+          new_slug: string
+          old_slug: string
+          reason?: string
+        }
+        Update: {
+          created_at?: string
+          new_slug?: string
+          old_slug?: string
+          reason?: string
         }
         Relationships: []
       }
