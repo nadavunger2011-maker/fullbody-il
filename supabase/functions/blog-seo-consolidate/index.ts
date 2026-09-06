@@ -84,10 +84,13 @@ async function classifyBatch(
   const list = posts.map((p, i) => `${i}. [${p.category_id}] ${p.title}`).join("\n");
   const prompt = `You are an SEO editor for a Hebrew health & nutrition store (Herbalife distributor).
 Below is a numbered list of Hebrew blog post titles. For EACH item return:
-- "topic_key": a broad snake_case English topic key describing the REAL subject. Posts that cover the same practical subject MUST share the same topic_key (aggressive grouping is desired: we are removing keyword cannibalization).
-- "slug": a short, clean, human-readable English SEO slug (kebab-case, 2-5 words) for that topic_key. All items sharing a topic_key MUST share the identical slug.
+- "topic_key": a SPECIFIC snake_case English subtopic key describing the concrete searchable subject (for example: protein_intake_after_workout, sleep_quality_and_weight, meal_prep_for_busy_week, hormones_and_belly_fat, home_bodyweight_training). Only titles that would compete for the SAME Google query may share a topic_key.
+- "slug": a short, clean, human-readable English SEO slug (kebab-case, 3-5 words) matching that topic_key. All items sharing a topic_key MUST share the identical slug.
 
-Reuse these existing topic keys whenever the subject matches (do not invent near-duplicates):
+Hard rules:
+- NEVER use broad bucket keys such as nutrition, healthy_eating, fitness, wellness, weight_management, healthy_recipes, smart_nutrition, holistic_wellness. They are forbidden.
+- Aim for high granularity: in this batch of ${posts.length} titles, produce at least ${Math.max(12, Math.floor(posts.length / 3))} DISTINCT topic keys.
+- Reuse an existing key below ONLY when the subject is essentially identical:
 ${knownTopics.length ? knownTopics.join(", ") : "(none yet)"}
 
 Return ONLY compact JSON: {"items":[{"i":0,"topic_key":"...","slug":"..."}]}
