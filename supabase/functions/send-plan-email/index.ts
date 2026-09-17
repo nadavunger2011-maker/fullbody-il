@@ -8,7 +8,7 @@ const corsHeaders = {
 };
 
 const FROM = "FullBody <info@fullbody.co.il>";
-const ALLOWED: PlanEmailTemplate[] = ["plan-summary", "plan-reminder"];
+const ALLOWED: PlanEmailTemplate[] = ["plan-summary", "plan-reminder", "welcome-discount"];
 const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 
 Deno.serve(async (req) => {
@@ -24,10 +24,16 @@ Deno.serve(async (req) => {
     const payload = await req.json().catch(() => null);
     if (!payload || typeof payload !== "object") return json({ error: "Invalid JSON body" }, 400);
 
-    const template = payload.template as PlanEmailTemplate;
-    const recipient = String(payload.recipient || "").trim().toLowerCase();
+    // Support both {template, recipient, data} and legacy {type, email, name, couponCode}
+    const rawTemplate = String(payload.template || payload.type || "");
+    const template = (rawTemplate === "welcome_discount" ? "welcome-discount" : rawTemplate) as PlanEmailTemplate;
+    const recipient = String(payload.recipient || payload.email || "").trim().toLowerCase();
     const leadId = payload.leadId ? String(payload.leadId) : null;
-    const data = (payload.data || {}) as PlanEmailData;
+    const data = {
+      ...(payload.data || {}),
+      ...(payload.name ? { name: payload.name } : {}),
+      ...(payload.couponCode ? { couponCode: payload.couponCode } : {}),
+    } as PlanEmailData & { couponCode?: string };
 
     if (!ALLOWED.includes(template)) return json({ error: "Unknown template" }, 400);
     if (!emailRe.test(recipient) || recipient.length > 320) return json({ error: "Invalid recipient email" }, 400);

@@ -73,15 +73,31 @@ function productList(products: PlanEmailProduct[] = []) {
   return card("מוצרים שהותאמו לתוכנית שלך", `<ul style="margin:0;padding-inline-start:18px">${items}</ul>`);
 }
 
-export type PlanEmailTemplate = "plan-summary" | "plan-reminder";
+export type PlanEmailTemplate = "plan-summary" | "plan-reminder" | "welcome-discount";
 
 export function renderPlanEmail(
   template: PlanEmailTemplate,
-  data: PlanEmailData
+  data: PlanEmailData & { couponCode?: string }
 ): { subject: string; html: string } {
   const first = (data.name || "").trim().split(" ")[0];
   const hello = first ? `היי ${esc(first)},` : "היי,";
   const planLink = `${SITE}/plan`;
+
+  if (template === "welcome-discount") {
+    const coupon = esc(data.couponCode || "WELCOME10");
+    return {
+      subject: "המתנה שלך מ-FullBody: 10% הנחה + ספר מתכונים",
+      html: shell(`
+        <h1 style="margin:0 0 12px;font-size:24px;color:${DARK}">${hello} המתנה שלך כאן 🎁</h1>
+        <p style="margin:0 0 14px;color:#33413a;font-size:16px;line-height:1.8">
+          תודה שנרשמת. הנה קוד ההנחה שלך להזמנה הראשונה, וגם ספר מתכוני השייקים והקטלוג המעודכן.
+        </p>
+        ${card("קוד ההנחה שלך (10%)", `<strong style="font-size:22px;letter-spacing:2px">${coupon}</strong>`)}
+        <p style="margin:18px 0 6px">${button(`${SITE}/products`, "לצפייה במוצרים ומימוש הקופון")}</p>
+        <p style="margin:14px 0 0;color:#7b8a82;font-size:13px">רוצה התאמה אישית? אפשר להשיב למייל הזה או להתקשר.</p>
+      `),
+    };
+  }
 
   if (template === "plan-reminder") {
     const gap = data.daysInactive ? `כבר ${data.daysInactive} ימים שלא נכנסת` : "מזמן לא נכנסת";
