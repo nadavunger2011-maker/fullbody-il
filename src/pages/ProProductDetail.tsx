@@ -16,6 +16,7 @@ import ProFooter from '@/components/ProFooter';
 
 import TrustFactors from '@/components/TrustFactors';
 import GoldStandardBadge from '@/components/GoldStandardBadge';
+import GlobalProductHacks from '@/components/GlobalProductHacks';
 import { TestimonialSlider, mapCategoryToTestimonialFilter } from '@/components/SocialProofSection';
 
 import CartDrawer from '@/components/CartDrawer';
@@ -443,6 +444,9 @@ export default function ProProductDetail() {
             <div className="-mx-4 sm:mx-0">
               <TrustFactors compact />
             </div>
+
+            {/* Global Product Hacks / Scientific Backing */}
+            <GlobalProductHacks handle={product.handle} category={product.category} />
 
             {/* Description Accordion — 3 core sections + extras */}
             <Accordion type="single" collapsible defaultValue="benefits" className="w-full">
