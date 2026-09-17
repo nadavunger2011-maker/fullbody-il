@@ -140,7 +140,7 @@ export default function LeadMagnetModal() {
               <div className="bg-secondary/40 rounded-2xl p-4 border border-border space-y-2 text-xs font-bold text-foreground">
                 <div className="flex items-center gap-2.5">
                   <CheckCircle2 className="w-4 h-4 text-[hsl(142,70%,35%)] shrink-0" />
-                  <span>🏷️ קופון 10% הנחה להזמנה הראשונה (<code className="text-emerald-600 font-mono">WELCOME10</code>)</span>
+                  <span>🏷️ קופון 10% הנחה להזמנה הראשונה (<code className="bg-emerald-100 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-300 font-mono px-1.5 py-0.5 rounded blur-[3px] select-none pointer-events-none">WELC10</code> <span className="text-[10px] text-emerald-600 font-normal">נחשף מייד לאחר הזנה</span>)</span>
                 </div>
                 <div className="flex items-center gap-2.5">
                   <CheckCircle2 className="w-4 h-4 text-[hsl(142,70%,35%)] shrink-0" />
