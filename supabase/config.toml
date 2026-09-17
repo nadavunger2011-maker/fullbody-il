@@ -27,5 +27,3 @@ verify_jwt = false
 [functions.blog-seo-consolidate]
 verify_jwt = false
 
-[functions.resend-domain-setup]
-verify_jwt = false
