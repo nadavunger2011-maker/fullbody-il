@@ -6,6 +6,8 @@ import { toast } from 'sonner';
 import { trackEvent } from '@/lib/analytics';
 
 const STORAGE_KEY = 'fullbody_lead_modal_dismissed';
+const SESSION_KEY = 'fullbody_lead_modal_shown_session';
+const SHOW_DELAY_MS = 10000;
 
 export default function LeadMagnetModal() {
   const [isOpen, setIsOpen] = useState(false);
@@ -20,19 +22,24 @@ export default function LeadMagnetModal() {
   const location = useLocation();
 
   useEffect(() => {
-    // Show after 5 seconds on first visit or if not dismissed
-    if (localStorage.getItem(STORAGE_KEY)) return;
+    // Homepage only, new users only (never signed up), once per session, after 10s
+    if (location.pathname !== '/') return;
+    if (localStorage.getItem(STORAGE_KEY)) return; // already converted -> never show again
+    if (sessionStorage.getItem(SESSION_KEY)) return; // already shown this session
 
     const timer = setTimeout(() => {
+      sessionStorage.setItem(SESSION_KEY, 'true');
       setIsOpen(true);
-    }, 4000);
+    }, SHOW_DELAY_MS);
 
     return () => clearTimeout(timer);
-  }, []);
+  }, [location.pathname]);
 
   const handleClose = () => {
+    // Dismiss for this session only - a new (non-converted) visitor may see it
+    // again on their next session, but never more than once per session.
     setIsOpen(false);
-    localStorage.setItem(STORAGE_KEY, 'true');
+    sessionStorage.setItem(SESSION_KEY, 'true');
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -86,6 +93,9 @@ export default function LeadMagnetModal() {
       } catch (err) {
         console.log('Welcome email trigger sent silently:', err);
       }
+
+      // Converted -> never show the popup again
+      localStorage.setItem(STORAGE_KEY, 'true');
 
       setIsSubmittingSuccess(true);
       toast.success('נרשמת בהצלחה! הקופון והמתנות שלך מוכנים');
