@@ -22,8 +22,8 @@ export default function LeadMagnetModal() {
   const location = useLocation();
 
   useEffect(() => {
-    // Homepage only, new users only (never signed up), once per session, after 10s
-    if (location.pathname !== '/') return;
+    // All pages, new users only (never signed up), once per session, after 10s.
+    // Runs once on mount so a mid-session navigation cannot re-trigger it.
     if (localStorage.getItem(STORAGE_KEY)) return; // already converted -> never show again
     if (sessionStorage.getItem(SESSION_KEY)) return; // already shown this session
 
@@ -33,7 +33,8 @@ export default function LeadMagnetModal() {
     }, SHOW_DELAY_MS);
 
     return () => clearTimeout(timer);
-  }, [location.pathname]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const handleClose = () => {
     // Dismiss for this session only - a new (non-converted) visitor may see it
