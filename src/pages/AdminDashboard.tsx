@@ -16,6 +16,7 @@ import AdminReviews from '@/components/admin/AdminReviews';
 import AIConsultantChat from '@/components/admin/AIConsultantChat';
 import AdminRecipes from '@/components/admin/AdminRecipes';
 import AdminLeads from '@/components/admin/AdminLeads';
+import AdminLeadsTimeline from '@/components/admin/AdminLeadsTimeline';
 import AdminBlogWebhook from '@/components/admin/AdminBlogWebhook';
 import { BookOpen, Webhook, ClipboardList } from 'lucide-react';
 
@@ -921,8 +922,13 @@ export default function AdminDashboard() {
             </div>
           )}
 
-          {/* Recipes Tab */}
-          {activeTab === 'leads' && <AdminLeads />}
+          {/* Leads Tab */}
+          {activeTab === 'leads' && (
+            <div className="space-y-6">
+              <AdminLeadsTimeline />
+              <AdminLeads />
+            </div>
+          )}
 
           {activeTab === 'recipes' && <AdminRecipes />}
 

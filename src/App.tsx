@@ -33,6 +33,7 @@ const ProductDetail = lazy(() => import("./pages/ProductDetail"));
 const Products = lazy(() => import("./pages/Products"));
 const SleepGuide = lazy(() => import("./pages/SleepGuide"));
 const WhatsAppButton = lazy(() => import("./components/WhatsAppButton"));
+const LeadMagnetModal = lazy(() => import("./components/LeadMagnetModal"));
 const LegacyProductRedirect = lazy(() => import("./components/LegacyProductRedirect").then(m => ({ default: m.LegacyProductRedirect })));
 const AdminLogin = lazy(() => import("./pages/AdminLogin"));
 const AdminDashboard = lazy(() => import("./pages/AdminDashboard"));
@@ -175,7 +176,7 @@ function AppContent() {
       </Suspense>
       <Suspense fallback={null}>
         {!isCalculator && !isRecipes && !isProtocol && !isChocolateCake && !isSweets && <WhatsAppButton />}
-        {location.pathname === "/" && <FirstVisitModal />}
+        <LeadMagnetModal />
         <CookieNotice />
       </Suspense>
     </>

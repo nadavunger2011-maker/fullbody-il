@@ -64,11 +64,22 @@ interface TrackEventParams {
   duration_seconds?: number;
 }
 
+function getIdentifiedUser() {
+  if (typeof window === 'undefined') return {};
+  return {
+    user_email: localStorage.getItem('identified_user_email') || undefined,
+    user_phone: localStorage.getItem('identified_user_phone') || undefined,
+    user_name: localStorage.getItem('identified_user_name') || undefined,
+  };
+}
+
 export async function trackEvent(params: TrackEventParams) {
   try {
     const utm = getStoredUtm();
+    const user = getIdentifiedUser();
     await supabase.from('analytics_events' as any).insert({
       ...params,
+      ...user,
       session_id: getSessionId(),
       referrer: document.referrer || undefined,
       user_agent: navigator.userAgent,
