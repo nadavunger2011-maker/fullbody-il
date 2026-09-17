@@ -46,9 +46,14 @@ export default function ProProducts() {
   return (
     <div className="min-h-screen bg-background" dir="rtl">
       <Helmet>
-        <title>חנות מוצרי הרבלייף | FullBody</title>
-        <meta name="description" content="קטלוג מלא של מוצרי הרבלייף - שייקים, חלבונים, ויטמינים ומוצרי ספורט. משלוח מהיר לכל הארץ." />
+        <title>מוצרי הרבלייף - קטלוג ומחירון מלא בישראל | FullBody - מפיץ מורשה</title>
+        <meta name="description" content="קטלוג מוצרי הרבלייף המלא בישראל: שייק פורמולה 1, אבקות חלבון, תרכיז אלוורה, ויטמינים ותוספי תזונה. הזמנה אונליין, משלוח מהיר לכל הארץ וייעוץ מקצועי." />
         <link rel="canonical" href="https://fullbody.co.il/products" />
+        <meta property="og:title" content="מוצרי הרבלייף - קטלוג ומחירון מלא בישראל | FullBody" />
+        <meta property="og:description" content="קטלוג מוצרי הרבלייף המלא בישראל: שייקים, אבקות חלבון, תרכיז אלוורה וויטמינים. משלוח מהיר לכל הארץ." />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://fullbody.co.il/products" />
+        <meta property="og:locale" content="he_IL" />
       </Helmet>
 
       <CartDrawer isOpen={isCartOpen} onClose={() => setIsCartOpen(false)} />

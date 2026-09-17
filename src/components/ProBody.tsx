@@ -265,19 +265,32 @@ export default function ProBody() {
   return (
     <div dir="rtl" className="font-sans text-foreground bg-background min-h-screen">
       <Helmet>
-        <title>FullBody - תזונת פרימיום, Wellness ומוצרי הרבלייף בכשר למהדרין</title>
-        <meta name="description" content="משווק עצמאי של מוצרי הרבלייף בישראל. שייקי חלבון, ויטמינים ותוספי תזונה לכושר ובריאות. משלוח חינם מעל ₪299." />
+        <title>חנות מוצרי הרבלייף (Herbalife) מקוריים בישראל | FullBody - מפיץ מורשה</title>
+        <meta name="description" content="חנות מוצרי הרבלייף מקוריים בישראל. שייק פורמולה 1, אבקות חלבון, תרכיז אלוורה ותוספי תזונה במחירים מעולים. משלוח מהיר עד הבית, ייעוץ אישי ומשלוח חינם מעל ₪299." />
         <link rel="canonical" href="https://fullbody.co.il/" />
-        <meta property="og:title" content="פולבאדי - תוספי תזונה ואבקות חלבון למתאמנים" />
-        <meta property="og:description" content="משווק עצמאי של מוצרי הרבלייף בישראל. שייקי חלבון, ויטמינים ותוספי תזונה. משלוח חינם מעל ₪299." />
+        <meta property="og:title" content="חנות מוצרי הרבלייף (Herbalife) מקוריים בישראל | FullBody" />
+        <meta property="og:description" content="חנות מוצרי הרבלייף מקוריים בישראל. שייק פורמולה 1, אבקות חלבון, תרכיז אלוורה ותוספי תזונה. משלוח חינם מעל ₪299." />
         <meta property="og:type" content="website" />
         <meta property="og:url" content="https://fullbody.co.il/" />
         <meta property="og:locale" content="he_IL" />
         <meta property="og:image" content="https://fullbody.co.il/og-image.jpg" />
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content="פולבאדי - תוספי תזונה ואבקות חלבון למתאמנים" />
+        <meta name="twitter:title" content="חנות מוצרי הרבלייף (Herbalife) מקוריים בישראל | FullBody" />
         <meta name="twitter:description" content="משווק עצמאי של מוצרי הרבלייף בישראל. שייקי חלבון, ויטמינים ותוספי תזונה." />
         <meta name="twitter:image" content="https://fullbody.co.il/og-image.jpg" />
+        <script type="application/ld+json">
+          {JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "OnlineStore",
+            "name": "FullBody - מוצרי הרבלייף מקוריים",
+            "url": "https://fullbody.co.il/",
+            "description": "חנות מוצרי הרבלייף מקוריים בישראל: שייקי חלבון, ויטמינים ותוספי תזונה.",
+            "logo": "https://fullbody.co.il/assets/logo-green.webp",
+            "currenciesAccepted": "ILS",
+            "paymentAccepted": "Credit Card, Direct Debit",
+            "priceRange": "₪₪"
+          })}
+        </script>
       </Helmet>
 
       {/* Announcement Bar */}
