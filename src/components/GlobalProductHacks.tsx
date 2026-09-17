@@ -8,10 +8,13 @@ interface GlobalProductHacksProps {
 }
 
 export default function GlobalProductHacks({ handle, category }: GlobalProductHacksProps) {
-  const isFormula1 = handle.startsWith('formula-1');
-  const isNiteworks = handle === 'niteworks';
-  const isAloe = handle.startsWith('aloe');
-  const isTea = handle.startsWith('instant-herbal');
+  const h = (handle || '').toLowerCase();
+  const c = (category || '').toLowerCase();
+
+  const isNiteworks = h.includes('niteworks');
+  const isFormula1 = h.includes('formula') || h.includes('f1') || c.includes('שייק') || c.includes('חלבון');
+  const isAloe = h.includes('aloe');
+  const isTea = h.includes('herbal') || h.includes('tea') || c.includes('תה');
 
   if (isNiteworks) {
     return (
