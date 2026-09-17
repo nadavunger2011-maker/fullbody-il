@@ -61,11 +61,11 @@ export default function LeadMagnetModal() {
         name: name || 'אורח',
         email,
         phone,
-        notes: 'הרשמה לפופאפ מתנה - קופון WELCOME10 + ספר מתכונים + קטלוג 2026',
-        created_at: new Date().toISOString(),
+        goal: 'popup_lead_magnet_welcome10',
       };
 
-      await supabase.from('leads' as any).insert(payload as any);
+      const { error: leadError } = await supabase.from('leads' as any).insert(payload as any);
+      if (leadError) console.error('Lead insert failed:', leadError);
 
       // 3. Track lead conversion in our In-House Analytics
       trackEvent({
