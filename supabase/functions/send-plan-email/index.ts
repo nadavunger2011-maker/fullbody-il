@@ -8,7 +8,7 @@ const corsHeaders = {
 };
 
 const FROM = "FullBody <info@fullbody.co.il>";
-const ALLOWED: PlanEmailTemplate[] = ["plan-summary", "plan-reminder"];
+const ALLOWED: PlanEmailTemplate[] = ["plan-summary", "plan-reminder", "welcome-discount"];
 const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 
 Deno.serve(async (req) => {
