@@ -77,6 +77,9 @@ export type Database = {
           screen_width: number | null
           session_id: string | null
           user_agent: string | null
+          user_email: string | null
+          user_name: string | null
+          user_phone: string | null
           utm_campaign: string | null
           utm_content: string | null
           utm_medium: string | null
@@ -105,6 +108,9 @@ export type Database = {
           screen_width?: number | null
           session_id?: string | null
           user_agent?: string | null
+          user_email?: string | null
+          user_name?: string | null
+          user_phone?: string | null
           utm_campaign?: string | null
           utm_content?: string | null
           utm_medium?: string | null
@@ -133,6 +139,9 @@ export type Database = {
           screen_width?: number | null
           session_id?: string | null
           user_agent?: string | null
+          user_email?: string | null
+          user_name?: string | null
+          user_phone?: string | null
           utm_campaign?: string | null
           utm_content?: string | null
           utm_medium?: string | null
