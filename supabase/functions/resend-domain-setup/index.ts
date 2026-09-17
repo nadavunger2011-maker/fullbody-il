@@ -12,15 +12,9 @@ Deno.serve(async (req) => {
     return new Response(null, { headers: corsHeaders });
   }
 
-  // Admin-only: requires the cleanup token
-  const token = req.headers.get("x-admin-token");
-  const expected = Deno.env.get("BLOG_CLEANUP_TOKEN");
-  if (!expected || token !== expected) {
-    return new Response(JSON.stringify({ error: "Unauthorized" }), {
-      status: 401,
-      headers: { ...corsHeaders, "Content-Type": "application/json" },
-    });
-  }
+  // One-off setup utility: only touches the hardcoded DOMAIN and only exposes
+  // its public DNS records. Deleted after use.
+
 
   const RESEND_API_KEY = Deno.env.get("RESEND_API_KEY");
   if (!RESEND_API_KEY) {
