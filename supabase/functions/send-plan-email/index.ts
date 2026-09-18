@@ -40,13 +40,23 @@ Deno.serve(async (req) => {
 
     const { subject, html } = renderPlanEmail(template, data);
 
-    const res = await fetch("https://api.resend.com/emails", {
-      method: "POST",
-      headers: { "Content-Type": "application/json", Authorization: `Bearer ${apiKey}` },
-      body: JSON.stringify({ from: FROM, to: [recipient], subject, html }),
-    });
+    const send = (from: string) =>
+      fetch("https://api.resend.com/emails", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Authorization: `Bearer ${apiKey}` },
+        body: JSON.stringify({ from, to: [recipient], subject, html }),
+      });
 
-    const bodyText = await res.text();
+    let res = await send(FROM);
+    let bodyText = await res.text();
+
+    // Fallback: domain not verified yet -> use Resend's test sender (delivers to account owner only)
+    if (res.status === 403 && bodyText.includes("not verified")) {
+      console.warn("Sender domain not verified, retrying with onboarding@resend.dev");
+      res = await send("FullBody <onboarding@resend.dev>");
+      bodyText = await res.text();
+    }
+
     let parsed: Record<string, unknown> = {};
     try {
       parsed = JSON.parse(bodyText);
