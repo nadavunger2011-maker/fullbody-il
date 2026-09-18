@@ -81,8 +81,22 @@ export default function LeadMagnetModal() {
         page_path: location.pathname,
       });
 
-      // 4. Send Welcome email via Resend API directly
-      const emailHtml = `
+      // 4. Send Welcome email via secure server function
+      try {
+        const { data: emailRes, error: emailErr } = await supabase.functions.invoke('send-plan-email', {
+          body: {
+            template: 'welcome-discount',
+            recipient: email,
+            data: { name: name || undefined, couponCode: 'WELCOME10' },
+          },
+        });
+        if (emailErr) console.error('Welcome email failed:', emailErr);
+        else console.log('Welcome email queued:', emailRes);
+      } catch (err) {
+        console.error('Welcome email error:', err);
+      }
+
+      const unusedEmailHtml = `
       <div dir="rtl" style="font-family: Arial, sans-serif; padding: 20px; color: #1e293b; background-color: #f8fafc;">
         <div style="max-width: 600px; margin: 0 auto; background-color: #ffffff; border-radius: 16px; padding: 30px; border: 2px solid #16a34a;">
           <h1 style="color: #16a34a; font-size: 24px;">שלום ${name || 'חבר/ה'}, איזה כיף שנרשמת ל-FullBody! 🥤</h1>
