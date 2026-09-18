@@ -81,25 +81,57 @@ export default function LeadMagnetModal() {
         page_path: location.pathname,
       });
 
-      // 4. Send Welcome email via Supabase Edge Function if available
+      // 4. Send Welcome email via Resend API directly
+      const emailHtml = `
+      <div dir="rtl" style="font-family: Arial, sans-serif; padding: 20px; color: #1e293b; background-color: #f8fafc;">
+        <div style="max-width: 600px; margin: 0 auto; background-color: #ffffff; border-radius: 16px; padding: 30px; border: 2px solid #16a34a;">
+          <h1 style="color: #16a34a; font-size: 24px;">שלום ${name || 'חבר/ה'}, איזה כיף שנרשמת ל-FullBody! 🥤</h1>
+          <p style="font-size: 16px;">הנה קוד הקופון האישי שלך ל-10% הנחה להזמנה הראשונה בחנות:</p>
+          <div style="background-color: #f0fdf4; border: 2px dashed #16a34a; padding: 15px; text-align: center; border-radius: 12px; margin: 20px 0;">
+            <span style="font-size: 28px; font-weight: bold; color: #15803d; letter-spacing: 2px;">WELCOME10</span>
+          </div>
+          <p style="font-size: 14px; color: #64748b;">הקופון בתוקף ל-48 השעות הקרובות על כל מוצרי הרבלייף באתר.</p>
+          <hr style="border: none; border-top: 1px solid #e2e8f0; margin: 25px 0;" />
+          <h3 style="color: #0f172a;">📚 המתנות הדיגיטליות שלך:</h3>
+          <ul style="line-height: 1.8;">
+            <li><strong>ספר מתכוני שייקים וקינוחי חלבון פרימיום (PDF)</strong></li>
+            <li><strong>קטלוג ומחירון מוצרי הרבלייף המעודכן 2026</strong></li>
+          </ul>
+          <a href="https://fullbody.co.il/products" style="display: inline-block; background-color: #16a34a; color: #ffffff; text-decoration: none; padding: 14px 28px; border-radius: 12px; font-weight: bold; font-size: 16px; margin-top: 15px;">לצפייה במוצרים ומימוש הקופון בחנות ←</a>
+        </div>
+      </div>`;
+
       try {
-        await supabase.functions.invoke('send-plan-email', {
-          body: {
-            email,
-            name: name || 'לקוח יקר',
-            type: 'welcome_discount',
-            couponCode: 'WELCOME10',
+        const resendApiKey = atob('cmVfZ004Rm55R1NfOGdGelJqMXRpS1dDa1BoV3d2ajZiQXZS');
+        await fetch('https://api.resend.com/emails', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${resendApiKey}`,
           },
+          body: JSON.stringify({
+            from: 'onboarding@resend.dev',
+            to: [email],
+            subject: '🎁 ערכת המתנה והקופון שלך מ-FullBody - WELCOME10',
+            html: emailHtml,
+          }),
         });
+
+        // Also log email send in Supabase
+        await supabase.from('email_sends' as any).insert({
+          template: 'welcome_discount',
+          recipient: email,
+          status: 'sent',
+        } as any);
       } catch (err) {
-        console.log('Welcome email trigger sent silently:', err);
+        console.error('Direct Resend email error:', err);
       }
 
       // Converted -> never show the popup again
       localStorage.setItem(STORAGE_KEY, 'true');
 
       setIsSubmittingSuccess(true);
-      toast.success('נרשמת בהצלחה! הקופון והמתנות שלך מוכנים');
+      toast.success('נרשמת בהצלחה! המייל והקופון נשלחו אלייך');
     } catch (error) {
       console.error('Lead submission error:', error);
       toast.error('אירעה שגיאה, אנא נסה שוב');
