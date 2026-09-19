@@ -12,14 +12,13 @@ export default function CarouselStudio() {
 
   const slides = [
     {
-      badge: '💡 פתרון עייפות מנצח',
+      badge: '🔍 תעלומה פיזיולוגית',
       badgeBg: 'bg-amber-400 text-slate-950',
       title: 'למה אתה מתרסק מעייפות ב-14:00 בצהריים? 😴',
-      desc: 'הטעות ש-90% מהאנשים עושים בארוחת הבוקר – ואיך שייק חלבון מאוזן פותר אותה ב-60 שניות.',
-      cta: 'החלק שמאלה לפתרון המלא ⬅️',
+      desc: 'הטעות ש-90% מהאנשים עושים בארוחת הבוקר – ונוסחת 3 המרכיבים הפיזיולוגית שמחזירה את הפוקוס והאנרגיה ב-60 שניות.',
+      cta: 'החלק שמאלה לגילוי הבעיה ⬅️',
       number: '1 / 5',
-      image: herbalifeF1Vanilla,
-      imageTag: 'שייק פורמולה 1 וניל - 18g חלבון',
+      showClock: true,
     },
     {
       badge: '⚠️ הבעיה הפיזיולוגית',
@@ -124,7 +123,19 @@ export default function CarouselStudio() {
                   {slide.desc}
                 </p>
 
-                {/* Visual Graph for Slide 2 */}
+                {/* Visual Clock for Slide 1 Hook */}
+                {slide.showClock && (
+                  <div className="bg-slate-950/80 border border-amber-500/30 rounded-2xl p-4 my-3 text-center space-y-2">
+                    <div className="flex items-center justify-between text-xs font-bold text-amber-400">
+                      <span>⏰ 08:00 - ארוחת בוקר סטנדרטית</span>
+                      <span>😴 14:00 - נפילת אנרגיה קשה</span>
+                    </div>
+                    <div className="h-2 w-full bg-gradient-to-r from-amber-400 via-rose-500 to-amber-500 rounded-full animate-pulse"></div>
+                    <span className="text-[11px] text-slate-300 block font-normal">
+                      מה הגורם הסודי שמפיל אותך באמצע היום? (החלק שמאלה לגילוי ⬅️)
+                    </span>
+                  </div>
+                )}
                 {slide.showChart && (
                   <div className="bg-slate-950/80 border border-rose-900/50 rounded-2xl p-4 my-3 text-center space-y-2">
                     <div className="flex items-center justify-between text-[11px] font-bold text-rose-400">
