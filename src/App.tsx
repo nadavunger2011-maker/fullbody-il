@@ -58,6 +58,7 @@ const ChocolateCakeProtocol = lazy(() => import("./pages/ChocolateCakeProtocol")
 const CartPage = lazy(() => import("./pages/CartPage"));
 const PlanWizard = lazy(() => import("./pages/PlanWizard"));
 const DailyDashboard = lazy(() => import("./pages/DailyDashboard"));
+const CarouselStudio = lazy(() => import("./pages/CarouselStudio"));
 const FirstVisitModal = lazy(() => import("@/components/FirstVisitModal"));
 
 
@@ -122,6 +123,7 @@ function AppContent() {
           <Route path="/cart" element={<CartPage />} />
           <Route path="/plan" element={<PlanWizard />} />
           <Route path="/dashboard" element={<DailyDashboard />} />
+          <Route path="/carousel-studio" element={<CarouselStudio />} />
 
 
 
