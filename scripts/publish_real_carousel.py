@@ -6,7 +6,9 @@ import time
 TOKEN = 'IGAAaT4FvO6hlBZAGJHWm9JLWVFdXRnaG1zdmpqai1DdU11ZA19DLVVZAQ2FEMmxRaF9CU01fWi1TY2Y0REVHNkJWTFFPbEhjMERNM3RuWFhiOEFSRWN1ckNUX0ZAHbk5MaGRYTV8tYzNwdWg3RWRFOWVHRGU4RXJ1d1pROVl6NW9KdwZDZD'
 IG_USER_ID = '28425450893730217'
 
-CONTAINER_IDS = ['17880437415625043', '17880437433625043', '17880437451625043', '17880437472625043', '17880437499625043']
+RAW_SLIDE_URLS = [
+    f'https://raw.githubusercontent.com/nadavunger2011-maker/fullbody-il/main/public/slide_{i}.jpg' for i in range(1, 6)
+]
 
 CAPTION = """למה אתה מתרסק מעייפות ב-14:00 בצהריים? 😴
 
@@ -25,10 +27,28 @@ CAPTION = """למה אתה מתרסק מעייפות ב-14:00 בצהריים? �
 #הרבלייף #שייקחלבון #אורחחייםבריא #תזונהונכושר #חיטובבריא #הרזיהבריאה #FullBody #תזונהנכונה #בריאות #תזונהאיכותית"""
 
 def publish_carousel():
+    container_ids = []
+    print("Creating item containers for each slide...")
+    for idx, u in enumerate(RAW_SLIDE_URLS, start=1):
+        url = f"https://graph.instagram.com/v22.0/{IG_USER_ID}/media"
+        params = urllib.parse.urlencode({
+            'image_url': u,
+            'is_carousel_item': 'true',
+            'access_token': TOKEN
+        }).encode('utf-8')
+
+        req = urllib.request.Request(url, data=params, method='POST')
+        with urllib.request.urlopen(req) as resp:
+            res = json.loads(resp.read().decode('utf-8'))
+            print(f"Slide {idx} Container ID:", res.get('id'))
+            container_ids.append(res.get('id'))
+        time.sleep(1)
+
+    print("Creating parent carousel container...")
     url_parent = f"https://graph.instagram.com/v22.0/{IG_USER_ID}/media"
     parent_params = urllib.parse.urlencode({
         'media_type': 'CAROUSEL',
-        'children': ','.join(CONTAINER_IDS),
+        'children': ','.join(container_ids),
         'caption': CAPTION,
         'access_token': TOKEN
     }).encode('utf-8')
@@ -41,6 +61,7 @@ def publish_carousel():
 
     time.sleep(3)
 
+    print("Publishing Carousel post to Instagram...")
     url_pub = f"https://graph.instagram.com/v22.0/{IG_USER_ID}/media_publish"
     pub_params = urllib.parse.urlencode({
         'creation_id': parent_id,
@@ -51,6 +72,7 @@ def publish_carousel():
     with urllib.request.urlopen(req_pub) as resp:
         res_pub = json.loads(resp.read().decode('utf-8'))
         print("CAROUSEL POST PUBLISHED SUCCESSFULLY! Post ID:", res_pub.get('id'))
+        return res_pub.get('id')
 
 if __name__ == '__main__':
     publish_carousel()
