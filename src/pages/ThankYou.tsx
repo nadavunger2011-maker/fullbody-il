@@ -23,7 +23,7 @@ const ThankYou = () => {
   const total = totalParam ? parseFloat(totalParam) : calculatedTotal;
 
   useEffect(() => {
-    if ((items.length > 0 || orderId) && total > 0) {
+    if (items.length > 0 || orderId) {
       const transactionId = orderId || `order_${Date.now()}`;
 
       const gtmItems = items.map(item => ({
