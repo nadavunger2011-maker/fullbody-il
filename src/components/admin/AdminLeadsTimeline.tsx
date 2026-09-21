@@ -229,7 +229,7 @@ export default function AdminLeadsTimeline() {
             onClick={() => setFilter('all')}
             className={`px-3 py-1.5 rounded-lg transition-all ${filter === 'all' ? 'bg-[hsl(142,70%,35%)] text-white shadow-sm' : 'text-muted-foreground hover:text-foreground'}`}
           >
-            כל הלידים ({leads.length})
+            כל הלידים ({allLeads.length})
           </button>
           <button
             onClick={() => setFilter('abandoned')}
