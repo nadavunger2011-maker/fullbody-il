@@ -112,7 +112,7 @@ export default function AdminLeadsTimeline() {
 
   // Filter leads
   const filteredLeads = React.useMemo(() => {
-    return leads.filter((lead) => {
+    return allLeads.filter((lead) => {
       const email = (lead.email || '').toLowerCase().trim();
       const userEvents = eventsByEmail[email] || [];
 
@@ -142,7 +142,7 @@ export default function AdminLeadsTimeline() {
 
       return true;
     });
-  }, [leads, eventsByEmail, search, filter]);
+  }, [allLeads, eventsByEmail, search, filter]);
 
   // Export CSV for Google Ads Customer Match / Meta Custom Audience
   const handleExportCSV = () => {
