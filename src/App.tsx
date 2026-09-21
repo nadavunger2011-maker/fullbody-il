@@ -121,6 +121,7 @@ function AppContent() {
           <Route path="/protocol-thank-you" element={<ProtocolThankYou />} />
           <Route path="/blog/chocolate-cake-protocol" element={<ChocolateCakeProtocol />} />
           <Route path="/cart" element={<CartPage />} />
+          <Route path="/thank-you" element={<ThankYou />} />
           <Route path="/plan" element={<PlanWizard />} />
           <Route path="/dashboard" element={<DailyDashboard />} />
           <Route path="/carousel-studio" element={<CarouselStudio />} />
