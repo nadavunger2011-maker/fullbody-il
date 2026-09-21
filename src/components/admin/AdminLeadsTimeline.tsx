@@ -42,15 +42,28 @@ export default function AdminLeadsTimeline() {
         .order('created_at', { ascending: false })
         .limit(300);
 
-      // Fetch Analytics Events
-      const { data: eventsData } = await supabase
+      // Fetch only meaningful, identity-bearing events (skip the huge anonymous page_view noise)
+      const { data: identifiedEvents } = await supabase
         .from('analytics_events' as any)
         .select('*')
+        .not('user_email', 'is', null)
+        .in('event_type', ['view_item', 'add_to_cart', 'checkout_started', 'purchase', 'lead_conversion'])
         .order('created_at', { ascending: false })
-        .limit(1000);
+        .limit(5000);
+
+      // Fetch all purchases (including Shopify webhook orders without a site lead)
+      const { data: purchaseEvents } = await supabase
+        .from('analytics_events' as any)
+        .select('*')
+        .eq('event_type', 'purchase')
+        .order('created_at', { ascending: false })
+        .limit(2000);
+
+      const merged = [...((identifiedEvents as any[]) || []), ...((purchaseEvents as any[]) || [])];
+      const dedup = Array.from(new Map(merged.map((e: any) => [e.id, e])).values());
 
       setLeads((leadsData as any) || []);
-      setEvents((eventsData as any) || []);
+      setEvents(dedup as any);
     } catch (e) {
       console.error('Error fetching admin leads timeline:', e);
       toast.error('שגיאה שטעינת הנתונים');
@@ -75,9 +88,31 @@ export default function AdminLeadsTimeline() {
     return map;
   }, [events]);
 
+  // Buyers that came straight from Shopify without ever filling a form on the site
+  const allLeads = React.useMemo(() => {
+    const known = new Set(leads.map((l) => (l.email || '').toLowerCase().trim()).filter(Boolean));
+    const extra: Lead[] = [];
+    const seen = new Set<string>();
+    events.forEach((ev) => {
+      if (ev.event_type !== 'purchase') return;
+      const email = (ev.user_email || '').toLowerCase().trim();
+      if (!email || known.has(email) || seen.has(email)) return;
+      seen.add(email);
+      extra.push({
+        id: `shopify_${email}`,
+        name: ev.user_name || 'רוכש שופיפיי',
+        email,
+        phone: ev.user_phone || '',
+        created_at: ev.created_at,
+      });
+    });
+    return [...leads, ...extra];
+  }, [leads, events]);
+
+
   // Filter leads
   const filteredLeads = React.useMemo(() => {
-    return leads.filter((lead) => {
+    return allLeads.filter((lead) => {
       const email = (lead.email || '').toLowerCase().trim();
       const userEvents = eventsByEmail[email] || [];
 
@@ -107,7 +142,7 @@ export default function AdminLeadsTimeline() {
 
       return true;
     });
-  }, [leads, eventsByEmail, search, filter]);
+  }, [allLeads, eventsByEmail, search, filter]);
 
   // Export CSV for Google Ads Customer Match / Meta Custom Audience
   const handleExportCSV = () => {
@@ -194,7 +229,7 @@ export default function AdminLeadsTimeline() {
             onClick={() => setFilter('all')}
             className={`px-3 py-1.5 rounded-lg transition-all ${filter === 'all' ? 'bg-[hsl(142,70%,35%)] text-white shadow-sm' : 'text-muted-foreground hover:text-foreground'}`}
           >
-            כל הלידים ({leads.length})
+            כל הלידים ({allLeads.length})
           </button>
           <button
             onClick={() => setFilter('abandoned')}
