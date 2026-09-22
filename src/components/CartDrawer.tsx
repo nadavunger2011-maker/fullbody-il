@@ -107,9 +107,9 @@ export default function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
       );
       const discountCode = starterBundle ? 'STARTERSTACK15' : undefined;
 
-      // Format URL with channel parameter and open in new tab
+      // Format URL with channel parameter and redirect in same window (prevents mobile popup blocking)
       const formattedUrl = formatCheckoutUrl(checkoutUrl, discountCode);
-      window.open(formattedUrl, '_blank');
+      window.location.href = formattedUrl;
       onClose();
     } else {
       toast.error('שגיאה ביצירת הזמנה');
