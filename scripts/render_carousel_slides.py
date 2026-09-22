@@ -6,10 +6,10 @@ SPEC_PATH = sys.argv[2] if len(sys.argv) > 2 else "/tmp/browser/slides/spec.json
 
 TEMPLATE = """
 <!doctype html><html dir="rtl"><head><meta charset="utf-8">
-<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;700;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;700;900&family=Noto+Color+Emoji&display=swap" rel="stylesheet">
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-body{width:1080px;height:1080px;font-family:Heebo,sans-serif;overflow:hidden}
+body{width:1080px;height:1080px;font-family:Heebo,'Noto Color Emoji',sans-serif;overflow:hidden}
 .slide{position:relative;width:1080px;height:1080px;display:flex;flex-direction:column;justify-content:flex-end}
 .bg{position:absolute;inset:0;background-size:cover;background-position:center}
 .scrim{position:absolute;inset:0;background:linear-gradient(180deg,rgba(2,6,23,.55) 0%,rgba(2,6,23,.82) 45%,rgba(2,6,23,.95) 100%)}
