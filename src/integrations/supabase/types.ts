@@ -557,6 +557,57 @@ export type Database = {
         }
         Relationships: []
       }
+      social_posts: {
+        Row: {
+          caption: string
+          created_at: string
+          error: string | null
+          id: string
+          image_urls: string[]
+          permalink: string | null
+          platform: string
+          provider_post_id: string | null
+          published_at: string | null
+          scheduled_for: string | null
+          sort_order: number
+          status: string
+          title: string | null
+          updated_at: string
+        }
+        Insert: {
+          caption: string
+          created_at?: string
+          error?: string | null
+          id?: string
+          image_urls?: string[]
+          permalink?: string | null
+          platform?: string
+          provider_post_id?: string | null
+          published_at?: string | null
+          scheduled_for?: string | null
+          sort_order?: number
+          status?: string
+          title?: string | null
+          updated_at?: string
+        }
+        Update: {
+          caption?: string
+          created_at?: string
+          error?: string | null
+          id?: string
+          image_urls?: string[]
+          permalink?: string | null
+          platform?: string
+          provider_post_id?: string | null
+          published_at?: string | null
+          scheduled_for?: string | null
+          sort_order?: number
+          status?: string
+          title?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never

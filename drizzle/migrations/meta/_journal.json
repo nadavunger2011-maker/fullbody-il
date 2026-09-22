@@ -8,6 +8,13 @@
       "when": 1789685154024,
       "tag": "0000_add_identified_user_to_analytics_events",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1790056148885,
+      "tag": "0001_create_social_posts_queue",
+      "breakpoints": true
     }
   ]
 }
