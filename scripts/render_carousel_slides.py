@@ -9,13 +9,13 @@ TEMPLATE = """
 <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;700;900&family=Noto+Color+Emoji&display=swap" rel="stylesheet">
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-body{width:1080px;height:1080px;font-family:Heebo,'Noto Color Emoji',sans-serif;overflow:hidden}
-.slide{position:relative;width:1080px;height:1080px;display:flex;flex-direction:column;justify-content:flex-end}
+body{width:1080px;height:1350px;font-family:Heebo,'Noto Color Emoji',sans-serif;overflow:hidden}
+.slide{position:relative;width:1080px;height:1350px;display:flex;flex-direction:column;justify-content:flex-end}
 .bg{position:absolute;inset:0;background-size:cover;background-position:center}
-.scrim{position:absolute;inset:0;background:linear-gradient(180deg,rgba(2,6,23,.55) 0%,rgba(2,6,23,.82) 45%,rgba(2,6,23,.95) 100%)}
-.content{position:relative;padding:70px 64px 150px;text-align:right}
+.scrim{position:absolute;inset:0;background:linear-gradient(180deg,rgba(2,6,23,.38) 0%,rgba(2,6,23,.72) 42%,rgba(2,6,23,.96) 100%)}
+.content{position:relative;width:900px;margin:0 auto;padding:90px 72px 190px;text-align:center}
 .tag{display:inline-block;background:#10B981;color:#04170f;font-weight:900;font-size:38px;padding:12px 30px;border-radius:999px;margin-bottom:34px}
-h1{color:#fff;font-weight:900;font-size:96px;line-height:1.05;letter-spacing:-2px;text-shadow:0 6px 30px rgba(0,0,0,.6)}
+h1{color:#fff;font-weight:900;font-size:100px;line-height:1.05;letter-spacing:0;text-shadow:0 6px 30px rgba(0,0,0,.7)}
 h1 em{font-style:normal;color:#F59E0B}
 p.sub{color:#e2e8f0;font-weight:700;font-size:48px;line-height:1.25;margin-top:34px}
 ul{list-style:none;margin-top:38px}
@@ -23,7 +23,7 @@ li{color:#fff;font-weight:700;font-size:50px;line-height:1.25;background:rgba(25
 border-radius:26px;padding:24px 30px;margin-bottom:20px;display:flex;gap:20px;align-items:center}
 li b{color:#34d399;font-weight:900;font-size:54px}
 .cta{margin-top:34px;background:#F59E0B;color:#1a1204;font-weight:900;font-size:52px;border-radius:26px;padding:28px 32px;text-align:center}
-.footer{position:absolute;bottom:0;right:0;left:0;padding:38px 64px;display:flex;justify-content:space-between;align-items:center;
+.footer{position:absolute;bottom:0;right:0;left:0;padding:42px 90px;display:flex;justify-content:space-between;align-items:center;
 border-top:2px solid rgba(255,255,255,.18)}
 .footer .brand{color:#94a3b8;font-weight:700;font-size:34px;direction:ltr}
 .footer .swipe{color:#34d399;font-weight:900;font-size:36px}
@@ -42,7 +42,7 @@ async def main():
     spec = json.load(open(SPEC_PATH, encoding="utf-8"))
     async with async_playwright() as p:
         browser = await p.chromium.launch(headless=True)
-        ctx = await browser.new_context(viewport={"width": 1080, "height": 1080}, device_scale_factor=1)
+        ctx = await browser.new_context(viewport={"width": 1080, "height": 1350}, device_scale_factor=1)
         page = await ctx.new_page()
         for i, s in enumerate(spec, start=1):
             html = TEMPLATE.replace("__BG__", "file://" + os.path.abspath(s["bg"]))
