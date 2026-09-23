@@ -176,7 +176,7 @@ export default function ProProductDetail() {
 
   if (!product) {
     // Redirect non-Herbalife product handles to the Nava site
-    return <Navigate href="https://checkout.fullbody.co.il/products/${handle}" replace />;
+    return <Navigate to={`/nava/product/${handle}`} replace />;
   }
 
   const whatsappLink = `https://wa.me/972547308826?text=${encodeURIComponent(`היי, אשמח לשמוע פרטים על ${product.title}`)}`;
@@ -715,7 +715,7 @@ export default function ProProductDetail() {
               {related.map((rp) => (
                 <Link
                   key={rp.handle}
-                  href="https://checkout.fullbody.co.il/products/${rp.handle}"
+                  to={`/product/${rp.handle}`}
                   className="group bg-card rounded-xl overflow-hidden border border-border hover:shadow-card-hover transition-all duration-300 flex flex-col shrink-0 snap-start w-[70%] sm:w-[45%] md:w-[32%] lg:w-[23%]"
                 >
                   <div className="aspect-square bg-secondary/20 flex items-center justify-center p-6">
