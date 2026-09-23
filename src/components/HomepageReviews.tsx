@@ -49,7 +49,7 @@ export default function HomepageReviews() {
           {reviews.map((r) => (
             <Link
               key={r.id}
-              to={`/product/${r.product_handle}`}
+              href="https://checkout.fullbody.co.il/products/${r.product_handle}"
               className="bg-background border border-border rounded-xl p-5 hover:shadow-hover transition-all flex flex-col gap-2"
             >
               <div className="flex items-center gap-1">
