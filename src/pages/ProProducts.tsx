@@ -159,7 +159,7 @@ export default function ProProducts() {
                     className="group bg-card rounded-xl overflow-hidden hover:shadow-hover transition-all border border-border flex flex-col animate-fade-in"
                     style={{ animationDelay: `${index * 0.03}s` }}
                   >
-                    <Link href="https://checkout.fullbody.co.il/products/${product.handle}" className="flex flex-col flex-1">
+                    <Link href="https://fullbody-new.myshopify.com/products/${product.handle}" className="flex flex-col flex-1">
                       <div className="relative overflow-hidden aspect-square bg-secondary/20 flex items-center justify-center p-4">
                         <img
                           src={product.image}

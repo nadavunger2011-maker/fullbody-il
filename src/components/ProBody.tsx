@@ -474,7 +474,7 @@ export default function ProBody() {
               .map((product, index) => (
               <Link
                 key={product.handle}
-                href="https://checkout.fullbody.co.il/products/${product.handle}"
+                href="https://fullbody-new.myshopify.com/products/${product.handle}"
                 className="group bg-card rounded-xl overflow-hidden hover:shadow-hover transition-all duration-300 border border-border flex flex-col animate-fade-in cursor-pointer"
                 style={{ animationDelay: `${index * 0.05}s` }}
               >
@@ -621,7 +621,7 @@ export default function ProBody() {
             {searchQuery && (
               <div className="mt-4 max-h-60 overflow-y-auto">
                 {filteredProducts.length > 0 ? filteredProducts.slice(0, 5).map(p => (
-                  <Link key={p?.node?.id} href="https://checkout.fullbody.co.il/products/${p?.node?.handle}" onClick={() => setIsSearchOpen(false)} className="flex items-center gap-3 py-3 hover:bg-secondary/50 rounded-lg px-2 transition-colors cursor-pointer">
+                  <Link key={p?.node?.id} href="https://fullbody-new.myshopify.com/products/${p?.node?.handle}" onClick={() => setIsSearchOpen(false)} className="flex items-center gap-3 py-3 hover:bg-secondary/50 rounded-lg px-2 transition-colors cursor-pointer">
                     {p?.node?.images?.edges?.[0]?.node && <img src={p.node.images.edges[0].node.url} alt={`תמונה של ${p?.node?.title ?? 'מוצר'}`} className="w-10 h-10 object-contain rounded" loading="lazy" />}
                     <div>
                       <p className="font-bold text-foreground text-sm">{p?.node?.title}</p>
