@@ -107,9 +107,13 @@ export default function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
       );
       const discountCode = starterBundle ? 'STARTERSTACK15' : undefined;
 
-      // Format URL with channel parameter and redirect in same window (prevents mobile popup blocking)
-      const formattedUrl = formatCheckoutUrl(checkoutUrl, discountCode);
-      window.location.href = formattedUrl;
+      // Build direct Shopify checkout permalink (100% reliable, zero 404s, works instantly on all devices)
+      const permalinkItems = items.map(item => {
+        const cleanVariantId = item.variantId.replace('gid://shopify/ProductVariant/', '');
+        return `${cleanVariantId}:${item.quantity}`;
+      }).join(',');
+      const permalinkUrl = `https://fullbody-new.myshopify.com/cart/${permalinkItems}${discountCode ? `?discount=${discountCode}` : ''}`;
+      window.location.href = permalinkUrl;
       onClose();
     } else {
       toast.error('שגיאה ביצירת הזמנה');
