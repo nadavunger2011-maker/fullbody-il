@@ -787,7 +787,7 @@ export default function PlanWizard() {
                 {recommended.map((p) => (
                   <Link
                     key={p.handle}
-                    href="https://fullbody-new.myshopify.com/products/${p.handle}"
+                    href="https://shop.fullbody.co.il/products/${p.handle}"
                     className="rounded-xl border border-border bg-card p-3 shadow-card hover:shadow-hover transition"
                   >
                     <img src={p.image} alt={p.title} loading="lazy" className="w-full h-32 object-contain" />
