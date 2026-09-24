@@ -1,3 +1,4 @@
+import { shopUrlForHandle } from '@/lib/shopLinks';
 import { useEffect, useState } from "react";
 import { Star } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
@@ -49,7 +50,7 @@ export default function HomepageReviews() {
           {reviews.map((r) => (
             <Link
               key={r.id}
-              to={`/product/${r.product_handle}`}
+              to={shopUrlForHandle(r.product_handle)}
               className="bg-background border border-border rounded-xl p-5 hover:shadow-hover transition-all flex flex-col gap-2"
             >
               <div className="flex items-center gap-1">

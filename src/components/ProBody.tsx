@@ -1,3 +1,4 @@
+import { shopProductUrl } from '@/lib/shopLinks';
 import greenLogo from '@/assets/logo-green.webp';
 import herbalifeDistributorLogo from '@/assets/herbalife-independent-distributor.webp';
 import heroSlide1 from '@/assets/hero-slide-1.webp';
@@ -474,7 +475,7 @@ export default function ProBody() {
               .map((product, index) => (
               <Link
                 key={product.handle}
-                to={`/product/${product.handle}`}
+                to={shopProductUrl(product.shopifyHandle)}
                 className="group bg-card rounded-xl overflow-hidden hover:shadow-hover transition-all duration-300 border border-border flex flex-col animate-fade-in cursor-pointer"
                 style={{ animationDelay: `${index * 0.05}s` }}
               >

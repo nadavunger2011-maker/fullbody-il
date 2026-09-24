@@ -1,3 +1,4 @@
+import { shopUrlForHandle } from '@/lib/shopLinks';
 import { useEffect, useMemo, useState } from "react";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
@@ -143,7 +144,7 @@ function RecipeModalContent({ recipe, onClose }: { recipe: Recipe; onClose: () =
                   </button>
                   {isProduct ? (
                     <Link
-                      to={`/product/${recipe.productHandle}`}
+                      to={shopUrlForHandle(recipe.productHandle)}
                       className={`flex-1 text-right text-sm font-bold inline-flex items-center gap-1 transition-colors ${checked ? "line-through text-white/40" : "text-[hsl(142,70%,55%)] hover:text-[hsl(142,70%,65%)] underline decoration-dotted underline-offset-4"}`}
                     >
                       <span>{ing}</span>
@@ -166,7 +167,7 @@ function RecipeModalContent({ recipe, onClose }: { recipe: Recipe; onClose: () =
         {/* Primary CTA */}
         <div className="space-y-2 py-2">
           <Link
-            to={`/product/${recipe.productHandle}`}
+            to={shopUrlForHandle(recipe.productHandle)}
             className="w-full inline-flex items-center justify-center gap-2 bg-white text-black hover:bg-[hsl(142,70%,45%)] hover:text-white font-black text-base px-6 py-4 rounded-xl transition-all shadow-2xl border border-white/10"
           >
             <ShoppingCart className="w-5 h-5" />

@@ -1,3 +1,4 @@
+import { shopProductUrl } from '@/lib/shopLinks';
 import { useState, useMemo } from "react";
 import { Link } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
@@ -159,7 +160,7 @@ export default function ProProducts() {
                     className="group bg-card rounded-xl overflow-hidden hover:shadow-hover transition-all border border-border flex flex-col animate-fade-in"
                     style={{ animationDelay: `${index * 0.03}s` }}
                   >
-                    <Link to={`/product/${product.handle}`} className="flex flex-col flex-1">
+                    <Link to={shopProductUrl(product.shopifyHandle)} className="flex flex-col flex-1">
                       <div className="relative overflow-hidden aspect-square bg-secondary/20 flex items-center justify-center p-4">
                         <img
                           src={product.image}

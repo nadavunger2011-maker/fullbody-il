@@ -28,29 +28,8 @@ serve(async (req) => {
     { loc: "/accessibility", changefreq: "yearly", priority: "0.3" },
   ];
 
-  // Known product handles for sitemap
-  const productHandles = [
-    "formula-1-healthy-meal-shake",
-    "protein-drink-mix-pdm",
-    "rebuild-strength-protein",
-    "herbalife-aloe-concentrate",
-    "herbal-tea-concentrate",
-    "multivitamin-complex",
-    "beta-heart",
-    "personalized-protein-powder",
-    "active-fiber-complex",
-    "cell-activator",
-    "herbalifeline-max",
-    "herbalife-skin-collagen",
-    "niteworks",
-    "total-control",
-    "cell-u-loss",
-    "prolessa-duo",
-    "formula-2-multivitamin",
-    "herbalife-24-cr7-drive",
-    "herbalife-24-hydrate",
-    "herbalife-24-rebuild-endurance",
-  ];
+  // Product pages now live on the Shopify store (shop.fullbody.co.il),
+  // which publishes its own sitemap. They are intentionally excluded here.
 
   const today = new Date().toISOString().split("T")[0];
 
@@ -60,10 +39,6 @@ serve(async (req) => {
     xml += `  <url>\n    <loc>https://fullbody.co.il${page.loc}</loc>\n    <lastmod>${today}</lastmod>\n    <changefreq>${page.changefreq}</changefreq>\n    <priority>${page.priority}</priority>\n  </url>\n`;
   }
 
-  // Product pages
-  for (const handle of productHandles) {
-    xml += `  <url>\n    <loc>https://fullbody.co.il/product/${handle}</loc>\n    <lastmod>${today}</lastmod>\n    <changefreq>weekly</changefreq>\n    <priority>0.8</priority>\n  </url>\n`;
-  }
 
   // Dynamic blog posts from DB
   if (posts) {

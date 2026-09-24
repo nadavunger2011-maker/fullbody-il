@@ -1,3 +1,4 @@
+import { shopProductUrl } from '@/lib/shopLinks';
 import { useState } from 'react';
 import { X, Plus, Minus, ShoppingBag, Trash2, Loader2, ArrowLeft, Package, Tag } from 'lucide-react';
 import CheckoutAssistantModal from './CheckoutAssistantModal';
@@ -339,7 +340,7 @@ export default function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
                     {upsells.map((p) => (
                       <Link
                         key={p.handle}
-                        to={`/product/${p.handle}`}
+                        to={shopProductUrl(p.shopifyHandle)}
                         onClick={onClose}
                         className="flex items-center gap-3 bg-background hover:bg-muted/50 rounded-lg p-2 border border-border transition group"
                       >

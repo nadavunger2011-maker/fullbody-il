@@ -1,3 +1,4 @@
+import { shopProductUrl } from '@/lib/shopLinks';
 import { useState, useMemo, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
@@ -787,7 +788,7 @@ export default function PlanWizard() {
                 {recommended.map((p) => (
                   <Link
                     key={p.handle}
-                    to={`/product/${p.handle}`}
+                    to={shopProductUrl(p.shopifyHandle)}
                     className="rounded-xl border border-border bg-card p-3 shadow-card hover:shadow-hover transition"
                   >
                     <img src={p.image} alt={p.title} loading="lazy" className="w-full h-32 object-contain" />
