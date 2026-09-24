@@ -1,3 +1,4 @@
+import { shopProductUrl } from '@/lib/shopLinks';
 import greenLogo from '@/assets/logo-green.webp';
 import herbalifeDistributorLogo from '@/assets/herbalife-independent-distributor.webp';
 import heroSlide1 from '@/assets/hero-slide-1.webp';

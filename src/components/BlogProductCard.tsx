@@ -1,3 +1,4 @@
+import { shopProductUrl } from '@/lib/shopLinks';
 import { Link } from 'react-router-dom';
 import { ShoppingBag } from 'lucide-react';
 import { HerbalifeProduct } from '@/data/herbalifeProducts';

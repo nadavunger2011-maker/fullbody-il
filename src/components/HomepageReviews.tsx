@@ -1,3 +1,4 @@
+import { shopUrlForHandle } from '@/lib/shopLinks';
 import { useEffect, useState } from "react";
 import { Star } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
