@@ -1,23 +1,26 @@
 import { useEffect } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
+import { Helmet } from "react-helmet-async";
+
+const SHOP_URL = "https://shop.fullbody.co.il";
 
 /**
- * Handles redirects from old Shopify product URLs (/products/:handle)
- * to new product URLs (/product/:handle)
- * This is a 301-style client redirect for SEO continuity
+ * Product pages now live on the Shopify store (shop.fullbody.co.il).
+ * Old product URLs redirect there immediately, keeping the path as-is.
+ * Shopify holds redirects from the English handles to the right product.
  */
 export function LegacyProductRedirect() {
   const { handle } = useParams<{ handle: string }>();
-  const navigate = useNavigate();
+  const target = handle ? `${SHOP_URL}/product/${handle}` : SHOP_URL;
 
   useEffect(() => {
-    if (handle) {
-      // Replace the current history entry with the new URL
-      // This mimics a 301 redirect behavior
-      navigate(`/nava/product/${handle}`, { replace: true });
-    }
-  }, [handle, navigate]);
+    window.location.replace(target);
+  }, [target]);
 
-  // Show nothing while redirecting
-  return null;
+  return (
+    <Helmet>
+      <link rel="canonical" href={target} />
+      <meta name="robots" content="noindex, follow" />
+    </Helmet>
+  );
 }
