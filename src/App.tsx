@@ -138,7 +138,7 @@ function AppContent() {
           <Route path="/sweets/contact" element={<SweetsContact />} />
 
           <Route path="/articles" element={<Navigate to="/blog" replace />} />
-          <Route path="/product/:handle" element={<ProProductDetail />} />
+          <Route path="/product/:handle" element={<LegacyProductRedirect />} />
           <Route path="/blog" element={<ProBlog />} />
           <Route path="/blog/:slug" element={<ProBlogPost />} />
           <Route path="/contact" element={<ProContact />} />

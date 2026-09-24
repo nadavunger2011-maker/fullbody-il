@@ -271,13 +271,13 @@ export default function ProBlogPost() {
               <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
                 {relatedProducts.map((product, i) => (
                   <div key={product.sku} className="group bg-card rounded-xl overflow-hidden border border-border hover:shadow-hover transition-all animate-fade-in" style={{ animationDelay: `${i * 0.1}s` }}>
-                    <Link to={`/product/${product.handle}`}>
+                    <Link to={shopProductUrl(product.shopifyHandle)}>
                       <div className="aspect-square overflow-hidden bg-secondary/20 flex items-center justify-center p-4">
                         <img src={product.image} alt={product.title} className="max-w-[75%] max-h-[75%] object-contain group-hover:scale-105 transition-transform duration-500" loading="lazy" />
                       </div>
                     </Link>
                     <div className="p-3">
-                      <Link to={`/product/${product.handle}`}>
+                      <Link to={shopProductUrl(product.shopifyHandle)}>
                         <h3 className="font-bold text-sm text-foreground mb-1 group-hover:text-[hsl(142,70%,35%)] transition-colors line-clamp-2">{product.title}</h3>
                       </Link>
                       <div className="flex items-center justify-between mb-2">
