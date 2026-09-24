@@ -15,11 +15,7 @@ const STATIC_PAGES = [
   ['/terms-of-use', 'yearly', '0.4'], ['/privacy-policy', 'yearly', '0.4'], ['/accessibility', 'yearly', '0.3'],
 ];
 
-const PRODUCT_HANDLES = [
-  'formula-1-vanilla','formula-1-chocolate','formula-1-kosher','formula-1-berries','formula-1-cookies',
-  'pdm-protein','h24-rebuild-strength','aloe-natural','aloe-mango','niteworks',
-  'formula-2-women','formula-2-men','herbalifeline-max','thermo-complete','protein-powder',
-];
+// Product pages moved to the Shopify store (shop.fullbody.co.il) and are not listed here.
 
 const today = new Date().toISOString().slice(0, 10);
 
@@ -40,7 +36,6 @@ const lines = [
   '<?xml version="1.0" encoding="UTF-8"?>',
   '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">',
   ...STATIC_PAGES.map(([loc, cf, pr]) => url(loc, today, cf, pr)),
-  ...PRODUCT_HANDLES.map((h) => url(`/product/${h}`, today, 'weekly', '0.8')),
   ...posts.map((p) => url(`/blog/${p.slug}`, (p.updated_at || p.date).slice(0, 10), 'monthly', '0.7')),
   '</urlset>',
 ];
