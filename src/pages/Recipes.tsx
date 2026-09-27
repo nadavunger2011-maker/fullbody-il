@@ -143,13 +143,13 @@ function RecipeModalContent({ recipe, onClose }: { recipe: Recipe; onClose: () =
                     {checked && <Check className="w-3 h-3 text-black" strokeWidth={3} />}
                   </button>
                   {isProduct ? (
-                    <Link
-                      to={shopUrlForHandle(recipe.productHandle)}
+                    <a
+                      href={shopUrlForHandle(recipe.productHandle)}
                       className={`flex-1 text-right text-sm font-bold inline-flex items-center gap-1 transition-colors ${checked ? "line-through text-white/40" : "text-[hsl(142,70%,55%)] hover:text-[hsl(142,70%,65%)] underline decoration-dotted underline-offset-4"}`}
                     >
                       <span>{ing}</span>
                       <ExternalLink className="w-3 h-3 opacity-70" />
-                    </Link>
+                    </a>
                   ) : (
                     <button
                       onClick={() => toggle(checkedIngredients, setCheckedIngredients, i)}
@@ -166,13 +166,13 @@ function RecipeModalContent({ recipe, onClose }: { recipe: Recipe; onClose: () =
 
         {/* Primary CTA */}
         <div className="space-y-2 py-2">
-          <Link
-            to={shopUrlForHandle(recipe.productHandle)}
+          <a
+            href={shopUrlForHandle(recipe.productHandle)}
             className="w-full inline-flex items-center justify-center gap-2 bg-white text-black hover:bg-[hsl(142,70%,45%)] hover:text-white font-black text-base px-6 py-4 rounded-xl transition-all shadow-2xl border border-white/10"
           >
             <ShoppingCart className="w-5 h-5" />
             קנה עכשיו את פורמולת החלבון להכנת המתכון
-          </Link>
+          </a>
           <button
             onClick={onClose}
             className="w-full text-center text-xs text-white/55 hover:text-white/80 underline underline-offset-4 transition-colors py-1"
