@@ -22,7 +22,6 @@ const BUSINESS = {
   taxId: '200353720',
   address: 'רחוב זרחין 1, קומה 3, רעננה 4366238, ישראל',
   phone: '054-2008578',
-  mobile: '054-2008578',
   email: 'info@fullbody.co.il',
 };
 
@@ -41,8 +40,9 @@ const jsonLd = {
   areaServed: { '@type': 'Country', name: 'IL' },
   address: {
     '@type': 'PostalAddress',
-    streetAddress: 'זרחין 1',
+    streetAddress: 'רחוב זרחין 1, קומה 3',
     addressLocality: 'רעננה',
+    postalCode: '4366238',
     addressCountry: 'IL',
   },
   contactPoint: {
@@ -154,10 +154,7 @@ export default function ProAbout() {
                   <a href="tel:0542008578" className="text-accent hover:underline">
                     {BUSINESS.phone}
                   </a>{' '}
-                  | נייד:{' '}
-                  <a href="tel:0542008578" className="text-accent hover:underline">
-                    {BUSINESS.mobile}
-                  </a>
+                 
                 </span>
               </li>
               <li className="flex items-start gap-2">
@@ -178,7 +175,7 @@ export default function ProAbout() {
             </ul>
             <p className="text-sm text-muted-foreground mt-4 leading-relaxed">
               הפעילות היא מכירה מקוונת ומשלוחים בלבד. אין חנות פיזית שבה מתקבלים לקוחות; הכתובת לעיל היא כתובת העסק
-              לצורכי דיוור, החזרות ופניות רשמיות. איסוף עצמי אפשרי בתיאום מוקדם בטלפון.
+              לצורכי דיוור ופניות רשמיות בלבד. אין קבלת קהל ואין איסוף עצמי.
             </p>
           </div>
 

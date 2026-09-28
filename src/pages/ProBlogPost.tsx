@@ -8,17 +8,8 @@ import { useBlogPostBySlug, useBlogRedirect } from '@/hooks/useBlogPosts';
 import { getProductByHandle, herbalifeProducts, HerbalifeProduct } from '@/data/herbalifeProducts';
 import greenLogo from '@/assets/logo-green.webp';
 import ProFooter from '@/components/ProFooter';
-import { useCartStore } from '@/stores/cartStore';
-import CartDrawer from '@/components/CartDrawer';
 import { useState } from 'react';
-import { fetchProductByHandle, getFirstAvailableVariant } from '@/lib/shopify';
-import { toast } from 'sonner';
 import { Skeleton } from '@/components/ui/skeleton';
-import { trackAddToCart as gtmTrackAddToCart } from '@/lib/gtm';
-import { trackAddToCart as fbTrackAddToCart } from '@/lib/fbPixel';
-import { trackGA4AddToCart } from '@/lib/ga4';
-import { trackAddToCartEvent } from '@/lib/analytics';
-import { trackFlashyAddedToCart } from '@/lib/flashyEvents';
 import { normalizeBlogContent, splitContentByH2, pickContextualProducts, appendDisclaimer } from '@/lib/blogContent';
 import BlogProductCard from '@/components/BlogProductCard';
 import BlogCTAWidget from '@/components/BlogCTAWidget';
@@ -27,9 +18,6 @@ export default function ProBlogPost() {
   const { slug } = useParams();
   const navigate = useNavigate();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [isCartOpen, setIsCartOpen] = useState(false);
-  const { items: cartItems, addItem } = useCartStore();
-  const cartCount = cartItems.reduce((s, i) => s + i.quantity, 0);
 
   const { post, isLoading } = useBlogPostBySlug(slug);
   const { redirectTo, isLoading: redirectLoading } = useBlogRedirect(slug, !isLoading && !post);
@@ -55,38 +43,6 @@ export default function ProBlogPost() {
   const inlineProducts = pickContextualProducts(normalizedContent, post.relatedProductHandles, 2);
 
 
-  const handleAddToCart = async (product: HerbalifeProduct) => {
-    const shopifyProduct = await fetchProductByHandle(product.shopifyHandle);
-    if (!shopifyProduct) { toast.error('לא ניתן לטעון מוצר'); return; }
-    const variant = getFirstAvailableVariant(shopifyProduct);
-    if (!variant) { toast.error('המוצר אזל מהמלאי'); return; }
-    const ok = await addItem({
-      product: shopifyProduct, variantId: variant.id, variantTitle: variant.title,
-      price: variant.price, quantity: 1, selectedOptions: variant.selectedOptions || []
-    });
-    if (!ok) { toast.error('לא ניתן להוסיף לעגלה'); return; }
-    setIsCartOpen(true);
-    toast.success(`${product.title} נוסף לעגלה`);
-
-    const productId = product.sku || product.handle;
-    const price = parseFloat(variant.price.amount);
-    gtmTrackAddToCart({ item_id: productId, item_name: product.title, price, quantity: 1, currency: 'ILS' });
-    trackGA4AddToCart({ item_id: productId, item_name: product.title, price, quantity: 1 }, 'ILS');
-    fbTrackAddToCart(productId, product.title, price);
-    trackAddToCartEvent({
-      handle: product.handle, title: product.title, id: productId,
-      variantId: variant.id, variantTitle: variant.title, price, quantity: 1,
-    });
-    trackFlashyAddedToCart({
-      product_id: productId,
-      product_name: product.title,
-      price,
-      currency: variant.price.currencyCode || 'ILS',
-      image_url: typeof product.image === 'string' && product.image.startsWith('http')
-        ? product.image
-        : `${window.location.origin}${product.image}`,
-    });
-  };
 
   const articleSchema = {
     '@context': 'https://schema.org',
@@ -158,10 +114,7 @@ export default function ProBlogPost() {
             <Link to="/blog" className="text-[hsl(142,70%,35%)]">מאמרים</Link>
             <Link to="/contact" className="hover:text-accent transition-colors">צור קשר</Link>
           </nav>
-          <button onClick={() => setIsCartOpen(true)} className="p-2 text-muted-foreground relative">
-            <ShoppingBag className="w-6 h-6" />
-            {cartCount > 0 && <span className="absolute top-0 right-0 bg-[hsl(142,70%,35%)] text-white text-[10px] w-5 h-5 flex items-center justify-center rounded-full font-bold">{cartCount}</span>}
-          </button>
+          <a href="https://shop.fullbody.co.il" className="p-2 text-muted-foreground" aria-label="לחנות"><ShoppingBag className="w-6 h-6" /></a>
         </div>
       </header>
 
@@ -174,7 +127,6 @@ export default function ProBlogPost() {
         <Link to="/contact" onClick={() => setIsMobileMenuOpen(false)} className="py-4 border-b border-border text-lg font-bold">צור קשר</Link>
       </div>
 
-      <CartDrawer isOpen={isCartOpen} onClose={() => setIsCartOpen(false)} />
 
       <div className="bg-secondary border-b border-border">
         <div className="container mx-auto px-4 py-4">
@@ -223,7 +175,7 @@ export default function ProBlogPost() {
                 <div key={i}>
                   <div dangerouslySetInnerHTML={{ __html: chunk }} />
                   {i === midIndex - 1 && inlineProducts.map(p => (
-                    <BlogProductCard key={p.handle} product={p} variant="inline" onAddToCart={handleAddToCart} />
+                    <BlogProductCard key={p.handle} product={p} variant="inline"  />
                   ))}
                   {i === Math.min(1, contentChunks.length - 1) && (
                     <BlogCTAWidget variant="inline" source={post.slug} />

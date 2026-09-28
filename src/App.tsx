@@ -153,20 +153,20 @@ function AppContent() {
 
           {/* NAVA — original FullBody site */}
           <Route path="/nava" element={<Index />} />
-          <Route path="/nava/product/:handle" element={<ProductDetail />} />
+          <Route path="/nava/product/:handle" element={<LegacyProductRedirect />} />
           <Route path="/nava/products/:handle" element={<LegacyProductRedirect />} />
-          <Route path="/nava/products" element={<Products />} />
+          <Route path="/nava/products" element={<StoreRedirect />} />
           <Route path="/nava/blog" element={<Blog />} />
           <Route path="/nava/blog/:slug" element={<BlogPost />} />
           <Route path="/nava/thank-you" element={<ThankYou />} />
-          <Route path="/nava/terms" element={<Terms />} />
-          <Route path="/nava/shipping" element={<Shipping />} />
-          <Route path="/nava/returns" element={<Returns />} />
-          <Route path="/nava/privacy" element={<Privacy />} />
+          <Route path="/nava/terms" element={<ProTerms />} />
+          <Route path="/nava/shipping" element={<ProShippingPolicy />} />
+          <Route path="/nava/returns" element={<ProReturnPolicy />} />
+          <Route path="/nava/privacy" element={<ProPrivacyPolicy />} />
           <Route path="/nava/faq" element={<FAQ />} />
-          <Route path="/nava/contact" element={<Contact />} />
-          <Route path="/nava/about" element={<About />} />
-          <Route path="/nava/accessibility" element={<Accessibility />} />
+          <Route path="/nava/contact" element={<ProContact />} />
+          <Route path="/nava/about" element={<ProAbout />} />
+          <Route path="/nava/accessibility" element={<ProAccessibility />} />
           <Route path="/nava/sleep-guide" element={<SleepGuide />} />
 
           {/* Admin */}
