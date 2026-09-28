@@ -152,12 +152,12 @@ function AppContent() {
           <Route path="/products/:handle" element={<LegacyProductRedirect />} />
 
           {/* NAVA — original FullBody site */}
-          <Route path="/nava" element={<Index />} />
+          <Route path="/nava" element={<Navigate to="/" replace />} />
           <Route path="/nava/product/:handle" element={<LegacyProductRedirect />} />
           <Route path="/nava/products/:handle" element={<LegacyProductRedirect />} />
           <Route path="/nava/products" element={<StoreRedirect />} />
-          <Route path="/nava/blog" element={<Blog />} />
-          <Route path="/nava/blog/:slug" element={<BlogPost />} />
+          <Route path="/nava/blog" element={<Navigate to="/blog" replace />} />
+          <Route path="/nava/blog/:slug" element={<Navigate to="/blog" replace />} />
           <Route path="/nava/thank-you" element={<ThankYou />} />
           <Route path="/nava/terms" element={<ProTerms />} />
           <Route path="/nava/shipping" element={<ProShippingPolicy />} />

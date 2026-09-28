@@ -236,9 +236,9 @@ export default function ProBlogPost() {
                       <div className="flex items-center justify-between mb-2">
                         <span className="font-black text-lg text-foreground">₪{product.price}</span>
                       </div>
-                      <button onClick={() => handleAddToCart(product)} className="w-full bg-[hsl(142,70%,35%)] text-white font-bold py-2 text-sm rounded-lg transition-all hover:opacity-90 active:scale-95 flex items-center justify-center gap-1">
-                        הוסף לעגלה <ShoppingBag className="w-4 h-4" />
-                      </button>
+                      <a href={shopProductUrl(product.shopifyHandle)} className="w-full bg-[hsl(142,70%,35%)] text-white font-bold py-2 text-sm rounded-lg transition-all hover:opacity-90 flex items-center justify-center gap-1">
+                        לצפייה בחנות <ShoppingBag className="w-4 h-4" />
+                      </a>
                     </div>
                   </div>
                 ))}

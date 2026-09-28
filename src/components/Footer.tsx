@@ -11,8 +11,8 @@ export default function Footer() {
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
             {[
               { icon: ShieldCheck, title: "תשלום מאובטח", text: "הצפנת SSL 256-bit" },
-              { icon: Truck, title: "משלוח מהיר", text: "עד 3 ימי עסקים" },
-              { icon: Award, title: "מותגים מובילים", text: "איכות ללא פשרות" },
+              { icon: Truck, title: "משלוח", text: "3-5 ימי עסקים" },
+              { icon: Award, title: "שירות בישראל", text: "פרטי עסק מלאים" },
               { icon: CreditCard, title: "אפשרויות תשלום", text: "כרטיסי אשראי ופייפאל" },
             ].map((item, index) => (
               <div key={index} className="flex flex-col items-center gap-2">
@@ -33,7 +33,7 @@ export default function Footer() {
             <div>
               <h3 className="font-bold text-lg mb-4">FullBody</h3>
               <p className="text-primary-foreground/80 text-sm mb-4">
-                חנות תוספי תזונה איכותיים לספורטאים ולאנשים פעילים. פועלים מאז 2018 עם אלפי לקוחות מרוצים בכל רחבי ישראל.
+                מידע על מוצרי Herbalife שניתן לשלב כחלק מתזונה מאוזנת ואורח חיים פעיל.
               </p>
               <div className="text-xs text-primary-foreground/60 space-y-1">
                 <p>{BUSINESS.name}</p>
