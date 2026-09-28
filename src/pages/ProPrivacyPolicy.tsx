@@ -65,7 +65,7 @@ export default function ProPrivacyPolicy() {
                   <ul className="text-muted-foreground space-y-2 leading-relaxed">
                     <li><strong>שם העסק:</strong> FullBody - נדב אונגר, מפיץ עצמאי הרבלייף</li>
                     <li><strong>ח.פ:</strong> 200353720</li>
-                    <li><strong>טלפון:</strong> <a href="tel:0524487537" className="text-accent hover:underline">052-4487537</a></li>
+                    <li><strong>טלפון:</strong> <a href="tel:0542008578" className="text-accent hover:underline">054-2008578</a></li>
                     <li><strong>דוא"ל:</strong> <a href="mailto:info@fullbody.co.il" className="text-accent hover:underline">info@fullbody.co.il</a></li>
                   </ul>
                 </div>

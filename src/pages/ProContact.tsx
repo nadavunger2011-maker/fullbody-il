@@ -17,7 +17,7 @@ export default function ProContact() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     const whatsappMessage = encodeURIComponent(`היי, שמי ${formData.name}. ${formData.message}`);
-    window.open(`https://wa.me/972524487537?text=${whatsappMessage}`, '_blank');
+    window.open(`https://wa.me/972542008578?text=${whatsappMessage}`, '_blank');
     toast.success('ההודעה נשלחה בהצלחה! ניצור איתך קשר בהקדם.');
     setFormData({ name: '', email: '', phone: '', message: '' });
   };
@@ -26,7 +26,7 @@ export default function ProContact() {
     <div dir="rtl" className="font-sans text-foreground bg-background min-h-screen">
       <Helmet>
         <title>צור קשר | FullBody - ייעוץ תזונה חינם</title>
-        <meta name="description" content="צרו קשר עם FullBody בטלפון 052-4487537 או בוואטסאפ. ייעוץ תזונתי חינם ממומחי Herbalife. מענה תוך שעה." />
+        <meta name="description" content="צרו קשר עם FullBody בטלפון 054-2008578 או בוואטסאפ. ייעוץ תזונתי חינם ממומחי Herbalife. מענה תוך שעה." />
         <link rel="canonical" href="https://fullbody.co.il/contact" />
         <meta property="og:title" content="צור קשר | FullBody - ייעוץ תזונה חינם" />
         <meta property="og:description" content="צרו קשר עם FullBody בטלפון או בוואטסאפ. ייעוץ תזונתי חינם ממומחי Herbalife." />
@@ -74,9 +74,9 @@ export default function ProContact() {
               <h2 className="text-2xl font-bold text-primary mb-8">פרטי התקשרות</h2>
               <div className="space-y-6">
                 {[
-                  { icon: Phone, title: "טלפון", text: "052-4487537", link: "tel:0524487537" },
+                  { icon: Phone, title: "טלפון", text: "054-2008578", link: "tel:0542008578" },
                   { icon: Mail, title: "אימייל", text: "info@fullbody.co.il", link: "mailto:info@fullbody.co.il" },
-                  { icon: MapPin, title: "כתובת", text: "רחוב זרחין 1, רעננה", link: null },
+                  { icon: MapPin, title: "כתובת", text: "רחוב זרחין 1, קומה 3, רעננה 4366238", link: null },
                   { icon: Clock, title: "שעות פעילות", text: "א'-ה' 9:00-18:00, ו' 9:00-13:00", link: null },
                 ].map((item, index) => (
                   <div key={index} className="flex items-start gap-4">
@@ -102,7 +102,7 @@ export default function ProContact() {
                 <h3 className="font-bold text-foreground mb-2">💬 דברו איתנו בוואטסאפ</h3>
                 <p className="text-sm text-muted-foreground mb-4">תשובה מהירה תוך דקות בשעות הפעילות</p>
                 <a
-                  href="https://wa.me/972524487537?text=%D7%94%D7%99%D7%99%2C%20%D7%90%D7%A9%D7%9E%D7%97%20%D7%9C%D7%A7%D7%91%D7%9C%20%D7%99%D7%99%D7%A2%D7%95%D7%A5%20%D7%9C%D7%92%D7%91%D7%99%20%D7%9E%D7%95%D7%A6%D7%A8%D7%99%20Herbalife"
+                  href="https://wa.me/972542008578?text=%D7%94%D7%99%D7%99%2C%20%D7%90%D7%A9%D7%9E%D7%97%20%D7%9C%D7%A7%D7%91%D7%9C%20%D7%99%D7%99%D7%A2%D7%95%D7%A5%20%D7%9C%D7%92%D7%91%D7%99%20%D7%9E%D7%95%D7%A6%D7%A8%D7%99%20Herbalife"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-2 bg-accent text-accent-foreground font-bold py-3 px-6 rounded-lg hover:bg-accent/90 transition-all"

@@ -11,7 +11,7 @@ export default function ProAccessibility() {
         <title>הצהרת נגישות | FullBody</title>
         <meta
           name="description"
-          content="הצהרת הנגישות של אתר FullBody. האתר נבנה בהתאם לתקן WCAG 2.1 ברמת AA. לפניות בנושא נגישות: 052-4487537."
+          content="הצהרת הנגישות של אתר FullBody. האתר נבנה בהתאם לתקן WCAG 2.1 ברמת AA. לפניות בנושא נגישות: 054-2008578."
         />
         <link rel="canonical" href="https://fullbody.co.il/accessibility" />
       </Helmet>
@@ -87,8 +87,8 @@ export default function ProAccessibility() {
                 <ul className="space-y-1">
                   <li>
                     טלפון:{' '}
-                    <a href="tel:0524487537" className="text-accent hover:underline">
-                      052-4487537
+                    <a href="tel:0542008578" className="text-accent hover:underline">
+                      054-2008578
                     </a>
                   </li>
                   <li>
@@ -97,7 +97,7 @@ export default function ProAccessibility() {
                       info@fullbody.co.il
                     </a>
                   </li>
-                  <li>כתובת: רחוב זרחין 1, רעננה</li>
+                  <li>כתובת: רחוב זרחין 1, קומה 3, רעננה 4366238</li>
                 </ul>
               </div>
             </div>

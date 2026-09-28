@@ -70,8 +70,8 @@ export default function ProTerms() {
                     <li><strong>שם העסק:</strong> FullBody - נדב אונגר, מפיץ עצמאי הרבלייף</li>
                     <li><strong>ID מפיץ:</strong> 16Y0030013</li>
                     <li><strong>ח.פ:</strong> 200353720</li>
-                    <li><strong>כתובת:</strong> זרחין 1, רעננה</li>
-                    <li><strong>טלפון:</strong> <a href="tel:0524487537" className="text-accent hover:underline">052-4487537</a></li>
+                    <li><strong>כתובת:</strong> רחוב זרחין 1, קומה 3, רעננה 4366238</li>
+                    <li><strong>טלפון:</strong> <a href="tel:0542008578" className="text-accent hover:underline">054-2008578</a></li>
                     <li><strong>דוא"ל:</strong> <a href="mailto:info@fullbody.co.il" className="text-accent hover:underline">info@fullbody.co.il</a></li>
                     <li><strong>שעות פעילות:</strong> א'-ה' 09:00-18:00, ו' 09:00-13:00</li>
                   </ul>

@@ -54,9 +54,9 @@ export default function SweetsFooter() {
               <div className="text-sm text-white/80 space-y-2">
                 <p className="font-bold text-white">FullBody מתוקים · נדב אונגר</p>
                 <p>ח.פ: 200353720</p>
-                <div className="flex items-center gap-2"><MapPin className="w-4 h-4 shrink-0" /><span>זרחין 1, רעננה</span></div>
+                <div className="flex items-center gap-2"><MapPin className="w-4 h-4 shrink-0" /><span>רחוב זרחין 1, קומה 3, רעננה 4366238</span></div>
                 <div className="flex items-center gap-2"><Mail className="w-4 h-4 shrink-0" /><a href="mailto:info@fullbody.co.il" className="hover:text-white">info@fullbody.co.il</a></div>
-                <div className="flex items-center gap-2"><Phone className="w-4 h-4 shrink-0" /><a href="tel:0524487537" className="hover:text-white">052-4487537</a></div>
+                <div className="flex items-center gap-2"><Phone className="w-4 h-4 shrink-0" /><a href="tel:0542008578" className="hover:text-white">054-2008578</a></div>
                 <div className="mt-3 text-xs text-white/60">
                   <p className="font-bold text-white/70">שעות פעילות:</p>
                   <p>א'-ה': 09:00-18:00</p>

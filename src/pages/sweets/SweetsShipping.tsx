@@ -34,7 +34,7 @@ export default function SweetsShipping() {
             <p><strong className="text-foreground">משלוח באזור השרון</strong> - עלות 30 ש"ח בלבד. כולל: רעננה, כפר סבא, הוד השרון, רמת השרון, הרצליה, נתניה ואזורים סמוכים.</p>
             <p><strong className="text-foreground">משלוח לכל הארץ</strong> - עד 3-5 ימי עסקים באמצעות חברת שליחים. תקבלו מספר מעקב במייל וב-SMS.</p>
             <p><strong className="text-foreground">משלוח חינם</strong> - בהזמנה מעל 300 ש"ח.</p>
-            <p>לפרטים נוספים ניתן ליצור קשר בטלפון <a href="tel:0524487537" className="text-accent hover:underline">052-4487537</a>.</p>
+            <p>לפרטים נוספים ניתן ליצור קשר בטלפון <a href="tel:0542008578" className="text-accent hover:underline">054-2008578</a>.</p>
           </div>
         </div>
       </section>

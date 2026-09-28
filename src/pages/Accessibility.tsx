@@ -7,7 +7,7 @@ const Accessibility = () => {
     <div dir="rtl" className="min-h-screen bg-background font-sans">
       <Helmet>
         <title>הצהרת נגישות | FullBody - תוספי תזונה</title>
-        <meta name="description" content="הצהרת הנגישות של FullBody. האתר עומד בתקן WCAG 2.1 AA ומותאם לאנשים עם מוגבלויות. לפניות: 052-4487537." />
+        <meta name="description" content="הצהרת הנגישות של FullBody. האתר עומד בתקן WCAG 2.1 AA ומותאם לאנשים עם מוגבלויות. לפניות: 054-2008578." />
         <link rel="canonical" href="https://fullbody.co.il/accessibility" />
       </Helmet>
       {/* Header */}
@@ -87,9 +87,9 @@ const Accessibility = () => {
               </p>
               <div className="bg-secondary rounded-xl p-6">
                 <p className="text-foreground"><strong>רכז נגישות:</strong> צוות FullBody</p>
-                <p className="text-foreground"><strong>טלפון:</strong> 052-4487537</p>
+                <p className="text-foreground"><strong>טלפון:</strong> 054-2008578</p>
                 <p className="text-foreground"><strong>דוא"ל:</strong> accessibility@fullbody.co.il</p>
-                <p className="text-foreground"><strong>כתובת:</strong> רחוב זרחין 1, רעננה</p>
+                <p className="text-foreground"><strong>כתובת:</strong> רחוב זרחין 1, קומה 3, רעננה 4366238</p>
               </div>
             </div>
 

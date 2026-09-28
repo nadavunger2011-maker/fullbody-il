@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import { ShieldCheck, Truck, Award, CreditCard, Phone, Mail, MapPin } from 'lucide-react';
+import { BUSINESS, STORE_POLICIES } from '@/lib/business';
 
 export default function Footer() {
   return (
@@ -35,8 +36,8 @@ export default function Footer() {
                 חנות תוספי תזונה איכותיים לספורטאים ולאנשים פעילים. פועלים מאז 2018 עם אלפי לקוחות מרוצים בכל רחבי ישראל.
               </p>
               <div className="text-xs text-primary-foreground/60 space-y-1">
-                <p>ח.פ./עוסק מורשה: 200353720</p>
-                <p>© {new Date().getFullYear()} FullBody בע"מ</p>
+                <p>{BUSINESS.name}</p>
+                <p>עוסק מורשה: {BUSINESS.taxId}</p>
               </div>
             </div>
             
@@ -70,21 +71,20 @@ export default function Footer() {
               <ul className="space-y-3 text-sm text-primary-foreground/80">
                 <li className="flex items-center gap-2">
                   <Phone className="w-4 h-4 text-primary-foreground/80" />
-                  <a href="tel:0524487537" className="hover:text-primary-foreground transition">052-4487537</a>
+                   <a href={BUSINESS.phoneHref} className="hover:text-primary-foreground transition">{BUSINESS.phone}</a>
                 </li>
                 <li className="flex items-center gap-2">
                   <Mail className="w-4 h-4 text-primary-foreground/80" />
-                  <a href="mailto:info@fullbody.co.il" className="hover:text-primary-foreground transition">info@fullbody.co.il</a>
+                   <a href={BUSINESS.emailHref} className="hover:text-primary-foreground transition">{BUSINESS.email}</a>
                 </li>
                 <li className="flex items-start gap-2">
                   <MapPin className="w-4 h-4 text-primary-foreground/80 mt-0.5" />
-                  <span>רחוב זרחין 1, רעננה</span>
+                   <span>{BUSINESS.address}<br />{BUSINESS.addressNote}</span>
                 </li>
               </ul>
               <div className="mt-4 text-xs text-primary-foreground/60">
                 <p>שעות פעילות:</p>
-                <p>א'-ה' 9:00-18:00</p>
-                <p>ו' 9:00-13:00</p>
+                 <p>{BUSINESS.hours}</p>
               </div>
             </div>
           </div>
@@ -93,14 +93,12 @@ export default function Footer() {
           <div className="border-t border-primary-foreground/20 pt-8">
             <div className="flex flex-col md:flex-row justify-between items-center gap-4">
               <p className="text-sm text-primary-foreground/60">
-                © {new Date().getFullYear()} FullBody בע"מ. כל הזכויות שמורות.
+                 {BUSINESS.disclosure}
               </p>
               <div className="flex items-center gap-4 text-xs text-primary-foreground/60">
-                <span>אבטחת תשלום על ידי SSL</span>
-                <span>•</span>
-                <span>איכות מובטחת</span>
-                <span>•</span>
-                <span>משלוח לכל הארץ</span>
+                 <a href={STORE_POLICIES.shipping}>מדיניות משלוחים בחנות</a>
+                 <span>•</span>
+                 <a href={STORE_POLICIES.refund}>מדיניות החזרים בחנות</a>
               </div>
             </div>
           </div>

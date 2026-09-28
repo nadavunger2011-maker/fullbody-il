@@ -20,8 +20,8 @@ import ProFooter from '@/components/ProFooter';
 const BUSINESS = {
   legalName: 'נדב אונגר - FullBody (עוסק מורשה)',
   taxId: '200353720',
-  address: 'רחוב זרחין 1, רעננה, ישראל',
-  phone: '052-4487537',
+  address: 'רחוב זרחין 1, קומה 3, רעננה 4366238, ישראל',
+  phone: '054-2008578',
   mobile: '054-2008578',
   email: 'info@fullbody.co.il',
 };
@@ -33,7 +33,7 @@ const jsonLd = {
   legalName: BUSINESS.legalName,
   url: 'https://fullbody.co.il',
   email: BUSINESS.email,
-  telephone: '+972524487537',
+  telephone: '+972542008578',
   taxID: BUSINESS.taxId,
   vatID: BUSINESS.taxId,
   currenciesAccepted: 'ILS',
@@ -47,7 +47,7 @@ const jsonLd = {
   },
   contactPoint: {
     '@type': 'ContactPoint',
-    telephone: '+972524487537',
+    telephone: '+972542008578',
     email: BUSINESS.email,
     contactType: 'customer service',
     availableLanguage: ['he', 'en'],
@@ -151,7 +151,7 @@ export default function ProAbout() {
                 <Phone className="w-4 h-4 mt-1 text-accent shrink-0" />
                 <span>
                   <strong className="text-foreground">טלפון:</strong>{' '}
-                  <a href="tel:0524487537" className="text-accent hover:underline">
+                  <a href="tel:0542008578" className="text-accent hover:underline">
                     {BUSINESS.phone}
                   </a>{' '}
                   | נייד:{' '}

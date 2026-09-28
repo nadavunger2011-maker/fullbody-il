@@ -58,9 +58,9 @@ export default function About() {
               <h3 className="text-xl font-bold text-primary mb-4">פרטי החברה</h3>
               <ul className="space-y-2 text-muted-foreground">
                 <li><strong>שם החברה:</strong> FullBody בע"מ</li>
-                <li><strong>ח.פ./עוסק מורשה:</strong> 516247890</li>
-                <li><strong>כתובת:</strong> רחוב זרחין 1, רעננה</li>
-                <li><strong>טלפון:</strong> <a href="tel:0524487537" className="text-accent hover:underline">052-4487537</a></li>
+                <li><strong>ח.פ./עוסק מורשה:</strong> 200353720</li>
+                <li><strong>כתובת:</strong> רחוב זרחין 1, קומה 3, רעננה 4366238</li>
+                <li><strong>טלפון:</strong> <a href="tel:0542008578" className="text-accent hover:underline">054-2008578</a></li>
                 <li><strong>דוא"ל:</strong> <a href="mailto:info@fullbody.co.il" className="text-accent hover:underline">info@fullbody.co.il</a></li>
                 <li><strong>שעות פעילות:</strong> א'-ה' 9:00-18:00, ו' 9:00-13:00</li>
               </ul>

@@ -66,7 +66,7 @@ export default function ProReturnPolicy() {
                   <li>
                     אופן ביצוע ההחזרה: פנייה ישירה לשירות הלקוחות בטלפון{' '}
                     <a href="tel:0542008578" className="text-accent hover:underline font-bold">054-2008578</a> או במייל{' '}
-                    <a href="mailto:Nadav@nadavunger.com" className="text-accent hover:underline font-bold">Nadav@nadavunger.com</a>
+                    <a href="mailto:info@fullbody.co.il" className="text-accent hover:underline font-bold">info@fullbody.co.il</a>
                     , ושליחת המוצר/האריזה לכתובת: זרחין 1, קומה 3, רעננה.
                   </li>
                   <li>עיבוד הזיכוי הכספי מתבצע תוך 7 ימי עסקים לאמצעי התשלום המקורי.</li>
@@ -92,8 +92,8 @@ export default function ProReturnPolicy() {
                     <li><strong>ח.פ / עוסק מורשה:</strong> 200353720</li>
                     <li><strong>כתובת:</strong> רחוב זרחין 1, קומה 3, בניין גב ים, רעננה, ישראל (מיקוד 4366238)</li>
                     <li><strong>טלפון:</strong> <a href="tel:0542008578" className="text-accent hover:underline">054-2008578</a></li>
-                    <li><strong>דוא"ל:</strong> <a href="mailto:Nadav@nadavunger.com" className="text-accent hover:underline">Nadav@nadavunger.com</a></li>
-                    <li><strong>שעות פעילות:</strong> ימים א'-ה' 09:00 - 19:00, יום ו' 09:00 - 13:00</li>
+                    <li><strong>דוא"ל:</strong> <a href="mailto:info@fullbody.co.il" className="text-accent hover:underline">info@fullbody.co.il</a></li>
+                    <li><strong>שעות פעילות:</strong> א'-ה' 09:00-18:00, יום ו' 09:00 - 13:00</li>
                   </ul>
                 </div>
               </section>
