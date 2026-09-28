@@ -2,11 +2,8 @@ import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import { ShoppingBag, Check, Menu, X, Sparkles, Trophy, Crown, Link2 } from "lucide-react";
+import { shopUrlForHandle } from "@/lib/shopLinks";
 import { getProductByHandle } from "@/data/herbalifeProducts";
-import { useCartStore } from "@/stores/cartStore";
-import { fetchProductByHandle, getFirstAvailableVariant } from "@/lib/shopify";
-import { toast } from "sonner";
-import CartDrawer from "@/components/CartDrawer";
 import ProFooter from "@/components/ProFooter";
 import greenLogo from "@/assets/logo-green.webp";
 
@@ -24,7 +21,6 @@ interface BundleDef {
   subtitle: string;
   productHandles: string[];
   choices?: BundleChoice[]; // optional user selections (replace placeholder handles like __choice_0__)
-  discountPct: number;
   highlight?: boolean;
   color: string;
 }
@@ -38,7 +34,6 @@ const BUNDLES: BundleDef[] = [
     title: "ערכת זוג שייקים",
     subtitle: "2 שייקי פורמולה 1 - מושלם להתנסות ראשונה",
     productHandles: ["formula-1-vanilla", "formula-1-chocolate"],
-    discountPct: 10,
     color: "hsl(142,70%,35%)",
   },
   {
@@ -57,7 +52,6 @@ const BUNDLES: BundleDef[] = [
         ],
       },
     ],
-    discountPct: 10,
     color: "hsl(142,70%,35%)",
   },
 
@@ -66,9 +60,8 @@ const BUNDLES: BundleDef[] = [
     badge: "הכי פופולרי",
     icon: Trophy,
     title: "ערכת חודש מלאה",
-    subtitle: "3 שייקים + תה לבעירת שומנים - תוכנית 30 יום",
+    subtitle: "3 שייקים ומשקה צמחי לשילוב בתפריט מאוזן",
     productHandles: ["formula-1-vanilla", "formula-1-chocolate", "formula-1-cookies", "instant-herbal-original"],
-    discountPct: 15,
     highlight: true,
     color: "hsl(142,70%,35%)",
   },
@@ -86,16 +79,13 @@ const BUNDLES: BundleDef[] = [
       "formula-1-berries",
       "formula-1-melon",
     ],
-    discountPct: 20,
     color: "hsl(142,70%,35%)",
   },
 ];
 
 
 export default function ProBundles() {
-  const [isCartOpen, setIsCartOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [addingId, setAddingId] = useState<string | null>(null);
   // choices[bundleId] = array of selected handles per choice index
   const [choices, setChoices] = useState<Record<string, string[]>>(() => {
     const init: Record<string, string[]> = {};
@@ -104,9 +94,6 @@ export default function ProBundles() {
     });
     return init;
   });
-  const items = useCartStore((s) => s.items);
-  const addItem = useCartStore((s) => s.addItem);
-  const cartCount = items.reduce((sum, i) => sum + i.quantity, 0);
 
   // Scroll to anchor (direct bundle link) and highlight briefly
   useEffect(() => {
@@ -150,67 +137,17 @@ export default function ProBundles() {
     );
   };
 
-  const handleAddBundle = async (bundle: BundleDef) => {
-    setAddingId(bundle.id);
-    try {
-      let added = 0;
-      const handles = resolveHandles(bundle);
-      for (const handle of handles) {
-        const local = getProductByHandle(handle);
-        if (!local) continue;
-        const shopifyProduct = await fetchProductByHandle(local.shopifyHandle);
-        if (!shopifyProduct) continue;
-        const variant = getFirstAvailableVariant(shopifyProduct);
-        if (!variant) continue;
-        const ok = await addItem({
-          product: shopifyProduct,
-          variantId: variant.id,
-          variantTitle: variant.title,
-          price: variant.price,
-          quantity: 1,
-          selectedOptions: variant.selectedOptions || [],
-          bundleId: bundle.id,
-          bundleTitle: bundle.title,
-          bundleDiscountPct: bundle.discountPct,
-        });
-        if (ok) added++;
-      }
-      if (added > 0) {
-        toast.success(`${added} מוצרים נוספו לעגלה!`, {
-          description: `הנחה אוטומטית של ${bundle.discountPct}% תופעל בקופה.`,
-        });
-        setIsCartOpen(true);
-      } else {
-        toast.error("לא הצלחנו להוסיף את הערכה. נסו שוב.");
-      }
-    } catch (err) {
-      toast.error("שגיאה בהוספה לעגלה");
-    } finally {
-      setAddingId(null);
-    }
-  };
-
-
-  const calcBundlePrice = (bundle: BundleDef) => {
-    const handles = resolveHandles(bundle);
-    const total = handles.reduce((sum, h) => {
-      const p = getProductByHandle(h);
-      return sum + (p?.price || 0);
-    }, 0);
-    const discounted = total * (1 - bundle.discountPct / 100);
-    return { original: Math.round(total), discounted: Math.round(discounted), savings: Math.round(total - discounted) };
-  };
-
+  const getResolvedHandles = (bundle: Bundle) => bundle.productHandles.map((handle, index) =>
+    handle.startsWith('__choice_') ? (choices[bundle.id]?.[index] || '') : handle
+  ).filter(Boolean);
 
   return (
     <div className="min-h-screen bg-background" dir="rtl">
       <Helmet>
-        <title>חבילות הרבלייף במחירים מיוחדים | FullBody</title>
-        <meta name="description" content="חבילות חיסכון של מוצרי הרבלייף - שייקים, תה ותוספי תזונה. עד 20% הנחה על ערכות מוכנות מראש." />
+        <title>המלצות לשילוב מוצרי הרבלייף | FullBody</title>
+        <meta name="description" content="רעיונות לשילוב מוצרי הרבלייף לפי מטרות ושגרת היום, עם קישורים ישירים לחנות." />
         <link rel="canonical" href="https://fullbody.co.il/bundles" />
       </Helmet>
-
-      <CartDrawer isOpen={isCartOpen} onClose={() => setIsCartOpen(false)} />
 
       {/* Header */}
       <header className="sticky top-0 z-40 bg-card/95 backdrop-blur border-b border-border shadow-sm">
@@ -226,14 +163,7 @@ export default function ProBundles() {
             <Link to="/contact" className="hover:text-[hsl(142,70%,35%)]">צור קשר</Link>
           </nav>
           <div className="flex items-center gap-2">
-            <button onClick={() => setIsCartOpen(true)} className="relative p-2" aria-label="עגלה">
-              <ShoppingBag className="w-5 h-5" />
-              {cartCount > 0 && (
-                <span className="absolute -top-1 -left-1 bg-[hsl(142,70%,35%)] text-white text-[10px] font-bold w-5 h-5 rounded-full flex items-center justify-center">
-                  {cartCount}
-                </span>
-              )}
-            </button>
+            <a href="https://shop.fullbody.co.il" className="relative p-2" aria-label="לחנות"><ShoppingBag className="w-5 h-5" /></a>
             <button className="md:hidden p-2" onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)} aria-label="תפריט">
               {isMobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
             </button>
@@ -259,10 +189,10 @@ export default function ProBundles() {
             חיסכון אמיתי
           </span>
           <h1 className="text-3xl md:text-5xl font-black text-foreground mb-4">
-            חבילות הרבלייף במחירים מיוחדים
+            המלצות לשילוב מוצרי הרבלייף
           </h1>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            ערכות מוכנות מראש עם הנחה משמעותית. הוסיפו לעגלה בלחיצה אחת וההנחה תופעל אוטומטית בקופה.
+            שילובים מוצעים לנוחותכם. המחיר, המלאי ותנאי הרכישה נקבעים ומוצגים בחנות.
           </p>
         </div>
       </section>
@@ -351,27 +281,14 @@ export default function ProBundles() {
                   </div>
                 )}
 
-                {/* Pricing */}
-                <div className="border-t border-border pt-4 mb-4">
-                  <div className="flex items-center justify-between mb-1">
-                    <span className="text-sm text-muted-foreground line-through">₪{original}</span>
-                    <span className="bg-[hsl(142,70%,35%)] text-white text-xs font-bold px-2 py-0.5 rounded">
-                      -{bundle.discountPct}%
-                    </span>
-                  </div>
-                  <div className="flex items-baseline gap-2">
-                    <span className="text-3xl font-black text-[hsl(142,70%,35%)]">₪{discounted}</span>
-                    <span className="text-sm text-muted-foreground">חיסכון של ₪{savings}</span>
-                  </div>
+                <div className="border-t border-border pt-4 space-y-2">
+                  <p className="text-sm text-muted-foreground">המלצת שילוב בלבד. כל מוצר נרכש בנפרד בחנות.</p>
+                  {getResolvedHandles(bundle).map((handle) => {
+                    const product = getProductByHandle(handle);
+                    if (!product) return null;
+                    return <a key={handle} href={shopUrlForHandle(handle)} className="block text-center rounded-lg border border-[hsl(142,70%,35%)] px-4 py-2 font-bold text-[hsl(142,70%,35%)] hover:bg-[hsl(142,70%,35%)]/5">לצפייה ב-{product.title} בחנות</a>;
+                  })}
                 </div>
-
-                <button
-                  onClick={() => handleAddBundle(bundle)}
-                  disabled={addingId === bundle.id}
-                  className="w-full bg-[hsl(142,70%,35%)] text-white font-bold py-3 rounded-lg hover:bg-[hsl(142,70%,30%)] transition-all disabled:opacity-60 disabled:cursor-not-allowed"
-                >
-                  {addingId === bundle.id ? "מוסיף..." : "הוסף ערכה לעגלה"}
-                </button>
               </div>
             );
 
