@@ -2,13 +2,12 @@ import { useMemo, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Link, useParams, Navigate } from 'react-router-dom';
 import {
-  Star, Minus, Plus, ChevronDown, Truck, ShieldCheck, Leaf,
+  ChevronDown, Truck, Leaf,
   Wheat, Dumbbell, Flame, Clock, ArrowLeft,
 } from 'lucide-react';
 import SweetsHeader from '@/components/sweets/SweetsHeader';
 import SweetsFooter from '@/components/sweets/SweetsFooter';
 import { BESTSELLERS } from '@/data/sweetsProducts';
-import { toast } from 'sonner';
 
 const ACCORDION = [
   {
@@ -29,7 +28,7 @@ const ACCORDION = [
   {
     id: 'shipping',
     title: 'משלוח והחזרות',
-    body: 'משלוח לכל הארץ תוך 3-5 ימי עסקים. אזור השרון ב-30 ש"ח, משלוח חינם מעל 300 ש"ח. אחריות טעם מלאה: לא אהבתם, נחזיר לכם את הכסף.',
+    body: 'משלוח עולה 29 ₪ וחינם מעל 299 ₪. אספקה בתוך 3-5 ימי עסקים, ובתקופות עומס עד 14 ימי עסקים. אין איסוף עצמי.',
   },
 ];
 
@@ -54,17 +53,11 @@ export default function SweetsProductDetail() {
   }, [product]);
 
   const [mainImage, setMainImage] = useState(0);
-  const [flavor, setFlavor] = useState('שוקולד מריר');
-  const [qty, setQty] = useState(1);
   const [open, setOpen] = useState<string | null>('ingredients');
 
   if (!product) return <Navigate to="/sweets/products" replace />;
 
   const related = BESTSELLERS.filter((p) => p.handle !== product.handle).slice(0, 4);
-
-  const handleAdd = () => {
-    toast.success(`${product.name} נוסף לעגלה (${qty})`);
-  };
 
   return (
     <div dir="rtl" className="sweets-theme font-sans text-foreground bg-background min-h-screen">
@@ -132,16 +125,6 @@ export default function SweetsProductDetail() {
               <p className="text-xs uppercase tracking-widest text-muted-foreground font-bold mb-2">{product.category}</p>
               <h1 className="text-3xl md:text-4xl font-black text-foreground mb-3 leading-tight">{product.name}</h1>
 
-              {/* Rating */}
-              <div className="flex items-center gap-2 mb-4">
-                <div className="flex">
-                  {Array.from({ length: 5 }).map((_, i) => (
-                    <Star key={i} className="w-4 h-4 fill-accent text-accent" />
-                  ))}
-                </div>
-                
-              </div>
-
               {/* Price */}
               <div className="flex items-baseline gap-3 mb-6">
                 <span className="text-3xl font-black text-primary">₪{product.price}</span>
@@ -175,44 +158,7 @@ export default function SweetsProductDetail() {
                 ))}
               </div>
 
-              {/* Flavor selector */}
-              <div className="mb-5">
-                <p className="text-sm font-bold text-foreground mb-2">כמות יחידות / טעם</p>
-                <div className="flex flex-wrap gap-2">
-                  {['שוקולד מריר', 'שוקולד חלב', 'וניל'].map((f) => (
-                    <button
-                      key={f}
-                      onClick={() => setFlavor(f)}
-                      className={`px-4 py-2 rounded-full text-sm font-bold border-2 transition ${
-                        flavor === f
-                          ? 'bg-primary text-primary-foreground border-primary'
-                          : 'bg-card text-foreground border-border hover:border-primary'
-                      }`}
-                    >
-                      {f}
-                    </button>
-                  ))}
-                </div>
-              </div>
-
-              {/* Quantity + CTA */}
-              <div className="flex items-stretch gap-3 mb-4">
-                <div className="flex items-center border-2 border-border rounded-full">
-                  <button onClick={() => setQty(Math.max(1, qty - 1))} className="w-10 h-12 flex items-center justify-center text-foreground hover:text-primary" aria-label="הפחת">
-                    <Minus className="w-4 h-4" />
-                  </button>
-                  <span className="w-8 text-center font-bold">{qty}</span>
-                  <button onClick={() => setQty(qty + 1)} className="w-10 h-12 flex items-center justify-center text-foreground hover:text-primary" aria-label="הוסף">
-                    <Plus className="w-4 h-4" />
-                  </button>
-                </div>
-                <button
-                  onClick={handleAdd}
-                  className="flex-1 bg-primary hover:bg-primary/90 text-primary-foreground font-black rounded-full shadow-cta transition-all hover:scale-[1.02]"
-                >
-                  הוספה לסל · ₪{product.price * qty}
-                </button>
-              </div>
+              <a href="https://shop.fullbody.co.il" className="mb-4 flex items-center justify-center bg-primary text-primary-foreground font-black rounded-full py-4">לבדיקת זמינות בחנות</a>
 
               {/* Trust row */}
               <div className="grid grid-cols-2 gap-3 pt-4 border-t border-border">
@@ -220,7 +166,7 @@ export default function SweetsProductDetail() {
                   <Truck className="w-4 h-4 text-primary" /> משלוח 3-5 ימי עסקים
                 </div>
                 <div className="flex items-center gap-2 text-xs text-muted-foreground">
-                  <ShieldCheck className="w-4 h-4 text-primary" /> אחריות טעם מלאה
+                  <Leaf className="w-4 h-4 text-primary" /> חלק מתזונה מאוזנת
                 </div>
               </div>
             </div>
@@ -267,41 +213,13 @@ export default function SweetsProductDetail() {
             <div className="absolute inset-0 flex items-center">
               <div className="max-w-md p-8 md:p-12 text-primary-foreground">
                 <h2 className="text-3xl md:text-4xl font-black mb-3 leading-tight">
-                  פינוק בריא, בלי אשמה
+                  אפשר לשלב, במידה
                 </h2>
                 <p className="text-primary-foreground/90 leading-relaxed">
-                  כל חטיף שלנו נוסח יחד עם דיאטנים ומתאמנים. אותו הטעם של פינוק אמיתי, בלי הסוכר, בלי החרטות.
+                  מומלץ לקרוא את התווית והערכים התזונתיים בחנות ולשלב את המוצר בהתאם לצרכים האישיים.
                 </p>
               </div>
             </div>
-          </div>
-        </div>
-      </section>
-
-      {/* REVIEWS TEASER */}
-      <section className="py-12">
-        <div className="container mx-auto px-4 max-w-6xl">
-          <div className="flex items-end justify-between mb-6 flex-wrap gap-3">
-            <div>
-              <h2 className="text-2xl md:text-3xl font-black text-primary mb-1">לקוחות מספרות</h2>
-              <div className="flex items-center gap-2">
-                <div className="flex">{Array.from({ length: 5 }).map((_, i) => <Star key={i} className="w-4 h-4 fill-accent text-accent" />)}</div>
-                <span className="text-sm text-muted-foreground">4.9 · 81 ביקורות</span>
-              </div>
-            </div>
-          </div>
-          <div className="grid md:grid-cols-3 gap-4">
-            {[
-              { name: 'שירה כ.', text: 'ממש טעים, אני קונה כל חודש. הילדים מתחננים.', rating: 5 },
-              { name: 'עומר ל.', text: 'הכי טוב שאכלתי בקטגוריה. חלבון גבוה בלי טעם מוזר.', rating: 5 },
-              { name: 'טל מ.', text: 'סוף סוף פינוק בריא בלי לוותר על הטעם.', rating: 5 },
-            ].map((r, i) => (
-              <div key={i} className="bg-card border border-border rounded-xl p-5 shadow-card">
-                <div className="flex mb-2">{Array.from({ length: r.rating }).map((_, k) => <Star key={k} className="w-4 h-4 fill-accent text-accent" />)}</div>
-                <p className="text-muted-foreground leading-relaxed mb-3">"{r.text}"</p>
-                <p className="font-bold text-foreground text-sm">{r.name}</p>
-              </div>
-            ))}
           </div>
         </div>
       </section>
@@ -332,7 +250,6 @@ export default function SweetsProductDetail() {
                   <h3 className="font-bold text-foreground mb-3 leading-snug line-clamp-2 text-sm">{p.name}</h3>
                   <div className="mt-auto flex items-baseline gap-2">
                     <span className="text-lg font-black text-primary">₪{p.price}</span>
-                    {p.comparePrice && <span className="text-sm text-muted-foreground line-through">₪{p.comparePrice}</span>}
                   </div>
                 </div>
               </Link>

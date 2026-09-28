@@ -92,27 +92,6 @@ export default function ProFooter() {
             <div className="max-w-3xl mx-auto text-center space-y-3">
               <p className="text-sm text-primary-foreground/75 leading-relaxed">{BUSINESS.disclosure}</p>
 
-              <div className="text-xs text-primary-foreground/60 leading-relaxed space-y-2 text-right pt-2">
-                <div>
-                  <p className="font-bold text-primary-foreground/70">דיסקליימר תוצאות (עבור תוצאות במלל ו/או בתמונות):</p>
-                  <p>
-                    כל ההפניות לבקרת משקל קשורות לתוכנית ניהול משקל של הרבלייף, הכוללת, בין היתר, תזונה מאוזנת, פעילות גופנית קבועה, שתיית נוזלים מספקת בכל יום, תוספי תזונה אם צריך ומנוחה נאותה. תוצאות אישיות עשויות להשתנות.
-                  </p>
-                </div>
-                <div>
-                  <p className="font-bold text-primary-foreground/70">דיסקליימר רווחים (באם מפרסמים באתר את ההזדמנות העסקית):</p>
-                  <p>
-                    ההכנסות חלות על הפרטים (או הדוגמאות) המתוארים ואינן מהוות ממוצע. הישגים משמעותיים מגיעים מעבודה קשה, השקעה והתמדה, רוב המפיצים מרוויחים הכנסה נוספת כלשהי.
-                  </p>
-                  <p>
-                    למידע נוסף{" "}
-                    <a href="https://Herbalife.com/STE" target="_blank" rel="noopener noreferrer" className="underline">
-                      Herbalife.com/STE
-                    </a>
-                    .
-                  </p>
-                </div>
-              </div>
               <p className="text-sm text-primary-foreground/60">
                 © {new Date().getFullYear()} FullBody - נדב אונגר. כל הזכויות שמורות.
               </p>
