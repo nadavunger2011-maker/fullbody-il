@@ -18,9 +18,9 @@ import {
 import ProFooter from '@/components/ProFooter';
 
 const BUSINESS = {
-  legalName: 'נדב אונגר - FullBody (עוסק מורשה)',
+  legalName: 'FullBody – נדב אונגר',
   taxId: '200353720',
-  address: 'רחוב זרחין 1, קומה 3, רעננה 4366238, ישראל',
+  address: 'רחוב זרחין 1, קומה 3, רעננה 4366238',
   phone: '054-2008578',
   email: 'info@fullbody.co.il',
 };
@@ -119,9 +119,9 @@ export default function ProAbout() {
                 הנרכשים מהחברה ומשווקים על ידי המפיץ העצמאי.
               </p>
               <p>
-                בנוסף למכירת מוצרים, אנו מציעים ליווי ותוכניות תזונה ואימון אישיות דרך{' '}
+                לצד המידע על המוצרים, ניתן למלא שאלון כללי על מטרות והרגלים דרך{' '}
                 <Link to="/plan" className="text-accent underline">
-                  שאלון התוכנית האישית
+                  שאלון ההתאמה
                 </Link>
                 . מוצרי הרבלייף אינם תרופות ואינם מיועדים לאבחון, טיפול, ריפוי או מניעה של מחלות.
               </p>
@@ -144,7 +144,7 @@ export default function ProAbout() {
               <li className="flex items-start gap-2">
                 <MapPin className="w-4 h-4 mt-1 text-accent shrink-0" />
                 <span>
-                  <strong className="text-foreground">כתובת העסק (למשלוחי דואר והחזרות):</strong> {BUSINESS.address}
+                  <strong className="text-foreground">כתובת המשרד:</strong> {BUSINESS.address}
                 </span>
               </li>
               <li className="flex items-start gap-2">
@@ -185,12 +185,12 @@ export default function ProAbout() {
               {
                 icon: CreditCard,
                 title: 'תשלום ואבטחה',
-                text: 'התשלום מתבצע בכרטיסי אשראי, PayPal או Bit דרך עמוד תשלום מאובטח בהצפנת SSL. פרטי האשראי אינם נשמרים באתר.',
+                text: 'התשלום מתבצע בחנות Shopify בכתובת shop.fullbody.co.il. פרטי התשלום אינם נשמרים באתר התוכן.',
               },
               {
                 icon: Truck,
                 title: 'משלוחים',
-                text: 'משלוח עד הבית לכל חלקי הארץ תוך 3-5 ימי עסקים, עם מספר מעקב שנשלח במייל או ב-SMS.',
+                text: 'משלוח עד הבית עולה 29 ₪ וחינם מעל 299 ₪. אספקה בתוך 3-5 ימי עסקים, ובעומס עד 14 ימי עסקים.',
               },
               {
                 icon: RefreshCw,

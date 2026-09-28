@@ -1,6 +1,7 @@
 import { herbalifeProducts, HerbalifeProduct } from '@/data/herbalifeProducts';
+import { MEDICAL_DISCLAIMER } from '@/lib/business';
 
-const LEGAL_DISCLAIMER = `המידע אינו מהווה התוויה רפואית. נשים בהריון, מניקות, נוטלי תרופות וילדים – יש להיוועץ ברופא.`;
+const LEGAL_DISCLAIMER = MEDICAL_DISCLAIMER;
 
 const BROKEN_INLINE_IMAGE_PATTERN = /<img\b[^>]*src=["'](?:https?:\/\/fullbody\.co\.il)?\/images\/[^"']+["'][^>]*>/gi;
 
@@ -80,7 +81,7 @@ export function pickContextualProducts(content: string, fallbackHandles: string[
 
 export function appendDisclaimer(html: string): string {
   // Avoid duplicating the disclaimer if it already exists
-  if (html.includes('המידע אינו מהווה התוויה רפואית')) return html;
+  if (html.includes('המידע אינו מהווה ייעוץ רפואי')) return html;
   return `${html}<div class="blog-disclaimer mt-8 pt-6 border-t border-border text-sm text-muted-foreground italic" role="note" aria-label="הצהרה משפטית"><strong class="text-foreground">הצהרה:</strong> ${LEGAL_DISCLAIMER}</div>`;
 }
 

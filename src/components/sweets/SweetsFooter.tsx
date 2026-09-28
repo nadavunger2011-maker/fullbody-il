@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import { ShieldCheck, Truck, Award, CreditCard, Phone, Mail, MapPin } from 'lucide-react';
 import { SWEETS_CATEGORIES } from './SweetsHeader';
+import { BUSINESS, STORE_POLICIES } from '@/lib/business';
 
 export default function SweetsFooter() {
   return (
@@ -52,22 +53,22 @@ export default function SweetsFooter() {
             <div>
               <h4 className="font-bold text-lg mb-4 text-accent">יצירת קשר</h4>
               <div className="text-sm text-white/80 space-y-2">
-                <p className="font-bold text-white">FullBody מתוקים · נדב אונגר</p>
-                <p>ח.פ: 200353720</p>
-                <div className="flex items-center gap-2"><MapPin className="w-4 h-4 shrink-0" /><span>רחוב זרחין 1, קומה 3, רעננה 4366238</span></div>
-                <div className="flex items-center gap-2"><Mail className="w-4 h-4 shrink-0" /><a href="mailto:info@fullbody.co.il" className="hover:text-white">info@fullbody.co.il</a></div>
-                <div className="flex items-center gap-2"><Phone className="w-4 h-4 shrink-0" /><a href="tel:0542008578" className="hover:text-white">054-2008578</a></div>
+                <p className="font-bold text-white">{BUSINESS.name}</p>
+                <p>עוסק מורשה: {BUSINESS.taxId}</p>
+                <div className="flex items-center gap-2"><MapPin className="w-4 h-4 shrink-0" /><span>{BUSINESS.address}<br />{BUSINESS.addressNote}</span></div>
+                <div className="flex items-center gap-2"><Mail className="w-4 h-4 shrink-0" /><a href={BUSINESS.emailHref} className="hover:text-white">{BUSINESS.email}</a></div>
+                <div className="flex items-center gap-2"><Phone className="w-4 h-4 shrink-0" /><a href={BUSINESS.phoneHref} className="hover:text-white">{BUSINESS.phone}</a></div>
                 <div className="mt-3 text-xs text-white/60">
                   <p className="font-bold text-white/70">שעות פעילות:</p>
-                  <p>א'-ה': 09:00-18:00</p>
-                  <p>ו': 09:00-13:00</p>
+                  <p>{BUSINESS.hours}</p>
                 </div>
               </div>
             </div>
           </div>
 
           <div className="border-t border-white/20 pt-6 text-center">
-            <p className="text-sm text-white/60">© {new Date().getFullYear()} FullBody מתוקים · נדב אונגר. כל הזכויות שמורות.</p>
+            <p className="text-sm text-white/70 mb-2">{BUSINESS.disclosure}</p>
+            <p className="text-sm text-white/60"><a href={STORE_POLICIES.shipping}>מדיניות משלוחים בחנות</a> · <a href={STORE_POLICIES.refund}>מדיניות החזרים בחנות</a></p>
           </div>
         </div>
       </div>

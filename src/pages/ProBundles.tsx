@@ -6,6 +6,7 @@ import { shopUrlForHandle } from "@/lib/shopLinks";
 import { getProductByHandle } from "@/data/herbalifeProducts";
 import ProFooter from "@/components/ProFooter";
 import greenLogo from "@/assets/logo-green.webp";
+import { toast } from "sonner";
 
 interface BundleChoice {
   label: string;
@@ -137,9 +138,7 @@ export default function ProBundles() {
     );
   };
 
-  const getResolvedHandles = (bundle: Bundle) => bundle.productHandles.map((handle, index) =>
-    handle.startsWith('__choice_') ? (choices[bundle.id]?.[index] || '') : handle
-  ).filter(Boolean);
+  const getResolvedHandles = (bundle: BundleDef) => resolveHandles(bundle).filter(Boolean);
 
   return (
     <div className="min-h-screen bg-background" dir="rtl">
@@ -186,7 +185,7 @@ export default function ProBundles() {
       <section className="bg-gradient-to-b from-[hsl(142,70%,35%)]/10 to-background py-16">
         <div className="container mx-auto px-4 text-center">
           <span className="inline-block bg-[hsl(142,70%,35%)] text-white text-xs font-bold px-3 py-1 rounded-full mb-4">
-            חיסכון אמיתי
+            רעיונות לשילוב
           </span>
           <h1 className="text-3xl md:text-5xl font-black text-foreground mb-4">
             המלצות לשילוב מוצרי הרבלייף
@@ -202,7 +201,6 @@ export default function ProBundles() {
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-7xl mx-auto">
           {BUNDLES.map((bundle) => {
             const Icon = bundle.icon;
-            const { original, discounted, savings } = calcBundlePrice(bundle);
             return (
               <div
                 key={bundle.id}
@@ -215,7 +213,7 @@ export default function ProBundles() {
               >
                 {bundle.highlight && (
                   <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-[hsl(142,70%,35%)] text-white text-xs font-bold px-4 py-1 rounded-full">
-                    הכי משתלם
+                    שילוב מוצע
                   </div>
                 )}
 
@@ -295,12 +293,7 @@ export default function ProBundles() {
           })}
         </div>
 
-        {/* Trust note */}
-        <div className="text-center mt-12 max-w-2xl mx-auto">
-          <p className="text-sm text-muted-foreground">
-            * ההנחה מחושבת אוטומטית בקופה לאחר הוספת כל הפריטים. משלוח חינם בהזמנות מעל ₪299.
-          </p>
-        </div>
+        <p className="text-center mt-12 text-sm text-muted-foreground">המחירים, המלאי והמבצעים, ככל שיהיו, מוצגים בחנות בעת הרכישה.</p>
       </section>
 
       <ProFooter />
