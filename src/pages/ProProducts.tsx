@@ -6,14 +6,11 @@ import { ArrowRight, ArrowLeft, ShoppingBag, Search, Menu, X, MessageCircle } fr
 import { herbalifeProducts, PRO_PRODUCT_CATEGORIES, PRICE_RANGES } from "@/data/herbalifeProducts";
 import ProProductFilters, { type ActiveFilters } from "@/components/ProProductFilters";
 import ProFooter from "@/components/ProFooter";
-import CartDrawer from "@/components/CartDrawer";
-import { useCartStore } from "@/stores/cartStore";
 import greenLogo from "@/assets/logo-green.webp";
 
 export default function ProProducts() {
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
   const [searchQuery, setSearchQuery] = useState("");
-  const [isCartOpen, setIsCartOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [advancedFilters, setAdvancedFilters] = useState<ActiveFilters>({
     proteinTypes: [],
@@ -22,9 +19,6 @@ export default function ProProducts() {
     flavors: [],
     priceRange: null,
   });
-
-  const items = useCartStore((s) => s.items);
-  const cartCount = items.reduce((sum, i) => sum + i.quantity, 0);
 
   const filtered = useMemo(() => {
     return herbalifeProducts
@@ -57,8 +51,6 @@ export default function ProProducts() {
         <meta property="og:locale" content="he_IL" />
       </Helmet>
 
-      <CartDrawer isOpen={isCartOpen} onClose={() => setIsCartOpen(false)} />
-
       {/* Header */}
       <header className="sticky top-0 z-40 bg-card/95 backdrop-blur border-b border-border shadow-sm">
         <div className="container mx-auto px-4 h-16 flex items-center justify-between">
@@ -73,14 +65,7 @@ export default function ProProducts() {
             <Link to="/contact" className="hover:text-[hsl(142,70%,35%)] transition-colors">צור קשר</Link>
           </nav>
           <div className="flex items-center gap-2">
-            <button onClick={() => setIsCartOpen(true)} className="relative p-2" aria-label="עגלה">
-              <ShoppingBag className="w-5 h-5" />
-              {cartCount > 0 && (
-                <span className="absolute -top-1 -left-1 bg-[hsl(142,70%,35%)] text-white text-[10px] font-bold w-5 h-5 rounded-full flex items-center justify-center">
-                  {cartCount}
-                </span>
-              )}
-            </button>
+            <a href="https://shop.fullbody.co.il" className="relative p-2" aria-label="לחנות"><ShoppingBag className="w-5 h-5" /></a>
             <button className="md:hidden p-2" onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)} aria-label="תפריט">
               {isMobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
             </button>
