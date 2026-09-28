@@ -17,27 +17,14 @@ import StarterStack from "./pages/StarterStack";
 
 // Lazy: everything else
 const NotFound = lazy(() => import("./pages/NotFound"));
-const Blog = lazy(() => import("./pages/Blog"));
-const BlogPost = lazy(() => import("./pages/BlogPost"));
 const ThankYou = lazy(() => import("./pages/ThankYou"));
-const Terms = lazy(() => import("./pages/Terms"));
-const Shipping = lazy(() => import("./pages/Shipping"));
-const Returns = lazy(() => import("./pages/Returns"));
-const Privacy = lazy(() => import("./pages/Privacy"));
 const FAQ = lazy(() => import("./pages/FAQ"));
-const Contact = lazy(() => import("./pages/Contact"));
-const About = lazy(() => import("./pages/About"));
-const Accessibility = lazy(() => import("./pages/Accessibility"));
-const ProductDetail = lazy(() => import("./pages/ProductDetail"));
-const Products = lazy(() => import("./pages/Products"));
 const SleepGuide = lazy(() => import("./pages/SleepGuide"));
 const WhatsAppButton = lazy(() => import("./components/WhatsAppButton"));
 const LeadMagnetModal = lazy(() => import("./components/LeadMagnetModal"));
 const LegacyProductRedirect = lazy(() => import("./components/LegacyProductRedirect").then(m => ({ default: m.LegacyProductRedirect })));
 const AdminLogin = lazy(() => import("./pages/AdminLogin"));
 const AdminDashboard = lazy(() => import("./pages/AdminDashboard"));
-const Index = lazy(() => import("./pages/Index"));
-const ProProductDetail = lazy(() => import("./pages/ProProductDetail"));
 const ProContact = lazy(() => import("./pages/ProContact"));
 const ProBlog = lazy(() => import("./pages/ProBlog"));
 const ProBlogPost = lazy(() => import("./pages/ProBlogPost"));
@@ -63,11 +50,9 @@ const FirstVisitModal = lazy(() => import("@/components/FirstVisitModal"));
 
 // Sweets sub-site
 const SweetsHome = lazy(() => import("./pages/sweets/SweetsHome"));
-const SweetsProducts = lazy(() => import("./pages/sweets/SweetsProducts"));
 const SweetsStory = lazy(() => import("./pages/sweets/SweetsStory"));
 const SweetsShipping = lazy(() => import("./pages/sweets/SweetsShipping"));
 const SweetsContact = lazy(() => import("./pages/sweets/SweetsContact"));
-const SweetsProductDetail = lazy(() => import("./pages/sweets/SweetsProductDetail"));
 
 const queryClient = new QueryClient();
 
