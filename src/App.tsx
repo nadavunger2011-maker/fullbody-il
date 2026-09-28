@@ -129,9 +129,9 @@ function AppContent() {
 
           {/* Sweets sub-site (ready for sweets.fullbody.co.il) */}
           <Route path="/sweets" element={<SweetsHome />} />
-          <Route path="/sweets/products" element={<SweetsProducts />} />
-          <Route path="/sweets/category/:categoryId" element={<SweetsProducts />} />
-          <Route path="/sweets/product/:handle" element={<SweetsProductDetail />} />
+          <Route path="/sweets/products" element={<StoreRedirect />} />
+          <Route path="/sweets/category/:categoryId" element={<StoreRedirect />} />
+          <Route path="/sweets/product/:handle" element={<StoreRedirect />} />
           <Route path="/sweets/story" element={<SweetsStory />} />
           <Route path="/sweets/shipping" element={<SweetsShipping />} />
           <Route path="/sweets/contact" element={<SweetsContact />} />
