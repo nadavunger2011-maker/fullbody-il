@@ -2,7 +2,6 @@ import { useState } from 'react';
 import { Link, NavLink } from 'react-router-dom';
 import { Menu, X, ShoppingBag, ChevronDown } from 'lucide-react';
 import fullbodyLogo from '@/assets/fullbody-logo-sweets.png.asset.json';
-import { useCartStore } from '@/stores/cartStore';
 
 const SWEETS_CATEGORIES = [
   { id: 'protein-bars', name: 'חטיפי חלבון', href: '/sweets/category/protein-bars' },
@@ -15,13 +14,12 @@ const SWEETS_CATEGORIES = [
 export default function SweetsHeader() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [shopOpen, setShopOpen] = useState(false);
-  const cartCount = useCartStore((s) => s.items.reduce((sum, i) => sum + i.quantity, 0));
 
   return (
     <>
       {/* Top ribbon */}
       <div className="bg-primary text-primary-foreground text-center text-xs md:text-sm py-2 px-4">
-        משלוח חינם בהזמנות מעל 300 ש"ח · משלוח באיזור השרון ב-30 ש"ח
+        משלוח 29 ₪ · חינם מעל 299 ₪ · אספקה 3-5 ימי עסקים
       </div>
 
       <header className="sticky top-0 z-40 bg-card shadow-card border-b border-border">
@@ -73,18 +71,13 @@ export default function SweetsHeader() {
           </nav>
 
           {/* Cart */}
-          <Link
-            to="/cart"
+          <a
+            href="https://shop.fullbody.co.il"
             className="relative text-foreground hover:text-accent transition-colors"
-            aria-label="פתח עגלה"
+            aria-label="לחנות"
           >
             <ShoppingBag className="w-6 h-6" />
-            {cartCount > 0 && (
-              <span className="absolute -top-2 -left-2 bg-accent text-accent-foreground text-[10px] font-bold rounded-full w-5 h-5 flex items-center justify-center">
-                {cartCount}
-              </span>
-            )}
-          </Link>
+          </a>
         </div>
       </header>
 

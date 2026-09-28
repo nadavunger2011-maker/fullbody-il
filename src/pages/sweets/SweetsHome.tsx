@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
-import { ArrowLeft, CheckCircle, Truck, Leaf, ShieldCheck, Star, Mail } from 'lucide-react';
+import { ArrowLeft, CheckCircle, Truck, Leaf, ShieldCheck } from 'lucide-react';
 import SweetsHeader from '@/components/sweets/SweetsHeader';
 import SweetsFooter from '@/components/sweets/SweetsFooter';
 import { SWEETS_CATEGORIES_FULL, BESTSELLERS } from '@/data/sweetsProducts';
@@ -17,22 +17,14 @@ const TRUST_BADGES = [
 
 export default function SweetsHome() {
   const [zip, setZip] = useState('');
-  const [email, setEmail] = useState('');
 
   const checkZip = (e: React.FormEvent) => {
     e.preventDefault();
     if (!zip.trim()) return;
     const sharon = ['4', '43', '44', '45', '46', '47'];
     const inArea = sharon.some((p) => zip.startsWith(p));
-    if (inArea) toast.success('כן! אנחנו מחלקים באזור שלך - משלוח 30 ש"ח');
+    if (inArea) toast.success('כן, ניתן להזמין משלוח לאזור שלך דרך החנות');
     else toast('אנחנו מגיעים בכל הארץ - משלוח סטנדרטי 3-5 ימי עסקים');
-  };
-
-  const subscribe = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!email.trim()) return;
-    toast.success('נרשמת בהצלחה - שווה לפתוח את המייל 💌');
-    setEmail('');
   };
 
   return (
@@ -59,7 +51,7 @@ export default function SweetsHome() {
               מתוקים שלא מוותרים על המטרה
             </h1>
             <p className="text-lg md:text-xl text-muted-foreground mb-8">
-              חטיפי חלבון, שוקולד ועוגיות שהמתאמנים והדיאטנים שלנו מאשרים. פינוק אמיתי, בלי לפגוע בתוצאות.
+               מידע על חטיפים ומוצרים שניתן לשלב כחלק מתזונה מאוזנת ואורח חיים פעיל.
             </p>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
               <Link
@@ -130,22 +122,6 @@ export default function SweetsHome() {
         </div>
       </section>
 
-      {/* PRESS */}
-      <section className="bg-secondary/40 py-10">
-        <div className="container mx-auto px-4">
-          <p className="text-center text-xs uppercase tracking-widest text-muted-foreground font-bold mb-6">
-            מוזכרים בתקשורת
-          </p>
-          <div className="flex flex-wrap justify-center items-center gap-8 md:gap-14 opacity-60">
-            {PRESS_LOGOS.map((logo) => (
-              <span key={logo} className="text-lg md:text-2xl font-black text-muted-foreground">
-                {logo}
-              </span>
-            ))}
-          </div>
-        </div>
-      </section>
-
       {/* CATEGORIES GRID */}
       <section className="py-16 md:py-20">
         <div className="container mx-auto px-4">
@@ -174,8 +150,8 @@ export default function SweetsHome() {
         <div className="container mx-auto px-4">
           <div className="flex items-end justify-between mb-8 flex-wrap gap-3">
             <div>
-              <h2 className="text-3xl md:text-4xl font-black text-primary mb-2">הכי נמכרים</h2>
-              <p className="text-muted-foreground">המוצרים שהלקוחות שלנו לא מפסיקים להזמין מחדש</p>
+              <h2 className="text-3xl md:text-4xl font-black text-primary mb-2">מוצרים נבחרים</h2>
+              <p className="text-muted-foreground">למידע ומלאי עדכני עברו לחנות</p>
             </div>
             <Link to="/sweets/products" className="text-accent font-bold hover:underline flex items-center gap-2">
               כל המוצרים <ArrowLeft className="w-4 h-4" />
@@ -213,37 +189,6 @@ export default function SweetsHome() {
                 </div>
               </Link>
             ))}
-          </div>
-        </div>
-      </section>
-
-      {/* NEWSLETTER */}
-      <section className="py-16">
-        <div className="container mx-auto px-4">
-          <div className="max-w-2xl mx-auto text-center bg-card border border-border rounded-2xl p-8 md:p-12 shadow-card">
-            <Mail className="w-10 h-10 text-accent mx-auto mb-4" />
-            <h2 className="text-2xl md:text-3xl font-black text-primary mb-2">
-              10% הנחה על ההזמנה הראשונה
-            </h2>
-            <p className="text-muted-foreground mb-6">
-              הצטרפו לרשימת הדיוור וקבלו קופון + מתכונים מתוקים במייל
-            </p>
-            <form onSubmit={subscribe} className="flex flex-col sm:flex-row gap-3">
-              <input
-                type="email"
-                required
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="האימייל שלכם"
-                className="flex-1 px-5 py-3 rounded-full border border-border focus:outline-none focus:ring-4 focus:ring-accent/30"
-              />
-              <button
-                type="submit"
-                className="bg-accent hover:bg-accent/90 text-accent-foreground font-bold px-6 py-3 rounded-full transition"
-              >
-                אני בפנים
-              </button>
-            </form>
           </div>
         </div>
       </section>

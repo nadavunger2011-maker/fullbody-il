@@ -1,8 +1,7 @@
 import { useEffect, useMemo } from 'react';
-import { useSearchParams, Link } from 'react-router-dom';
+import { useSearchParams } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { CheckCircle, Package, ArrowRight } from 'lucide-react';
-import { Button } from '@/components/ui/button';
 import { trackPurchase } from '@/lib/gtm';
 import { trackPurchase as trackFBPurchase } from '@/lib/fbPixel';
 import { trackGA4Purchase } from '@/lib/ga4';
@@ -121,12 +120,10 @@ const ThankYou = () => {
         </div>
 
         <div className="pt-4">
-          <Link to="/">
-            <Button className="gap-2">
-              המשך לקנות
-              <ArrowRight className="w-4 h-4" aria-hidden="true" />
-            </Button>
-          </Link>
+          <a href="https://shop.fullbody.co.il" className="inline-flex items-center gap-2 rounded-md bg-primary px-5 py-3 font-bold text-primary-foreground">
+            חזרה לחנות
+            <ArrowRight className="w-4 h-4" aria-hidden="true" />
+          </a>
         </div>
       </div>
     </div>

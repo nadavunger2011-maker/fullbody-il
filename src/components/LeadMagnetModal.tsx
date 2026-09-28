@@ -138,10 +138,10 @@ export default function LeadMagnetModal() {
             <Gift className="w-4 h-4" /> מתנה בלעדית למצטרפים חדשים
           </div>
           <h2 className="text-2xl sm:text-3xl font-black text-white leading-tight mb-2">
-            רוצים לרדת במשקל ולחטב את הגוף בלי לרעוב? 🥤
+            הצטרפו לקבלת עדכונים והטבות
           </h2>
           <p className="text-white/90 text-xs sm:text-sm font-medium">
-            הזינו פרטים וקבלו מיידית למייל ול-WhatsApp את ערכת ההתחלה הדיגיטלית:
+            הזינו פרטים לקבלת עדכונים וגישה לספר המתכונים באתר:
           </p>
         </div>
 
@@ -157,11 +157,11 @@ export default function LeadMagnetModal() {
                 </div>
                 <div className="flex items-center gap-2.5">
                   <CheckCircle2 className="w-4 h-4 text-[hsl(142,70%,35%)] shrink-0" />
-                  <span>📕 ספר מתכוני שייקים וקינוחי חלבון פרימיום (PDF)</span>
+                  <span>📕 גישה לספר המתכונים באתר</span>
                 </div>
                 <div className="flex items-center gap-2.5">
                   <CheckCircle2 className="w-4 h-4 text-[hsl(142,70%,35%)] shrink-0" />
-                  <span>📘 קטלוג ומחירון מוצרי הרבלייף המעודכן בישראל</span>
+                  <span>📘 קישור ישיר לקטלוג המוצרים בחנות</span>
                 </div>
               </div>
 
@@ -244,10 +244,10 @@ export default function LeadMagnetModal() {
 
               <div>
                 <h3 className="text-2xl font-black text-foreground mb-1">
-                  איזה כיף! המתנה בדרך אליך 🎁
+                  ההרשמה נקלטה בהצלחה
                 </h3>
                 <p className="text-xs text-muted-foreground">
-                  שלחנו את קובץ המתכונים והקטלוג לכתובת <strong className="text-foreground">{email}</strong>
+                  ההרשמה של <strong className="text-foreground">{email}</strong> נקלטה. ספר המתכונים זמין באתר.
                 </p>
               </div>
 
@@ -271,7 +271,7 @@ export default function LeadMagnetModal() {
               {/* Action Buttons */}
               <div className="pt-2 space-y-2">
                 <a
-                  href="/products"
+                  href="https://shop.fullbody.co.il"
                   onClick={handleClose}
                   className="block w-full bg-[#16a34a] hover:bg-[#15803d] text-white font-black py-3.5 px-6 rounded-xl text-center text-sm transition-all shadow-md"
                 >

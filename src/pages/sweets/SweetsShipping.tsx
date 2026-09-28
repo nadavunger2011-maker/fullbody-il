@@ -8,7 +8,7 @@ export default function SweetsShipping() {
     <div dir="rtl" className="sweets-theme font-sans text-foreground bg-background min-h-screen">
       <Helmet>
         <title>משלוחים | FullBody מתוקים</title>
-        <meta name="description" content="מדיניות משלוחים של FullBody מתוקים - משלוח לכל הארץ, כולל אזור השרון ב-30 ש״ח, וחינם מעל 300 ש״ח." />
+        <meta name="description" content="מדיניות משלוחים: 29 ₪, חינם מעל 299 ₪, אספקה 3-5 ימי עסקים ובעומס עד 14 ימי עסקים." />
       </Helmet>
       <SweetsHeader />
       <section className="py-16">
@@ -17,10 +17,10 @@ export default function SweetsShipping() {
 
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-10">
             {[
-              { icon: MapPin, title: 'אזור השרון', text: '30 ש"ח' },
+              { icon: MapPin, title: 'עלות משלוח', text: '29 ₪' },
               { icon: Truck, title: 'כל הארץ', text: 'משלוח עד הבית' },
               { icon: Clock, title: 'זמן אספקה', text: '3-5 ימי עסקים' },
-              { icon: Package, title: 'מעל 300 ש"ח', text: 'משלוח חינם' },
+              { icon: Package, title: 'מעל 299 ₪', text: 'משלוח חינם' },
             ].map((item, i) => (
               <div key={i} className="bg-card p-6 rounded-xl border border-border text-center">
                 <item.icon className="w-8 h-8 text-accent mx-auto mb-3" />
@@ -31,9 +31,9 @@ export default function SweetsShipping() {
           </div>
 
           <div className="space-y-6 text-muted-foreground leading-relaxed">
-            <p><strong className="text-foreground">משלוח באזור השרון</strong> - עלות 30 ש"ח בלבד. כולל: רעננה, כפר סבא, הוד השרון, רמת השרון, הרצליה, נתניה ואזורים סמוכים.</p>
-            <p><strong className="text-foreground">משלוח לכל הארץ</strong> - עד 3-5 ימי עסקים באמצעות חברת שליחים. תקבלו מספר מעקב במייל וב-SMS.</p>
-            <p><strong className="text-foreground">משלוח חינם</strong> - בהזמנה מעל 300 ש"ח.</p>
+            <p><strong className="text-foreground">עלות משלוח</strong> - 29 ₪ לכל הארץ.</p>
+            <p><strong className="text-foreground">זמן אספקה</strong> - 3-5 ימי עסקים; בתקופות עומס עד 14 ימי עסקים.</p>
+            <p><strong className="text-foreground">משלוח חינם</strong> - בהזמנה מעל 299 ₪. אין איסוף עצמי.</p>
             <p>לפרטים נוספים ניתן ליצור קשר בטלפון <a href="tel:0542008578" className="text-accent hover:underline">054-2008578</a>.</p>
           </div>
         </div>
