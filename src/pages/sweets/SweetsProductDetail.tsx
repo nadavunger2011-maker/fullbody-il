@@ -139,20 +139,12 @@ export default function SweetsProductDetail() {
                     <Star key={i} className="w-4 h-4 fill-accent text-accent" />
                   ))}
                 </div>
-                <span className="text-sm text-muted-foreground">(81 ביקורות)</span>
+                
               </div>
 
               {/* Price */}
               <div className="flex items-baseline gap-3 mb-6">
                 <span className="text-3xl font-black text-primary">₪{product.price}</span>
-                {product.comparePrice && (
-                  <>
-                    <span className="text-lg text-muted-foreground line-through">₪{product.comparePrice}</span>
-                    <span className="bg-accent/10 text-accent text-xs font-bold px-2 py-1 rounded-full">
-                      חסכון ₪{product.comparePrice - product.price}
-                    </span>
-                  </>
-                )}
               </div>
 
               {/* Nutrition highlights (icons row) */}

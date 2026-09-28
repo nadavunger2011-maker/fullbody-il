@@ -351,7 +351,7 @@ export default function ProBody() {
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
             {[
               { icon: Leaf, title: "מוצרים מקוריים", text: "Herbalife מקורי 100%" },
-              { icon: Truck, title: "משלוח מהיר", text: "עד 3 ימי עסקים" },
+              { icon: Truck, title: "משלוח מהיר", text: "3-5 ימי עסקים" },
               { icon: ShieldCheck, title: "תשלום מאובטח", text: "SSL מוצפן" },
               { icon: Dumbbell, title: "ייעוץ מקצועי", text: "ליווי אישי ותוכנית תזונה" },
             ].map((item, index) => (
@@ -372,10 +372,10 @@ export default function ProBody() {
         <div className="container mx-auto px-4">
           <div className="text-center mb-8">
             <span className="text-[hsl(142,70%,35%)] font-bold text-sm tracking-widest uppercase">Herbalife Nutrition</span>
-            <h2 className="text-3xl md:text-4xl font-black text-primary mt-2">קטלוג מוצרי הרבלייף: פתרונות תזונה מתקדמים</h2>
+            <h2 className="text-3xl md:text-4xl font-black text-primary mt-2">קטלוג מוצרי הרבלייף: מוצרים לתזונה יומית ואורח חיים פעיל</h2>
             {/* SEO sub-categories */}
             <div className="sr-only">
-              <h3>ירידה במשקל וחיטוב</h3>
+              <h3>מוצרים לשילוב בתזונה מאוזנת</h3>
               <h3>תזונת ספורט H24</h3>
               <h3>חיוניות ותזונה יומית</h3>
             </div>
@@ -471,7 +471,7 @@ export default function ProBody() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {[
               { icon: Leaf, title: "רכיבים טבעיים", text: "מידע על הרכיבים מופיע בתווית של כל מוצר בחנות." },
-              { icon: Dumbbell, title: "תזונת ספורט", text: "קו מוצרי H24 לספורטאים — חלבון, אנרגיה וריהידרציה לביצועים מיטביים." },
+              { icon: Dumbbell, title: "תזונת ספורט", text: "קו מוצרי H24 מיועד לשילוב בשגרת תזונת ספורט בהתאם להוראות התווית." },
               { icon: Zap, title: "שליטה במשקל", text: "מוצרים שניתן לשלב בתפריט מאוזן לצד פעילות גופנית." },
             ].map((item, index) => (
               <div key={index} className="bg-card rounded-2xl p-8 border border-border hover:shadow-hover transition-all duration-300 text-center">
@@ -556,7 +556,7 @@ export default function ProBody() {
             {searchQuery && (
               <div className="mt-4 max-h-60 overflow-y-auto">
                 {filteredProducts.length > 0 ? filteredProducts.slice(0, 5).map(p => (
-                  <Link key={p?.node?.id} to={`/nava/product/${p?.node?.handle}`} onClick={() => setIsSearchOpen(false)} className="flex items-center gap-3 py-3 hover:bg-secondary/50 rounded-lg px-2 transition-colors cursor-pointer">
+                  <Link key={p?.node?.id} to={shopProductUrl(p?.node?.handle ?? '')} onClick={() => setIsSearchOpen(false)} className="flex items-center gap-3 py-3 hover:bg-secondary/50 rounded-lg px-2 transition-colors cursor-pointer">
                     {p?.node?.images?.edges?.[0]?.node && <img src={p.node.images.edges[0].node.url} alt={`תמונה של ${p?.node?.title ?? 'מוצר'}`} className="w-10 h-10 object-contain rounded" loading="lazy" />}
                     <div>
                       <p className="font-bold text-foreground text-sm">{p?.node?.title}</p>
