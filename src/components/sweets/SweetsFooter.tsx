@@ -11,7 +11,7 @@ export default function SweetsFooter() {
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
             {[
               { icon: ShieldCheck, title: 'תשלום מאובטח', text: 'הצפנת SSL 256-bit' },
-              { icon: Truck, title: 'משלוח מהיר', text: 'עד 3 ימי עסקים' },
+              { icon: Truck, title: 'משלוח', text: '3-5 ימי עסקים' },
               { icon: Award, title: 'מותג FullBody', text: 'בריא, טעים, אמיתי' },
               { icon: CreditCard, title: 'תשלום', text: 'אשראי / PayPal / Bit' },
             ].map((item, i) => (

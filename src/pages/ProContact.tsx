@@ -25,17 +25,17 @@ export default function ProContact() {
   return (
     <div dir="rtl" className="font-sans text-foreground bg-background min-h-screen">
       <Helmet>
-        <title>צור קשר | FullBody - ייעוץ תזונה חינם</title>
+        <title>צור קשר | FullBody – נדב אונגר</title>
         <meta name="description" content="צרו קשר עם FullBody בטלפון 054-2008578 או בוואטסאפ. מענה לפניות בנושא מוצרי Herbalife ושירות לקוחות." />
         <link rel="canonical" href="https://fullbody.co.il/contact" />
-        <meta property="og:title" content="צור קשר | FullBody - ייעוץ תזונה חינם" />
+        <meta property="og:title" content="צור קשר | FullBody – נדב אונגר" />
         <meta property="og:description" content="צרו קשר עם FullBody בטלפון או בוואטסאפ. מענה לפניות בנושא מוצרים ושירות לקוחות." />
         <meta property="og:type" content="website" />
         <meta property="og:url" content="https://fullbody.co.il/contact" />
         <meta property="og:locale" content="he_IL" />
         <meta property="og:image" content="https://fullbody.co.il/og-image.jpg" />
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content="צור קשר | FullBody - ייעוץ תזונה חינם" />
+        <meta name="twitter:title" content="צור קשר | FullBody – נדב אונגר" />
         <meta name="twitter:description" content="מענה לפניות בנושא מוצרי Herbalife ושירות לקוחות." />
         <meta name="twitter:image" content="https://fullbody.co.il/og-image.jpg" />
       </Helmet>

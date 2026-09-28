@@ -6,16 +6,11 @@ import { proBlogCategories } from '@/data/proBlogPosts';
 import { useAllBlogPosts, useAllBlogCategories } from '@/hooks/useBlogPosts';
 import greenLogo from '@/assets/logo-green.webp';
 import ProFooter from '@/components/ProFooter';
-import { useCartStore } from '@/stores/cartStore';
-import CartDrawer from '@/components/CartDrawer';
 import { Skeleton } from '@/components/ui/skeleton';
 
 export default function ProBlog() {
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [isCartOpen, setIsCartOpen] = useState(false);
-  const { items: cartItems } = useCartStore();
-  const cartCount = cartItems.reduce((sum, i) => sum + i.quantity, 0);
 
   const { posts: allPosts, isLoading } = useAllBlogPosts();
   const activeCategories = useAllBlogCategories(allPosts);
@@ -28,7 +23,7 @@ export default function ProBlog() {
     <div dir="rtl" className="font-sans text-foreground bg-background min-h-screen">
       <Helmet>
         <title>בלוג תזונה וכושר | FullBody - מדריכים מקצועיים</title>
-        <meta name="description" content="מאמרים מקצועיים בנושאי תזונה, חלבון, כושר וניהול משקל. טיפים מומחים של שי, יועץ תזונה מרעננה." />
+        <meta name="description" content="מידע כללי בנושאי תזונה, חלבון, כושר וניהול משקל כחלק מאורח חיים פעיל." />
         <link rel="canonical" href="https://fullbody.co.il/blog" />
         <meta property="og:title" content="בלוג תזונה וכושר | FullBody" />
         <meta property="og:description" content="מאמרים מקצועיים בנושאי תזונה, חלבון, כושר וניהול משקל. טיפים מומחים." />
@@ -59,10 +54,7 @@ export default function ProBlog() {
             <Link to="/contact" className="hover:text-accent transition-colors">צור קשר</Link>
           </nav>
           <div className="flex items-center gap-4">
-            <button onClick={() => setIsCartOpen(true)} className="p-2 text-muted-foreground relative">
-              <ShoppingBag className="w-6 h-6" />
-              {cartCount > 0 && <span className="absolute top-0 right-0 bg-[hsl(142,70%,35%)] text-white text-[10px] w-5 h-5 flex items-center justify-center rounded-full font-bold">{cartCount}</span>}
-            </button>
+             <a href="https://shop.fullbody.co.il" className="p-2 text-muted-foreground" aria-label="לחנות"><ShoppingBag className="w-6 h-6" /></a>
           </div>
         </div>
       </header>
@@ -75,8 +67,6 @@ export default function ProBlog() {
         <Link to="/blog" onClick={() => setIsMobileMenuOpen(false)} className="py-4 border-b border-border text-lg font-bold text-[hsl(142,70%,35%)]">מאמרים</Link>
         <Link to="/contact" onClick={() => setIsMobileMenuOpen(false)} className="py-4 border-b border-border text-lg font-bold">צור קשר</Link>
       </div>
-
-      <CartDrawer isOpen={isCartOpen} onClose={() => setIsCartOpen(false)} />
 
       {/* Hero */}
       <section className="bg-[hsl(142,70%,35%)] py-16 text-center text-white">
