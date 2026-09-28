@@ -14,28 +14,6 @@ const TRUST_BADGES = [
   { icon: Truck, title: 'משלוח מהיר', text: '3-5 ימי עסקים' },
 ];
 
-const PRESS_LOGOS = ['Ynet', 'Mako', 'Calcalist', 'The Marker', 'Globes'];
-
-const TESTIMONIALS = [
-  {
-    name: 'שירה כ.',
-    role: 'מתאמנת קרוספיט',
-    text: 'סוף סוף חטיף חלבון שגם טעים וגם לא מטריף את הסוכר. הפכתי לחשוב הבית.',
-    rating: 5,
-  },
-  {
-    name: 'עומר ל.',
-    role: 'רץ למרחקים ארוכים',
-    text: 'העוגיות שיבולת שועל שווה את כל הכסף. אנרגיה נקייה לפני ריצה בבוקר.',
-    rating: 5,
-  },
-  {
-    name: 'טל מ.',
-    role: 'אמא + כושר',
-    text: 'קניתי מארז טעימה למשפחה, הילדים בקטע והאישה שלי מבקשת עוד. WOW.',
-    rating: 5,
-  },
-];
 
 export default function SweetsHome() {
   const [zip, setZip] = useState('');
@@ -231,71 +209,10 @@ export default function SweetsHome() {
                   <h3 className="font-bold text-foreground mb-3 leading-snug line-clamp-2">{p.name}</h3>
                   <div className="mt-auto flex items-baseline gap-2">
                     <span className="text-lg font-black text-primary">₪{p.price}</span>
-                    {p.comparePrice && (
-                      <span className="text-sm text-muted-foreground line-through">₪{p.comparePrice}</span>
-                    )}
                   </div>
                 </div>
               </Link>
             ))}
-          </div>
-        </div>
-      </section>
-
-      {/* TESTIMONIALS */}
-      <section className="py-16 md:py-20">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-10">
-            <h2 className="text-3xl md:text-4xl font-black text-primary mb-2">מה אומרים עלינו</h2>
-            <p className="text-muted-foreground">לקוחות אמיתיים, תגובות אמיתיות</p>
-          </div>
-          <div className="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto">
-            {TESTIMONIALS.map((t, i) => (
-              <div key={i} className="bg-card border border-border rounded-xl p-6 shadow-card">
-                <div className="flex gap-0.5 mb-3">
-                  {Array.from({ length: t.rating }).map((_, k) => (
-                    <Star key={k} className="w-4 h-4 fill-accent text-accent" />
-                  ))}
-                </div>
-                <p className="text-muted-foreground leading-relaxed mb-4">"{t.text}"</p>
-                <div className="border-t border-border pt-4">
-                  <p className="font-bold text-foreground">{t.name}</p>
-                  <p className="text-xs text-muted-foreground">{t.role}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* SHIPPING / ZIP CHECK */}
-      <section className="bg-primary text-primary-foreground py-16">
-        <div className="container mx-auto px-4">
-          <div className="max-w-2xl mx-auto text-center">
-            <Truck className="w-12 h-12 mx-auto mb-4" />
-            <h2 className="text-3xl md:text-4xl font-black mb-3">בודקים משלוח לאזור שלכם</h2>
-            <p className="text-primary-foreground/80 mb-6">
-              משלוח באזור השרון ב-30 ש"ח · משלוח חינם מעל 300 ש"ח · לכל הארץ תוך 3-5 ימי עסקים
-            </p>
-            <form onSubmit={checkZip} className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto">
-              <input
-                type="text"
-                inputMode="numeric"
-                value={zip}
-                onChange={(e) => setZip(e.target.value)}
-                placeholder="מיקוד או שם עיר"
-                className="flex-1 px-5 py-3 rounded-full text-foreground border-0 focus:outline-none focus:ring-4 focus:ring-accent/40"
-              />
-              <button
-                type="submit"
-                className="bg-accent hover:bg-accent/90 text-accent-foreground font-bold px-6 py-3 rounded-full transition"
-              >
-                בדקו זמינות
-              </button>
-            </form>
-            <Link to="/sweets/shipping" className="inline-block mt-4 text-sm text-primary-foreground/80 hover:text-primary-foreground underline">
-              למדיניות המשלוחים המלאה
-            </Link>
           </div>
         </div>
       </section>

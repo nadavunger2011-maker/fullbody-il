@@ -3,10 +3,6 @@ import greenLogo from '@/assets/logo-green.webp';
 import herbalifeDistributorLogo from '@/assets/herbalife-independent-distributor.webp';
 import heroSlide1 from '@/assets/hero-slide-1.webp';
 import heroSlide2 from '@/assets/hero-slide-2.webp';
-import { trackAddToCart as gtmTrackAddToCart } from '@/lib/gtm';
-import { trackAddToCart as fbTrackAddToCart } from '@/lib/fbPixel';
-import { trackGA4AddToCart } from '@/lib/ga4';
-import { trackAddToCartEvent } from '@/lib/analytics';
 import React, { useState, useEffect, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
@@ -15,21 +11,13 @@ import {
   Truck, ShieldCheck, CheckCircle, HeartPulse, 
   ChevronDown, Leaf, Dumbbell, Zap, ArrowRight
 } from 'lucide-react';
-import { fetchShopifyProducts, ShopifyProduct, getFirstAvailableVariant, isProductAvailableForSale } from '@/lib/shopify';
+import { fetchShopifyProducts, ShopifyProduct } from '@/lib/shopify';
 import { herbalifeProducts, PRO_PRODUCT_CATEGORIES, HerbalifeProduct } from '@/data/herbalifeProducts';
 import { proBlogPosts } from '@/data/proBlogPosts';
 import { Calendar, Clock, Tag } from 'lucide-react';
-import { useCartStore } from '@/stores/cartStore';
-import { toast } from 'sonner';
 
-import CartDrawer from './CartDrawer';
 import ProFooter from './ProFooter';
 import ProProductFilters, { type ActiveFilters } from './ProProductFilters';
-import { TestimonialSlider, SuccessByNumbers, CrossCategoryFitness } from './SocialProofSection';
-import HomepageReviews from './HomepageReviews';
-import TrustFactors from './TrustFactors';
-import GoldStandardBadge from './GoldStandardBadge';
-import TestimonialsGrid from './TestimonialsGrid';
 import { PRICE_RANGES } from '@/data/herbalifeProducts';
 
 type SortOption = 'default' | 'price-asc' | 'price-desc';
@@ -191,7 +179,6 @@ const HeroCarousel = () => {
 export default function ProBody() {
 
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [isCartOpen, setIsCartOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [sortBy, setSortBy] = useState<SortOption>('default');
   const [selectedCategory, setSelectedCategory] = useState('all');
@@ -202,7 +189,6 @@ export default function ProBody() {
     proteinTypes: [], absorption: [], goals: [], flavors: [], priceRange: null,
   });
 
-  const { items: cartItems, addItem } = useCartStore();
 
   // Fetch only Herbalife products
   useEffect(() => {
@@ -238,30 +224,6 @@ export default function ProBody() {
     document.body.style.overflow = isMobileMenuOpen ? 'hidden' : 'unset';
   }, [isMobileMenuOpen]);
 
-  const handleAddToCart = async (product: ShopifyProduct) => {
-    const variant = getFirstAvailableVariant(product);
-    if (!variant) { toast.error('המוצר אזל מהמלאי'); return; }
-    const ok = await addItem({
-      product, variantId: variant.id, variantTitle: variant.title,
-      price: variant.price, quantity: 1, selectedOptions: variant.selectedOptions || []
-    });
-    if (!ok) { toast.error('לא ניתן להוסיף לעגלה כרגע'); return; }
-    setIsCartOpen(true);
-    toast.success(`${product?.node?.title} נוסף לעגלה`);
-
-    // Track across all platforms
-    const productId = product?.node?.id?.replace('gid://shopify/Product/', '') ?? '';
-    const price = parseFloat(variant?.price?.amount ?? '0');
-    gtmTrackAddToCart({ item_id: productId, item_name: product?.node?.title ?? '', price, quantity: 1, currency: 'ILS' });
-    trackGA4AddToCart({ item_id: productId, item_name: product?.node?.title ?? '', price, quantity: 1 }, 'ILS');
-    fbTrackAddToCart(productId, product?.node?.title ?? '', price);
-    trackAddToCartEvent({
-      handle: product?.node?.handle ?? '', title: product?.node?.title ?? '', id: productId,
-      variantId: variant.id, variantTitle: variant.title, price, quantity: 1,
-    });
-  };
-
-  const cartCount = cartItems.reduce((sum, item) => sum + item.quantity, 0);
 
   return (
     <div dir="rtl" className="font-sans text-foreground bg-background min-h-screen">
@@ -353,12 +315,9 @@ export default function ProBody() {
             <button onClick={() => setIsSearchOpen(true)} className="p-2 text-muted-foreground hover:text-accent transition-colors cursor-pointer" aria-label="חיפוש">
               <Search className="w-5 h-5" />
             </button>
-            <button onClick={() => setIsCartOpen(true)} className="p-2 text-muted-foreground hover:text-accent transition-colors relative cursor-pointer" aria-label="עגלת קניות">
+            <a href="https://shop.fullbody.co.il" className="p-2 text-muted-foreground hover:text-accent transition-colors" aria-label="לחנות">
               <ShoppingBag className="w-6 h-6" />
-              {cartCount > 0 && (
-                <span className="absolute top-0 right-0 bg-accent text-accent-foreground text-[10px] w-5 h-5 flex items-center justify-center rounded-full font-bold">{cartCount}</span>
-              )}
-            </button>
+            </a>
           </div>
         </div>
       </header>
@@ -380,20 +339,11 @@ export default function ProBody() {
         <div onClick={() => setIsMobileMenuOpen(false)} className="fixed inset-0 bg-foreground/50 z-40 transition-opacity duration-300 animate-fade-in cursor-pointer" />
       )}
 
-      <CartDrawer isOpen={isCartOpen} onClose={() => setIsCartOpen(false)} />
 
       
 
       {/* Hero Carousel - Full Width Edge-to-Edge */}
       <HeroCarousel />
-
-      {/* Premium Trust Factors Section - directly below hero */}
-      {/* Gold Standard guarantee badge */}
-      <div className="container mx-auto px-4 pt-6">
-        <GoldStandardBadge className="max-w-2xl mx-auto" />
-      </div>
-
-      <TrustFactors />
 
       {/* Trust Badges */}
       <section className="py-14 md:py-16 bg-card border-b border-border">
@@ -401,7 +351,7 @@ export default function ProBody() {
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
             {[
               { icon: Leaf, title: "מוצרים מקוריים", text: "Herbalife מקורי 100%" },
-              { icon: Truck, title: "משלוח מהיר", text: "עד 3 ימי עסקים" },
+              { icon: Truck, title: "משלוח מהיר", text: "3-5 ימי עסקים" },
               { icon: ShieldCheck, title: "תשלום מאובטח", text: "SSL מוצפן" },
               { icon: Dumbbell, title: "ייעוץ מקצועי", text: "ליווי אישי ותוכנית תזונה" },
             ].map((item, index) => (
@@ -422,10 +372,10 @@ export default function ProBody() {
         <div className="container mx-auto px-4">
           <div className="text-center mb-8">
             <span className="text-[hsl(142,70%,35%)] font-bold text-sm tracking-widest uppercase">Herbalife Nutrition</span>
-            <h2 className="text-3xl md:text-4xl font-black text-primary mt-2">קטלוג מוצרי הרבלייף: פתרונות תזונה מתקדמים</h2>
+            <h2 className="text-3xl md:text-4xl font-black text-primary mt-2">קטלוג מוצרי הרבלייף: מוצרים לתזונה יומית ואורח חיים פעיל</h2>
             {/* SEO sub-categories */}
             <div className="sr-only">
-              <h3>ירידה במשקל וחיטוב</h3>
+              <h3>מוצרים לשילוב בתזונה מאוזנת</h3>
               <h3>תזונת ספורט H24</h3>
               <h3>חיוניות ותזונה יומית</h3>
             </div>
@@ -513,16 +463,16 @@ export default function ProBody() {
       <section className="py-20 bg-secondary/30">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-black text-foreground mb-4">למה FullBody? המדע שמאחורי Herbalife Nutrition</h2>
+            <h2 className="text-3xl md:text-4xl font-black text-foreground mb-4">מידע על מוצרי Herbalife</h2>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              מותג עולמי מוביל בתזונה מאוזנת ואורח חיים בריא, פועל ב-90 מדינות
+              מוצרים שניתן לשלב כחלק מתזונה מאוזנת ואורח חיים פעיל
             </p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {[
-              { icon: Leaf, title: "רכיבים טבעיים", text: "מוצרים מבוססי מדע עם רכיבים טבעיים ואיכותיים, ללא חומרים מיותרים." },
-              { icon: Dumbbell, title: "תזונת ספורט", text: "קו מוצרי H24 לספורטאים — חלבון, אנרגיה וריהידרציה לביצועים מיטביים." },
-              { icon: Zap, title: "שליטה במשקל", text: "תוכניות תזונה מוכחות לשליטה במשקל עם ליווי מקצועי ותוצאות." },
+              { icon: Leaf, title: "רכיבים טבעיים", text: "מידע על הרכיבים מופיע בתווית של כל מוצר בחנות." },
+              { icon: Dumbbell, title: "תזונת ספורט", text: "קו מוצרי H24 מיועד לשילוב בשגרת תזונת ספורט בהתאם להוראות התווית." },
+              { icon: Zap, title: "שליטה במשקל", text: "מוצרים שניתן לשלב בתפריט מאוזן לצד פעילות גופנית." },
             ].map((item, index) => (
               <div key={index} className="bg-card rounded-2xl p-8 border border-border hover:shadow-hover transition-all duration-300 text-center">
                 <div className="w-16 h-16 mx-auto mb-4 bg-[hsl(142,70%,35%)]/10 rounded-full flex items-center justify-center text-[hsl(142,70%,35%)]">
@@ -535,22 +485,6 @@ export default function ProBody() {
           </div>
         </div>
       </section>
-
-      {/* Social Proof */}
-      {/* Social Proof — Success Stories */}
-      <TestimonialsGrid />
-
-      <section aria-labelledby="success-stories-heading" className="pt-12 bg-secondary/20">
-        <div className="container mx-auto px-4 text-center">
-          <h2 id="success-stories-heading" className="text-3xl md:text-4xl font-black text-foreground">סיפורי הצלחה ותוצאות בשטח</h2>
-        </div>
-      </section>
-      <TestimonialSlider filter="mix" />
-      <SuccessByNumbers />
-      <CrossCategoryFitness />
-
-      {/* Latest Reviews */}
-      <HomepageReviews />
 
       {/* Blog Section */}
       <section className="py-16 bg-secondary/30">
@@ -622,7 +556,7 @@ export default function ProBody() {
             {searchQuery && (
               <div className="mt-4 max-h-60 overflow-y-auto">
                 {filteredProducts.length > 0 ? filteredProducts.slice(0, 5).map(p => (
-                  <Link key={p?.node?.id} to={`/nava/product/${p?.node?.handle}`} onClick={() => setIsSearchOpen(false)} className="flex items-center gap-3 py-3 hover:bg-secondary/50 rounded-lg px-2 transition-colors cursor-pointer">
+                  <Link key={p?.node?.id} to={shopProductUrl(p?.node?.handle ?? '')} onClick={() => setIsSearchOpen(false)} className="flex items-center gap-3 py-3 hover:bg-secondary/50 rounded-lg px-2 transition-colors cursor-pointer">
                     {p?.node?.images?.edges?.[0]?.node && <img src={p.node.images.edges[0].node.url} alt={`תמונה של ${p?.node?.title ?? 'מוצר'}`} className="w-10 h-10 object-contain rounded" loading="lazy" />}
                     <div>
                       <p className="font-bold text-foreground text-sm">{p?.node?.title}</p>

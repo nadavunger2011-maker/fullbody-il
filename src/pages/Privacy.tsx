@@ -69,9 +69,9 @@ export default function Privacy() {
                 <div className="bg-card p-6 rounded-xl border border-border">
                   <ul className="text-muted-foreground space-y-2 leading-relaxed">
                     <li><strong>בעל המאגר:</strong> FullBody בע"מ</li>
-                    <li><strong>ח.פ.:</strong> 516247890</li>
-                    <li><strong>כתובת:</strong> רחוב זרחין 1, רעננה</li>
-                    <li><strong>טלפון:</strong> <a href="tel:0524487537" className="text-accent hover:underline">052-4487537</a></li>
+                    <li><strong>ח.פ.:</strong> 200353720</li>
+                    <li><strong>כתובת:</strong> רחוב זרחין 1, קומה 3, רעננה 4366238</li>
+                    <li><strong>טלפון:</strong> <a href="tel:0542008578" className="text-accent hover:underline">054-2008578</a></li>
                     <li><strong>דוא"ל לפניות פרטיות:</strong> <a href="mailto:privacy@fullbody.co.il" className="text-accent hover:underline">privacy@fullbody.co.il</a></li>
                   </ul>
                 </div>

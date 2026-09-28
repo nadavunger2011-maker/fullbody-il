@@ -86,8 +86,8 @@ export default function Terms() {
                 <p className="text-muted-foreground leading-relaxed">
                   לשאלות בנוגע לתקנון זה, ניתן לפנות אלינו:<br />
                   דוא"ל: info@fullbody.co.il<br />
-                  טלפון: 052-4487537<br />
-                  כתובת: רחוב זרחין 1, רעננה
+                  טלפון: 054-2008578<br />
+                  כתובת: רחוב זרחין 1, קומה 3, רעננה 4366238
                 </p>
               </section>
 
@@ -96,9 +96,9 @@ export default function Terms() {
                 <div className="bg-secondary/50 p-6 rounded-xl border border-border">
                   <ul className="text-muted-foreground space-y-2 leading-relaxed">
                     <li><strong>שם העסק:</strong> FullBody בע"מ</li>
-                    <li><strong>ח.פ./עוסק מורשה:</strong> 516247890</li>
-                    <li><strong>כתובת:</strong> רחוב זרחין 1, רעננה</li>
-                    <li><strong>טלפון:</strong> <a href="tel:0524487537" className="text-accent hover:underline">052-4487537</a></li>
+                    <li><strong>ח.פ./עוסק מורשה:</strong> 200353720</li>
+                    <li><strong>כתובת:</strong> רחוב זרחין 1, קומה 3, רעננה 4366238</li>
+                    <li><strong>טלפון:</strong> <a href="tel:0542008578" className="text-accent hover:underline">054-2008578</a></li>
                     <li><strong>דוא"ל:</strong> <a href="mailto:info@fullbody.co.il" className="text-accent hover:underline">info@fullbody.co.il</a></li>
                     <li><strong>שעות פעילות:</strong> א'-ה' 9:00-18:00, ו' 9:00-13:00</li>
                   </ul>

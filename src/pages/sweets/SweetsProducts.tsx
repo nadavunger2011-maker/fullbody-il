@@ -76,9 +76,6 @@ export default function SweetsProducts() {
                   <h3 className="font-bold text-foreground mb-3 leading-snug line-clamp-2">{p.name}</h3>
                   <div className="mt-auto flex items-baseline gap-2">
                     <span className="text-lg font-black text-primary">₪{p.price}</span>
-                    {p.comparePrice && (
-                      <span className="text-sm text-muted-foreground line-through">₪{p.comparePrice}</span>
-                    )}
                   </div>
                 </div>
               </Link>

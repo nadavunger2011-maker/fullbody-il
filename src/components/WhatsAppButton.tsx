@@ -1,10 +1,11 @@
 import { useState } from "react";
 import { MessageCircle, X, Phone } from "lucide-react";
+import { BUSINESS } from '@/lib/business';
 
 const WhatsAppButton = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const whatsappUrl = "https://wa.link/0g4tht";
-  const phoneNumber = "054-2008578";
+  const whatsappUrl = `${BUSINESS.whatsapp}?text=${encodeURIComponent('היי, אשמח לקבל מידע נוסף')}`;
+  const phoneNumber = BUSINESS.phone;
 
   const handleButtonClick = () => {
     setIsOpen((prev) => !prev);
@@ -48,7 +49,7 @@ const WhatsAppButton = () => {
             <span>שיחה בוואטסאפ</span>
           </a>
           <a
-            href="tel:0542008578"
+            href={BUSINESS.phoneHref}
             className="flex items-center justify-center gap-2 w-full border border-[hsl(142,70%,35%)] text-[hsl(142,70%,35%)] font-bold py-2.5 px-4 rounded-xl transition-colors hover:bg-[hsl(142,70%,35%)]/5"
           >
             <Phone className="w-4 h-4" />

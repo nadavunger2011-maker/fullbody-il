@@ -157,8 +157,8 @@ export default function Shipping() {
               <p className="text-muted-foreground leading-relaxed">
                 לביצוע ביטול או בירור בנושא החזרה, ניתן לפנות אלינו:<br />
                 דוא"ל: support@fullbody.co.il<br />
-                טלפון: 052-4487537<br />
-                כתובת: רחוב זרחין 1, רעננה
+                טלפון: 054-2008578<br />
+                כתובת: רחוב זרחין 1, קומה 3, רעננה 4366238
               </p>
             </section>
 

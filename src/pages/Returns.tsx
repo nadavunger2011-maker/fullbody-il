@@ -153,11 +153,11 @@ export default function Returns() {
                   </div>
                   <div className="flex items-center gap-3">
                     <Phone className="w-5 h-5 text-accent" />
-                    <a href="tel:052-4487537" className="text-accent hover:underline">052-4487537</a>
+                    <a href="tel:054-2008578" className="text-accent hover:underline">054-2008578</a>
                   </div>
                   <div className="flex items-center gap-3">
                     <MapPin className="w-5 h-5 text-accent" />
-                    <span className="text-muted-foreground">רחוב זרחין 1, רעננה</span>
+                    <span className="text-muted-foreground">רחוב זרחין 1, קומה 3, רעננה 4366238</span>
                   </div>
                 </div>
               </div>

@@ -18,11 +18,10 @@ import {
 import ProFooter from '@/components/ProFooter';
 
 const BUSINESS = {
-  legalName: 'נדב אונגר - FullBody (עוסק מורשה)',
+  legalName: 'FullBody – נדב אונגר',
   taxId: '200353720',
-  address: 'רחוב זרחין 1, רעננה, ישראל',
-  phone: '052-4487537',
-  mobile: '054-2008578',
+  address: 'רחוב זרחין 1, קומה 3, רעננה 4366238',
+  phone: '054-2008578',
   email: 'info@fullbody.co.il',
 };
 
@@ -33,7 +32,7 @@ const jsonLd = {
   legalName: BUSINESS.legalName,
   url: 'https://fullbody.co.il',
   email: BUSINESS.email,
-  telephone: '+972524487537',
+  telephone: '+972542008578',
   taxID: BUSINESS.taxId,
   vatID: BUSINESS.taxId,
   currenciesAccepted: 'ILS',
@@ -41,13 +40,14 @@ const jsonLd = {
   areaServed: { '@type': 'Country', name: 'IL' },
   address: {
     '@type': 'PostalAddress',
-    streetAddress: 'זרחין 1',
+    streetAddress: 'רחוב זרחין 1, קומה 3',
     addressLocality: 'רעננה',
+    postalCode: '4366238',
     addressCountry: 'IL',
   },
   contactPoint: {
     '@type': 'ContactPoint',
-    telephone: '+972524487537',
+    telephone: '+972542008578',
     email: BUSINESS.email,
     contactType: 'customer service',
     availableLanguage: ['he', 'en'],
@@ -119,9 +119,9 @@ export default function ProAbout() {
                 הנרכשים מהחברה ומשווקים על ידי המפיץ העצמאי.
               </p>
               <p>
-                בנוסף למכירת מוצרים, אנו מציעים ליווי ותוכניות תזונה ואימון אישיות דרך{' '}
+                לצד המידע על המוצרים, ניתן למלא שאלון כללי על מטרות והרגלים דרך{' '}
                 <Link to="/plan" className="text-accent underline">
-                  שאלון התוכנית האישית
+                  שאלון ההתאמה
                 </Link>
                 . מוצרי הרבלייף אינם תרופות ואינם מיועדים לאבחון, טיפול, ריפוי או מניעה של מחלות.
               </p>
@@ -144,20 +144,17 @@ export default function ProAbout() {
               <li className="flex items-start gap-2">
                 <MapPin className="w-4 h-4 mt-1 text-accent shrink-0" />
                 <span>
-                  <strong className="text-foreground">כתובת העסק (למשלוחי דואר והחזרות):</strong> {BUSINESS.address}
+                  <strong className="text-foreground">כתובת המשרד:</strong> {BUSINESS.address}
                 </span>
               </li>
               <li className="flex items-start gap-2">
                 <Phone className="w-4 h-4 mt-1 text-accent shrink-0" />
                 <span>
                   <strong className="text-foreground">טלפון:</strong>{' '}
-                  <a href="tel:0524487537" className="text-accent hover:underline">
+                  <a href="tel:0542008578" className="text-accent hover:underline">
                     {BUSINESS.phone}
                   </a>{' '}
-                  | נייד:{' '}
-                  <a href="tel:0542008578" className="text-accent hover:underline">
-                    {BUSINESS.mobile}
-                  </a>
+                 
                 </span>
               </li>
               <li className="flex items-start gap-2">
@@ -178,7 +175,7 @@ export default function ProAbout() {
             </ul>
             <p className="text-sm text-muted-foreground mt-4 leading-relaxed">
               הפעילות היא מכירה מקוונת ומשלוחים בלבד. אין חנות פיזית שבה מתקבלים לקוחות; הכתובת לעיל היא כתובת העסק
-              לצורכי דיוור, החזרות ופניות רשמיות. איסוף עצמי אפשרי בתיאום מוקדם בטלפון.
+              לצורכי דיוור ופניות רשמיות בלבד. אין קבלת קהל ואין איסוף עצמי.
             </p>
           </div>
 
@@ -188,12 +185,12 @@ export default function ProAbout() {
               {
                 icon: CreditCard,
                 title: 'תשלום ואבטחה',
-                text: 'התשלום מתבצע בכרטיסי אשראי, PayPal או Bit דרך עמוד תשלום מאובטח בהצפנת SSL. פרטי האשראי אינם נשמרים באתר.',
+                text: 'התשלום מתבצע בחנות Shopify בכתובת shop.fullbody.co.il. פרטי התשלום אינם נשמרים באתר התוכן.',
               },
               {
                 icon: Truck,
                 title: 'משלוחים',
-                text: 'משלוח עד הבית לכל חלקי הארץ תוך 3-5 ימי עסקים, עם מספר מעקב שנשלח במייל או ב-SMS.',
+                text: 'משלוח עד הבית עולה 29 ₪ וחינם מעל 299 ₪. אספקה בתוך 3-5 ימי עסקים, ובעומס עד 14 ימי עסקים.',
               },
               {
                 icon: RefreshCw,

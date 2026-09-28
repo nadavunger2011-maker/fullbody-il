@@ -22,7 +22,7 @@ export default function Contact() {
     <div dir="rtl" className="font-sans text-foreground bg-background min-h-screen">
       <Helmet>
         <title>צור קשר | FullBody - תוספי תזונה</title>
-        <meta name="description" content="צרו קשר עם FullBody בטלפון 052-4487537 או במייל info@fullbody.co.il. שעות פעילות: א'-ה' 9:00-18:00. כתובת: רחוב זרחין 1, רעננה." />
+        <meta name="description" content="צרו קשר עם FullBody בטלפון 054-2008578 או במייל info@fullbody.co.il. שעות פעילות: א'-ה' 9:00-18:00. כתובת: רחוב זרחין 1, קומה 3, רעננה 4366238." />
         <link rel="canonical" href="https://fullbody.co.il/contact" />
       </Helmet>
       {/* Header */}
@@ -56,9 +56,9 @@ export default function Contact() {
               <h2 className="text-2xl font-bold text-primary mb-8">פרטי התקשרות</h2>
               <div className="space-y-6">
                 {[
-                  { icon: Phone, title: "טלפון", text: "052-4487537", link: "tel:0524487537" },
+                  { icon: Phone, title: "טלפון", text: "054-2008578", link: "tel:0542008578" },
                   { icon: Mail, title: "אימייל", text: "info@fullbody.co.il", link: "mailto:info@fullbody.co.il" },
-                  { icon: MapPin, title: "כתובת", text: "רחוב זרחין 1, רעננה", link: null },
+                  { icon: MapPin, title: "כתובת", text: "רחוב זרחין 1, קומה 3, רעננה 4366238", link: null },
                   { icon: Clock, title: "שעות פעילות", text: "א'-ה' 9:00-18:00, ו' 9:00-13:00", link: null },
                 ].map((item, index) => (
                   <div key={index} className="flex items-start gap-4">

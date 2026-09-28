@@ -5,7 +5,6 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, useLocation, Navigate } from "react-router-dom";
 import { HelmetProvider } from "react-helmet-async";
-import { useCartSync } from "@/hooks/useCartSync";
 import { initGA4, trackGA4PageView } from "@/lib/ga4";
 import ScrollToTop from "@/components/ScrollToTop";
 import CookieNotice from "@/components/CookieNotice";
@@ -55,7 +54,7 @@ const Recipes = lazy(() => import("./pages/Recipes"));
 const ProtocolLanding = lazy(() => import("./pages/ProtocolLanding"));
 const ProtocolThankYou = lazy(() => import("./pages/ProtocolThankYou"));
 const ChocolateCakeProtocol = lazy(() => import("./pages/ChocolateCakeProtocol"));
-const CartPage = lazy(() => import("./pages/CartPage"));
+const StoreRedirect = lazy(() => import("./components/StoreRedirect"));
 const PlanWizard = lazy(() => import("./pages/PlanWizard"));
 const DailyDashboard = lazy(() => import("./pages/DailyDashboard"));
 const CarouselStudio = lazy(() => import("./pages/CarouselStudio"));
@@ -103,7 +102,6 @@ function AppContent() {
   const isProtocol = location.pathname === "/protocol";
   const isChocolateCake = location.pathname === "/blog/chocolate-cake-protocol";
   const isSweets = location.pathname.startsWith("/sweets");
-  useCartSync();
 
   return (
     <>
@@ -120,7 +118,8 @@ function AppContent() {
           <Route path="/protocol" element={<ProtocolLanding />} />
           <Route path="/protocol-thank-you" element={<ProtocolThankYou />} />
           <Route path="/blog/chocolate-cake-protocol" element={<ChocolateCakeProtocol />} />
-          <Route path="/cart" element={<CartPage />} />
+          <Route path="/cart" element={<StoreRedirect />} />
+          <Route path="/checkout" element={<StoreRedirect />} />
           <Route path="/thank-you" element={<ThankYou />} />
           <Route path="/plan" element={<PlanWizard />} />
           <Route path="/dashboard" element={<DailyDashboard />} />
@@ -154,20 +153,20 @@ function AppContent() {
 
           {/* NAVA — original FullBody site */}
           <Route path="/nava" element={<Index />} />
-          <Route path="/nava/product/:handle" element={<ProductDetail />} />
+          <Route path="/nava/product/:handle" element={<LegacyProductRedirect />} />
           <Route path="/nava/products/:handle" element={<LegacyProductRedirect />} />
-          <Route path="/nava/products" element={<Products />} />
+          <Route path="/nava/products" element={<StoreRedirect />} />
           <Route path="/nava/blog" element={<Blog />} />
           <Route path="/nava/blog/:slug" element={<BlogPost />} />
           <Route path="/nava/thank-you" element={<ThankYou />} />
-          <Route path="/nava/terms" element={<Terms />} />
-          <Route path="/nava/shipping" element={<Shipping />} />
-          <Route path="/nava/returns" element={<Returns />} />
-          <Route path="/nava/privacy" element={<Privacy />} />
+          <Route path="/nava/terms" element={<ProTerms />} />
+          <Route path="/nava/shipping" element={<ProShippingPolicy />} />
+          <Route path="/nava/returns" element={<ProReturnPolicy />} />
+          <Route path="/nava/privacy" element={<ProPrivacyPolicy />} />
           <Route path="/nava/faq" element={<FAQ />} />
-          <Route path="/nava/contact" element={<Contact />} />
-          <Route path="/nava/about" element={<About />} />
-          <Route path="/nava/accessibility" element={<Accessibility />} />
+          <Route path="/nava/contact" element={<ProContact />} />
+          <Route path="/nava/about" element={<ProAbout />} />
+          <Route path="/nava/accessibility" element={<ProAccessibility />} />
           <Route path="/nava/sleep-guide" element={<SleepGuide />} />
 
           {/* Admin */}

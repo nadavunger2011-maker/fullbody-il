@@ -16,9 +16,9 @@ export default function SweetsContact() {
           <h1 className="text-4xl font-black text-primary mb-3">צור קשר</h1>
           <p className="text-muted-foreground mb-10">נשמח לענות לכל שאלה על קו המתוקים.</p>
           <div className="space-y-4">
-            <a href="tel:0524487537" className="flex items-center gap-4 bg-card border border-border rounded-xl p-5 hover:shadow-card-hover transition">
+            <a href="tel:0542008578" className="flex items-center gap-4 bg-card border border-border rounded-xl p-5 hover:shadow-card-hover transition">
               <Phone className="w-6 h-6 text-accent" />
-              <div><p className="font-bold">טלפון</p><p className="text-muted-foreground">052-4487537</p></div>
+              <div><p className="font-bold">טלפון</p><p className="text-muted-foreground">054-2008578</p></div>
             </a>
             <a href="mailto:info@fullbody.co.il" className="flex items-center gap-4 bg-card border border-border rounded-xl p-5 hover:shadow-card-hover transition">
               <Mail className="w-6 h-6 text-accent" />
@@ -26,7 +26,7 @@ export default function SweetsContact() {
             </a>
             <div className="flex items-center gap-4 bg-card border border-border rounded-xl p-5">
               <MapPin className="w-6 h-6 text-accent" />
-              <div><p className="font-bold">כתובת</p><p className="text-muted-foreground">זרחין 1, רעננה</p></div>
+              <div><p className="font-bold">כתובת</p><p className="text-muted-foreground">רחוב זרחין 1, קומה 3, רעננה 4366238</p></div>
             </div>
           </div>
         </div>
