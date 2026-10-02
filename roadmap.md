@@ -6,3 +6,5 @@
 - [x] Remove unsupported endorsements, testimonials, health claims, urgency, discounts, and guarantees
 - [ ] Verify the cleaned public experience and prepare a page-by-page change report for Google
 - [ ] Continue the Instagram flow: 3 existing posts scheduled today; 5 newly rendered posts await public image hosting
+- [x] Blog SEO stage 1: auto blog generation paused, 105-article index allowlist, duplicates merged, prerendered HTML, schema, author box, related articles
+- [ ] Blog SEO stage 2: content changes + Instagram instructions (awaiting user)

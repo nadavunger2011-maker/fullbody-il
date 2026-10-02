@@ -4,7 +4,9 @@ import { Link, useParams, useNavigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { Calendar, Clock, ArrowRight, Tag, Menu, X, ShoppingBag } from 'lucide-react';
 import { proBlogCategories } from '@/data/proBlogPosts';
-import { useBlogPostBySlug, useBlogRedirect } from '@/hooks/useBlogPosts';
+import { useBlogPostBySlug, useBlogRedirect, useAllBlogPosts } from '@/hooks/useBlogPosts';
+import { BLOG_DUPLICATE_REDIRECTS, isIndexedSlug, indexRank } from '@/lib/blogIndex';
+import { BUSINESS } from '@/lib/business';
 import { getProductByHandle, herbalifeProducts, HerbalifeProduct } from '@/data/herbalifeProducts';
 import greenLogo from '@/assets/logo-green.webp';
 import ProFooter from '@/components/ProFooter';
@@ -16,16 +18,34 @@ import BlogCTAWidget from '@/components/BlogCTAWidget';
 
 export default function ProBlogPost() {
   const { slug } = useParams();
+  const duplicateOf = slug ? BLOG_DUPLICATE_REDIRECTS[slug] : undefined;
+  useEffect(() => {
+    if (duplicateOf) window.location.replace(`/blog/${duplicateOf}`);
+  }, [duplicateOf]);
+  if (duplicateOf) {
+    return (
+      <Helmet>
+        <link rel="canonical" href={`https://fullbody.co.il/blog/${duplicateOf}`} />
+        <meta name="robots" content="noindex, follow" />
+      </Helmet>
+    );
+  }
+  return <ProBlogPostInner />;
+}
+
+function ProBlogPostInner() {
+  const { slug } = useParams();
   const navigate = useNavigate();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const { post, isLoading } = useBlogPostBySlug(slug);
+  const { posts: allPosts } = useAllBlogPosts();
   const { redirectTo, isLoading: redirectLoading } = useBlogRedirect(slug, !isLoading && !post);
 
   useEffect(() => {
     if (isLoading || post) return;
     if (redirectTo) {
-      navigate(redirectTo === 'blog' ? '/blog' : `/blog/${redirectTo}`, { replace: true });
+      window.location.replace(redirectTo === 'blog' ? '/blog' : `/blog/${redirectTo}`);
       return;
     }
     if (!redirectLoading) navigate('/blog', { replace: true });
@@ -41,8 +61,14 @@ export default function ProBlogPost() {
   const category = proBlogCategories.find(c => c.id === post.categoryId);
   const relatedProducts = getMinimumRelatedProducts(post.relatedProductHandles, post.categoryId, 3);
   const inlineProducts = pickContextualProducts(normalizedContent, post.relatedProductHandles, 2);
-
-
+  const indexed = isIndexedSlug(post.slug);
+  const relatedArticles = indexed
+    ? allPosts
+        .filter(p => p.slug !== post.slug && isIndexedSlug(p.slug) && p.categoryId === post.categoryId)
+        .sort((a, b) => indexRank(a.slug) - indexRank(b.slug))
+        .slice(0, 3)
+    : [];
+  const modified = ((post as { updatedAt?: string }).updatedAt || post.date).slice(0, 10);
 
   const articleSchema = {
     '@context': 'https://schema.org',
@@ -51,9 +77,9 @@ export default function ProBlogPost() {
     description: sanitizeClaimText(post.metaDescription),
     image: articleImage,
     datePublished: post.date,
-    dateModified: post.date,
-    author: { '@type': 'Organization', name: 'FullBody Pro', url: 'https://fullbody.co.il' },
-    publisher: { '@type': 'Organization', name: 'FullBody Pro', logo: { '@type': 'ImageObject', url: 'https://fullbody.co.il/assets/logo-green.webp' } },
+    dateModified: modified,
+    author: { '@type': 'Person', name: BUSINESS.owner, url: 'https://fullbody.co.il/about' },
+    publisher: { '@type': 'Organization', name: 'FullBody', url: 'https://fullbody.co.il', logo: { '@type': 'ImageObject', url: 'https://fullbody.co.il/favicon.png' } },
     mainEntityOfPage: { '@type': 'WebPage', '@id': `https://fullbody.co.il/blog/${post.slug}` },
   };
 
@@ -83,7 +109,7 @@ export default function ProBlogPost() {
          <title>{sanitizeClaimText(post.title)} | FullBody</title>
          <meta name="description" content={sanitizeClaimText(post.metaDescription)} />
         <link rel="canonical" href={`https://fullbody.co.il/blog/${post.slug}`} />
-        {post.noindex && <meta name="robots" content="noindex, follow" />}
+        {!indexed && <meta name="robots" content="noindex, follow" />}
          <meta property="og:title" content={sanitizeClaimText(post.title)} />
          <meta property="og:description" content={sanitizeClaimText(post.metaDescription)} />
         <meta property="og:image" content={articleImage} />
@@ -96,7 +122,7 @@ export default function ProBlogPost() {
          <meta name="twitter:description" content={sanitizeClaimText(post.metaDescription)} />
         <meta name="twitter:image" content={articleImage} />
         <script type="application/ld+json">{JSON.stringify(articleSchema)}</script>
-        <script type="application/ld+json">{JSON.stringify(faqSchema)}</script>
+        {post.faq.length > 0 && <script type="application/ld+json">{JSON.stringify(faqSchema)}</script>}
         <script type="application/ld+json">{JSON.stringify(breadcrumbSchema)}</script>
       </Helmet>
 
@@ -190,6 +216,13 @@ export default function ProBlogPost() {
                 buttonText="קבל את התוכנית שלי"
               />
               <div dangerouslySetInnerHTML={{ __html: appendDisclaimer('') }} />
+              <aside className="mt-8 p-5 rounded-xl border border-border bg-secondary/40" aria-label="על הכותב">
+                <p className="font-bold text-foreground mb-1">על הכותב</p>
+                <p className="text-sm text-muted-foreground">
+                  {BUSINESS.owner}, מפיץ עצמאי מורשה של Herbalife.{' '}
+                  <Link to="/about" className="font-bold text-[hsl(142,70%,35%)] hover:underline">עוד עליי</Link>
+                </p>
+              </aside>
             </div>
           </div>
         </div>
@@ -241,6 +274,24 @@ export default function ProBlogPost() {
                       </a>
                     </div>
                   </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </section>
+      )}
+
+      {relatedArticles.length > 0 && (
+        <section className="py-12 bg-secondary/30" aria-label="מאמרים קשורים">
+          <div className="container mx-auto px-4">
+            <div className="max-w-4xl mx-auto">
+              <h2 className="text-2xl font-black text-foreground mb-6 text-center">מאמרים קשורים</h2>
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                {relatedArticles.map(a => (
+                  <Link key={a.slug} to={`/blog/${a.slug}`} className="group bg-card rounded-xl overflow-hidden border border-border hover:shadow-hover transition-all">
+                    <div className="aspect-[16/9] overflow-hidden"><img src={a.image} alt={a.title} className="w-full h-full object-cover" loading="lazy" /></div>
+                    <p className="p-4 font-bold text-sm text-foreground line-clamp-2 group-hover:text-[hsl(142,70%,35%)]">{sanitizeClaimText(a.title)}</p>
+                  </Link>
                 ))}
               </div>
             </div>

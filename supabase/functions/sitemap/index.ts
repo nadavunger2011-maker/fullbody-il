@@ -1,56 +1,35 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+import policy from "../_shared/blog-index.json" with { type: "json" };
 
-serve(async (req) => {
-  const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
-  const supabaseKey = Deno.env.get("SUPABASE_ANON_KEY")!;
-  const supabase = createClient(supabaseUrl, supabaseKey);
+// Only allowlisted articles (blog-index.json) are listed; everything else is noindex.
+const STATIC_PAGES = [
+  ["/", "daily", "1.0"], ["/blog", "daily", "0.9"], ["/recipes", "weekly", "0.7"],
+  ["/protein-calculator", "monthly", "0.6"], ["/about", "monthly", "0.7"], ["/contact", "monthly", "0.6"],
+  ["/faq", "monthly", "0.5"], ["/shipping-policy", "yearly", "0.4"], ["/return-policy", "yearly", "0.4"],
+  ["/refund-policy", "yearly", "0.4"], ["/terms-of-use", "yearly", "0.3"], ["/privacy-policy", "yearly", "0.3"],
+  ["/accessibility", "yearly", "0.3"],
+];
 
+const enc = (p: string) => p.split("/").map(encodeURIComponent).join("/");
+
+serve(async () => {
+  const supabase = createClient(Deno.env.get("SUPABASE_URL")!, Deno.env.get("SUPABASE_ANON_KEY")!);
   const { data: posts } = await supabase
     .from("blog_posts")
-    .select("slug, date, updated_at")
+    .select("slug, date")
     .eq("published", true)
-    .eq("noindex", false)
-    .order("date", { ascending: false })
-    .limit(2000);
-
-  const staticPages = [
-    { loc: "/", changefreq: "daily", priority: "1.0" },
-    { loc: "/products", changefreq: "daily", priority: "0.9" },
-    { loc: "/blog", changefreq: "daily", priority: "0.9" },
-    { loc: "/about", changefreq: "monthly", priority: "0.8" },
-    { loc: "/contact", changefreq: "monthly", priority: "0.7" },
-    { loc: "/shipping-policy", changefreq: "yearly", priority: "0.5" },
-    { loc: "/return-policy", changefreq: "yearly", priority: "0.5" },
-    { loc: "/refund-policy", changefreq: "yearly", priority: "0.5" },
-    { loc: "/terms-of-use", changefreq: "yearly", priority: "0.4" },
-    { loc: "/privacy-policy", changefreq: "yearly", priority: "0.4" },
-    { loc: "/accessibility", changefreq: "yearly", priority: "0.3" },
-  ];
-
-  // Product pages now live on the Shopify store (shop.fullbody.co.il),
-  // which publishes its own sitemap. They are intentionally excluded here.
-
-  const today = new Date().toISOString().split("T")[0];
+    .in("slug", policy.indexed);
+  const dates = new Map((posts ?? []).map((p) => [p.slug, String(p.date).slice(0, 10)]));
 
   let xml = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n`;
-
-  for (const page of staticPages) {
-    xml += `  <url>\n    <loc>https://fullbody.co.il${page.loc}</loc>\n    <lastmod>${today}</lastmod>\n    <changefreq>${page.changefreq}</changefreq>\n    <priority>${page.priority}</priority>\n  </url>\n`;
+  for (const [loc, cf, pr] of STATIC_PAGES) {
+    xml += `  <url>\n    <loc>https://fullbody.co.il${loc}</loc>\n    <changefreq>${cf}</changefreq>\n    <priority>${pr}</priority>\n  </url>\n`;
   }
-
-
-  // Dynamic blog posts from DB
-  if (posts) {
-    for (const post of posts) {
-      const lastmod = post.updated_at?.split("T")[0] || post.date;
-      xml += `  <url>\n    <loc>https://fullbody.co.il/blog/${post.slug}</loc>\n    <lastmod>${lastmod}</lastmod>\n    <changefreq>weekly</changefreq>\n    <priority>0.7</priority>\n  </url>\n`;
-    }
+  for (const slug of policy.indexed as string[]) {
+    const lm = dates.get(slug);
+    xml += `  <url>\n    <loc>https://fullbody.co.il${enc(`/blog/${slug}`)}</loc>\n${lm ? `    <lastmod>${lm}</lastmod>\n` : ""}    <changefreq>monthly</changefreq>\n    <priority>0.7</priority>\n  </url>\n`;
   }
-
   xml += `</urlset>`;
-
-  return new Response(xml, {
-    headers: { "Content-Type": "application/xml; charset=utf-8" },
-  });
+  return new Response(xml, { headers: { "Content-Type": "application/xml; charset=utf-8" } });
 });

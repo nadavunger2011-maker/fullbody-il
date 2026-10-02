@@ -8,12 +8,16 @@ import greenLogo from '@/assets/logo-green.webp';
 import ProFooter from '@/components/ProFooter';
 import { Skeleton } from '@/components/ui/skeleton';
 import { sanitizeClaimText } from '@/lib/blogContent';
+import { indexRank, isIndexedSlug, POPULAR_GUIDE_COUNT } from '@/lib/blogIndex';
 
 export default function ProBlog() {
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
-  const { posts: allPosts, isLoading } = useAllBlogPosts();
+  const { posts: rawPosts, isLoading } = useAllBlogPosts();
+  // Indexed articles first (in priority order), then the rest of the archive.
+  const allPosts = [...rawPosts].sort((a, b) => indexRank(a.slug) - indexRank(b.slug));
+  const popularGuides = allPosts.filter(p => isIndexedSlug(p.slug)).slice(0, POPULAR_GUIDE_COUNT);
   const activeCategories = useAllBlogCategories(allPosts);
 
   const filteredPosts = selectedCategory === 'all'
@@ -76,6 +80,22 @@ export default function ProBlog() {
           <p className="text-lg text-white/80 max-w-2xl mx-auto">מאמרים, מדריכים וטיפים בנושאי תזונה, כושר ואורח חיים בריא</p>
         </div>
       </section>
+
+      {popularGuides.length > 0 && (
+        <section className="py-10 bg-card border-b border-border" aria-label="המדריכים הפופולריים">
+          <div className="container mx-auto px-4">
+            <h2 className="text-2xl font-black text-foreground mb-6 text-center">המדריכים הפופולריים</h2>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+              {popularGuides.map(p => (
+                <Link key={p.slug} to={`/blog/${p.slug}`} className="group flex gap-3 items-center bg-background rounded-xl border border-border p-3 hover:shadow-hover transition-all">
+                  <img src={p.image} alt={p.title} className="w-20 h-14 object-cover rounded-lg shrink-0" loading="lazy" />
+                  <span className="font-bold text-sm text-foreground line-clamp-2 group-hover:text-[hsl(142,70%,35%)]">{sanitizeClaimText(p.title)}</span>
+                </Link>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
 
       {/* Categories */}
       <section className="py-8 border-b border-border bg-card">
