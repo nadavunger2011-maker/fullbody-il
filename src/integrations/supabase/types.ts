@@ -568,6 +568,7 @@ export type Database = {
           platform: string
           provider_post_id: string | null
           published_at: string | null
+          scheduled_at: string | null
           scheduled_for: string | null
           sort_order: number
           status: string
@@ -584,6 +585,7 @@ export type Database = {
           platform?: string
           provider_post_id?: string | null
           published_at?: string | null
+          scheduled_at?: string | null
           scheduled_for?: string | null
           sort_order?: number
           status?: string
@@ -600,6 +602,7 @@ export type Database = {
           platform?: string
           provider_post_id?: string | null
           published_at?: string | null
+          scheduled_at?: string | null
           scheduled_for?: string | null
           sort_order?: number
           status?: string
