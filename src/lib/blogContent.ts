@@ -4,12 +4,28 @@ import { MEDICAL_DISCLAIMER } from '@/lib/business';
 const LEGAL_DISCLAIMER = MEDICAL_DISCLAIMER;
 
 const BROKEN_INLINE_IMAGE_PATTERN = /<img\b[^>]*src=["'](?:https?:\/\/fullbody\.co\.il)?\/images\/[^"']+["'][^>]*>/gi;
+const BEFORE_AFTER_IMAGE_PATTERN = /<(?:img|figure)\b[^>]*(?:before[-_ ]?after|לפני[-_ ]?ואחרי)[\s\S]*?<\/(?:figure)>|<img\b[^>]*(?:before[-_ ]?after|לפני[-_ ]?ואחרי)[^>]*>/gi;
+const RISKY_CLAIM_PATTERN = /(מאושר(?:ים)?\s+(?:על ידי\s+)?משרד הבריאות|מומלץ(?:ים)?\s+על ידי\s+רופאים|תוצאות?\s+מובטח(?:ות)?|לפני\s+ואחרי|(?:מטפל|מרפא|מונע)(?:ת|ים|ות)?\s+(?:ב|מחלה)|(?:מוריד|מפחית)(?:ה|ים)?\s+(?:כולסטרול|סוכר|לחץ דם)|\b(?:סוכרת|כולסטרול|לחץ דם)\b|\d+(?:[-–]\d+)?\s*(?:קילו|ק[״"]?ג)\s+(?:בשבוע|בחודש|תוך)|תוך\s+\d+\s+(?:ימים|שבועות|חודשים)\s+(?:תרגיש|תראו|תוצאה|שיפור))/i;
+
+export function sanitizeClaimText(text: string): string {
+  if (!RISKY_CLAIM_PATTERN.test(text)) return text;
+  return 'מידע כללי על תזונה מאוזנת ואורח חיים פעיל. תוצאות משתנות מאדם לאדם.';
+}
+
+function removeRiskyClaimBlocks(html: string): string {
+  return html.replace(/<(p|li|h2|h3|blockquote)\b[^>]*>[\s\S]*?<\/\1>/gi, (block) =>
+    RISKY_CLAIM_PATTERN.test(block)
+      ? '<p>יש לשלב כל מוצר בהתאם להוראות השימוש, כחלק מתזונה מאוזנת ואורח חיים פעיל.</p>'
+      : block,
+  );
+}
 
 export function normalizeBlogContent(html: string): string {
-  return html
+  return removeRiskyClaimBlocks(html
     .replace(/^\s*<h1[^>]*>[\s\S]*?<\/h1>\s*/i, '')
     .replace(BROKEN_INLINE_IMAGE_PATTERN, '')
-    .replace(/<figure([^>]*)>\s*<\/figure>/gi, '');
+    .replace(BEFORE_AFTER_IMAGE_PATTERN, '')
+    .replace(/<figure([^>]*)>\s*<\/figure>/gi, ''));
 }
 
 /**

@@ -7,6 +7,7 @@ import { useAllBlogPosts, useAllBlogCategories } from '@/hooks/useBlogPosts';
 import greenLogo from '@/assets/logo-green.webp';
 import ProFooter from '@/components/ProFooter';
 import { Skeleton } from '@/components/ui/skeleton';
+import { sanitizeClaimText } from '@/lib/blogContent';
 
 export default function ProBlog() {
   const [selectedCategory, setSelectedCategory] = useState('all');
@@ -119,8 +120,8 @@ export default function ProBlog() {
                     <span className="flex items-center gap-1"><Calendar className="w-3 h-3" />{new Date(post.date).toLocaleDateString('he-IL')}</span>
                     <span className="flex items-center gap-1"><Clock className="w-3 h-3" />{post.readTime} דק'</span>
                   </div>
-                  <h2 className="font-bold text-lg text-foreground mb-2 group-hover:text-[hsl(142,70%,35%)] transition-colors line-clamp-2">{post.title}</h2>
-                  <p className="text-sm text-muted-foreground line-clamp-2 mb-3">{post.excerpt}</p>
+                   <h2 className="font-bold text-lg text-foreground mb-2 group-hover:text-[hsl(142,70%,35%)] transition-colors line-clamp-2">{sanitizeClaimText(post.title)}</h2>
+                   <p className="text-sm text-muted-foreground line-clamp-2 mb-3">{sanitizeClaimText(post.excerpt)}</p>
                   <span className="text-[hsl(142,70%,35%)] font-bold text-sm flex items-center gap-1">
                     קרא עוד <ArrowRight className="w-4 h-4" />
                   </span>

@@ -15,6 +15,20 @@
       "when": 1790056148885,
       "tag": "0001_create_social_posts_queue",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1790940733020,
+      "tag": "0002_add_precise_social_post_schedule",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1790940815200,
+      "tag": "0003_schedule_current_instagram_queue",
+      "breakpoints": true
     }
   ]
 }

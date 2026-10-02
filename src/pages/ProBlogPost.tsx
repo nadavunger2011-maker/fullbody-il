@@ -10,7 +10,7 @@ import greenLogo from '@/assets/logo-green.webp';
 import ProFooter from '@/components/ProFooter';
 import { useState } from 'react';
 import { Skeleton } from '@/components/ui/skeleton';
-import { normalizeBlogContent, splitContentByH2, pickContextualProducts, appendDisclaimer } from '@/lib/blogContent';
+import { normalizeBlogContent, splitContentByH2, pickContextualProducts, appendDisclaimer, sanitizeClaimText } from '@/lib/blogContent';
 import BlogProductCard from '@/components/BlogProductCard';
 import BlogCTAWidget from '@/components/BlogCTAWidget';
 
@@ -47,8 +47,8 @@ export default function ProBlogPost() {
   const articleSchema = {
     '@context': 'https://schema.org',
     '@type': 'Article',
-    headline: post.title,
-    description: post.metaDescription,
+    headline: sanitizeClaimText(post.title),
+    description: sanitizeClaimText(post.metaDescription),
     image: articleImage,
     datePublished: post.date,
     dateModified: post.date,
@@ -62,8 +62,8 @@ export default function ProBlogPost() {
     '@type': 'FAQPage',
     mainEntity: post.faq.map(f => ({
       '@type': 'Question',
-      name: f.question,
-      acceptedAnswer: { '@type': 'Answer', text: f.answer },
+       name: sanitizeClaimText(f.question),
+       acceptedAnswer: { '@type': 'Answer', text: sanitizeClaimText(f.answer) },
     })),
   };
 
@@ -80,20 +80,20 @@ export default function ProBlogPost() {
   return (
     <div dir="rtl" className="font-sans text-foreground bg-background min-h-screen">
       <Helmet>
-        <title>{post.title} | FullBody</title>
-        <meta name="description" content={post.metaDescription} />
+         <title>{sanitizeClaimText(post.title)} | FullBody</title>
+         <meta name="description" content={sanitizeClaimText(post.metaDescription)} />
         <link rel="canonical" href={`https://fullbody.co.il/blog/${post.slug}`} />
         {post.noindex && <meta name="robots" content="noindex, follow" />}
-        <meta property="og:title" content={post.title} />
-        <meta property="og:description" content={post.metaDescription} />
+         <meta property="og:title" content={sanitizeClaimText(post.title)} />
+         <meta property="og:description" content={sanitizeClaimText(post.metaDescription)} />
         <meta property="og:image" content={articleImage} />
         <meta property="og:type" content="article" />
         <meta property="og:url" content={`https://fullbody.co.il/blog/${post.slug}`} />
         <meta property="og:locale" content="he_IL" />
         <meta property="article:published_time" content={post.date} />
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content={post.title} />
-        <meta name="twitter:description" content={post.metaDescription} />
+         <meta name="twitter:title" content={sanitizeClaimText(post.title)} />
+         <meta name="twitter:description" content={sanitizeClaimText(post.metaDescription)} />
         <meta name="twitter:image" content={articleImage} />
         <script type="application/ld+json">{JSON.stringify(articleSchema)}</script>
         <script type="application/ld+json">{JSON.stringify(faqSchema)}</script>
@@ -162,7 +162,7 @@ export default function ProBlogPost() {
               <span className="flex items-center gap-1 text-muted-foreground"><Calendar className="w-4 h-4" />{new Date(post.date).toLocaleDateString('he-IL')}</span>
               <span className="flex items-center gap-1 text-muted-foreground"><Clock className="w-4 h-4" />{post.readTime} דקות קריאה</span>
             </div>
-            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black text-foreground leading-tight">{post.title}</h1>
+             <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black text-foreground leading-tight">{sanitizeClaimText(post.title)}</h1>
           </div>
         </div>
       </section>
@@ -204,10 +204,10 @@ export default function ProBlogPost() {
                 {post.faq.map((item, i) => (
                   <details key={i} className="bg-card border border-border rounded-xl group">
                     <summary className="px-6 py-4 cursor-pointer font-bold text-foreground flex items-center justify-between list-none">
-                      {item.question}
+                       {sanitizeClaimText(item.question)}
                       <ChevronIcon />
                     </summary>
-                    <div className="px-6 pb-4 text-muted-foreground">{item.answer}</div>
+                     <div className="px-6 pb-4 text-muted-foreground">{sanitizeClaimText(item.answer)}</div>
                   </details>
                 ))}
               </div>

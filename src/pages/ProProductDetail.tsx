@@ -14,10 +14,7 @@ import { getProductByHandle, getRelatedProducts } from '@/data/herbalifeProducts
 import { fetchProductByHandle, ShopifyProduct, getFirstAvailableVariant } from '@/lib/shopify';
 import ProFooter from '@/components/ProFooter';
 
-import TrustFactors from '@/components/TrustFactors';
-import GoldStandardBadge from '@/components/GoldStandardBadge';
 import GlobalProductHacks from '@/components/GlobalProductHacks';
-import { TestimonialSlider, mapCategoryToTestimonialFilter } from '@/components/SocialProofSection';
 
 import CartDrawer from '@/components/CartDrawer';
 import { useCartStore } from '@/stores/cartStore';
@@ -384,8 +381,6 @@ export default function ProProductDetail() {
                 </div>
               </div>
 
-              <GoldStandardBadge className="mb-4" />
-
               {/* Dynamic stock indicator */}
               <div className="flex items-center gap-2 text-xs font-bold text-emerald-600 mb-3 bg-emerald-50 dark:bg-emerald-950/40 p-2.5 rounded-lg border border-emerald-200 dark:border-emerald-800">
                 <span className="relative flex h-2.5 w-2.5">
@@ -438,11 +433,6 @@ export default function ProProductDetail() {
                 <MessageCircle className="w-5 h-5" />
                 הזמנה טלפונית / ייעוץ ב-WhatsApp
               </a>
-            </div>
-
-            {/* Trust Factors (reused from homepage, compact) — directly beneath CTA */}
-            <div className="-mx-4 sm:mx-0">
-              <TrustFactors compact />
             </div>
 
             {/* Global Product Hacks / Scientific Backing */}
@@ -670,7 +660,6 @@ export default function ProProductDetail() {
       </section>
 
       {/* Contextual Social Proof — filtered by product category */}
-      <TestimonialSlider filter={mapCategoryToTestimonialFilter(product.categoryId)} />
 
 
       <section className="bg-secondary/20 py-16">
