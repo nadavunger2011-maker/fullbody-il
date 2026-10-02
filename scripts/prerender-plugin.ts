@@ -86,7 +86,7 @@ function renderHtml(template: string, page: Page): string {
     page.redirectTo
       ? `<meta http-equiv="refresh" content="0; url=${encPath(page.redirectTo)}" /><script>window.location.replace(${JSON.stringify(page.redirectTo)})</script>`
       : "",
-  ].filter(Boolean).join("\n    ");
+  ].filter(Boolean).map((t) => t.replace(/^<(\w+)/, "<$1 data-prerender")).join("\n    ");
 
   const stripped = template
     .replace(/<title>[\s\S]*?<\/title>\s*/i, "")
