@@ -18,13 +18,13 @@ interface DbBlogPost {
   meta_description: string;
 }
 
-function dbToProBlogPost(db: any): ProBlogPost {
+function dbToProBlogPost(db: any): ProBlogPost & { updatedAt?: string } {
   return {
     id: db.id,
     slug: db.slug,
     title: db.title,
     excerpt: db.excerpt,
-    content: db.content,
+    content: db.content ?? '',
     image: db.image || 'https://images.unsplash.com/photo-1517836357463-d25dfeac3438?w=800&h=450&fit=crop',
     category: db.category,
     categoryId: db.category_id,
@@ -34,6 +34,7 @@ function dbToProBlogPost(db: any): ProBlogPost {
     faq: (db.faq as any) || [],
     metaDescription: db.meta_description,
     noindex: db.noindex === true,
+    updatedAt: db.updated_at,
   };
 }
 
@@ -43,7 +44,7 @@ export function useAllBlogPosts() {
     queryFn: async () => {
       const { data, error } = await supabase
         .from('blog_posts')
-        .select('*')
+        .select('id,slug,title,excerpt,image,category,category_id,date,read_time,meta_description,noindex,updated_at')
         .eq('published', true)
         .order('date', { ascending: false });
       if (error) throw error;

@@ -4,7 +4,9 @@ import { Link, useParams, useNavigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { Calendar, Clock, ArrowRight, Tag, Menu, X, ShoppingBag } from 'lucide-react';
 import { proBlogCategories } from '@/data/proBlogPosts';
-import { useBlogPostBySlug, useBlogRedirect } from '@/hooks/useBlogPosts';
+import { useBlogPostBySlug, useBlogRedirect, useAllBlogPosts } from '@/hooks/useBlogPosts';
+import { BLOG_DUPLICATE_REDIRECTS, isIndexedSlug, indexRank } from '@/lib/blogIndex';
+import { BUSINESS } from '@/lib/business';
 import { getProductByHandle, herbalifeProducts, HerbalifeProduct } from '@/data/herbalifeProducts';
 import greenLogo from '@/assets/logo-green.webp';
 import ProFooter from '@/components/ProFooter';
@@ -16,16 +18,34 @@ import BlogCTAWidget from '@/components/BlogCTAWidget';
 
 export default function ProBlogPost() {
   const { slug } = useParams();
+  const duplicateOf = slug ? BLOG_DUPLICATE_REDIRECTS[slug] : undefined;
+  useEffect(() => {
+    if (duplicateOf) window.location.replace(`/blog/${duplicateOf}`);
+  }, [duplicateOf]);
+  if (duplicateOf) {
+    return (
+      <Helmet>
+        <link rel="canonical" href={`https://fullbody.co.il/blog/${duplicateOf}`} />
+        <meta name="robots" content="noindex, follow" />
+      </Helmet>
+    );
+  }
+  return <ProBlogPostInner />;
+}
+
+function ProBlogPostInner() {
+  const { slug } = useParams();
   const navigate = useNavigate();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const { post, isLoading } = useBlogPostBySlug(slug);
+  const { posts: allPosts } = useAllBlogPosts();
   const { redirectTo, isLoading: redirectLoading } = useBlogRedirect(slug, !isLoading && !post);
 
   useEffect(() => {
     if (isLoading || post) return;
     if (redirectTo) {
-      navigate(redirectTo === 'blog' ? '/blog' : `/blog/${redirectTo}`, { replace: true });
+      window.location.replace(redirectTo === 'blog' ? '/blog' : `/blog/${redirectTo}`);
       return;
     }
     if (!redirectLoading) navigate('/blog', { replace: true });
@@ -41,8 +61,14 @@ export default function ProBlogPost() {
   const category = proBlogCategories.find(c => c.id === post.categoryId);
   const relatedProducts = getMinimumRelatedProducts(post.relatedProductHandles, post.categoryId, 3);
   const inlineProducts = pickContextualProducts(normalizedContent, post.relatedProductHandles, 2);
-
-
+  const indexed = isIndexedSlug(post.slug);
+  const relatedArticles = indexed
+    ? allPosts
+        .filter(p => p.slug !== post.slug && isIndexedSlug(p.slug) && p.categoryId === post.categoryId)
+        .sort((a, b) => indexRank(a.slug) - indexRank(b.slug))
+        .slice(0, 3)
+    : [];
+  const modified = ((post as { updatedAt?: string }).updatedAt || post.date).slice(0, 10);
 
   const articleSchema = {
     '@context': 'https://schema.org',
@@ -51,9 +77,9 @@ export default function ProBlogPost() {
     description: sanitizeClaimText(post.metaDescription),
     image: articleImage,
     datePublished: post.date,
-    dateModified: post.date,
-    author: { '@type': 'Organization', name: 'FullBody Pro', url: 'https://fullbody.co.il' },
-    publisher: { '@type': 'Organization', name: 'FullBody Pro', logo: { '@type': 'ImageObject', url: 'https://fullbody.co.il/assets/logo-green.webp' } },
+    dateModified: modified,
+    author: { '@type': 'Person', name: BUSINESS.owner, url: 'https://fullbody.co.il/about' },
+    publisher: { '@type': 'Organization', name: 'FullBody', url: 'https://fullbody.co.il', logo: { '@type': 'ImageObject', url: 'https://fullbody.co.il/favicon.png' } },
     mainEntityOfPage: { '@type': 'WebPage', '@id': `https://fullbody.co.il/blog/${post.slug}` },
   };
 
