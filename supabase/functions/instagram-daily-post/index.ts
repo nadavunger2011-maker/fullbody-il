@@ -34,14 +34,16 @@ Deno.serve(async (req) => {
     Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!,
   );
 
-  // Pick the next queued post (respecting scheduled_for when set)
+  // Pick the next queued post, preferring the precise timestamp when present.
+  const now = new Date().toISOString();
   const today = new Date().toISOString().slice(0, 10);
   const { data: rows, error } = await supabase
     .from("social_posts")
     .select("*")
     .eq("platform", "instagram")
     .eq("status", "queued")
-    .or(`scheduled_for.is.null,scheduled_for.lte.${today}`)
+    .or(`scheduled_at.lte.${now},and(scheduled_at.is.null,or(scheduled_for.is.null,scheduled_for.lte.${today}))`)
+    .order("scheduled_at", { ascending: true, nullsFirst: false })
     .order("sort_order", { ascending: true })
     .order("created_at", { ascending: true })
     .limit(1);
