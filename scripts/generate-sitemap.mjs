@@ -34,7 +34,7 @@ const lines = [
   ...STATIC_PAGES.map(([loc, cf, pr]) => url(loc, null, cf, pr)),
   ...policy.indexed.map((slug) => {
     const p = bySlug.get(slug);
-    return url(`/blog/${slug}`, p ? (p.updated_at || p.date).slice(0, 10) : null, 'monthly', '0.7');
+    return url(`/blog/${slug}`, p ? String(p.date).slice(0, 10) : null, 'monthly', '0.7');
   }),
   '</urlset>',
 ];
