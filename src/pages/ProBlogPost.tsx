@@ -109,7 +109,7 @@ function ProBlogPostInner() {
          <title>{sanitizeClaimText(post.title)} | FullBody</title>
          <meta name="description" content={sanitizeClaimText(post.metaDescription)} />
         <link rel="canonical" href={`https://fullbody.co.il/blog/${post.slug}`} />
-        {post.noindex && <meta name="robots" content="noindex, follow" />}
+        {!indexed && <meta name="robots" content="noindex, follow" />}
          <meta property="og:title" content={sanitizeClaimText(post.title)} />
          <meta property="og:description" content={sanitizeClaimText(post.metaDescription)} />
         <meta property="og:image" content={articleImage} />
@@ -122,7 +122,7 @@ function ProBlogPostInner() {
          <meta name="twitter:description" content={sanitizeClaimText(post.metaDescription)} />
         <meta name="twitter:image" content={articleImage} />
         <script type="application/ld+json">{JSON.stringify(articleSchema)}</script>
-        <script type="application/ld+json">{JSON.stringify(faqSchema)}</script>
+        {post.faq.length > 0 && <script type="application/ld+json">{JSON.stringify(faqSchema)}</script>}
         <script type="application/ld+json">{JSON.stringify(breadcrumbSchema)}</script>
       </Helmet>
 
@@ -216,6 +216,13 @@ function ProBlogPostInner() {
                 buttonText="קבל את התוכנית שלי"
               />
               <div dangerouslySetInnerHTML={{ __html: appendDisclaimer('') }} />
+              <aside className="mt-8 p-5 rounded-xl border border-border bg-secondary/40" aria-label="על הכותב">
+                <p className="font-bold text-foreground mb-1">על הכותב</p>
+                <p className="text-sm text-muted-foreground">
+                  {BUSINESS.owner}, מפיץ עצמאי מורשה של Herbalife.{' '}
+                  <Link to="/about" className="font-bold text-[hsl(142,70%,35%)] hover:underline">עוד עליי</Link>
+                </p>
+              </aside>
             </div>
           </div>
         </div>
@@ -267,6 +274,24 @@ function ProBlogPostInner() {
                       </a>
                     </div>
                   </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </section>
+      )}
+
+      {relatedArticles.length > 0 && (
+        <section className="py-12 bg-secondary/30" aria-label="מאמרים קשורים">
+          <div className="container mx-auto px-4">
+            <div className="max-w-4xl mx-auto">
+              <h2 className="text-2xl font-black text-foreground mb-6 text-center">מאמרים קשורים</h2>
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                {relatedArticles.map(a => (
+                  <Link key={a.slug} to={`/blog/${a.slug}`} className="group bg-card rounded-xl overflow-hidden border border-border hover:shadow-hover transition-all">
+                    <div className="aspect-[16/9] overflow-hidden"><img src={a.image} alt={a.title} className="w-full h-full object-cover" loading="lazy" /></div>
+                    <p className="p-4 font-bold text-sm text-foreground line-clamp-2 group-hover:text-[hsl(142,70%,35%)]">{sanitizeClaimText(a.title)}</p>
+                  </Link>
                 ))}
               </div>
             </div>
