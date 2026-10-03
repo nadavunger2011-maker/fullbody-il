@@ -32,7 +32,7 @@ border-top:2px solid rgba(255,255,255,.18)}
   <div class="bg" style="background-image:url('__BG__')"></div>
   <div class="scrim"></div>
   <div class="content">__BODY__</div>
-  <div class="footer"><span class="swipe">__SWIPE__</span><span class="brand">FullBody.co.il</span></div>
+  <div class="footer"><span class="swipe">__SWIPE__</span><span class="brand">המדריך המלא באתר – לינק בביו</span></div>
 </div></body></html>
 """
 

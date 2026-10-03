@@ -1,576 +1,61 @@
-import { shopProductUrl } from '@/lib/shopLinks';
-import greenLogo from '@/assets/logo-green.webp';
-import herbalifeDistributorLogo from '@/assets/herbalife-independent-distributor.webp';
-import heroSlide1 from '@/assets/hero-slide-1.webp';
-import heroSlide2 from '@/assets/hero-slide-2.webp';
-import React, { useState, useEffect, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
-import { 
-  Menu, X, ShoppingBag, Search, 
-  Truck, ShieldCheck, CheckCircle, HeartPulse, 
-  ChevronDown, Leaf, Dumbbell, Zap, ArrowRight
-} from 'lucide-react';
-import { fetchShopifyProducts, ShopifyProduct } from '@/lib/shopify';
-import { herbalifeProducts, PRO_PRODUCT_CATEGORIES, HerbalifeProduct } from '@/data/herbalifeProducts';
-import { proBlogPosts } from '@/data/proBlogPosts';
-import { Calendar, Clock, Tag } from 'lucide-react';
+import { ArrowLeft, Calculator, BookOpen, Utensils, Store } from 'lucide-react';
+import { useAllBlogPosts } from '@/hooks/useBlogPosts';
+import { isIndexedSlug, indexRank, POPULAR_GUIDE_COUNT } from '@/lib/blogIndex';
+import { sanitizeClaimText } from '@/lib/blogContent';
+import ContentHeader from '@/components/ContentHeader';
+import ProFooter from '@/components/ProFooter';
 
-import ProFooter from './ProFooter';
-import ProProductFilters, { type ActiveFilters } from './ProProductFilters';
-import { PRICE_RANGES } from '@/data/herbalifeProducts';
+const TITLE = 'FullBody – מדריכי תזונה, חלבון וכושר בגובה העיניים';
+const DESCRIPTION = 'טיפים כנים לתזונה מאוזנת, חלבון ואימונים: מדריכים, מתכונים ומחשבון חלבון יומי. בלי הבטחות ובלי דיאטות קיצוניות.';
 
-type SortOption = 'default' | 'price-asc' | 'price-desc';
-
-// Herbalife-specific categories
-const PRO_CATEGORIES = [
-  { id: 'all', name: 'הכל' },
-  { id: 'shakes', name: 'שייקים', keywords: ['שייק', 'shake', 'formula 1', 'פורמולה'] },
-  { id: 'protein', name: 'חלבון', keywords: ['חלבון', 'protein', 'pdm'] },
-  { id: 'tea', name: 'תה ומשקאות', keywords: ['תה', 'tea', 'אלוורה', 'aloe', 'משקה'] },
-  { id: 'vitamins', name: 'ויטמינים ומינרלים', keywords: ['ויטמין', 'vitamin', 'מולטי', 'multi', 'מינרל'] },
-  { id: 'sport', name: 'ספורט וביצועים', keywords: ['ספורט', 'sport', 'cr7', 'H24', 'אנרגיה', 'energy'] },
-  { id: 'skin', name: 'טיפוח ועור', keywords: ['עור', 'skin', 'קולגן', 'collagen', 'herbalife skin'] },
-];
-
-const getProCategory = (title: string): string => {
-  const lowerTitle = title.toLowerCase();
-  for (const category of PRO_CATEGORIES) {
-    if (category.id === 'all') continue;
-    if (category.keywords?.some(keyword => lowerTitle.includes(keyword.toLowerCase()))) {
-      return category.id;
-    }
-  }
-  return 'shakes';
-};
-
-// Mobile Menu
-const ProMobileMenu = ({ isOpen, onClose, categories, onCategorySelect, products }: {
-  isOpen: boolean;
-  onClose: () => void;
-  categories: typeof PRO_CATEGORIES;
-  onCategorySelect: (id: string) => void;
-  products: ShopifyProduct[];
-}) => {
-  const [isShopExpanded, setIsShopExpanded] = useState(false);
-
-  return (
-    <div className={`fixed inset-y-0 right-0 w-72 bg-card shadow-hover z-50 flex flex-col pt-20 px-6 transform transition-transform duration-300 ease-in-out ${isOpen ? 'translate-x-0' : 'translate-x-full'}`}>
-      <button onClick={onClose} className="absolute top-5 left-5 text-muted-foreground hover:text-accent transition-colors" aria-label="סגור תפריט">
-        <X className="w-6 h-6" />
-      </button>
-      
-      <Link to="/" onClick={onClose} className="py-4 border-b border-border text-lg font-bold hover:text-accent transition-colors">ראשי</Link>
-      
-      <div className="border-b border-border">
-        <button onClick={() => setIsShopExpanded(!isShopExpanded)} className="w-full py-4 text-lg font-bold hover:text-accent transition-colors flex items-center justify-between">
-          מוצרים
-          <ChevronDown className={`w-5 h-5 transition-transform ${isShopExpanded ? 'rotate-180' : ''}`} />
-        </button>
-        <div className={`overflow-hidden transition-all duration-300 ${isShopExpanded ? 'max-h-96' : 'max-h-0'}`}>
-          <a href="#products" onClick={() => { onCategorySelect('all'); }} className="block py-3 pr-4 text-base font-medium hover:text-accent transition-colors border-t border-border/50">כל המוצרים</a>
-          {categories.filter(c => c.id !== 'all' && products.some(p => getProCategory(p?.node?.title ?? '') === c.id)).map(category => (
-            <a key={category.id} href="#products" onClick={() => { onCategorySelect(category.id); }} className="block py-3 pr-4 text-base hover:text-accent transition-colors border-t border-border/50">{category.name}</a>
-          ))}
-        </div>
-      </div>
-      
-      <Link to="/bundles" onClick={onClose} className="py-4 border-b border-border text-lg font-bold hover:text-accent transition-colors flex items-center gap-2">
-        חבילות
-        <span className="text-xs bg-accent/15 text-accent px-1.5 py-0.5 rounded-full font-bold">🔥 חדש</span>
-      </Link>
-      <Link to="/blog" onClick={onClose} className="py-4 border-b border-border text-lg font-bold hover:text-accent transition-colors">מאמרים</Link>
-      <Link to="/protocol" onClick={onClose} className="py-4 border-b border-border text-lg font-bold hover:text-accent transition-colors flex items-center gap-2">מתכונים<span className="text-xs bg-accent/15 text-accent px-1.5 py-0.5 rounded-full font-bold">חדש</span></Link>
-      <Link to="/contact" onClick={onClose} className="py-4 border-b border-border text-lg font-bold hover:text-accent transition-colors">צור קשר</Link>
-    </div>
-  );
-};
-
-// Product Skeleton
-const ProductSkeleton = ({ index }: { index: number }) => (
-  <div className="bg-card rounded-xl overflow-hidden border border-border flex flex-col animate-fade-in" style={{ animationDelay: `${index * 0.05}s` }}>
-    <div className="relative h-64 bg-secondary animate-pulse" />
-    <div className="p-5 flex-1 flex flex-col gap-3">
-      <div className="h-3 w-16 bg-secondary rounded animate-pulse" />
-      <div className="h-5 w-3/4 bg-secondary rounded animate-pulse" />
-      <div className="mt-auto flex items-center justify-between mb-4">
-        <div className="h-6 w-16 bg-secondary rounded animate-pulse" />
-      </div>
-      <div className="h-12 w-full bg-secondary rounded-lg animate-pulse" />
-    </div>
-  </div>
-);
-const heroSlides = [
-  { image: heroSlide1, alt: "פולבאדי - מוצרי הרבלייף כשר למהדרין, אבקת חלבון H24 ותוספי תזונה לספורטאים", link: "#products" },
-  { image: heroSlide2, alt: "שייקי הרבלייף Formula 1 ואבקת חלבון H24 בכשר למהדרין - פולבאדי ישראל", link: "#products" },
-];
-
-const HeroCarousel = () => {
-  const [currentSlide, setCurrentSlide] = React.useState(0);
-
-  React.useEffect(() => {
-    const timer = setInterval(() => {
-      setCurrentSlide((prev) => (prev + 1) % heroSlides.length);
-    }, 5000);
-    return () => clearInterval(timer);
-  }, []);
-
-  return (
-    <section
-      data-hero="pro"
-      className="relative w-screen left-1/2 right-1/2 -mx-[50vw] overflow-hidden bg-black h-[60vh] md:h-[80vh] max-h-[760px]"
-    >
-      {/* Slides */}
-      {heroSlides.map((slide, index) => (
-        <div
-          key={index}
-          className={`absolute inset-0 transition-opacity duration-700 ease-in-out ${
-            index === currentSlide ? 'opacity-100 z-10' : 'opacity-0 z-0'
-          }`}
-        >
-          {/* Blurred backdrop fills any empty space */}
-          <img
-            src={slide.image}
-            alt=""
-            aria-hidden="true"
-            className="absolute inset-0 w-full h-full object-cover scale-110 blur-2xl opacity-60"
-          />
-          {/* Main hero image — no crop, centered */}
-          <a href={slide.link} className="relative block w-full h-full">
-            <img
-              src={slide.image}
-              alt={slide.alt}
-              className="w-full h-full object-cover object-center"
-              loading={index === 0 ? 'eager' : 'lazy'}
-            />
-            {/* Dark gradient bottom→top for H1 readability */}
-            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-black/40 pointer-events-none" />
-          </a>
-        </div>
-      ))}
-
-      {/* Premium H1 overlay */}
-      <div className="absolute inset-x-0 bottom-12 md:bottom-16 z-20 px-4 text-center pointer-events-none">
-        <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black text-white drop-shadow-[0_4px_12px_rgba(0,0,0,0.7)] max-w-4xl mx-auto leading-tight">
-          התחילו את השינוי שלכם היום
-        </h1>
-        <p className="mt-3 text-base sm:text-lg md:text-xl text-white/90 font-semibold drop-shadow-[0_2px_8px_rgba(0,0,0,0.7)] max-w-2xl mx-auto">
-          תוספי תזונה ומוצרי Herbalife מקוריים — לאורח חיים בריא, אנרגטי ומאוזן
-        </p>
-      </div>
-
-      {/* Dots */}
-      <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-30 flex gap-2">
-        {heroSlides.map((_, index) => (
-          <button
-            key={index}
-            onClick={() => setCurrentSlide(index)}
-            className={`w-3 h-3 rounded-full transition-all cursor-pointer ${
-              index === currentSlide ? 'bg-white scale-125' : 'bg-white/50'
-            }`}
-            aria-label={`שקופית ${index + 1}`}
-          />
-        ))}
-      </div>
-
-    </section>
-  );
-};
 export default function ProBody() {
-
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [searchQuery, setSearchQuery] = useState('');
-  const [sortBy, setSortBy] = useState<SortOption>('default');
-  const [selectedCategory, setSelectedCategory] = useState('all');
-  const [isLoading, setIsLoading] = useState(true);
-  const [products, setProducts] = useState<ShopifyProduct[]>([]);
-  const [isSearchOpen, setIsSearchOpen] = useState(false);
-  const [advancedFilters, setAdvancedFilters] = useState<ActiveFilters>({
-    proteinTypes: [], absorption: [], goals: [], flavors: [], priceRange: null,
-  });
-
-
-  // Fetch only Herbalife products
-  useEffect(() => {
-    const loadProducts = async () => {
-      setIsLoading(true);
-      const shopifyProducts = await fetchShopifyProducts(50, 'vendor:Herbalife');
-      setProducts(shopifyProducts);
-      setIsLoading(false);
-    };
-    loadProducts();
-  }, []);
-
-  const filteredProducts = useMemo(() => {
-    let result = products;
-    if (selectedCategory !== 'all') {
-      result = result.filter(p => getProCategory(p?.node?.title ?? '') === selectedCategory);
-    }
-    if (searchQuery.trim()) {
-      result = result.filter(p =>
-        (p?.node?.title ?? '').toLowerCase().includes(searchQuery.toLowerCase()) ||
-        (p?.node?.description ?? '').toLowerCase().includes(searchQuery.toLowerCase())
-      );
-    }
-    if (sortBy === 'price-asc') {
-      result = [...result].sort((a, b) => parseFloat(a?.node?.priceRange?.minVariantPrice?.amount ?? '0') - parseFloat(b?.node?.priceRange?.minVariantPrice?.amount ?? '0'));
-    } else if (sortBy === 'price-desc') {
-      result = [...result].sort((a, b) => parseFloat(b?.node?.priceRange?.minVariantPrice?.amount ?? '0') - parseFloat(a?.node?.priceRange?.minVariantPrice?.amount ?? '0'));
-    }
-    return result;
-  }, [products, searchQuery, sortBy, selectedCategory]);
-
-  useEffect(() => {
-    document.body.style.overflow = isMobileMenuOpen ? 'hidden' : 'unset';
-  }, [isMobileMenuOpen]);
-
+  const { posts } = useAllBlogPosts();
+  const popular = [...posts].filter(p => isIndexedSlug(p.slug)).sort((a, b) => indexRank(a.slug) - indexRank(b.slug)).slice(0, POPULAR_GUIDE_COUNT);
 
   return (
-    <div dir="rtl" className="font-sans text-foreground bg-background min-h-screen">
+    <div dir="rtl" className="min-h-screen bg-background text-foreground">
       <Helmet>
-        <title>חנות מוצרי הרבלייף (Herbalife) מקוריים בישראל | FullBody - מפיץ מורשה</title>
-        <meta name="description" content="חנות מוצרי הרבלייף מקוריים בישראל. שייק פורמולה 1, אבקות חלבון, תרכיז אלוורה ותוספי תזונה במחירים מעולים. משלוח מהיר עד הבית, ייעוץ אישי ומשלוח חינם מעל ₪299." />
-        <link rel="canonical" href="https://fullbody.co.il/" />
-        <meta property="og:title" content="חנות מוצרי הרבלייף (Herbalife) מקוריים בישראל | FullBody" />
-        <meta property="og:description" content="חנות מוצרי הרבלייף מקוריים בישראל. שייק פורמולה 1, אבקות חלבון, תרכיז אלוורה ותוספי תזונה. משלוח חינם מעל ₪299." />
-        <meta property="og:type" content="website" />
-        <meta property="og:url" content="https://fullbody.co.il/" />
-        <meta property="og:locale" content="he_IL" />
-        <meta property="og:image" content="https://fullbody.co.il/og-image.jpg" />
-        <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content="חנות מוצרי הרבלייף (Herbalife) מקוריים בישראל | FullBody" />
-        <meta name="twitter:description" content="משווק עצמאי של מוצרי הרבלייף בישראל. שייקי חלבון, ויטמינים ותוספי תזונה." />
-        <meta name="twitter:image" content="https://fullbody.co.il/og-image.jpg" />
-        <script type="application/ld+json">
-          {JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "OnlineStore",
-            "name": "FullBody - מוצרי הרבלייף מקוריים",
-            "url": "https://fullbody.co.il/",
-            "description": "חנות מוצרי הרבלייף מקוריים בישראל: שייקי חלבון, ויטמינים ותוספי תזונה.",
-            "logo": "https://fullbody.co.il/assets/logo-green.webp",
-            "currenciesAccepted": "ILS",
-            "paymentAccepted": "Credit Card, Direct Debit",
-            "priceRange": "₪₪"
-          })}
-        </script>
+        <title>{TITLE}</title><meta name="description" content={DESCRIPTION} /><link rel="canonical" href="https://fullbody.co.il/" />
+        <meta property="og:title" content={TITLE} /><meta property="og:description" content={DESCRIPTION} /><meta property="og:type" content="website" /><meta property="og:url" content="https://fullbody.co.il/" />
+        <meta name="twitter:card" content="summary_large_image" /><meta name="twitter:title" content={TITLE} /><meta name="twitter:description" content={DESCRIPTION} />
+        <script type="application/ld+json">{JSON.stringify({ '@context': 'https://schema.org', '@type': 'WebSite', name: 'FullBody', url: 'https://fullbody.co.il', description: DESCRIPTION })}</script>
       </Helmet>
+      <ContentHeader />
 
-      {/* Announcement Bar */}
-      <div className="bg-[hsl(142,70%,35%)] text-primary-foreground text-center py-2.5 text-sm font-medium">
-        <span className="flex items-center justify-center gap-2">
-          <Leaf className="w-4 h-4" />
-          מוצרי Herbalife מקוריים | משלוח חינם מעל ₪299
-          <Leaf className="w-4 h-4" />
-        </span>
-      </div>
-
-      {/* Header */}
-      <header className="sticky top-0 z-40 bg-card shadow-card border-b border-border">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
-          <button onClick={() => setIsMobileMenuOpen(true)} className="lg:hidden p-2 text-muted-foreground hover:text-accent transition-colors relative z-10 cursor-pointer">
-            <Menu className="w-6 h-6" />
-          </button>
-
-          <Link to="/" className="flex items-center relative z-10">
-            <div className="flex flex-col items-start">
-              <img src={greenLogo} alt="פולבאדי - משווק עצמאי של מוצרי הרבלייף בישראל" className="h-12 md:h-14 w-auto" />
-              <span className="text-[10px] md:text-[11px] font-medium text-muted-foreground mt-0.5 tracking-wide leading-tight">
-                נדב אונגר · 054-2008578
-              </span>
-            </div>
-          </Link>
-
-          <nav className="hidden lg:flex items-center gap-6 font-semibold text-sm text-muted-foreground relative z-10">
-            <Link to="/" className="hover:text-accent transition-colors py-2 cursor-pointer">ראשי</Link>
-            <div className="relative group">
-              <button className="hover:text-accent transition-colors flex items-center gap-1 py-2 cursor-pointer">
-                מוצרים
-                <ChevronDown className="w-4 h-4 transition-transform group-hover:rotate-180" />
-              </button>
-              <div className="absolute top-full right-0 pt-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
-                <div className="bg-card border border-border rounded-lg shadow-hover py-2 min-w-[200px]">
-                  <Link to="/products" className="block px-4 py-2.5 hover:bg-secondary hover:text-accent transition-colors font-semibold cursor-pointer">כל המוצרים</Link>
-                  {PRO_CATEGORIES.filter(c => c.id !== 'all' && products.some(p => getProCategory(p?.node?.title ?? '') === c.id)).map(category => (
-                    <a key={category.id} href="#products" onClick={() => setSelectedCategory(category.id)} className="block px-4 py-2.5 hover:bg-secondary hover:text-accent transition-colors cursor-pointer">{category.name}</a>
-                  ))}
-                </div>
-              </div>
-            </div>
-            <Link to="/bundles" className="hover:text-accent transition-colors py-2 flex items-center gap-1 cursor-pointer">
-              חבילות
-              <span className="text-xs bg-accent/15 text-accent px-1.5 py-0.5 rounded-full font-bold">🔥 חדש</span>
-            </Link>
-            <Link to="/blog" className="hover:text-accent transition-colors py-2 cursor-pointer">מאמרים</Link>
-            <Link to="/protocol" className="hover:text-accent transition-colors py-2 cursor-pointer flex items-center gap-1">מתכונים<span className="text-xs bg-accent/15 text-accent px-1.5 py-0.5 rounded-full font-bold">חדש</span></Link>
-            <Link to="/contact" className="hover:text-accent transition-colors py-2 cursor-pointer">צור קשר</Link>
-          </nav>
-
-          <div className="flex items-center gap-3 md:gap-4 relative z-10">
-            <img
-              src={herbalifeDistributorLogo}
-              alt="Herbalife Independent Distributor"
-              className="hidden sm:block h-7 md:h-8 w-auto opacity-90"
-            />
-            <button onClick={() => setIsSearchOpen(true)} className="p-2 text-muted-foreground hover:text-accent transition-colors cursor-pointer" aria-label="חיפוש">
-              <Search className="w-5 h-5" />
-            </button>
-            <a href="https://shop.fullbody.co.il" className="p-2 text-muted-foreground hover:text-accent transition-colors" aria-label="לחנות">
-              <ShoppingBag className="w-6 h-6" />
-            </a>
-          </div>
-        </div>
-      </header>
-
-      {/* Benefits Bar */}
-      <div className="bg-secondary/40 border-b border-border">
-        <div className="container mx-auto px-4 py-2.5">
-          <div className="grid grid-cols-3 gap-2 text-center text-[11px] sm:text-sm font-bold text-foreground">
-            <div className="flex items-center justify-center gap-1.5"><Truck className="w-4 h-4 text-[hsl(142,70%,35%)] shrink-0" /><span>משלוח חינם מעל ₪299</span></div>
-            <div className="flex items-center justify-center gap-1.5 border-x border-border"><HeartPulse className="w-4 h-4 text-[hsl(142,70%,35%)] shrink-0" /><span>ליווי אישי לכל לקוח</span></div>
-            <div className="flex items-center justify-center gap-1.5"><ShieldCheck className="w-4 h-4 text-[hsl(142,70%,35%)] shrink-0" /><span>רכישה מאובטחת</span></div>
-          </div>
-        </div>
-      </div>
-
-      <ProMobileMenu isOpen={isMobileMenuOpen} onClose={() => setIsMobileMenuOpen(false)} categories={PRO_CATEGORIES} onCategorySelect={(id) => { setSelectedCategory(id); setIsMobileMenuOpen(false); }} products={products} />
-
-      {isMobileMenuOpen && (
-        <div onClick={() => setIsMobileMenuOpen(false)} className="fixed inset-0 bg-foreground/50 z-40 transition-opacity duration-300 animate-fade-in cursor-pointer" />
-      )}
-
-
-      
-
-      {/* Hero Carousel - Full Width Edge-to-Edge */}
-      <HeroCarousel />
-
-      {/* Trust Badges */}
-      <section className="py-14 md:py-16 bg-card border-b border-border">
-        <div className="container mx-auto px-4">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
-            {[
-              { icon: Leaf, title: "מוצרים מקוריים", text: "Herbalife מקורי 100%" },
-              { icon: Truck, title: "משלוח מהיר", text: "3-5 ימי עסקים" },
-              { icon: ShieldCheck, title: "תשלום מאובטח", text: "SSL מוצפן" },
-              { icon: Dumbbell, title: "ייעוץ מקצועי", text: "ליווי אישי ותוכנית תזונה" },
-            ].map((item, index) => (
-              <div key={index} className="flex flex-col items-center gap-3 group">
-                <div className="w-14 h-14 bg-[hsl(142,70%,35%)]/10 rounded-full flex items-center justify-center text-[hsl(142,70%,35%)] group-hover:bg-[hsl(142,70%,35%)] group-hover:text-white transition-all duration-300">
-                  <item.icon className="w-6 h-6" />
-                </div>
-                <div className="font-bold text-foreground">{item.title}</div>
-                <p className="text-sm text-muted-foreground">{item.text}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Local Herbalife Catalog */}
-      <section id="products" className="py-20 bg-background">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-8">
-            <span className="text-[hsl(142,70%,35%)] font-bold text-sm tracking-widest uppercase">Herbalife Nutrition</span>
-            <h2 className="text-3xl md:text-4xl font-black text-primary mt-2">קטלוג מוצרי הרבלייף: מוצרים לתזונה יומית ואורח חיים פעיל</h2>
-            {/* SEO sub-categories */}
-            <div className="sr-only">
-              <h3>מוצרים לשילוב בתזונה מאוזנת</h3>
-              <h3>תזונת ספורט H24</h3>
-              <h3>חיוניות ותזונה יומית</h3>
+      <main>
+        <section className="border-b border-border bg-card py-16 md:py-24">
+          <div className="container mx-auto max-w-5xl px-4">
+            <p className="mb-4 font-bold text-accent">תזונה וכושר, בלי רעש מסביב</p>
+            <h1 className="max-w-4xl text-4xl font-black leading-tight md:text-6xl">מדריכים שעוזרים לאכול, להתאמן ולהבין מה באמת מתאים לכם</h1>
+            <p className="mt-6 max-w-2xl text-lg leading-relaxed text-muted-foreground">מידע מעשי בגובה העיניים, מתכונים וכלים חינמיים. בלי הבטחות לתוצאות ובלי דיאטות קיצוניות.</p>
+            <div className="mt-8 flex flex-wrap gap-3">
+              <Link to="/blog" className="inline-flex items-center gap-2 rounded-md bg-accent px-6 py-3 font-bold text-accent-foreground">למדריכים <ArrowLeft className="h-4 w-4" /></Link>
+              <Link to="/protein-calculator" className="inline-flex items-center gap-2 rounded-md border border-border bg-background px-6 py-3 font-bold">מחשבון חלבון <Calculator className="h-4 w-4" /></Link>
             </div>
           </div>
+        </section>
 
-          {/* Category Filter */}
-          <div className="flex flex-wrap justify-center gap-2 sm:gap-3 mb-10">
-            {PRO_PRODUCT_CATEGORIES.filter(category =>
-              category.id === 'all' || herbalifeProducts.some(p => p.categoryId === category.id)
-            ).map((category) => (
-              <button
-                key={category.id}
-                onClick={() => setSelectedCategory(category.id)}
-                className={`px-4 py-2 rounded-full text-sm font-bold transition-all duration-300 cursor-pointer ${
-                  selectedCategory === category.id
-                    ? 'bg-[hsl(142,70%,35%)] text-white shadow-cta'
-                    : 'bg-card border border-border text-muted-foreground hover:border-[hsl(142,70%,35%)] hover:text-[hsl(142,70%,35%)]'
-                }`}
-              >
-                {category.name}
-              </button>
-            ))}
-          </div>
-
-          {/* Filters + Products Grid */}
-          <div className="flex flex-col lg:flex-row gap-8">
-            <div className="lg:w-64 lg:flex-shrink-0">
-              <ProProductFilters filters={advancedFilters} onChange={setAdvancedFilters} />
-            </div>
-            <div className="flex-1">
-          <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-8">
-            {herbalifeProducts
-              .filter(p => selectedCategory === 'all' || p.categoryId === selectedCategory)
-              .filter(p => !searchQuery.trim() || p.title.includes(searchQuery) || p.description.includes(searchQuery))
-              .filter(p => {
-                const f = advancedFilters;
-                if (f.proteinTypes.length && (!p.proteinType || !f.proteinTypes.some(t => p.proteinType!.includes(t)))) return false;
-                if (f.absorption.length && (!p.absorption || !f.absorption.includes(p.absorption))) return false;
-                if (f.goals.length && (!p.goals || !f.goals.some(g => p.goals!.includes(g)))) return false;
-                if (f.flavors.length && (!p.flavors || !f.flavors.some(fl => p.flavors!.includes(fl)))) return false;
-                if (f.priceRange) {
-                  const range = PRICE_RANGES.find(r => r.id === f.priceRange);
-                  if (range && (p.price < range.min || p.price >= range.max)) return false;
-                }
-                return true;
-              })
-              .map((product, index) => (
-              <Link
-                key={product.handle}
-                to={shopProductUrl(product.shopifyHandle)}
-                className="group bg-card rounded-xl overflow-hidden hover:shadow-hover transition-all duration-300 border border-border flex flex-col animate-fade-in cursor-pointer"
-                style={{ animationDelay: `${index * 0.05}s` }}
-              >
-                <div className="relative overflow-hidden aspect-square bg-secondary/20 flex items-center justify-center p-6">
-                  <img
-                    src={product.image}
-                    alt={`${product.title} - ${product.category} הרבלייף כשר למהדרין | פולבאדי`}
-                    loading="lazy"
-                    className="max-w-[75%] max-h-[75%] object-contain transform group-hover:scale-105 transition-transform duration-500"
-                  />
-                  <span className="absolute top-3 right-3 bg-[hsl(142,70%,35%)] text-white text-[10px] font-bold px-2.5 py-1 rounded-full">
-                    {product.category}
-                  </span>
-                </div>
-                <div className="p-3 sm:p-5 flex-1 flex flex-col">
-                  <p className="font-bold text-sm sm:text-lg text-foreground mb-1 sm:mb-2 group-hover:text-[hsl(142,70%,35%)] transition-colors line-clamp-2">
-                    {product.title}
-                  </p>
-                  <p className="text-xs sm:text-sm text-muted-foreground line-clamp-2 mb-3">
-                    {product.shortHook}
-                  </p>
-                  <span className="mt-auto text-[hsl(142,70%,35%)] font-bold text-sm flex items-center gap-1">
-                    לפרטים נוספים <ArrowRight className="w-4 h-4" />
-                  </span>
-                </div>
-              </Link>
-            ))}
-          </div>
+        <section className="py-16" aria-labelledby="popular-heading">
+          <div className="container mx-auto px-4">
+            <div className="mb-8 flex items-end justify-between gap-4"><div><p className="font-bold text-accent">נקודת התחלה טובה</p><h2 id="popular-heading" className="mt-2 text-3xl font-black">המדריכים הפופולריים</h2></div><Link to="/blog" className="hidden font-bold text-accent sm:inline">כל המדריכים</Link></div>
+            <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+              {popular.map(post => <Link key={post.slug} to={`/blog/${post.slug}`} className="group overflow-hidden rounded-md border border-border bg-card transition-shadow hover:shadow-hover"><div className="aspect-[16/9] overflow-hidden"><img src={post.image} alt="" className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105" loading="lazy" /></div><div className="p-5"><p className="mb-2 text-xs font-bold text-accent">{post.category}</p><h3 className="text-lg font-black leading-snug">{sanitizeClaimText(post.title)}</h3><p className="mt-2 line-clamp-2 text-sm text-muted-foreground">{sanitizeClaimText(post.excerpt)}</p></div></Link>)}
             </div>
           </div>
-        </div>
-      </section>
+        </section>
 
-      {/* Why Herbalife Section */}
-      <section className="py-20 bg-secondary/30">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-black text-foreground mb-4">מידע על מוצרי Herbalife</h2>
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              מוצרים שניתן לשלב כחלק מתזונה מאוזנת ואורח חיים פעיל
-            </p>
+        <section className="border-y border-border bg-secondary/50 py-16">
+          <div className="container mx-auto grid gap-10 px-4 lg:grid-cols-2 lg:items-center">
+            <div><div className="mb-5 inline-flex h-12 w-12 items-center justify-center rounded-md bg-accent text-accent-foreground"><Calculator className="h-6 w-6" /></div><h2 className="text-3xl font-black">מחשבון חלבון יומי</h2><p className="mt-4 max-w-xl text-lg leading-relaxed text-muted-foreground">קבלו הערכה מעשית לפי משקל, רמת פעילות ומטרה — ואז ראו איך להגיע לכמות מהמזון הרגיל.</p><Link to="/protein-calculator" className="mt-6 inline-flex items-center gap-2 rounded-md bg-accent px-6 py-3 font-bold text-accent-foreground">למחשבון החינמי <ArrowLeft className="h-4 w-4" /></Link></div>
+            <div className="grid grid-cols-3 gap-3" aria-hidden="true"><div className="rounded-md border border-border bg-card p-5 text-center"><span className="block text-3xl font-black text-accent">גרם</span><span className="text-sm text-muted-foreground">ליום</span></div><div className="rounded-md border border-border bg-card p-5 text-center"><span className="block text-3xl font-black text-accent">מזון</span><span className="text-sm text-muted-foreground">לפני אבקה</span></div><div className="rounded-md border border-border bg-card p-5 text-center"><span className="block text-3xl font-black text-accent">חינם</span><span className="text-sm text-muted-foreground">ללא הרשמה</span></div></div>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {[
-              { icon: Leaf, title: "רכיבים טבעיים", text: "מידע על הרכיבים מופיע בתווית של כל מוצר בחנות." },
-              { icon: Dumbbell, title: "תזונת ספורט", text: "קו מוצרי H24 מיועד לשילוב בשגרת תזונת ספורט בהתאם להוראות התווית." },
-              { icon: Zap, title: "שליטה במשקל", text: "מוצרים שניתן לשלב בתפריט מאוזן לצד פעילות גופנית." },
-            ].map((item, index) => (
-              <div key={index} className="bg-card rounded-2xl p-8 border border-border hover:shadow-hover transition-all duration-300 text-center">
-                <div className="w-16 h-16 mx-auto mb-4 bg-[hsl(142,70%,35%)]/10 rounded-full flex items-center justify-center text-[hsl(142,70%,35%)]">
-                  <item.icon className="w-8 h-8" />
-                </div>
-                <h3 className="text-xl font-bold text-foreground mb-3">{item.title}</h3>
-                <p className="text-muted-foreground">{item.text}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+        </section>
 
-      {/* Blog Section */}
-      <section className="py-16 bg-secondary/30">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-10">
-            <h2 className="text-3xl md:text-4xl font-black text-foreground mb-3">בלוג FullBody: ביו-האקינג, תזונת ספורט ואורח חיים בריא</h2>
-            <p className="text-muted-foreground text-lg max-w-2xl mx-auto">טיפים, מדריכים ומידע מקצועי בנושאי תזונה, כושר ואורח חיים בריא</p>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {proBlogPosts.slice(0, 3).map((post, i) => (
-              <Link key={post.id} to={`/blog/${post.slug}`} className="group bg-card rounded-xl overflow-hidden border border-border hover:shadow-hover transition-all animate-fade-in cursor-pointer" style={{ animationDelay: `${i * 0.05}s` }}>
-                <div className="aspect-[16/9] overflow-hidden">
-                  <img src={post.image} alt={`${post.title} - מאמר בנושא ${post.category}`} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy" />
-                </div>
-                <div className="p-5">
-                  <div className="flex items-center gap-3 mb-3 text-xs text-muted-foreground">
-                    <span className="bg-[hsl(142,70%,35%)]/10 text-[hsl(142,70%,35%)] font-bold px-2.5 py-1 rounded-full flex items-center gap-1">
-                      <Tag className="w-3 h-3" />{post.category}
-                    </span>
-                    <span className="flex items-center gap-1"><Calendar className="w-3 h-3" />{new Date(post.date).toLocaleDateString('he-IL')}</span>
-                    <span className="flex items-center gap-1"><Clock className="w-3 h-3" />{post.readTime} דק'</span>
-                  </div>
-                  <h3 className="font-bold text-lg text-foreground mb-2 group-hover:text-[hsl(142,70%,35%)] transition-colors line-clamp-2">{post.title}</h3>
-                  <p className="text-sm text-muted-foreground line-clamp-2">{post.excerpt}</p>
-                </div>
-              </Link>
-            ))}
-          </div>
-          <div className="text-center mt-8">
-            <Link to="/blog" className="inline-flex items-center gap-2 bg-[hsl(142,70%,35%)] text-white font-bold py-3 px-8 rounded-lg hover:bg-[hsl(142,70%,30%)] transition-all cursor-pointer">
-              לכל המאמרים
-              <ArrowRight className="w-5 h-5" />
-            </Link>
-          </div>
-        </div>
-      </section>
-
-      {/* CTA Section */}
-      <section className="py-16 bg-[hsl(142,70%,35%)]">
-        <div className="container mx-auto px-4 text-center">
-          <h2 className="text-3xl md:text-4xl font-black text-white mb-4">מוכנים להתחיל?</h2>
-          <p className="text-xl text-white/80 mb-8 max-w-2xl mx-auto">צרו קשר לייעוץ תזונה אישי ותוכנית מותאמת אישית</p>
-          <Link to="/contact" className="inline-block bg-white text-[hsl(142,70%,35%)] font-bold py-4 px-8 rounded-lg shadow-lg hover:bg-white/90 transition-all cursor-pointer">
-            צרו קשר לייעוץ
-          </Link>
-        </div>
-      </section>
-
+        <section className="py-16"><div className="container mx-auto grid gap-6 px-4 md:grid-cols-2"><Link to="/recipes" className="group flex min-h-64 flex-col justify-between rounded-md border border-border bg-card p-8 hover:shadow-hover"><Utensils className="h-8 w-8 text-accent" /><div><h2 className="text-3xl font-black">ספר המתכונים</h2><p className="mt-3 text-muted-foreground">רעיונות פשוטים לארוחות, שייקים וקינוחים שאפשר לשלב בשגרה.</p><span className="mt-5 inline-flex items-center gap-2 font-bold text-accent">למתכונים <ArrowLeft className="h-4 w-4" /></span></div></Link><a href="https://shop.fullbody.co.il/?utm_source=blog&utm_medium=home_banner" className="group flex min-h-64 flex-col justify-between rounded-md bg-foreground p-8 text-background"><BookOpen className="h-8 w-8 text-accent" /><div><p className="mb-2 text-sm font-bold text-accent">מתנה לקוראי FullBody</p><h2 className="text-3xl font-black">ספר קינוחי חלבון במתנה</h2><span className="mt-5 inline-flex items-center gap-2 font-bold">לפרטים בחנות <Store className="h-4 w-4" /></span></div></a></div></section>
+      </main>
       <ProFooter />
-
-      {/* Search Popup */}
-      {isSearchOpen && (
-        <div className="fixed inset-0 bg-foreground/60 z-50 flex items-start justify-center pt-32 animate-fade-in" onClick={() => setIsSearchOpen(false)}>
-          <div className="bg-card rounded-2xl shadow-hover p-6 w-full max-w-xl mx-4 animate-slide-up" onClick={e => e.stopPropagation()}>
-            <div className="flex items-center gap-3 border-b border-border pb-4">
-              <Search className="w-5 h-5 text-muted-foreground" />
-              <input
-                type="text"
-                placeholder="חיפוש מוצרי Herbalife..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="flex-1 bg-transparent outline-none text-lg text-foreground placeholder:text-muted-foreground"
-                autoFocus
-              />
-              <button onClick={() => setIsSearchOpen(false)} className="text-muted-foreground hover:text-foreground cursor-pointer">
-                <X className="w-5 h-5" />
-              </button>
-            </div>
-            {searchQuery && (
-              <div className="mt-4 max-h-60 overflow-y-auto">
-                {filteredProducts.length > 0 ? filteredProducts.slice(0, 5).map(p => (
-                  <Link key={p?.node?.id} to={shopProductUrl(p?.node?.handle ?? '')} onClick={() => setIsSearchOpen(false)} className="flex items-center gap-3 py-3 hover:bg-secondary/50 rounded-lg px-2 transition-colors cursor-pointer">
-                    {p?.node?.images?.edges?.[0]?.node && <img src={p.node.images.edges[0].node.url} alt={`תמונה של ${p?.node?.title ?? 'מוצר'}`} className="w-10 h-10 object-contain rounded" loading="lazy" />}
-                    <div>
-                      <p className="font-bold text-foreground text-sm">{p?.node?.title}</p>
-                      <p className="text-xs text-muted-foreground">₪{parseFloat(p?.node?.priceRange?.minVariantPrice?.amount ?? '0').toFixed(0)}</p>
-                    </div>
-                  </Link>
-                )) : (
-                  <p className="text-center text-muted-foreground py-4">לא נמצאו תוצאות</p>
-                )}
-              </div>
-            )}
-          </div>
-        </div>
-      )}
     </div>
   );
 }

@@ -6,11 +6,11 @@ import { dirname, join } from "node:path";
 import type { Plugin } from "vite";
 import policy from "../supabase/functions/_shared/blog-index.json";
 import { proBlogPosts, proBlogCategories } from "../src/data/proBlogPosts";
+import { FEATURED_BLOG_OVERRIDES, TRANSPARENCY_DISCLOSURE } from "../src/data/featuredBlogContent";
 
 const BASE = "https://fullbody.co.il";
-const SUPABASE_URL = "https://jfogxnstkykpsyeegmnm.supabase.co";
-const ANON =
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Impmb2d4bnN0a3lrcHN5ZWVnbW5tIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njg5ODY5OTksImV4cCI6MjA4NDU2Mjk5OX0.owHWtVpkeuMdfsGrlhyjdrtpklJ8VdxD4b6DZqObWys";
+const SUPABASE_URL = process.env.VITE_SUPABASE_URL ?? process.env.SUPABASE_URL ?? "";
+const ANON = process.env.VITE_SUPABASE_PUBLISHABLE_KEY ?? process.env.SUPABASE_ANON_KEY ?? "";
 const AUTHOR = "נדב אונגר";
 
 interface Page {
@@ -31,11 +31,21 @@ const esc = (s: string) =>
   String(s ?? "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
 const encPath = (p: string) => p.split("/").map(encodeURIComponent).join("/");
 
+
+const PROTEIN_FAQ = [
+  ["כמה חלבון צריך ביום?", "הכמות תלויה במשקל, ברמת הפעילות ובמטרה. המחשבון נותן הערכה כללית בלבד."],
+  ["האם חייבים אבקת חלבון?", "לא. אפשר להגיע לכמות היומית מביצים, מוצרי חלב, דגים, עוף, קטניות וטופו."],
+  ["מתי כדאי לאכול חלבון?", "כדאי לפזר מקורות חלבון לאורך היום. אין חובה לצרוך שייק מיד בסיום האימון."],
+  ["האם יותר חלבון תמיד עדיף?", "לא. חשוב לשמור על תפריט מגוון ומאוזן שמתאים לצרכים האישיים."],
+];
+const PROTEIN_FAQ_SCHEMA = { "@context": "https://schema.org", "@type": "FAQPage", mainEntity: PROTEIN_FAQ.map(([q,a]) => ({ "@type": "Question", name: q, acceptedAnswer: { "@type": "Answer", text: a } })) };
+const PROTEIN_GUIDE_HTML = `<p>הזינו משקל, רמת פעילות ומטרה וקבלו הערכה כללית של כמות החלבון היומית.</p><h2>כמה חלבון צריך ביום?</h2><p>הכמות המתאימה מושפעת ממשקל הגוף, מכמות הפעילות, מסוג האימונים ומהתפריט הכולל. המחשבון מספק נקודת פתיחה לתכנון הארוחות ואינו מחליף התאמה אישית.</p><h2>חלבון לפי מטרה</h2><h3>שמירה</h3><p>פזרו מקורות חלבון בין הארוחות ושמרו על תפריט מגוון.</p><h3>עלייה במסת שריר</h3><p>שלבו חלבון עם אימוני כוח, מספיק אנרגיה ושינה.</p><h3>ירידה במשקל</h3><p>חלבון יכול להשתלב בתפריט מספק, אך אין מזון שמבטיח תוצאה.</p><h2>איך להגיע לכמות מהמזון?</h2><p>ביצים, יוגורט, קוטג׳, עוף, דגים, טופו וקטניות יכולים לספק את הכמות היומית. אבקה היא אפשרות נוחה, לא חובה.</p><table><thead><tr><th>מזון</th><th>חלבון משוער ל-100 גרם</th></tr></thead><tbody><tr><td>חזה עוף מבושל</td><td>31 גרם</td></tr><tr><td>טונה במים</td><td>25 גרם</td></tr><tr><td>עדשים מבושלות</td><td>9 גרם</td></tr><tr><td>טופו</td><td>12–17 גרם</td></tr><tr><td>קוטג׳</td><td>11 גרם</td></tr></tbody></table><h2>שאלות נפוצות</h2>${PROTEIN_FAQ.map(([q,a]) => `<h3>${q}</h3><p>${a}</p>`).join("")}<p><strong>המידע אינו מהווה ייעוץ רפואי. בהריון, הנקה, מצב רפואי או נטילת תרופות – יש להתייעץ עם רופא.</strong></p>`;
+
 const STATIC_PAGES: Page[] = [
-  { path: "/", title: "FullBody – נדב אונגר | תזונה, כושר ומוצרי Herbalife", description: "מאמרים, מתכונים וכלים לתזונה מאוזנת ואורח חיים פעיל, מאת נדב אונגר – מפיץ עצמאי מורשה של Herbalife.", h1: "FullBody – תזונה מאוזנת ואורח חיים פעיל", body: "<p>FullBody הוא אתר התוכן של נדב אונגר, מפיץ עצמאי מורשה של Herbalife. כאן תמצאו מדריכי תזונה וכושר, ספר מתכונים ומחשבון חלבון. רכישת מוצרים מתבצעת בחנות המקוונת shop.fullbody.co.il.</p><p><a href=\"/blog\">לבלוג</a> · <a href=\"/recipes\">למתכונים</a> · <a href=\"/protein-calculator\">למחשבון החלבון</a> · <a href=\"/about\">אודות</a></p>" },
+  { path: "/", title: "FullBody – מדריכי תזונה, חלבון וכושר בגובה העיניים", description: "טיפים כנים לתזונה מאוזנת, חלבון ואימונים: מדריכים, מתכונים ומחשבון חלבון יומי. בלי הבטחות ובלי דיאטות קיצוניות.", h1: "מדריכים שעוזרים לאכול, להתאמן ולהבין מה באמת מתאים לכם", body: "<p>מידע מעשי בגובה העיניים, מתכונים וכלים חינמיים. בלי הבטחות לתוצאות ובלי דיאטות קיצוניות.</p><p><a href=\"/blog\">המדריכים הפופולריים</a> · <a href=\"/protein-calculator\">מחשבון חלבון יומי</a> · <a href=\"/recipes\">ספר המתכונים</a></p><p><a href=\"https://shop.fullbody.co.il/?utm_source=blog&amp;utm_medium=home_banner\">ספר קינוחי חלבון במתנה</a></p>" },
   { path: "/recipes", title: "ספר המתכונים | FullBody", description: "מתכונים עתירי חלבון לארוחות בוקר, עיקריות, קינוחים ושייקים, כחלק מתזונה מאוזנת.", h1: "ספר המתכונים של FullBody", body: "<p>אוסף מתכונים עתירי חלבון לארוחות בוקר, ארוחות עיקריות, קינוחים ושייקים – פשוטים להכנה ומתאימים לשגרה פעילה.</p>" },
-  { path: "/protein-calculator", title: "מחשבון חלבון יומי | FullBody", description: "חשבו כמה חלבון וקלוריות מתאימים לכם לפי משקל, גובה, רמת פעילות ומטרה.", h1: "מחשבון חלבון יומי", body: "<p>הזינו משקל, גובה, גיל, רמת פעילות ומטרה, וקבלו הערכה של צריכת החלבון והקלוריות היומית. התוצאה היא הערכה כללית ואינה מהווה ייעוץ רפואי או תזונתי אישי.</p>" },
-  { path: "/about", title: "אודות FullBody | נדב אונגר ופרטי העסק", description: "FullBody בהפעלת נדב אונגר, מפיץ עצמאי מורשה של Herbalife. מי אני, איך אני עובד עם לקוחות ופרטי העסק המלאים.", h1: "אודות FullBody", body: "<p>שמי נדב אונגר, ואני מפיץ עצמאי מורשה של Herbalife. FullBody – נדב אונגר, עוסק מורשה 200353720. האתר אינו האתר הרשמי של חברת Herbalife ואינו חלק ממנה.</p><p>כתובת: רחוב זרחין 1, קומה 3, רעננה (משרד בלבד). טלפון ו-WhatsApp: 054-2008578. מייל: info@fullbody.co.il.</p>" },
+  { path: "/protein-calculator", title: "מחשבון חלבון יומי – כמה חלבון אני צריך ביום?", description: "חשבו בחינם כמה חלבון אתם צריכים ביום לפי משקל, פעילות ומטרה, עם טיפים מעשיים להשגת הכמות מהמזון.", h1: "מחשבון חלבון יומי", body: PROTEIN_GUIDE_HTML, jsonLd: [PROTEIN_FAQ_SCHEMA] },
+  { path: "/about", title: "אודות FullBody | נדב אונגר ופרטי העסק", description: "FullBody בהפעלת נדב אונגר, מפיץ עצמאי מורשה של Herbalife. מי אני, איך אני עובד עם לקוחות ופרטי העסק המלאים.", h1: "אודות FullBody", body: `<p>אני נדב אונגר. הקמתי את FullBody כדי לעזור לאנשים להבין תזונה, חלבון ואימונים בלי בלבול, הבטחות או דיאטות קיצוניות.</p><p>${TRANSPARENCY_DISCLOSURE}</p><p>FullBody – נדב אונגר, עוסק מורשה 200353720. כתובת: רחוב זרחין 1, קומה 3, רעננה (משרד בלבד). טלפון ו-WhatsApp: 054-2008578. מייל: info@fullbody.co.il.</p>` },
   { path: "/contact", title: "צור קשר | FullBody – נדב אונגר", description: "צרו קשר עם FullBody בטלפון 054-2008578, בוואטסאפ או במייל info@fullbody.co.il.", h1: "צור קשר", body: "<p>טלפון ו-WhatsApp: 054-2008578. מייל: info@fullbody.co.il. שעות פעילות: א'-ה' 09:00-18:00, ו' 09:00-13:00.</p>" },
   { path: "/faq", title: "שאלות נפוצות | FullBody", description: "תשובות לשאלות נפוצות על משלוחים, החזרות והזמנות בחנות FullBody.", h1: "שאלות נפוצות", body: "<p>תשובות לשאלות נפוצות על משלוחים, החזרות, הזמנות ושימוש במוצרים.</p>" },
   { path: "/shipping-policy", title: "משלוחים ואספקה | FullBody", description: "עלויות וזמני המשלוח של FullBody.", h1: "משלוחים ואספקה", body: "<p>משלוח 29 ₪, חינם מעל 299 ₪. אספקה תוך 3-5 ימי עסקים, ובתקופות עומס עד 14 ימי עסקים. אין איסוף עצמי.</p>" },
@@ -53,6 +63,7 @@ interface Post {
 }
 
 async function fetchDbPosts(): Promise<Post[]> {
+  if (!SUPABASE_URL || !ANON) throw new Error("blog build credentials unavailable");
   const all: Post[] = [];
   for (let from = 0; ; from += 200) {
     const res = await fetch(
@@ -151,7 +162,9 @@ function articlePage(p: Post, indexed: boolean, related: Post[]): Page {
     noindex: !indexed, ogType: "article", jsonLd,
     body: `<nav aria-label="breadcrumb"><a href="/">בית</a> › <a href="/blog">בלוג</a> › ${esc(p.title)}</nav>`
       + `<article>${cleanContent(p.content || "")}</article>${faqHtml}`
-      + `<aside><strong>על הכותב:</strong> ${AUTHOR}, מפיץ עצמאי מורשה של Herbalife. <a href="/about">עוד עליי</a></aside>`
+      + `<aside><strong>על הכותב:</strong> ${AUTHOR}, מפיץ עצמאי מורשה של Herbalife. <a href="/about">עוד עליי</a><p>${esc(TRANSPARENCY_DISCLOSURE)}</p></aside>`
+      + `<aside><a href="https://shop.fullbody.co.il/?utm_source=blog&amp;utm_medium=article&amp;utm_campaign=${encodeURIComponent(p.slug)}">ספר קינוחי חלבון במתנה</a></aside>`
+      + `<p><strong>המידע אינו מהווה ייעוץ רפואי. בהריון, הנקה, מצב רפואי או נטילת תרופות – יש להתייעץ עם רופא.</strong></p>`
       + relatedHtml,
   };
 }
@@ -166,12 +179,15 @@ export function prerenderPlugin(): Plugin {
       const template = readFileSync(join(outDir, "index.html"), "utf8");
       let dbPosts: Post[] = [];
       try { dbPosts = await fetchDbPosts(); } catch (e) { console.warn("[prerender] blog fetch failed:", e); }
-      const staticPosts: Post[] = proBlogPosts.map((s) => ({
-        slug: s.slug, title: s.title, excerpt: s.excerpt, content: s.content, image: s.image,
-        category_id: s.categoryId, date: s.date, meta_description: s.metaDescription, faq: s.faq,
-      }));
+      const staticPosts: Post[] = proBlogPosts.map((s) => {
+        const override = FEATURED_BLOG_OVERRIDES[s.slug];
+        return { slug: s.slug, title: override?.title ?? s.title, excerpt: override?.excerpt ?? s.excerpt, content: override?.content ?? s.content, image: s.image, category_id: s.categoryId, date: s.date, updated_at: override?.updatedAt, meta_description: override?.metaDescription ?? s.metaDescription, faq: override?.faq ?? s.faq };
+      });
       const bySlug = new Map<string, Post>();
-      [...staticPosts, ...dbPosts].forEach((p) => bySlug.set(p.slug, p));
+      [...staticPosts, ...dbPosts].forEach((p) => {
+        const override = FEATURED_BLOG_OVERRIDES[p.slug];
+        bySlug.set(p.slug, override ? { ...p, title: override.title, excerpt: override.excerpt, content: override.content, meta_description: override.metaDescription, faq: override.faq, updated_at: override.updatedAt } : p);
+      });
       const indexedSet = new Set<string>(policy.indexed);
       const redirects = policy.redirects as Record<string, string>;
       const indexedPosts = policy.indexed.map((s: string) => bySlug.get(s)).filter(Boolean) as Post[];

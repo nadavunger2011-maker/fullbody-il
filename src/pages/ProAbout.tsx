@@ -1,8 +1,6 @@
-import greenLogo from '@/assets/logo-green.webp';
 import { Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import {
-  ArrowRight,
   Building2,
   Phone,
   Mail,
@@ -12,31 +10,22 @@ import {
   Truck,
   RefreshCw,
   CreditCard,
-  Leaf,
   UserCheck,
 } from 'lucide-react';
 import ProFooter from '@/components/ProFooter';
-
-const BUSINESS = {
-  legalName: 'FullBody – נדב אונגר',
-  taxId: '200353720',
-  address: 'רחוב זרחין 1, קומה 3, רעננה 4366238',
-  phone: '054-2008578',
-  email: 'info@fullbody.co.il',
-};
+import ContentHeader from '@/components/ContentHeader';
+import { BUSINESS, TRANSPARENCY_DISCLOSURE } from '@/lib/business';
 
 const jsonLd = {
   '@context': 'https://schema.org',
-  '@type': 'OnlineStore',
+  '@type': 'Organization',
   name: 'FullBody',
-  legalName: BUSINESS.legalName,
+  legalName: BUSINESS.name,
   url: 'https://fullbody.co.il',
   email: BUSINESS.email,
   telephone: '+972542008578',
   taxID: BUSINESS.taxId,
   vatID: BUSINESS.taxId,
-  currenciesAccepted: 'ILS',
-  paymentAccepted: 'Credit Card, PayPal, Bit',
   areaServed: { '@type': 'Country', name: 'IL' },
   address: {
     '@type': 'PostalAddress',
@@ -76,27 +65,13 @@ export default function ProAbout() {
         <script type="application/ld+json">{JSON.stringify(jsonLd)}</script>
       </Helmet>
 
-      <header className="sticky top-0 z-40 bg-card shadow-card border-b border-border">
-        <div className="container mx-auto px-4 h-20 flex items-center justify-between">
-          <Link to="/" className="flex items-center gap-2">
-            <img src={greenLogo} alt="FullBody" className="h-10" />
-            <div className="flex items-center gap-1">
-              <Leaf className="w-5 h-5 text-accent" />
-              <span className="text-sm font-bold text-accent">PRO</span>
-            </div>
-          </Link>
-          <Link to="/" className="text-accent font-bold flex items-center gap-2 hover:underline">
-            חזרה לחנות
-            <ArrowRight className="w-4 h-4" />
-          </Link>
-        </div>
-      </header>
+      <ContentHeader />
 
       <section className="bg-primary py-14">
         <div className="container mx-auto px-4 text-center">
           <h1 className="text-4xl md:text-5xl font-black text-primary-foreground mb-4">אודות FullBody</h1>
           <p className="text-lg text-primary-foreground/80 max-w-2xl mx-auto">
-            חנות אונליין לתוספי תזונה ותוכניות תזונה אישיות, בהפעלת נדב אונגר, מפיץ עצמאי של הרבלייף בישראל.
+            מי עומד מאחורי המדריכים, ולמה הקמתי את האתר
           </p>
         </div>
       </section>
@@ -111,19 +86,15 @@ export default function ProAbout() {
             </div>
             <div className="text-muted-foreground leading-relaxed space-y-3">
               <p>
-                האתר fullbody.co.il מופעל על ידי <strong className="text-foreground">נדב אונגר</strong>, מפיץ עצמאי מורשה
-                של הרבלייף (Herbalife), הפועל מרעננה ומשווק תוספי תזונה ללקוחות פרטיים בכל רחבי ישראל.
+                אני <strong className="text-foreground">נדב אונגר</strong>. הקמתי את FullBody כדי לעזור לאנשים להבין תזונה,
+                חלבון ואימונים בלי ללכת לאיבוד בין הבטחות, טרנדים ודיאטות קיצוניות.
               </p>
               <p>
-                האתר אינו האתר הרשמי של הרבלייף ישראל ואינו מופעל על ידה. כל המוצרים הם מוצרי הרבלייף מקוריים,
-                הנרכשים מהחברה ומשווקים על ידי המפיץ העצמאי.
+                כאן אני מפרסם מדריכים, מתכונים וכלים מעשיים שאפשר לבדוק וליישם בשגרה. המטרה היא לתת נקודת התחלה
+                ברורה וכנה; המידע כללי ואינו מחליף ייעוץ רפואי או תזונתי אישי.
               </p>
               <p>
-                לצד המידע על המוצרים, ניתן למלא שאלון כללי על מטרות והרגלים דרך{' '}
-                <Link to="/plan" className="text-accent underline">
-                  שאלון ההתאמה
-                </Link>
-                . מוצרי הרבלייף אינם תרופות ואינם מיועדים לאבחון, טיפול, ריפוי או מניעה של מחלות.
+                {TRANSPARENCY_DISCLOSURE}
               </p>
             </div>
           </div>
@@ -136,7 +107,7 @@ export default function ProAbout() {
             </div>
             <ul className="text-muted-foreground leading-relaxed space-y-2">
               <li>
-                <strong className="text-foreground">שם העסק:</strong> {BUSINESS.legalName}
+                <strong className="text-foreground">שם העסק:</strong> {BUSINESS.name}
               </li>
               <li>
                 <strong className="text-foreground">מספר עוסק / ח.פ:</strong> {BUSINESS.taxId}

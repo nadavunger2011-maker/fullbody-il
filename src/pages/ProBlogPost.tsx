@@ -1,20 +1,18 @@
-import { shopProductUrl } from '@/lib/shopLinks';
+import { blogShopProductUrl } from '@/lib/shopLinks';
 import { useEffect } from 'react';
 import { Link, useParams, useNavigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
-import { Calendar, Clock, ArrowRight, Tag, Menu, X, ShoppingBag } from 'lucide-react';
+import { Calendar, Clock, ArrowRight, Tag } from 'lucide-react';
 import { proBlogCategories } from '@/data/proBlogPosts';
 import { useBlogPostBySlug, useBlogRedirect, useAllBlogPosts } from '@/hooks/useBlogPosts';
 import { BLOG_DUPLICATE_REDIRECTS, isIndexedSlug, indexRank } from '@/lib/blogIndex';
-import { BUSINESS } from '@/lib/business';
-import { getProductByHandle, herbalifeProducts, HerbalifeProduct } from '@/data/herbalifeProducts';
-import greenLogo from '@/assets/logo-green.webp';
+import { BUSINESS, TRANSPARENCY_DISCLOSURE } from '@/lib/business';
+import { getProductByHandle, HerbalifeProduct } from '@/data/herbalifeProducts';
 import ProFooter from '@/components/ProFooter';
-import { useState } from 'react';
 import { Skeleton } from '@/components/ui/skeleton';
-import { normalizeBlogContent, splitContentByH2, pickContextualProducts, appendDisclaimer, sanitizeClaimText } from '@/lib/blogContent';
-import BlogProductCard from '@/components/BlogProductCard';
-import BlogCTAWidget from '@/components/BlogCTAWidget';
+import { normalizeBlogContent, splitContentByH2, appendDisclaimer, sanitizeClaimText, isProductRelevantArticle, isProteinArticle } from '@/lib/blogContent';
+import ContentHeader from '@/components/ContentHeader';
+import DessertBookBanner from '@/components/DessertBookBanner';
 
 export default function ProBlogPost() {
   const { slug } = useParams();
@@ -36,8 +34,6 @@ export default function ProBlogPost() {
 function ProBlogPostInner() {
   const { slug } = useParams();
   const navigate = useNavigate();
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-
   const { post, isLoading } = useBlogPostBySlug(slug);
   const { posts: allPosts } = useAllBlogPosts();
   const { redirectTo, isLoading: redirectLoading } = useBlogRedirect(slug, !isLoading && !post);
@@ -56,11 +52,11 @@ function ProBlogPostInner() {
 
   const normalizedContent = normalizeBlogContent(post.content);
   const contentChunks = splitContentByH2(normalizedContent);
-  const midIndex = Math.max(1, Math.floor(contentChunks.length / 2));
   const articleImage = post.image || '/placeholder.svg';
   const category = proBlogCategories.find(c => c.id === post.categoryId);
-  const relatedProducts = getMinimumRelatedProducts(post.relatedProductHandles, post.categoryId, 3);
-  const inlineProducts = pickContextualProducts(normalizedContent, post.relatedProductHandles, 2);
+  const showProducts = isProductRelevantArticle(post.title, post.slug);
+  const relatedProducts = showProducts ? getRelatedProducts(post.relatedProductHandles, 2) : [];
+  const proteinArticle = isProteinArticle(post.title, post.slug);
   const indexed = isIndexedSlug(post.slug);
   const relatedArticles = indexed
     ? allPosts
@@ -126,32 +122,7 @@ function ProBlogPostInner() {
         <script type="application/ld+json">{JSON.stringify(breadcrumbSchema)}</script>
       </Helmet>
 
-      <div className="bg-[hsl(142,70%,35%)] text-white text-center py-2.5 text-sm font-medium">
-        מוצרי Herbalife מקוריים | משלוח חינם מעל ₪299
-      </div>
-
-      <header className="sticky top-0 z-40 bg-card shadow-card border-b border-border">
-        <div className="container mx-auto px-4 h-20 flex items-center justify-between">
-          <button onClick={() => setIsMobileMenuOpen(true)} className="lg:hidden p-2 text-muted-foreground"><Menu className="w-6 h-6" /></button>
-          <Link to="/"><img src={greenLogo} alt="FullBody Pro" className="h-14 md:h-16 w-auto" /></Link>
-          <nav className="hidden lg:flex items-center gap-8 font-bold text-muted-foreground">
-            <Link to="/" className="hover:text-accent transition-colors">ראשי</Link>
-            <a href="/#products" className="hover:text-accent transition-colors">מוצרים</a>
-            <Link to="/blog" className="text-[hsl(142,70%,35%)]">מאמרים</Link>
-            <Link to="/contact" className="hover:text-accent transition-colors">צור קשר</Link>
-          </nav>
-          <a href="https://shop.fullbody.co.il" className="p-2 text-muted-foreground" aria-label="לחנות"><ShoppingBag className="w-6 h-6" /></a>
-        </div>
-      </header>
-
-      {isMobileMenuOpen && <div onClick={() => setIsMobileMenuOpen(false)} className="fixed inset-0 bg-foreground/50 z-40" />}
-      <div className={`fixed inset-y-0 right-0 w-72 bg-card shadow-hover z-50 flex flex-col pt-20 px-6 transform transition-transform duration-300 ${isMobileMenuOpen ? 'translate-x-0' : 'translate-x-full'}`}>
-        <button onClick={() => setIsMobileMenuOpen(false)} className="absolute top-5 left-5"><X className="w-6 h-6" /></button>
-        <Link to="/" onClick={() => setIsMobileMenuOpen(false)} className="py-4 border-b border-border text-lg font-bold">ראשי</Link>
-        <a href="/#products" onClick={() => setIsMobileMenuOpen(false)} className="py-4 border-b border-border text-lg font-bold">מוצרים</a>
-        <Link to="/blog" onClick={() => setIsMobileMenuOpen(false)} className="py-4 border-b border-border text-lg font-bold text-[hsl(142,70%,35%)]">מאמרים</Link>
-        <Link to="/contact" onClick={() => setIsMobileMenuOpen(false)} className="py-4 border-b border-border text-lg font-bold">צור קשר</Link>
-      </div>
+      <ContentHeader />
 
 
       <div className="bg-secondary border-b border-border">
@@ -200,21 +171,10 @@ function ProBlogPostInner() {
               {contentChunks.map((chunk, i) => (
                 <div key={i}>
                   <div dangerouslySetInnerHTML={{ __html: chunk }} />
-                  {i === midIndex - 1 && inlineProducts.map(p => (
-                    <BlogProductCard key={p.handle} product={p} variant="inline"  />
-                  ))}
-                  {i === Math.min(1, contentChunks.length - 1) && (
-                    <BlogCTAWidget variant="inline" source={post.slug} />
-                  )}
                 </div>
               ))}
-              <BlogCTAWidget
-                variant="conclusion"
-                source={post.slug}
-                title="סיימת לקרוא? עכשיו תורך ליישם"
-                description="קבל תוכנית תזונה ואימונים אישית, מבוססת על הנתונים שלך, בלי לנחש."
-                buttonText="קבל את התוכנית שלי"
-              />
+              {proteinArticle && <p className="not-prose mt-8"><Link to="/protein-calculator" className="inline-flex rounded-md bg-accent px-5 py-3 font-bold text-accent-foreground">חשבו כמה חלבון אתם צריכים</Link></p>}
+              <DessertBookBanner source={post.slug} />
               <div dangerouslySetInnerHTML={{ __html: appendDisclaimer('') }} />
               <aside className="mt-8 p-5 rounded-xl border border-border bg-secondary/40" aria-label="על הכותב">
                 <p className="font-bold text-foreground mb-1">על הכותב</p>
@@ -222,6 +182,7 @@ function ProBlogPostInner() {
                   {BUSINESS.owner}, מפיץ עצמאי מורשה של Herbalife.{' '}
                   <Link to="/about" className="font-bold text-[hsl(142,70%,35%)] hover:underline">עוד עליי</Link>
                 </p>
+                <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{TRANSPARENCY_DISCLOSURE}</p>
               </aside>
             </div>
           </div>
@@ -253,24 +214,25 @@ function ProBlogPostInner() {
         <section className="py-12 bg-background">
           <div className="container mx-auto px-4">
             <div className="max-w-4xl mx-auto">
-              <h2 className="text-2xl font-black text-foreground mb-8 text-center">מוצרים מומלצים מהמאמר</h2>
-              <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+              <h2 className="text-2xl font-black text-foreground mb-3 text-center">אם אתם מחפשים שייק / אבקת חלבון – הנה מה שאני מכיר מקרוב</h2>
+              <p className="mb-8 text-center text-sm text-muted-foreground">גילוי נאות: אלה מוצרים שנמכרים בחנות שלי. כדאי להשוות גם לחלופות ולבחור לפי הצורך והתקציב.</p>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 {relatedProducts.map((product, i) => (
                   <div key={product.sku} className="group bg-card rounded-xl overflow-hidden border border-border hover:shadow-hover transition-all animate-fade-in" style={{ animationDelay: `${i * 0.1}s` }}>
-                    <Link to={shopProductUrl(product.shopifyHandle)}>
+                    <a href={blogShopProductUrl(product.shopifyHandle, post.slug)}>
                       <div className="aspect-square overflow-hidden bg-secondary/20 flex items-center justify-center p-4">
                         <img src={product.image} alt={product.title} className="max-w-[75%] max-h-[75%] object-contain group-hover:scale-105 transition-transform duration-500" loading="lazy" />
                       </div>
-                    </Link>
+                    </a>
                     <div className="p-3">
-                      <Link to={shopProductUrl(product.shopifyHandle)}>
+                      <a href={blogShopProductUrl(product.shopifyHandle, post.slug)}>
                         <h3 className="font-bold text-sm text-foreground mb-1 group-hover:text-[hsl(142,70%,35%)] transition-colors line-clamp-2">{product.title}</h3>
-                      </Link>
+                      </a>
                       <div className="flex items-center justify-between mb-2">
                         <span className="font-black text-lg text-foreground">₪{product.price}</span>
                       </div>
-                      <a href={shopProductUrl(product.shopifyHandle)} className="w-full bg-[hsl(142,70%,35%)] text-white font-bold py-2 text-sm rounded-lg transition-all hover:opacity-90 flex items-center justify-center gap-1">
-                        לצפייה בחנות <ShoppingBag className="w-4 h-4" />
+                      <a href={blogShopProductUrl(product.shopifyHandle, post.slug)} className="w-full bg-[hsl(142,70%,35%)] text-white font-bold py-2 text-sm rounded-lg transition-all hover:opacity-90 flex items-center justify-center gap-1">
+                        לפרטים בחנות
                       </a>
                     </div>
                   </div>
@@ -307,23 +269,12 @@ function ProBlogPostInner() {
         </div>
       </section>
 
-      <BlogCTAWidget variant="sticky" source={post.slug} />
-      <div className="h-20 lg:hidden" />
       <ProFooter />
     </div>
   );
 }
 
-const FALLBACK_PRODUCTS_BY_CATEGORY: Record<string, string[]> = {
-  nutrition: ['formula-1-vanilla', 'pdm-protein', 'aloe-natural'],
-  weight: ['formula-1-vanilla', 'formula-1-chocolate', 'pdm-protein'],
-  fitness: ['pdm-protein', 'h24-rebuild-strength', 'formula-1-chocolate'],
-  recipes: ['formula-1-vanilla', 'pdm-protein', 'aloe-mango'],
-  wellness: ['niteworks', 'aloe-natural', 'formula-1-kosher'],
-};
-
-/** Always surface at least `min` real product links inside every article. */
-function getMinimumRelatedProducts(handles: string[], categoryId: string, min = 3): HerbalifeProduct[] {
+function getRelatedProducts(handles: string[], max = 2): HerbalifeProduct[] {
   const picked: HerbalifeProduct[] = [];
   const seen = new Set<string>();
   const push = (handle?: string) => {
@@ -333,12 +284,8 @@ function getMinimumRelatedProducts(handles: string[], categoryId: string, min = 
     seen.add(handle);
     picked.push(product);
   };
-  handles.forEach(push);
-  (FALLBACK_PRODUCTS_BY_CATEGORY[categoryId] || FALLBACK_PRODUCTS_BY_CATEGORY.nutrition).forEach(h => {
-    if (picked.length < min) push(h);
-  });
-  herbalifeProducts.forEach(p => { if (picked.length < min) push(p.handle); });
-  return picked;
+  handles.slice(0, max).forEach(push);
+  return picked.slice(0, max);
 }
 
 function ChevronIcon() {

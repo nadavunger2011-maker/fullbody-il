@@ -82,7 +82,7 @@ function AnalyticsListener() {
 
 function AppContent() {
   const location = useLocation();
-  const isCalculator = location.pathname === "/calculator";
+  const isCalculator = location.pathname === "/calculator" || location.pathname === "/protein-calculator";
   const isRecipes = location.pathname === "/recipes";
   const isProtocol = location.pathname === "/protocol";
   const isChocolateCake = location.pathname === "/blog/chocolate-cake-protocol";
@@ -99,6 +99,7 @@ function AppContent() {
           <Route path="/bundles" element={<ProBundles />} />
           <Route path="/starter-stack" element={<StarterStack />} />
           <Route path="/calculator" element={<ProteinCalculator />} />
+          <Route path="/protein-calculator" element={<ProteinCalculator />} />
           <Route path="/recipes" element={<Recipes />} />
           <Route path="/protocol" element={<ProtocolLanding />} />
           <Route path="/protocol-thank-you" element={<ProtocolThankYou />} />

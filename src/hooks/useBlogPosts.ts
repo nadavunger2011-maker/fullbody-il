@@ -1,6 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { proBlogPosts, proBlogCategories, type ProBlogPost, type ProBlogCategory } from '@/data/proBlogPosts';
+import { FEATURED_BLOG_OVERRIDES } from '@/data/featuredBlogContent';
 
 interface DbBlogPost {
   id: string;
@@ -19,7 +20,7 @@ interface DbBlogPost {
 }
 
 function dbToProBlogPost(db: any): ProBlogPost & { updatedAt?: string } {
-  return {
+  const base = {
     id: db.id,
     slug: db.slug,
     title: db.title,
@@ -36,6 +37,13 @@ function dbToProBlogPost(db: any): ProBlogPost & { updatedAt?: string } {
     noindex: db.noindex === true,
     updatedAt: db.updated_at,
   };
+  const override = FEATURED_BLOG_OVERRIDES[base.slug];
+  return override ? { ...base, ...override } : base;
+}
+
+function withFeaturedOverride(post: ProBlogPost): ProBlogPost & { updatedAt?: string } {
+  const override = FEATURED_BLOG_OVERRIDES[post.slug];
+  return override ? { ...post, ...override } : post;
 }
 
 export function useAllBlogPosts() {
@@ -54,7 +62,7 @@ export function useAllBlogPosts() {
 
   // Merge: DB posts first (newest), then static posts (deduped by slug)
   const dbSlugs = new Set(dbPosts.map(p => p.slug));
-  const staticFiltered = proBlogPosts.filter(p => !dbSlugs.has(p.slug));
+  const staticFiltered = proBlogPosts.filter(p => !dbSlugs.has(p.slug)).map(withFeaturedOverride);
   const allPosts = [...dbPosts, ...staticFiltered];
 
   return { posts: allPosts, isLoading };
@@ -79,7 +87,7 @@ export function useBlogPostBySlug(slug: string | undefined) {
 
   // Fallback to static
   const staticPost = slug ? proBlogPosts.find(p => p.slug === slug) : undefined;
-  const post = dbPost || staticPost || undefined;
+  const post = dbPost || (staticPost ? withFeaturedOverride(staticPost) : undefined);
 
   return { post, isLoading };
 }

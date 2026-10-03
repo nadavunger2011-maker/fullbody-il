@@ -9,6 +9,10 @@ export function shopProductUrl(shopifyHandle: string): string {
   return `${SHOP_URL}/products/${encodeURIComponent(shopifyHandle)}`;
 }
 
+export function blogShopProductUrl(shopifyHandle: string, articleSlug: string): string {
+  return `${shopProductUrl(shopifyHandle)}?utm_source=blog&utm_medium=article&utm_campaign=${encodeURIComponent(articleSlug)}`;
+}
+
 /** Store URL from a local (site) product handle, falling back to the handle itself. */
 export function shopUrlForHandle(handle?: string | null): string {
   if (!handle) return SHOP_URL;
