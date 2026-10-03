@@ -6,7 +6,8 @@ import { dirname, join } from "node:path";
 import type { Plugin } from "vite";
 import policy from "../supabase/functions/_shared/blog-index.json";
 import { proBlogPosts, proBlogCategories } from "../src/data/proBlogPosts";
-import { FEATURED_BLOG_OVERRIDES, TRANSPARENCY_DISCLOSURE } from "../src/data/featuredBlogContent";
+import { FEATURED_BLOG_OVERRIDES } from "../src/data/featuredBlogContent";
+import { TRANSPARENCY_DISCLOSURE } from "../src/lib/business";
 
 const BASE = "https://fullbody.co.il";
 const SUPABASE_URL = process.env.VITE_SUPABASE_URL ?? process.env.SUPABASE_URL ?? "";
