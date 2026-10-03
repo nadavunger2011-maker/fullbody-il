@@ -8,7 +8,6 @@ import { useBlogPostBySlug, useBlogRedirect, useAllBlogPosts } from '@/hooks/use
 import { BLOG_DUPLICATE_REDIRECTS, isIndexedSlug, indexRank } from '@/lib/blogIndex';
 import { BUSINESS, TRANSPARENCY_DISCLOSURE } from '@/lib/business';
 import { getProductByHandle, HerbalifeProduct } from '@/data/herbalifeProducts';
-import greenLogo from '@/assets/logo-green.webp';
 import ProFooter from '@/components/ProFooter';
 import { Skeleton } from '@/components/ui/skeleton';
 import { normalizeBlogContent, splitContentByH2, appendDisclaimer, sanitizeClaimText, isProductRelevantArticle, isProteinArticle } from '@/lib/blogContent';

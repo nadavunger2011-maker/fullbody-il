@@ -184,7 +184,10 @@ export function prerenderPlugin(): Plugin {
         return { slug: s.slug, title: override?.title ?? s.title, excerpt: override?.excerpt ?? s.excerpt, content: override?.content ?? s.content, image: s.image, category_id: s.categoryId, date: s.date, updated_at: override?.updatedAt, meta_description: override?.metaDescription ?? s.metaDescription, faq: override?.faq ?? s.faq };
       });
       const bySlug = new Map<string, Post>();
-      [...staticPosts, ...dbPosts].forEach((p) => bySlug.set(p.slug, p));
+      [...staticPosts, ...dbPosts].forEach((p) => {
+        const override = FEATURED_BLOG_OVERRIDES[p.slug];
+        bySlug.set(p.slug, override ? { ...p, title: override.title, excerpt: override.excerpt, content: override.content, meta_description: override.metaDescription, faq: override.faq, updated_at: override.updatedAt } : p);
+      });
       const indexedSet = new Set<string>(policy.indexed);
       const redirects = policy.redirects as Record<string, string>;
       const indexedPosts = policy.indexed.map((s: string) => bySlug.get(s)).filter(Boolean) as Post[];

@@ -1,5 +1,6 @@
+import { TRANSPARENCY_DISCLOSURE } from '@/lib/business';
+
 export const CONTENT_UPDATED_AT = '2026-10-03';
-export const TRANSPARENCY_DISCLOSURE = 'גילוי נאות: אני מפיץ עצמאי של Herbalife, ולכן חלק מהמוצרים שאני ממליץ עליהם נמכרים בחנות שלי. הטיפים כאן הם דעתי האישית והכנה, ואני ממליץ גם על פתרונות שאינם מוצרים שלי כשהם מתאימים יותר.';
 
 export interface FeaturedBlogOverride { title: string; excerpt: string; metaDescription: string; content: string; faq: { question: string; answer: string }[]; updatedAt: string; }
 

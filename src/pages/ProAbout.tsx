@@ -18,7 +18,7 @@ import { BUSINESS, TRANSPARENCY_DISCLOSURE } from '@/lib/business';
 
 const jsonLd = {
   '@context': 'https://schema.org',
-  '@type': 'OnlineStore',
+  '@type': 'Organization',
   name: 'FullBody',
   legalName: BUSINESS.name,
   url: 'https://fullbody.co.il',
@@ -26,8 +26,6 @@ const jsonLd = {
   telephone: '+972542008578',
   taxID: BUSINESS.taxId,
   vatID: BUSINESS.taxId,
-  currenciesAccepted: 'ILS',
-  paymentAccepted: 'Credit Card, PayPal, Bit',
   areaServed: { '@type': 'Country', name: 'IL' },
   address: {
     '@type': 'PostalAddress',
