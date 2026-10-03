@@ -1,18 +1,17 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
-import { Calendar, Clock, ArrowRight, Tag, Menu, X, ShoppingBag, Search } from 'lucide-react';
+import { Calendar, Clock, ArrowRight, Tag } from 'lucide-react';
 import { proBlogCategories } from '@/data/proBlogPosts';
 import { useAllBlogPosts, useAllBlogCategories } from '@/hooks/useBlogPosts';
-import greenLogo from '@/assets/logo-green.webp';
 import ProFooter from '@/components/ProFooter';
+import ContentHeader from '@/components/ContentHeader';
 import { Skeleton } from '@/components/ui/skeleton';
 import { sanitizeClaimText } from '@/lib/blogContent';
 import { indexRank, isIndexedSlug, POPULAR_GUIDE_COUNT } from '@/lib/blogIndex';
 
 export default function ProBlog() {
   const [selectedCategory, setSelectedCategory] = useState('all');
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const { posts: rawPosts, isLoading } = useAllBlogPosts();
   // Indexed articles first (in priority order), then the rest of the archive.
@@ -42,36 +41,7 @@ export default function ProBlog() {
         <meta name="twitter:image" content="https://fullbody.co.il/og-image.jpg" />
       </Helmet>
 
-      {/* Announcement */}
-      <div className="bg-[hsl(142,70%,35%)] text-white text-center py-2.5 text-sm font-medium">
-        מוצרי Herbalife מקוריים | משלוח חינם מעל ₪299
-      </div>
-
-      {/* Header */}
-      <header className="sticky top-0 z-40 bg-card shadow-card border-b border-border">
-        <div className="container mx-auto px-4 h-20 flex items-center justify-between">
-          <button onClick={() => setIsMobileMenuOpen(true)} className="lg:hidden p-2 text-muted-foreground"><Menu className="w-6 h-6" /></button>
-          <Link to="/"><img src={greenLogo} alt="FullBody Pro" className="h-14 md:h-16 w-auto" /></Link>
-          <nav className="hidden lg:flex items-center gap-8 font-bold text-muted-foreground">
-            <Link to="/" className="hover:text-accent transition-colors">ראשי</Link>
-            <a href="/#products" className="hover:text-accent transition-colors">מוצרים</a>
-            <Link to="/blog" className="text-[hsl(142,70%,35%)]">מאמרים</Link>
-            <Link to="/contact" className="hover:text-accent transition-colors">צור קשר</Link>
-          </nav>
-          <div className="flex items-center gap-4">
-             <a href="https://shop.fullbody.co.il" className="p-2 text-muted-foreground" aria-label="לחנות"><ShoppingBag className="w-6 h-6" /></a>
-          </div>
-        </div>
-      </header>
-
-      {/* Mobile Menu */}
-      {isMobileMenuOpen && <div onClick={() => setIsMobileMenuOpen(false)} className="fixed inset-0 bg-foreground/50 z-40" />}
-      <div className={`fixed inset-y-0 right-0 w-72 bg-card shadow-hover z-50 flex flex-col pt-20 px-6 transform transition-transform duration-300 ${isMobileMenuOpen ? 'translate-x-0' : 'translate-x-full'}`}>
-        <button onClick={() => setIsMobileMenuOpen(false)} className="absolute top-5 left-5"><X className="w-6 h-6" /></button>
-        <Link to="/" onClick={() => setIsMobileMenuOpen(false)} className="py-4 border-b border-border text-lg font-bold">ראשי</Link>
-        <Link to="/blog" onClick={() => setIsMobileMenuOpen(false)} className="py-4 border-b border-border text-lg font-bold text-[hsl(142,70%,35%)]">מאמרים</Link>
-        <Link to="/contact" onClick={() => setIsMobileMenuOpen(false)} className="py-4 border-b border-border text-lg font-bold">צור קשר</Link>
-      </div>
+      <ContentHeader />
 
       {/* Hero */}
       <section className="bg-[hsl(142,70%,35%)] py-16 text-center text-white">

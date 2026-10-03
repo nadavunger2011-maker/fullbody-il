@@ -34,11 +34,12 @@ export default function ProFooter() {
               <h4 className="font-bold text-lg mb-4 text-accent">מידע וניווט</h4>
               <ul className="space-y-2 text-sm text-primary-foreground/80">
                 <li><Link to="/" className="hover:text-primary-foreground transition">דף הבית</Link></li>
-                <li><a href="https://shop.fullbody.co.il" className="hover:text-primary-foreground transition">חנות המוצרים</a></li>
-                <li><Link to="/bundles" className="hover:text-primary-foreground transition">המלצות שילוב</Link></li>
-                <li><Link to="/blog" className="hover:text-primary-foreground transition">מאמרים</Link></li>
+                <li><Link to="/blog" className="hover:text-primary-foreground transition">מדריכים</Link></li>
+                <li><Link to="/recipes" className="hover:text-primary-foreground transition">מתכונים</Link></li>
+                <li><Link to="/protein-calculator" className="hover:text-primary-foreground transition">מחשבון חלבון</Link></li>
                 <li><Link to="/about" className="hover:text-primary-foreground transition">אודות ופרטי העסק</Link></li>
                 <li><Link to="/contact" className="hover:text-primary-foreground transition">צור קשר</Link></li>
+                <li><a href="https://shop.fullbody.co.il" className="hover:text-primary-foreground transition">חנות</a></li>
               </ul>
             </div>
 

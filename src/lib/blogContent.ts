@@ -69,7 +69,7 @@ const PRODUCT_KEYWORDS: { keywords: RegExp; handles: string[] }[] = [
   { keywords: /(אנרגיה|כושר|אימון|ספורט|h24|התאוששות\s*שריר)/i, handles: ['h24-rebuild-strength'] },
 ];
 
-const PRODUCT_ARTICLE_PATTERN = /(שייק|אבקת\s*חלבון|חטיפ(?:י|י\s*חלבון)|תוס(?:ף|פי)\s*תזונה|protein\s*(?:shake|powder|bar)|meal\s*replacement|supplements?)/i;
+const PRODUCT_ARTICLE_PATTERN = /(שייק|אבקת\s*חלבון|חטיפ(?:י|י\s*חלבון)|תוס(?:ף|פי)\s*תזונה|אלוורה|protein\s*(?:shake|powder|bar)|meal\s*replacement|supplements?|aloe)/i;
 const EXCLUDED_PRODUCT_TOPIC_PATTERN = /(אימון|שינה|מטבח|הרגל|בריאות\s*כללית|תנועה|גמישות|סיבולת|מתכון)/i;
 
 export function isProductRelevantArticle(title: string, slug: string): boolean {
