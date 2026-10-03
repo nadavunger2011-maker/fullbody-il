@@ -1,4 +1,4 @@
-import { TRANSPARENCY_DISCLOSURE } from '@/lib/business';
+import { TRANSPARENCY_DISCLOSURE } from '../lib/business';
 
 export const CONTENT_UPDATED_AT = '2026-10-03';
 
