@@ -1,7 +1,7 @@
 import { herbalifeProducts, HerbalifeProduct } from '@/data/herbalifeProducts';
-import { MEDICAL_DISCLAIMER } from '@/lib/business';
+import { ARTICLE_MEDICAL_DISCLAIMER } from '@/lib/business';
 
-const LEGAL_DISCLAIMER = MEDICAL_DISCLAIMER;
+const LEGAL_DISCLAIMER = ARTICLE_MEDICAL_DISCLAIMER;
 
 const BROKEN_INLINE_IMAGE_PATTERN = /<img\b[^>]*src=["'](?:https?:\/\/fullbody\.co\.il)?\/images\/[^"']+["'][^>]*>/gi;
 const BEFORE_AFTER_IMAGE_PATTERN = /<(?:img|figure)\b[^>]*(?:before[-_ ]?after|לפני[-_ ]?ואחרי)[\s\S]*?<\/(?:figure)>|<img\b[^>]*(?:before[-_ ]?after|לפני[-_ ]?ואחרי)[^>]*>/gi;
@@ -68,6 +68,18 @@ const PRODUCT_KEYWORDS: { keywords: RegExp; handles: string[] }[] = [
   { keywords: /(שינה|לילה|התאוששות|niteworks)/i, handles: ['niteworks'] },
   { keywords: /(אנרגיה|כושר|אימון|ספורט|h24|התאוששות\s*שריר)/i, handles: ['h24-rebuild-strength'] },
 ];
+
+const PRODUCT_ARTICLE_PATTERN = /(שייק|אבקת\s*חלבון|חטיפ(?:י|י\s*חלבון)|תוס(?:ף|פי)\s*תזונה|protein\s*(?:shake|powder|bar)|meal\s*replacement|supplements?)/i;
+const EXCLUDED_PRODUCT_TOPIC_PATTERN = /(אימון|שינה|מטבח|הרגל|בריאות\s*כללית|תנועה|גמישות|סיבולת|מתכון)/i;
+
+export function isProductRelevantArticle(title: string, slug: string): boolean {
+  const subject = `${title} ${slug.replace(/-/g, ' ')}`;
+  return PRODUCT_ARTICLE_PATTERN.test(subject) && !EXCLUDED_PRODUCT_TOPIC_PATTERN.test(subject);
+}
+
+export function isProteinArticle(title: string, slug: string): boolean {
+  return /(חלבון|protein)/i.test(`${title} ${slug}`);
+}
 
 export function pickContextualProducts(content: string, fallbackHandles: string[] = [], max = 2): HerbalifeProduct[] {
   const matched: HerbalifeProduct[] = [];
