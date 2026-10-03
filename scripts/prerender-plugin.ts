@@ -63,13 +63,13 @@ interface Post {
 }
 
 async function fetchDbPosts(): Promise<Post[]> {
+  if (!SUPABASE_URL || !ANON) throw new Error("blog build credentials unavailable");
   const all: Post[] = [];
   for (let from = 0; ; from += 200) {
     const res = await fetch(
       `${SUPABASE_URL}/rest/v1/blog_posts?select=slug,title,excerpt,content,image,category_id,date,updated_at,meta_description,faq&published=eq.true&order=date.desc&offset=${from}&limit=200`,
       { headers: { apikey: ANON, Authorization: `Bearer ${ANON}` } },
     );
-    if (!SUPABASE_URL || !ANON) throw new Error("blog build credentials unavailable");
     if (!res.ok) throw new Error(`blog fetch ${res.status}`);
     const rows = (await res.json()) as Post[];
     all.push(...rows);

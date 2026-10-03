@@ -358,7 +358,7 @@ async function generateAllSlides() {
     ctx.font = '32px HeeboMedium';
     ctx.fillText('תגיבו "אנרגיה" בתגובות או בפרטי –', 1000, 430);
     ctx.fillText('ותקבלו ישירות ל-WhatsApp את ספר המתכונים הדיגיטלי', 1000, 490);
-    ctx.fillText('+ קופון WELCOME10 להזמנה ראשונה!', 1000, 550);
+    ctx.fillText('המדריך המלא באתר – לינק בביו', 1000, 550);
 
     // Coupon Box
     ctx.fillStyle = 'rgba(15, 23, 42, 0.9)';
@@ -372,7 +372,7 @@ async function generateAllSlides() {
     ctx.fillStyle = '#fbbf24';
     ctx.font = 'bold 36px HeeboBold';
     ctx.textAlign = 'center';
-    ctx.fillText('קוד קופון: WELCOME10 (10% הנחה)', 540, 720);
+    ctx.fillText('טיפ מעשי אחד בכל מדריך', 540, 720);
     ctx.fillStyle = '#e2e8f0';
     ctx.font = '24px HeeboMedium';
     ctx.fillText('תקף לכל מוצרי הרבלייף באתר | משלוח חינם מעל ₪299', 540, 770);

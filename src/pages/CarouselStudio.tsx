@@ -62,7 +62,7 @@ export default function CarouselStudio() {
       badge: '🎁 מתנה בלעדית',
       badgeBg: 'bg-amber-400 text-slate-950',
       title: 'רוצים קופון 10% מתנה + ספר מתכונים? 🎁',
-      desc: 'תגיבו "אנרגיה" בתגובות או בפרטי – ותקבלו ישירות ל-WhatsApp את ספר המתכונים הדיגיטלי + קופון WELCOME10 להזמנה ראשונה!',
+      desc: 'שלבו מקור חלבון, ירק או פרי ומשקה נוח — המדריך המלא באתר, לינק בביו.',
       cta: 'FullBody.co.il | מפיץ מורשה הרבלייף',
       number: '5 / 5',
       bgImage: bgPeachTea,
