@@ -1,6 +1,7 @@
 # Roadmap
 
-- [ ] Audit and propose a controlled SEO upgrade for /blog/home-bodyweight-training; await user review before saving article changes; leave other articles unchanged
+- [x] Audit existing /blog/home-bodyweight-training content, metadata, verified internal links and overlap before proposing changes
+- [ ] Apply the single-article SEO upgrade after user approves the proposal; preserve URL and all other articles; verify rendered and initial HTML (blocked on approval)
 
 - [x] Google Ads Misrepresentation cleanup across all public pages and content
 - [x] Remove the local cart/checkout experience and route all purchasing to shop.fullbody.co.il
