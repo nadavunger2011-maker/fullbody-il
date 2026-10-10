@@ -34,7 +34,8 @@ const lines = [
   ...STATIC_PAGES.map(([loc, cf, pr]) => url(loc, null, cf, pr)),
   ...policy.indexed.map((slug) => {
     const p = bySlug.get(slug);
-    return url(`/blog/${slug}`, p ? String(p.date).slice(0, 10) : null, 'monthly', '0.7');
+    // Only this controlled content update has a verified significant modification timestamp.
+    return url(`/blog/${slug}`, p ? String(slug === 'home-bodyweight-training' ? p.updated_at || p.date : p.date).slice(0, 10) : null, 'monthly', '0.7');
   }),
   '</urlset>',
 ];

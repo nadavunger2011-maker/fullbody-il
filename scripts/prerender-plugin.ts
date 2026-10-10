@@ -8,6 +8,8 @@ import policy from "../supabase/functions/_shared/blog-index.json";
 import { proBlogPosts, proBlogCategories } from "../src/data/proBlogPosts";
 import { FEATURED_BLOG_OVERRIDES } from "../src/data/featuredBlogContent";
 import { TRANSPARENCY_DISCLOSURE } from "../src/lib/business";
+import homeStrengthSnapshot from "./content/home-bodyweight-training.json";
+import { HOME_STRENGTH_SLUG, HOME_STRENGTH_SEO_TITLE } from "../src/data/homeStrengthSeo";
 
 const BASE = "https://fullbody.co.il";
 const SUPABASE_URL = process.env.VITE_SUPABASE_URL ?? process.env.SUPABASE_URL ?? "";
@@ -127,7 +129,9 @@ const cleanContent = (html: string) =>
 function articlePage(p: Post, indexed: boolean, related: Post[]): Page {
   const url = `${BASE}${encPath(`/blog/${p.slug}`)}`;
   const description = (p.meta_description || p.excerpt || "").slice(0, 300);
-  const image = p.image || `${BASE}/og-image.jpg`;
+  const image = p.slug === HOME_STRENGTH_SLUG && p.image
+    ? p.image.replace(/([?&])w=\d+/, '$1w=1200').replace(/([?&])h=\d+/, '$1h=630')
+    : p.image || `${BASE}/og-image.jpg`;
   const faq = Array.isArray(p.faq) ? p.faq.filter((f) => f?.question && f?.answer) : [];
   const jsonLd: object[] = [
     {
@@ -152,19 +156,19 @@ function articlePage(p: Post, indexed: boolean, related: Post[]): Page {
       mainEntity: faq.map((f) => ({ "@type": "Question", name: f.question, acceptedAnswer: { "@type": "Answer", text: f.answer } })),
     });
   }
-  const faqHtml = faq.length
+  const faqHtml = faq.length && p.slug !== HOME_STRENGTH_SLUG
     ? `<section><h2>שאלות ותשובות</h2>${faq.map((f) => `<h3>${esc(f.question)}</h3><p>${esc(f.answer)}</p>`).join("")}</section>`
     : "";
   const relatedHtml = related.length
     ? `<section><h2>מאמרים קשורים</h2><ul>${related.map((r) => `<li><a href="${encPath(`/blog/${r.slug}`)}">${esc(r.title)}</a></li>`).join("")}</ul></section>`
     : "";
   return {
-    path: `/blog/${p.slug}`, title: `${p.title} | FullBody`, description, h1: p.title, image,
+    path: `/blog/${p.slug}`, title: `${p.slug === HOME_STRENGTH_SLUG ? HOME_STRENGTH_SEO_TITLE : p.title} | FullBody`, description, h1: p.title, image,
     noindex: !indexed, ogType: "article", jsonLd,
     body: `<nav aria-label="breadcrumb"><a href="/">בית</a> › <a href="/blog">בלוג</a> › ${esc(p.title)}</nav>`
       + `<article>${cleanContent(p.content || "")}</article>${faqHtml}`
       + `<aside><strong>על הכותב:</strong> ${AUTHOR}, מפיץ עצמאי מורשה של Herbalife. <a href="/about">עוד עליי</a><p>${esc(TRANSPARENCY_DISCLOSURE)}</p></aside>`
-      + `<aside><a href="https://shop.fullbody.co.il/?utm_source=blog&amp;utm_medium=article&amp;utm_campaign=${encodeURIComponent(p.slug)}">ספר קינוחי חלבון במתנה</a></aside>`
+      + (p.slug === HOME_STRENGTH_SLUG ? '' : `<aside><a href="https://shop.fullbody.co.il/?utm_source=blog&amp;utm_medium=article&amp;utm_campaign=${encodeURIComponent(p.slug)}">ספר קינוחי חלבון במתנה</a></aside>`)
       + `<p><strong>המידע אינו מהווה ייעוץ רפואי. בהריון, הנקה, מצב רפואי או נטילת תרופות – יש להתייעץ עם רופא.</strong></p>`
       + relatedHtml,
   };
@@ -185,6 +189,9 @@ export function prerenderPlugin(): Plugin {
         return { slug: s.slug, title: override?.title ?? s.title, excerpt: override?.excerpt ?? s.excerpt, content: override?.content ?? s.content, image: s.image, category_id: s.categoryId, date: s.date, updated_at: override?.updatedAt, meta_description: override?.metaDescription ?? s.metaDescription, faq: override?.faq ?? s.faq };
       });
       const bySlug = new Map<string, Post>();
+      // Approved article snapshot guarantees this DB-only route exists even if build-time fetching fails.
+      // Live DB content wins whenever it is available; no other routes change fallback behavior.
+      bySlug.set(HOME_STRENGTH_SLUG, homeStrengthSnapshot);
       [...staticPosts, ...dbPosts].forEach((p) => {
         const override = FEATURED_BLOG_OVERRIDES[p.slug];
         bySlug.set(p.slug, override ? { ...p, title: override.title, excerpt: override.excerpt, content: override.content, meta_description: override.metaDescription, faq: override.faq, updated_at: override.updatedAt } : p);

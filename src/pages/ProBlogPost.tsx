@@ -13,6 +13,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { normalizeBlogContent, splitContentByH2, appendDisclaimer, sanitizeClaimText, isProductRelevantArticle, isProteinArticle } from '@/lib/blogContent';
 import ContentHeader from '@/components/ContentHeader';
 import DessertBookBanner from '@/components/DessertBookBanner';
+import { HOME_STRENGTH_SLUG, HOME_STRENGTH_SEO_TITLE, HOME_STRENGTH_IMAGE_ALT } from '@/data/homeStrengthSeo';
 
 export default function ProBlogPost() {
   const { slug } = useParams();
@@ -53,6 +54,9 @@ function ProBlogPostInner() {
   const normalizedContent = normalizeBlogContent(post.content);
   const contentChunks = splitContentByH2(normalizedContent);
   const articleImage = post.image || '/placeholder.svg';
+  const homeStrength = post.slug === HOME_STRENGTH_SLUG;
+  const seoTitle = homeStrength ? HOME_STRENGTH_SEO_TITLE : post.title;
+  const shareImage = homeStrength ? articleImage.replace(/([?&])w=\d+/, '$1w=1200').replace(/([?&])h=\d+/, '$1h=630') : articleImage;
   const category = proBlogCategories.find(c => c.id === post.categoryId);
   const showProducts = isProductRelevantArticle(post.title, post.slug);
   const relatedProducts = showProducts ? getRelatedProducts(post.relatedProductHandles, 2) : [];
@@ -102,21 +106,21 @@ function ProBlogPostInner() {
   return (
     <div dir="rtl" className="font-sans text-foreground bg-background min-h-screen">
       <Helmet>
-         <title>{sanitizeClaimText(post.title)} | FullBody</title>
+         <title>{sanitizeClaimText(seoTitle)} | FullBody</title>
          <meta name="description" content={sanitizeClaimText(post.metaDescription)} />
         <link rel="canonical" href={`https://fullbody.co.il/blog/${post.slug}`} />
         {!indexed && <meta name="robots" content="noindex, follow" />}
-         <meta property="og:title" content={sanitizeClaimText(post.title)} />
+         <meta property="og:title" content={sanitizeClaimText(seoTitle)} />
          <meta property="og:description" content={sanitizeClaimText(post.metaDescription)} />
-        <meta property="og:image" content={articleImage} />
+        <meta property="og:image" content={shareImage} />
         <meta property="og:type" content="article" />
         <meta property="og:url" content={`https://fullbody.co.il/blog/${post.slug}`} />
         <meta property="og:locale" content="he_IL" />
         <meta property="article:published_time" content={post.date} />
         <meta name="twitter:card" content="summary_large_image" />
-         <meta name="twitter:title" content={sanitizeClaimText(post.title)} />
+         <meta name="twitter:title" content={sanitizeClaimText(seoTitle)} />
          <meta name="twitter:description" content={sanitizeClaimText(post.metaDescription)} />
-        <meta name="twitter:image" content={articleImage} />
+        <meta name="twitter:image" content={shareImage} />
         <script type="application/ld+json">{JSON.stringify(articleSchema)}</script>
         {post.faq.length > 0 && <script type="application/ld+json">{JSON.stringify(faqSchema)}</script>}
         <script type="application/ld+json">{JSON.stringify(breadcrumbSchema)}</script>
@@ -141,7 +145,7 @@ function ProBlogPostInner() {
         <div className="aspect-[21/9] max-h-[400px] overflow-hidden">
           <img
             src={articleImage}
-            alt={post.title}
+            alt={homeStrength ? HOME_STRENGTH_IMAGE_ALT : post.title}
             className="w-full h-full object-cover"
             onError={(event) => {
               event.currentTarget.onerror = null;
@@ -174,7 +178,7 @@ function ProBlogPostInner() {
                 </div>
               ))}
               {proteinArticle && <p className="not-prose mt-8"><Link to="/protein-calculator" className="inline-flex rounded-md bg-accent px-5 py-3 font-bold text-accent-foreground">חשבו כמה חלבון אתם צריכים</Link></p>}
-              <DessertBookBanner source={post.slug} />
+              {!homeStrength && <DessertBookBanner source={post.slug} />}
               <div dangerouslySetInnerHTML={{ __html: appendDisclaimer('') }} />
               <aside className="mt-8 p-5 rounded-xl border border-border bg-secondary/40" aria-label="על הכותב">
                 <p className="font-bold text-foreground mb-1">על הכותב</p>
@@ -189,7 +193,7 @@ function ProBlogPostInner() {
         </div>
       </article>
 
-      {post.faq.length > 0 && (
+      {post.faq.length > 0 && !homeStrength && (
         <section className="py-12 bg-secondary/30">
           <div className="container mx-auto px-4">
             <div className="max-w-4xl mx-auto">
