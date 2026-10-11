@@ -1,5 +1,7 @@
 # Roadmap
 
+- [ ] Create and visually verify three new practical Instagram carousels; add to publishing queue only once images are publicly accessible
+
 - [x] Audit existing /blog/home-bodyweight-training content, metadata, verified internal links and overlap before proposing changes
 - [x] Apply approved single-article SEO upgrade; preserve URL and other articles; verify content, metadata, FAQ schemas and internal link in browser
 - [ ] Verify published initial HTML serves the article rather than the homepage (blocked on next publish; prerender snapshot fallback added for this article only)
