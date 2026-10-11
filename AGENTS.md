@@ -3,3 +3,4 @@ All commerce actions must leave the content site for `shop.fullbody.co.il`; do n
 Blog indexing is controlled only by `supabase/functions/_shared/blog-index.json` (indexed allowlist + duplicate redirects), shared by the app, sitemap function/script and prerender, so the index stays consistent.
 SEO HTML is prerendered at build time by `scripts/prerender-plugin.ts` (tags marked `data-prerender`, removed on app boot), because the SPA otherwise serves an empty shell to non-JS crawlers.
 The controlled home-strength article has presentation metadata and a prerender-only content snapshot fallback; live database content wins, so a failed build-time fetch cannot silently omit this DB-only route.
+New Instagram batches keep their slide specifications and captions together in reproducible rendering scripts; posts remain drafts until all final image URLs are publicly reachable to avoid failed automated publishing.
