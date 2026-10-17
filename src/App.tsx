@@ -42,6 +42,7 @@ const ProtocolLanding = lazy(() => import("./pages/ProtocolLanding"));
 const ProtocolThankYou = lazy(() => import("./pages/ProtocolThankYou"));
 const ChocolateCakeProtocol = lazy(() => import("./pages/ChocolateCakeProtocol"));
 const StoreRedirect = lazy(() => import("./components/StoreRedirect"));
+const ProductStoreRedirect = lazy(() => import("./components/ProductStoreRedirect"));
 const PlanWizard = lazy(() => import("./pages/PlanWizard"));
 const DailyDashboard = lazy(() => import("./pages/DailyDashboard"));
 const CarouselStudio = lazy(() => import("./pages/CarouselStudio"));
@@ -95,7 +96,7 @@ function AppContent() {
         <Routes>
           {/* PRO (Herbalife) — root site */}
           <Route path="/" element={<ProIndex />} />
-          <Route path="/products" element={<ProProducts />} />
+          <Route path="/products" element={<ProductStoreRedirect />} />
           <Route path="/bundles" element={<ProBundles />} />
           <Route path="/starter-stack" element={<StarterStack />} />
           <Route path="/calculator" element={<ProteinCalculator />} />
@@ -123,7 +124,9 @@ function AppContent() {
           <Route path="/sweets/contact" element={<SweetsContact />} />
 
           <Route path="/articles" element={<Navigate to="/blog" replace />} />
-          <Route path="/product/:handle" element={<LegacyProductRedirect />} />
+          <Route path="/product" element={<ProductStoreRedirect />} />
+          <Route path="/product/:slug" element={<ProductStoreRedirect />} />
+          <Route path="/product/*" element={<ProductStoreRedirect />} />
           <Route path="/blog" element={<ProBlog />} />
           <Route path="/blog/:slug" element={<ProBlogPost />} />
           <Route path="/contact" element={<ProContact />} />
