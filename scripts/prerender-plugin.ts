@@ -10,6 +10,7 @@ import { FEATURED_BLOG_OVERRIDES } from "../src/data/featuredBlogContent";
 import { TRANSPARENCY_DISCLOSURE } from "../src/lib/business";
 import homeStrengthSnapshot from "./content/home-bodyweight-training.json";
 import { HOME_STRENGTH_SLUG, HOME_STRENGTH_SEO_TITLE } from "../src/data/homeStrengthSeo";
+import { LEGACY_PRODUCT_HANDLES, legacyProductTarget } from "../src/lib/legacyProductRedirects";
 
 const BASE = "https://fullbody.co.il";
 const SUPABASE_URL = process.env.VITE_SUPABASE_URL ?? process.env.SUPABASE_URL ?? "";
@@ -210,6 +211,13 @@ export function prerenderPlugin(): Plugin {
       };
 
       let count = 0;
+      // External redirect documents prevent known legacy URLs serving homepage HTML to non-JS crawlers.
+      for (const path of ["/product", "/products", ...Object.keys(LEGACY_PRODUCT_HANDLES).map((slug) => `/product/${slug}`)]) {
+        const target = legacyProductTarget(path.startsWith("/product/") ? path.slice("/product/".length) : undefined);
+        const html = `<!doctype html><html><head><meta charset="utf-8"><title>FullBody Store</title><link rel="canonical" href="${esc(target)}"><meta name="robots" content="noindex, follow"><meta http-equiv="refresh" content="0;url=${esc(target)}"><script>window.location.replace(${JSON.stringify(target)})</script></head><body><a href="${esc(target)}">FullBody Store</a></body></html>`;
+        write(outDir, path, html);
+        count++;
+      }
       for (const page of [...STATIC_PAGES, blogPage]) { write(outDir, page.path, renderHtml(template, page)); count++; }
       for (const p of bySlug.values()) {
         if (redirects[p.slug]) continue;
