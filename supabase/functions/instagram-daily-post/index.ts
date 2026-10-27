@@ -52,6 +52,12 @@ Deno.serve(async (req) => {
   const item = rows?.[0];
   if (!item) return json({ status: "empty", message: "No queued posts" });
 
+  // Images not reachable yet (site not published)? Leave queued and retry next run.
+  for (const u of (item.image_urls ?? []) as string[]) {
+    const head = await fetch(u, { method: "HEAD" }).catch(() => null);
+    if (!head?.ok) return json({ status: "waiting", message: `Image not reachable yet: ${u}` });
+  }
+
   // Lock the row so a retry cannot double-publish
   const { data: locked } = await supabase
     .from("social_posts")
