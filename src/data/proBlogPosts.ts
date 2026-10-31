@@ -1,3 +1,5 @@
+import { GUIDE_POSTS } from './guidePosts';
+
 export interface ProBlogPost {
   id: string;
   slug: string;
@@ -13,6 +15,7 @@ export interface ProBlogPost {
   faq: { question: string; answer: string }[];
   metaDescription: string;
   noindex?: boolean;
+  seoTitle?: string;
 }
 
 export interface ProBlogCategory {
@@ -31,6 +34,7 @@ export const proBlogCategories: ProBlogCategory[] = [
 ];
 
 export const proBlogPosts: ProBlogPost[] = [
+  ...GUIDE_POSTS,
   {
     id: 'nutrition-formula1-guide',
     slug: 'formula1-meal-replacement-guide',
