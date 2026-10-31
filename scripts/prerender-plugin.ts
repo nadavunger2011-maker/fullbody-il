@@ -64,6 +64,7 @@ interface Post {
   slug: string; title: string; excerpt: string; content: string; image?: string | null;
   category_id: string; date: string; updated_at?: string; meta_description?: string;
   faq?: { question: string; answer: string }[];
+  seo_title?: string;
 }
 
 async function fetchDbPosts(): Promise<Post[]> {
@@ -132,7 +133,7 @@ function articlePage(p: Post, indexed: boolean, related: Post[]): Page {
   const description = (p.meta_description || p.excerpt || "").slice(0, 300);
   const image = p.slug === HOME_STRENGTH_SLUG && p.image
     ? p.image.replace(/([?&])w=\d+/, '$1w=1200').replace(/([?&])h=\d+/, '$1h=630')
-    : p.image || `${BASE}/og-image.jpg`;
+    : p.image ? (p.image.startsWith('/') ? `${BASE}${p.image}` : p.image) : `${BASE}/og-image.jpg`;
   const faq = Array.isArray(p.faq) ? p.faq.filter((f) => f?.question && f?.answer) : [];
   const jsonLd: object[] = [
     {
@@ -164,7 +165,7 @@ function articlePage(p: Post, indexed: boolean, related: Post[]): Page {
     ? `<section><h2>מאמרים קשורים</h2><ul>${related.map((r) => `<li><a href="${encPath(`/blog/${r.slug}`)}">${esc(r.title)}</a></li>`).join("")}</ul></section>`
     : "";
   return {
-    path: `/blog/${p.slug}`, title: `${p.slug === HOME_STRENGTH_SLUG ? HOME_STRENGTH_SEO_TITLE : p.title} | FullBody`, description, h1: p.title, image,
+    path: `/blog/${p.slug}`, title: `${p.slug === HOME_STRENGTH_SLUG ? HOME_STRENGTH_SEO_TITLE : (p.seo_title || p.title)} | FullBody`, description, h1: p.title, image,
     noindex: !indexed, ogType: "article", jsonLd,
     body: `<nav aria-label="breadcrumb"><a href="/">בית</a> › <a href="/blog">בלוג</a> › ${esc(p.title)}</nav>`
       + `<article>${cleanContent(p.content || "")}</article>${faqHtml}`
@@ -187,7 +188,7 @@ export function prerenderPlugin(): Plugin {
       try { dbPosts = await fetchDbPosts(); } catch (e) { console.warn("[prerender] blog fetch failed:", e); }
       const staticPosts: Post[] = proBlogPosts.map((s) => {
         const override = FEATURED_BLOG_OVERRIDES[s.slug];
-        return { slug: s.slug, title: override?.title ?? s.title, excerpt: override?.excerpt ?? s.excerpt, content: override?.content ?? s.content, image: s.image, category_id: s.categoryId, date: s.date, updated_at: override?.updatedAt, meta_description: override?.metaDescription ?? s.metaDescription, faq: override?.faq ?? s.faq };
+        return { slug: s.slug, title: override?.title ?? s.title, excerpt: override?.excerpt ?? s.excerpt, content: override?.content ?? s.content, image: s.image, category_id: s.categoryId, date: s.date, updated_at: override?.updatedAt, meta_description: override?.metaDescription ?? s.metaDescription, faq: override?.faq ?? s.faq, seo_title: s.seoTitle };
       });
       const bySlug = new Map<string, Post>();
       // Approved article snapshot guarantees this DB-only route exists even if build-time fetching fails.
