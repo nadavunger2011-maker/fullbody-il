@@ -45,8 +45,13 @@ def convert(md: str):
             while i < len(lines) and lines[i].startswith("- "):
                 items.append(f"<li>{inline(lines[i][2:].rstrip())}</li>"); i += 1
             out.append("<ul>" + "".join(items) + "</ul>"); continue
+        if re.match(r"\d+\. ", l):
+            items = []
+            while i < len(lines) and re.match(r"\d+\. ", lines[i]):
+                items.append(f"<li>{inline(re.sub(r'^\d+\. ', '', lines[i].rstrip()))}</li>"); i += 1
+            out.append("<ol>" + "".join(items) + "</ol>"); continue
         para = []
-        while i < len(lines) and lines[i].strip() and not lines[i].startswith(("- ", "|", "## ")):
+        while i < len(lines) and lines[i].strip() and not lines[i].startswith(("- ", "|", "## ", "### ")) and not re.match(r"\d+\. ", lines[i]):
             para.append(inline(lines[i].rstrip())); i += 1
         out.append("<p>" + "<br />".join(para) + "</p>")
     faq = []
