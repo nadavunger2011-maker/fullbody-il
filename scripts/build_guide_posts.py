@@ -22,7 +22,8 @@ def inline(t: str) -> str:
         if label not in LINKS:
             raise SystemExit(f"unknown internal link: {label}")
         return f'<a href="{LINKS[label]}">{label}</a>'
-    return re.sub(r"\[([^\]]+)\]", link, t)
+    t = re.sub(r"\[([^\]]+)\]", link, t)
+    return t.replace("iHerb", '<a href="https://iherb.pxf.io/AgOK61" target="_blank" rel="sponsored nofollow noopener">iHerb</a>')
 
 def convert(md: str):
     body, _, faq_md = md.partition("## שאלות נפוצות")
