@@ -1,5 +1,7 @@
 # Roadmap
 
+- [ ] Add the approved iHerb deeplinks and plain-text sections to all four guides and their generator; verify regenerated content, prerender HTML and browser links.
+
 - [x] Create and visually verify three new practical Instagram carousels (p23–p25), with captions and four slides each
 - [ ] Activate and schedule p23–p25 after the site is published and all image URLs are publicly reachable (currently saved as drafts; live images return 404)
 
