@@ -17,7 +17,7 @@ LINKS = {
 AFFILIATE_BASE = "https://iherb.pxf.io/c/3215306/1665867/19332?u="
 CREATINE_CATEGORY = AFFILIATE_BASE + "https%3A%2F%2Fwww.iherb.com%2Fc%2Fcreatine-monohydrate"
 GAINER_CATEGORY = AFFILIATE_BASE + "https%3A%2F%2Fwww.iherb.com%2Fc%2FWeight-Gainers"
-CREATINE_PRODUCT = AFFILIATE_BASE + "https%3A%2F%2Fwww.iherb.com%2Fpr%2Fcalifornia-gold-nutrition-sport-micronized-creatine-monohydrate-creapure-unflavored-16-oz-454-g%2F71026"
+CREATINE_PRODUCT = "https://iherb.pxf.io/TYJwGXB"
 GAINER_PRODUCT = AFFILIATE_BASE + "https%3A%2F%2Fwww.iherb.com%2Fpr%2Foptimum-nutrition-serious-mass-vanilla-6-lb-2-72-kg%2F66478"
 WHEY_PRODUCT = AFFILIATE_BASE + "https%3A%2F%2Fwww.iherb.com%2Fpr%2Foptimum-nutrition-gold-standard-100-whey-protein-double-rich-chocolate-5-05-lb-2-29-kg%2F27509"
 ISOLATE_PRODUCT = AFFILIATE_BASE + "https%3A%2F%2Fwww.iherb.com%2Fpr%2Fcalifornia-gold-nutrition-sport-whey-protein-isolate-unflavored-5-lb-2-27-kg%2F76479"
@@ -26,7 +26,7 @@ BETA_ALANINE_PRODUCT = AFFILIATE_BASE + "https%3A%2F%2Fwww.iherb.com%2Fpr%2Fnow-
 AFFILIATE_SECTIONS = {
     "creatine-guide": f"""## דוגמה למוצר שעומד בקריטריונים
 
-- [California Gold Nutrition, Sport, קריאטין מונוהידרט Creapure, ללא טעם]({CREATINE_PRODUCT}) – קריאטין מונוהידרט בלבד, מיקרוניזד, בלי טעם ובלי תוספות.
+- [California Gold Nutrition, Sport, קריאטין מונוהידרט טהור, ללא טעם]({CREATINE_PRODUCT}) – קריאטין מונוהידרט בלבד, בלי טעם ובלי תוספות, עם בדיקת צד שלישי.
 
 לפני רכישה כדאי להשוות מחיר לגרם מול אפשרויות אחרות.""",
     "mass-gainer-guide": f"""## אם בכל זאת רוצים גיינר קנוי
@@ -43,7 +43,7 @@ AFFILIATE_SECTIONS = {
 לפני רכישה, חשבו מחיר לגרם חלבון לפי הנוסחה שלמעלה.""",
     "gym-supplements-what-works": f"""## דוגמאות למוצרים מהרשימה
 
-- **קריאטין מונוהידרט:** [California Gold Nutrition, Sport, קריאטין מונוהידרט Creapure]({CREATINE_PRODUCT})
+- **קריאטין מונוהידרט:** [California Gold Nutrition, Sport, קריאטין מונוהידרט טהור]({CREATINE_PRODUCT})
 - **בטא אלנין:** [NOW Foods, Sports, Beta-Alanine, אבקה]({BETA_ALANINE_PRODUCT})""",
 }
 
@@ -59,7 +59,7 @@ def inline(t: str) -> str:
         parts.append(t[start:m.start()].replace("iHerb", affiliate_link("iHerb", "https://iherb.pxf.io/AgOK61")))
         label, url = m.group(1), m.group(2)
         if url:
-            if not url.startswith(AFFILIATE_BASE):
+            if not url.startswith(("https://iherb.pxf.io/")):
                 raise SystemExit(f"unsupported external link: {url}")
             parts.append(affiliate_link(label, html.unescape(url)))
         elif label in LINKS:

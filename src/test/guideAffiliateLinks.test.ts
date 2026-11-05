@@ -7,7 +7,7 @@ import { GUIDE_POSTS } from '../data/guidePosts';
 import { prerenderPlugin } from '../../scripts/prerender-plugin';
 
 const base = 'https://iherb.pxf.io/c/3215306/1665867/19332?u=https%3A%2F%2Fwww.iherb.com%2F';
-const creatine = base + 'pr%2Fcalifornia-gold-nutrition-sport-micronized-creatine-monohydrate-creapure-unflavored-16-oz-454-g%2F71026';
+const creatine = 'https://iherb.pxf.io/TYJwGXB';
 const gainerCategory = base + 'c%2FWeight-Gainers';
 const expected: Record<string, string[]> = {
   'creatine-guide': [base + 'c%2Fcreatine-monohydrate', creatine],
