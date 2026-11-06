@@ -16,6 +16,7 @@ body{width:1080px;height:1350px;font-family:Heebo,'Noto Color Emoji',sans-serif;
 .content{position:relative;width:900px;margin:0 auto;padding:90px 72px 190px;text-align:center}
 .tag{display:inline-block;background:#10B981;color:#04170f;font-weight:900;font-size:38px;padding:12px 30px;border-radius:999px;margin-bottom:34px}
 h1{color:#fff;font-weight:900;font-size:100px;line-height:1.05;letter-spacing:0;text-shadow:0 6px 30px rgba(0,0,0,.7)}
+h1.long{font-size:78px;line-height:1.15}
 h1 em{font-style:normal;color:#F59E0B}
 p.sub{color:#e2e8f0;font-weight:700;font-size:48px;line-height:1.25;margin-top:34px}
 ul{list-style:none;margin-top:38px}
@@ -32,7 +33,7 @@ border-top:2px solid rgba(255,255,255,.18)}
   <div class="bg" style="background-image:url('__BG__')"></div>
   <div class="scrim"></div>
   <div class="content">__BODY__</div>
-  <div class="footer"><span class="swipe">__SWIPE__</span><span class="brand">המדריך המלא באתר – לינק בביו</span></div>
+  <div class="footer"><span class="swipe">__SWIPE__</span><span class="brand">__BRAND__</span></div>
 </div></body></html>
 """
 
@@ -46,7 +47,7 @@ async def main():
         page = await ctx.new_page()
         for i, s in enumerate(spec, start=1):
             html = TEMPLATE.replace("__BG__", "file://" + os.path.abspath(s["bg"]))
-            html = html.replace("__BODY__", s["body"]).replace("__SWIPE__", s.get("swipe", ""))
+            html = html.replace("__BODY__", s["body"]).replace("__SWIPE__", s.get("swipe", "")).replace("__BRAND__", s.get("brand", "המדריך המלא באתר – לינק בביו"))
             path = f"/tmp/browser/slides/slide_{i}.html"
             os.makedirs(os.path.dirname(path), exist_ok=True)
             open(path, "w", encoding="utf-8").write(html)

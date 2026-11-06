@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { ArrowLeft, Calculator, BookOpen, Utensils, Store } from 'lucide-react';
 import { useAllBlogPosts } from '@/hooks/useBlogPosts';
-import { isIndexedSlug, indexRank, POPULAR_GUIDE_COUNT } from '@/lib/blogIndex';
+import { pickHomeGuides } from '@/lib/blogIndex';
 import { sanitizeClaimText } from '@/lib/blogContent';
 import ContentHeader from '@/components/ContentHeader';
 import ProFooter from '@/components/ProFooter';
@@ -12,7 +12,7 @@ const DESCRIPTION = 'טיפים כנים לתזונה מאוזנת, חלבון �
 
 export default function ProBody() {
   const { posts } = useAllBlogPosts();
-  const popular = [...posts].filter(p => isIndexedSlug(p.slug)).sort((a, b) => indexRank(a.slug) - indexRank(b.slug)).slice(0, POPULAR_GUIDE_COUNT);
+  const popular = pickHomeGuides(posts);
 
   return (
     <div dir="rtl" className="min-h-screen bg-background text-foreground">
