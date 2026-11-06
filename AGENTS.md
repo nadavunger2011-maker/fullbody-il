@@ -9,3 +9,4 @@ New Instagram batches keep their slide specifications and captions together in r
 - New static guide articles are generated into `src/data/guidePosts.ts` by `scripts/build_guide_posts.py` from approved markdown, so the author's text stays verbatim and FAQ becomes structured data.
 - Retain approved guide markdown and dated metadata under `scripts/content`; explicit-only guides preserve plain iHerb mentions, and FAQ answers support generated internal-link HTML in both page and prerender.
 - Approved guide affiliate sections and category overrides are applied idempotently by the guide generator, preserving encoded URLs and preventing duplicate sections on regeneration.
+- After publishing new or updated articles, call the `indexnow-submit` function (service-role auth) with the changed URLs; its key lives in `supabase/functions/_shared/indexnow.json` and is served from `public/<key>.txt`.
