@@ -5,13 +5,19 @@ The "## שאלות נפוצות" section becomes the structured faq list (render
 import html, json, re, sys
 from pathlib import Path
 
-DATE = "2026-10-31"
+DATE = "2026-11-05"
+EXPLICIT_AFFILIATE_ONLY = {"best-creatine-iherb", "creatine-monohydrate-vs-hcl", "does-creatine-cause-weight-gain", "creatine-for-women"}
 LINKS = {
     "מחשבון החלבון היומי": "/protein-calculator",
     "מתכוני שייקים עם חלבון": "/blog/protein-shake-recipes",
     "שייק חלבון אחרי אימון: כמה, מתי ואיך לבחור": "/blog/best-protein-after-workout",
     "קריאטין – המדריך המלא": "/blog/creatine-guide",
     "איזו אבקת חלבון לבחור": "/blog/protein-powder-types-guide",
+    "איזה קריאטין לקנות": "/blog/best-creatine-iherb",
+    "קריאטין מונוהידרט מול HCL": "/blog/creatine-monohydrate-vs-hcl",
+    "האם קריאטין משמין": "/blog/does-creatine-cause-weight-gain",
+    "קריאטין לנשים": "/blog/creatine-for-women",
+    "תוספי תזונה למתאמנים": "/blog/gym-supplements-what-works",
 }
 
 AFFILIATE_BASE = "https://iherb.pxf.io/c/3215306/1665867/19332?u="
@@ -50,16 +56,17 @@ AFFILIATE_SECTIONS = {
 def affiliate_link(label: str, url: str) -> str:
     return f'<a href="{html.escape(url, quote=True)}" target="_blank" rel="sponsored nofollow noopener">{label}</a>'
 
-def inline(t: str) -> str:
+def inline(t: str, auto_link_iherb: bool = True) -> str:
     t = html.escape(t, quote=False)
     t = re.sub(r"\*\*(.+?)\*\*", r"<strong>\1</strong>", t)
     # Replace plain mentions only outside markdown links, avoiding nested anchors.
     parts, start = [], 0
     for m in re.finditer(r"\[([^\]]+)\](?:\(([^)]+)\))?", t):
-        parts.append(t[start:m.start()].replace("iHerb", affiliate_link("iHerb", "https://iherb.pxf.io/AgOK61")))
+        plain = t[start:m.start()]
+        parts.append(plain.replace("iHerb", affiliate_link("iHerb", "https://iherb.pxf.io/AgOK61")) if auto_link_iherb else plain)
         label, url = m.group(1), m.group(2)
         if url:
-            if not url.startswith(("https://iherb.pxf.io/")):
+            if not url.startswith("https://iherb.pxf.io/"):
                 raise SystemExit(f"unsupported external link: {url}")
             parts.append(affiliate_link(label, html.unescape(url)))
         elif label in LINKS:
@@ -67,7 +74,8 @@ def inline(t: str) -> str:
         else:
             raise SystemExit(f"unknown internal link: {label}")
         start = m.end()
-    parts.append(t[start:].replace("iHerb", affiliate_link("iHerb", "https://iherb.pxf.io/AgOK61")))
+    plain = t[start:]
+    parts.append(plain.replace("iHerb", affiliate_link("iHerb", "https://iherb.pxf.io/AgOK61")) if auto_link_iherb else plain)
     return "".join(parts)
 
 def apply_affiliate_sections(content: str, slug: str) -> str:
@@ -85,7 +93,9 @@ def apply_affiliate_sections(content: str, slug: str) -> str:
     # The gym guide has no bottom-line section: preserve its text and append before FAQ.
     return content + "\n" + section
 
-def convert(md: str):
+def convert(md: str, auto_link_iherb: bool = True, linked_faq: bool = False):
+    def inline(t):
+        return globals()["inline"](t, auto_link_iherb=auto_link_iherb)
     body, _, faq_md = md.partition("## שאלות נפוצות")
     out, lines, i = [], body.strip().split("\n"), 0
     while i < len(lines):
@@ -118,19 +128,20 @@ def convert(md: str):
     faq = []
     for block in [b for b in faq_md.strip().split("\n\n") if b.strip()]:
         q, a = block.strip().split("\n", 1)
-        faq.append({"question": q.strip().strip("*").strip(), "answer": re.sub(r"\[([^\]]+)\]", r"\1", a.strip())})
+        faq.append({"question": q.strip().strip("*").strip(), "answer": inline(a.strip()) if linked_faq else re.sub(r"\[([^\]]+)\]", r"\1", a.strip())})
     return "\n".join(out), faq
 
 def main():
     src = Path(sys.argv[1])
     posts = []
     for m in json.loads((src / "meta.json").read_text()):
-        content, faq = convert((src / f"{m['slug']}.md").read_text())
+        explicit_only = m["slug"] in EXPLICIT_AFFILIATE_ONLY
+        content, faq = convert((src / f"{m['slug']}.md").read_text(), auto_link_iherb=not explicit_only, linked_faq=explicit_only)
         content = apply_affiliate_sections(content, m["slug"])
         words = len(re.sub(r"<[^>]+>", " ", content).split())
         posts.append({"id": f"guide-{m['slug']}", "slug": m["slug"], "title": m["title"], "seoTitle": m["seoTitle"],
                       "excerpt": m["excerpt"], "content": content, "image": f"/images/blog/{m['slug']}.jpg",
-                      "category": m["category"], "categoryId": m["categoryId"], "date": DATE, "updatedAt": DATE,
+                      "category": m["category"], "categoryId": m["categoryId"], "date": m.get("date", DATE), "updatedAt": m.get("updatedAt", m.get("date", DATE)),
                       "readTime": max(3, round(words / 200)), "relatedProductHandles": [], "faq": faq,
                       "metaDescription": m["metaDescription"]})
     out = Path("src/data/guidePosts.ts")
@@ -139,6 +150,15 @@ def main():
         mt = re.search(r"= (\[.*\]);", out.read_text(), re.S)
         existing = [p for p in json.loads(mt.group(1)) if p["slug"] not in {x["slug"] for x in posts}] if mt else []
     allp = existing + posts
+    further_reading = "להמשך קריאה: [איזה קריאטין לקנות], [קריאטין מונוהידרט מול HCL], [האם קריאטין משמין] ו[קריאטין לנשים]."
+    paragraph = "<p>" + inline(further_reading, auto_link_iherb=False) + "</p>"
+    for post in allp:
+        if post["slug"] == "creatine-guide" and paragraph not in post["content"]:
+            marker = "<h2>השורה התחתונה</h2>"
+            start = post["content"].index(marker) + len(marker)
+            end = post["content"].find("<h2>", start)
+            end = len(post["content"]) if end == -1 else end
+            post["content"] = post["content"][:end].rstrip() + "\n" + paragraph + post["content"][end:]
     out.write_text("// Generated by scripts/build_guide_posts.py from approved article text. Do not hand-edit content.\n"
                    "import type { ProBlogPost } from './proBlogPosts';\n\n"
                    f"export const GUIDE_POSTS: (ProBlogPost & {{ updatedAt: string }})[] = {json.dumps(allp, ensure_ascii=False, indent=1)};\n")

@@ -159,7 +159,7 @@ function articlePage(p: Post, indexed: boolean, related: Post[]): Page {
     });
   }
   const faqHtml = faq.length && p.slug !== HOME_STRENGTH_SLUG
-    ? `<section><h2>שאלות ותשובות</h2>${faq.map((f) => `<h3>${esc(f.question)}</h3><p>${esc(f.answer)}</p>`).join("")}</section>`
+    ? `<section><h2>שאלות ותשובות</h2>${faq.map((f) => `<h3>${esc(f.question)}</h3><p>${proBlogPosts.some(s => s.slug === p.slug && s.id.startsWith('guide-')) ? cleanContent(f.answer) : esc(f.answer)}</p>`).join("")}</section>`
     : "";
   const relatedHtml = related.length
     ? `<section><h2>מאמרים קשורים</h2><ul>${related.map((r) => `<li><a href="${encPath(`/blog/${r.slug}`)}">${esc(r.title)}</a></li>`).join("")}</ul></section>`
@@ -188,7 +188,7 @@ export function prerenderPlugin(): Plugin {
       try { dbPosts = await fetchDbPosts(); } catch (e) { console.warn("[prerender] blog fetch failed:", e); }
       const staticPosts: Post[] = proBlogPosts.map((s) => {
         const override = FEATURED_BLOG_OVERRIDES[s.slug];
-        return { slug: s.slug, title: override?.title ?? s.title, excerpt: override?.excerpt ?? s.excerpt, content: override?.content ?? s.content, image: s.image, category_id: s.categoryId, date: s.date, updated_at: override?.updatedAt, meta_description: override?.metaDescription ?? s.metaDescription, faq: override?.faq ?? s.faq, seo_title: s.seoTitle };
+        return { slug: s.slug, title: override?.title ?? s.title, excerpt: override?.excerpt ?? s.excerpt, content: override?.content ?? s.content, image: s.image, category_id: s.categoryId, date: s.date, updated_at: override?.updatedAt ?? (s as { updatedAt?: string }).updatedAt, meta_description: override?.metaDescription ?? s.metaDescription, faq: override?.faq ?? s.faq, seo_title: s.seoTitle };
       });
       const bySlug = new Map<string, Post>();
       // Approved article snapshot guarantees this DB-only route exists even if build-time fetching fails.

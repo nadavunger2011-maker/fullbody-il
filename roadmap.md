@@ -1,5 +1,7 @@
 # Roadmap
 
+- [x] Add four approved creatine guides from retained markdown; verify explicit affiliate links, FAQ/internal links, dated schemas, covers, indexing, sitemap and prerender/browser output.
+
 - [x] Add the approved iHerb deeplinks and plain-text sections to all four guides and their generator; verify regenerated content, prerender HTML and browser links.
 
 - [x] Create and visually verify three new practical Instagram carousels (p23–p25), with captions and four slides each

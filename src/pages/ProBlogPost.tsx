@@ -51,7 +51,8 @@ function ProBlogPostInner() {
   if (isLoading || redirectLoading) return <div className="min-h-screen bg-background flex items-center justify-center"><Skeleton className="w-32 h-8" /></div>;
   if (!post) return null;
 
-  const normalizedContent = normalizeBlogContent(post.content);
+  const approvedGuide = post.id.startsWith('guide-');
+  const normalizedContent = approvedGuide ? post.content : normalizeBlogContent(post.content);
   const contentChunks = splitContentByH2(normalizedContent);
   const articleImage = post.image || '/placeholder.svg';
   const absImage = articleImage.startsWith('/') ? `https://fullbody.co.il${articleImage}` : articleImage;
@@ -90,7 +91,7 @@ function ProBlogPostInner() {
     mainEntity: post.faq.map(f => ({
       '@type': 'Question',
        name: sanitizeClaimText(f.question),
-       acceptedAnswer: { '@type': 'Answer', text: sanitizeClaimText(f.answer) },
+       acceptedAnswer: { '@type': 'Answer', text: approvedGuide ? f.answer : sanitizeClaimText(f.answer) },
     })),
   };
 
@@ -206,7 +207,9 @@ function ProBlogPostInner() {
                        {sanitizeClaimText(item.question)}
                       <ChevronIcon />
                     </summary>
-                     <div className="px-6 pb-4 text-muted-foreground">{sanitizeClaimText(item.answer)}</div>
+                     {approvedGuide
+                       ? <div className="px-6 pb-4 text-muted-foreground [&_a]:text-primary [&_a]:underline" dangerouslySetInnerHTML={{ __html: item.answer }} />
+                       : <div className="px-6 pb-4 text-muted-foreground">{sanitizeClaimText(item.answer)}</div>}
                   </details>
                 ))}
               </div>

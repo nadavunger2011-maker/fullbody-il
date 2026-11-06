@@ -7,4 +7,5 @@ SEO HTML is prerendered at build time by `scripts/prerender-plugin.ts` (tags mar
 The controlled home-strength article has presentation metadata and a prerender-only content snapshot fallback; live database content wins, so a failed build-time fetch cannot silently omit this DB-only route.
 New Instagram batches keep their slide specifications and captions together in reproducible rendering scripts; the publisher leaves a queued post waiting (not failed) until all its image URLs are publicly reachable, so posts can be queued before the site is published.
 - New static guide articles are generated into `src/data/guidePosts.ts` by `scripts/build_guide_posts.py` from approved markdown, so the author's text stays verbatim and FAQ becomes structured data.
+- Retain approved guide markdown and dated metadata under `scripts/content`; explicit-only guides preserve plain iHerb mentions, and FAQ answers support generated internal-link HTML in both page and prerender.
 - Approved guide affiliate sections and category overrides are applied idempotently by the guide generator, preserving encoded URLs and preventing duplicate sections on regeneration.
