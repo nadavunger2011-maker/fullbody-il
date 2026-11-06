@@ -2,7 +2,16 @@ import { TRANSPARENCY_DISCLOSURE } from '../lib/business';
 
 export const CONTENT_UPDATED_AT = '2026-10-03';
 
-export interface FeaturedBlogOverride { title: string; excerpt: string; metaDescription: string; content: string; faq: { question: string; answer: string }[]; updatedAt: string; }
+export interface FeaturedBlogOverride { title: string; seoTitle?: string; excerpt: string; metaDescription: string; content: string; faq: { question: string; answer: string }[]; updatedAt: string; }
+
+// Search-snippet-only overrides for DB posts whose body must stay untouched (blog_posts has no seo_title column).
+export const SEO_META_OVERRIDES: Record<string, { seoTitle: string; metaDescription: string }> = {
+  // Search Console reports this under /blog/night-environment-weight-management, which redirects here.
+  'השפעת-הסביבה-הלילית-על-ניהול-משקל-beyond-שינה-טובה-mqxdslwj': {
+    seoTitle: 'ניהול משקל לילי: איך שינה, אור ושגרת ערב משפיעים על המשקל',
+    metaDescription: 'מה קורה למשקל בלילה? איך שעות שינה, אור כחול, אכילה מאוחרת ולחץ משפיעים על הרעב ועל ניהול המשקל – וטיפים מעשיים לשגרת ערב.',
+  },
+};
 
 export const FEATURED_BLOG_OVERRIDES: Record<string, FeaturedBlogOverride> = {
   'meal-replacement-shakes-guide': {
@@ -28,9 +37,10 @@ export const FEATURED_BLOG_OVERRIDES: Record<string, FeaturedBlogOverride> = {
   },
   'best-protein-after-workout': {
     title: 'שייק חלבון אחרי אימון: כמה, מתי ואיך לבחור (בלי לבזבז כסף)',
+    seoTitle: 'שייק חלבון אחרי אימון: כמה חלבון, מתי לשתות ואיזה לבחור',
     excerpt: 'כמה חלבון כדאי לשלב אחרי אימון, מתי אוכל רגיל מספיק ואיך משווים אבקות לפי המחיר לכמות החלבון.',
-    metaDescription: 'שייק חלבון אחרי אימון: כמה חלבון לשלב, מתי, מקורות מהמזון ואיך להשוות אבקות לפי מחיר ל-100 גרם חלבון.',
-    updatedAt: CONTENT_UPDATED_AT,
+    metaDescription: 'משקה חלבון אחרי אימון – כמה גרם חלבון צריך, האם חייבים לשתות מיד, ואיזו אבקה הכי משתלמת לפי מחיר לגרם חלבון. כולל השוואת מוצרים מ-iHerb.',
+    updatedAt: '2026-11-06',
     faq: [
       { question: 'כמה חלבון צריך אחרי אימון?', answer: 'עבור רבים, ארוחה שמכילה בערך 20–40 גרם חלבון יכולה להשתלב היטב, אך הצורך תלוי במשקל, באימון ובכמות היומית הכוללת.' },
       { question: 'האם חייבים לשתות שייק מיד אחרי האימון?', answer: 'לא. הכמות היומית ופיזור החלבון חשובים יותר מדקות ספורות. ארוחה נוחה בשעות הסמוכות לאימון יכולה להספיק.' },
@@ -38,12 +48,13 @@ export const FEATURED_BLOG_OVERRIDES: Record<string, FeaturedBlogOverride> = {
       { question: 'איך משווים מחיר של אבקות חלבון?', answer: 'חשבו כמה גרם חלבון יש באריזה כולה, ואז חלקו את המחיר בכמות זו והכפילו ב-100.' },
       { question: 'האם צריך חלבון גם ביום ללא אימון?', answer: 'כן. הגוף משתמש בחלבון בכל יום, ולכן כדאי לחשוב על ממוצע יומי ולא רק על המשקה שאחרי האימון.' },
     ],
-    content: `<p>שייק חלבון אחרי אימון הוא אפשרות נוחה, אבל הוא לא חובה ולא חייבים לשתות אותו בדקה שבה מסתיים האימון. השאלה החשובה יותר היא כמה חלבון אתם אוכלים לאורך היום, והאם הארוחה הבאה כבר מספקת כמות טובה.</p>
+    content: `<p>שייק חלבון אחרי אימון, או כל משקה חלבון אחרי אימון, הוא אפשרות נוחה, אבל הוא לא חובה ולא חייבים לשתות אותו בדקה שבה מסתיים האימון. השאלה החשובה יותר היא כמה חלבון אתם אוכלים לאורך היום, והאם הארוחה הבאה כבר מספקת כמות טובה.</p>
 <h2>כמה חלבון אחרי אימון?</h2><p>טווח מעשי נפוץ לארוחה אחרי אימון הוא בערך 20–40 גרם חלבון. אדם קטן שמתאמן באופן מתון עשוי להסתפק בחלק התחתון של הטווח, ואדם גדול או מי שמתאמן בעצימות גבוהה עשוי לבחור בחלק העליון. זו אינה הוראה אישית; אפשר להתחיל מהיעד היומי ולחלק אותו בין הארוחות.</p><p><a href="/protein-calculator"><strong>חשבו כמה חלבון אתם צריכים ביום במחשבון החינמי.</strong></a></p>
 <h2>מתי כדאי לאכול?</h2><p>אין צורך לרוץ לשייקר. אם אכלתם ארוחה עם חלבון לפני האימון או שאתם עומדים לאכול בשעות הקרובות, בדרך כלל אפשר להסתמך על הארוחה. אם הדרך הביתה ארוכה או שאין ארוחה זמינה, משקה או נשנוש עם חלבון הם פתרון נוח.</p>
 <h2>מזון רגיל מול אבקת חלבון</h2><div class="not-prose overflow-x-auto"><table><thead><tr><th>אפשרות</th><th>יתרון</th><th>מה לבדוק</th></tr></thead><tbody><tr><td>ביצים</td><td>זמינות ומשתלבות בארוחה</td><td>גודל המנה ושאר הארוחה</td></tr><tr><td>יוגורט או קוטג׳</td><td>נוח וללא הכנה רבה</td><td>חלבון למכל וסוכר מוסף</td></tr><tr><td>עוף או דג</td><td>מקור חלבון מרוכז</td><td>אופן ההכנה וגודל המנה</td></tr><tr><td>קטניות או טופו</td><td>אפשרות צמחית עם רכיבים נוספים</td><td>כמות החלבון במנה</td></tr><tr><td>אבקת חלבון</td><td>מהירה ונוחה</td><td>מחיר ל-100 גרם חלבון</td></tr></tbody></table></div>
 <h2>איך בוחרים אבקה בלי לבזבז כסף?</h2><p>אל תשוו רק את מחיר האריזה או את מספר הכפות. חשבו את סך החלבון באריזה: גרם חלבון למנה כפול מספר המנות. אחר כך חלקו את מחיר האריזה בסך גרמי החלבון והכפילו ב-100. כך ניתן להשוות אריזות וגדלים שונים באותה שיטה.</p><p>בדקו גם את רשימת הרכיבים, כמות הסוכר, הטעם והאם המוצר מתאים להעדפות שלכם. מוצר זול שאינכם אוהבים אינו בהכרח משתלם.</p>
 <h2>דוגמה ליום שמפזר חלבון</h2><p>בוקר עם יוגורט, צהריים עם עוף או קטניות, נשנוש עם קוטג׳ וערב עם ביצים או טופו יכולים לחלק את הכמות לאורך היום. השייק נכנס רק אם הוא פותר בעיית נוחות או משלים פער אמיתי.</p>
+<h2>איזו אבקת חלבון לשייק אחרי אימון?</h2><p>כל אבקה איכותית עם 20–30 גרם חלבון למנה מתאימה. ההבדל העיקרי הוא במחיר לגרם חלבון ובטעם:</p><ul><li><a href="https://iherb.pxf.io/c/3215306/1665867/19332?subId1=best-protein-after-workout&amp;u=https%3A%2F%2Fwww.iherb.com%2Fpr%2Fcalifornia-gold-nutrition-whey-protein-isolate-very-vanilla-5-lb-2-27-kg%2F82707" target="_blank" rel="sponsored nofollow noopener">California Gold Nutrition, חלבון מי גבינה איזולט, וניל</a> – 27 גרם חלבון במנה, מתאים לשתייה במים.</li><li><a href="https://iherb.pxf.io/c/3215306/1665867/19332?subId1=best-protein-after-workout&amp;u=https%3A%2F%2Fwww.iherb.com%2Fpr%2Foptimum-nutrition-gold-standard-100-whey-protein-double-rich-chocolate-5-05-lb-2-29-kg%2F27509" target="_blank" rel="sponsored nofollow noopener">Optimum Nutrition, Gold Standard 100% Whey</a> – הקלאסיקה, עם תו Informed Choice.</li><li><a href="https://iherb.pxf.io/c/3215306/1665867/19332?subId1=best-protein-after-workout&amp;u=https%3A%2F%2Fwww.iherb.com%2Fpr%2Fnow-foods-sports-pea-protein-pure-unflavored-2-lbs-907-g%2F9858" target="_blank" rel="sponsored nofollow noopener">NOW Foods, חלבון אפונה, ללא טעם</a> – לטבעונים ולרגישים ללקטוז.</li></ul><p>השוואה מלאה לפי מחיר ל-100 גרם חלבון – במאמר <a href="/blog/best-protein-powder-iherb">איזו אבקת חלבון לקנות</a>.</p>
 <h2>קראו גם</h2><ul><li><a href="/blog/meal-replacement-shakes-guide">איך לבחור שייק תחליף ארוחה</a></li><li><a href="/blog/protein-shake-recipes">מתכונים לשייקי חלבון</a></li><li><a href="/protein-calculator">מחשבון חלבון יומי</a></li></ul>`,
   },
   'aloe-vera-benefits-digestion': {

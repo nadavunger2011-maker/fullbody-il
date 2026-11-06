@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { proBlogPosts, proBlogCategories, type ProBlogPost, type ProBlogCategory } from '@/data/proBlogPosts';
-import { FEATURED_BLOG_OVERRIDES } from '@/data/featuredBlogContent';
+import { FEATURED_BLOG_OVERRIDES, SEO_META_OVERRIDES } from '@/data/featuredBlogContent';
 
 interface DbBlogPost {
   id: string;
@@ -38,7 +38,9 @@ function dbToProBlogPost(db: any): ProBlogPost & { updatedAt?: string } {
     updatedAt: db.updated_at,
   };
   const override = FEATURED_BLOG_OVERRIDES[base.slug];
-  return override ? { ...base, ...override } : base;
+  const merged = override ? { ...base, ...override } : base;
+  const seo = SEO_META_OVERRIDES[base.slug];
+  return seo ? { ...merged, ...seo } : merged;
 }
 
 function withFeaturedOverride(post: ProBlogPost): ProBlogPost & { updatedAt?: string } {

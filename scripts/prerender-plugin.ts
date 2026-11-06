@@ -6,7 +6,7 @@ import { dirname, join } from "node:path";
 import type { Plugin } from "vite";
 import policy from "../supabase/functions/_shared/blog-index.json";
 import { proBlogPosts, proBlogCategories } from "../src/data/proBlogPosts";
-import { FEATURED_BLOG_OVERRIDES } from "../src/data/featuredBlogContent";
+import { FEATURED_BLOG_OVERRIDES, SEO_META_OVERRIDES } from "../src/data/featuredBlogContent";
 import { TRANSPARENCY_DISCLOSURE } from "../src/lib/business";
 import homeStrengthSnapshot from "./content/home-bodyweight-training.json";
 import { HOME_STRENGTH_SLUG, HOME_STRENGTH_SEO_TITLE } from "../src/data/homeStrengthSeo";
@@ -191,7 +191,7 @@ export function prerenderPlugin(): Plugin {
       try { dbPosts = await fetchDbPosts(); } catch (e) { console.warn("[prerender] blog fetch failed:", e); }
       const staticPosts: Post[] = proBlogPosts.map((s) => {
         const override = FEATURED_BLOG_OVERRIDES[s.slug];
-        return { slug: s.slug, title: override?.title ?? s.title, excerpt: override?.excerpt ?? s.excerpt, content: override?.content ?? s.content, image: s.image, category_id: s.categoryId, date: s.date, updated_at: override?.updatedAt ?? (s as { updatedAt?: string }).updatedAt, meta_description: override?.metaDescription ?? s.metaDescription, faq: override?.faq ?? s.faq, seo_title: s.seoTitle };
+        return { slug: s.slug, title: override?.title ?? s.title, excerpt: override?.excerpt ?? s.excerpt, content: override?.content ?? s.content, image: s.image, category_id: s.categoryId, date: s.date, updated_at: override?.updatedAt ?? (s as { updatedAt?: string }).updatedAt, meta_description: override?.metaDescription ?? s.metaDescription, faq: override?.faq ?? s.faq, seo_title: override?.seoTitle ?? s.seoTitle };
       });
       const bySlug = new Map<string, Post>();
       // Approved article snapshot guarantees this DB-only route exists even if build-time fetching fails.
@@ -199,7 +199,9 @@ export function prerenderPlugin(): Plugin {
       bySlug.set(HOME_STRENGTH_SLUG, homeStrengthSnapshot);
       [...staticPosts, ...dbPosts].forEach((p) => {
         const override = FEATURED_BLOG_OVERRIDES[p.slug];
-        bySlug.set(p.slug, override ? { ...p, title: override.title, excerpt: override.excerpt, content: override.content, meta_description: override.metaDescription, faq: override.faq, updated_at: override.updatedAt } : p);
+        const merged = override ? { ...p, title: override.title, excerpt: override.excerpt, content: override.content, meta_description: override.metaDescription, faq: override.faq, updated_at: override.updatedAt, seo_title: override.seoTitle ?? p.seo_title } : p;
+        const seo = SEO_META_OVERRIDES[p.slug];
+        bySlug.set(p.slug, seo ? { ...merged, seo_title: seo.seoTitle, meta_description: seo.metaDescription } : merged);
       });
       const indexedSet = new Set<string>(policy.indexed);
       const redirects = policy.redirects as Record<string, string>;
@@ -235,7 +237,7 @@ export function prerenderPlugin(): Plugin {
       for (const [from, to] of Object.entries(redirects)) {
         const target = bySlug.get(to);
         write(outDir, `/blog/${from}`, renderHtml(template, {
-          path: `/blog/${from}`, redirectTo: `/blog/${to}`, title: `${target?.title ?? "FullBody"} | FullBody`,
+          path: `/blog/${from}`, redirectTo: `/blog/${to}`, title: `${target?.seo_title ?? target?.title ?? "FullBody"} | FullBody`,
           description: target?.meta_description ?? "", h1: target?.title ?? "", body: `<p><a href="${encPath(`/blog/${to}`)}">${esc(target?.title ?? to)}</a></p>`,
         }));
         count++;
