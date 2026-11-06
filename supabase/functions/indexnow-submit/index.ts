@@ -10,10 +10,14 @@ Deno.serve(async (req) => {
   if (req.method === "OPTIONS") return new Response("ok", { headers: corsHeaders });
   if (req.method !== "POST") return json({ error: "Method not allowed" }, 405);
 
-  // Internal only: caller must present the service role key.
+  // Internal only: caller must present the service role key or the INDEXNOW_SUBMIT_TOKEN secret.
   const serviceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? "";
+  const submitToken = Deno.env.get("INDEXNOW_SUBMIT_TOKEN") ?? "";
   const auth = req.headers.get("Authorization") ?? "";
-  if (!serviceKey || auth !== `Bearer ${serviceKey}`) return json({ error: "Unauthorized" }, 401);
+  const tokenHeader = req.headers.get("x-indexnow-token") ?? "";
+  const okService = !!serviceKey && auth === `Bearer ${serviceKey}`;
+  const okToken = submitToken.length >= 32 && tokenHeader === submitToken;
+  if (!okService && !okToken) return json({ error: "Unauthorized" }, 401);
 
   let urls: string[] | undefined;
   const text = await req.text();
