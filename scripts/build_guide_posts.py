@@ -6,7 +6,8 @@ import html, json, re, sys
 from pathlib import Path
 
 DATE = "2026-11-05"
-EXPLICIT_AFFILIATE_ONLY = {"best-creatine-iherb", "creatine-monohydrate-vs-hcl", "does-creatine-cause-weight-gain", "creatine-for-women"}
+EXPLICIT_AFFILIATE_ONLY = {"best-creatine-iherb", "creatine-monohydrate-vs-hcl", "does-creatine-cause-weight-gain", "creatine-for-women",
+                           "best-protein-powder-iherb", "casein-protein-before-sleep", "protein-powder-for-women", "whey-vs-plant-protein"}
 LINKS = {
     "מחשבון החלבון היומי": "/protein-calculator",
     "מתכוני שייקים עם חלבון": "/blog/protein-shake-recipes",
@@ -18,6 +19,34 @@ LINKS = {
     "האם קריאטין משמין": "/blog/does-creatine-cause-weight-gain",
     "קריאטין לנשים": "/blog/creatine-for-women",
     "תוספי תזונה למתאמנים": "/blog/gym-supplements-what-works",
+    "איזו אבקת חלבון לקנות": "/blog/best-protein-powder-iherb",
+    "חלבון לפני שינה": "/blog/casein-protein-before-sleep",
+    "אבקת חלבון לנשים": "/blog/protein-powder-for-women",
+    "חלבון צמחי מול מי גבינה": "/blog/whey-vs-plant-protein",
+    "שייק חלבון אחרי אימון": "/blog/best-protein-after-workout",
+}
+
+# (AFF:key) placeholders -> tracked deeplink with subId1 = the article's slug.
+AFF_PRODUCTS = {
+    "on_whey": "https://www.iherb.com/pr/optimum-nutrition-gold-standard-100-whey-protein-double-rich-chocolate-5-05-lb-2-29-kg/27509",
+    "cgn_iso_van": "https://www.iherb.com/pr/california-gold-nutrition-whey-protein-isolate-very-vanilla-5-lb-2-27-kg/82707",
+    "cgn_iso_unf": "https://www.iherb.com/pr/california-gold-nutrition-sport-whey-protein-isolate-unflavored-5-lb-2-27-kg/76479",
+    "now_pea": "https://www.iherb.com/pr/now-foods-sports-pea-protein-pure-unflavored-2-lbs-907-g/9858",
+    "on_casein": "https://www.iherb.com/pr/optimum-nutrition-gold-standard-100-casein-chocolate-supreme-1-87-lb-850-g/27527",
+}
+
+def aff_url(key: str, slug: str) -> str:
+    from urllib.parse import quote
+    if key not in AFF_PRODUCTS:
+        raise SystemExit(f"unknown AFF key: {key}")
+    if not slug:
+        raise SystemExit("AFF placeholder needs the article slug")
+    # quote(safe="-_.!~*'()") matches JS encodeURIComponent.
+    return f"https://iherb.pxf.io/c/3215306/1665867/19332?subId1={slug}&u={quote(AFF_PRODUCTS[key], safe="-_.!~*'()")}"
+
+FURTHER_READING = {
+    "creatine-guide": "להמשך קריאה: [איזה קריאטין לקנות], [קריאטין מונוהידרט מול HCL], [האם קריאטין משמין] ו[קריאטין לנשים].",
+    "protein-powder-types-guide": "להמשך קריאה: [איזו אבקת חלבון לקנות], [חלבון צמחי מול מי גבינה], [חלבון לפני שינה] ו[אבקת חלבון לנשים].",
 }
 
 AFFILIATE_BASE = "https://iherb.pxf.io/c/3215306/1665867/19332?u="
@@ -56,7 +85,7 @@ AFFILIATE_SECTIONS = {
 def affiliate_link(label: str, url: str) -> str:
     return f'<a href="{html.escape(url, quote=True)}" target="_blank" rel="sponsored nofollow noopener">{label}</a>'
 
-def inline(t: str, auto_link_iherb: bool = True) -> str:
+def inline(t: str, auto_link_iherb: bool = True, slug: str = "") -> str:
     t = html.escape(t, quote=False)
     t = re.sub(r"\*\*(.+?)\*\*", r"<strong>\1</strong>", t)
     # Replace plain mentions only outside markdown links, avoiding nested anchors.
@@ -65,7 +94,9 @@ def inline(t: str, auto_link_iherb: bool = True) -> str:
         plain = t[start:m.start()]
         parts.append(plain.replace("iHerb", affiliate_link("iHerb", "https://iherb.pxf.io/AgOK61")) if auto_link_iherb else plain)
         label, url = m.group(1), m.group(2)
-        if url:
+        if url and url.startswith("AFF:"):
+            parts.append(affiliate_link(label, aff_url(url[4:], slug)))
+        elif url:
             if not url.startswith("https://iherb.pxf.io/"):
                 raise SystemExit(f"unsupported external link: {url}")
             parts.append(affiliate_link(label, html.unescape(url)))
@@ -93,9 +124,9 @@ def apply_affiliate_sections(content: str, slug: str) -> str:
     # The gym guide has no bottom-line section: preserve its text and append before FAQ.
     return content + "\n" + section
 
-def convert(md: str, auto_link_iherb: bool = True, linked_faq: bool = False):
+def convert(md: str, auto_link_iherb: bool = True, linked_faq: bool = False, slug: str = ""):
     def inline(t):
-        return globals()["inline"](t, auto_link_iherb=auto_link_iherb)
+        return globals()["inline"](t, auto_link_iherb=auto_link_iherb, slug=slug)
     body, _, faq_md = md.partition("## שאלות נפוצות")
     out, lines, i = [], body.strip().split("\n"), 0
     while i < len(lines):
@@ -136,7 +167,7 @@ def main():
     posts = []
     for m in json.loads((src / "meta.json").read_text()):
         explicit_only = m["slug"] in EXPLICIT_AFFILIATE_ONLY
-        content, faq = convert((src / f"{m['slug']}.md").read_text(), auto_link_iherb=not explicit_only, linked_faq=explicit_only)
+        content, faq = convert((src / f"{m['slug']}.md").read_text(), auto_link_iherb=not explicit_only, linked_faq=explicit_only, slug=m["slug"])
         content = apply_affiliate_sections(content, m["slug"])
         words = len(re.sub(r"<[^>]+>", " ", content).split())
         posts.append({"id": f"guide-{m['slug']}", "slug": m["slug"], "title": m["title"], "seoTitle": m["seoTitle"],
@@ -150,10 +181,11 @@ def main():
         mt = re.search(r"= (\[.*\]);", out.read_text(), re.S)
         existing = [p for p in json.loads(mt.group(1)) if p["slug"] not in {x["slug"] for x in posts}] if mt else []
     allp = existing + posts
-    further_reading = "להמשך קריאה: [איזה קריאטין לקנות], [קריאטין מונוהידרט מול HCL], [האם קריאטין משמין] ו[קריאטין לנשים]."
-    paragraph = "<p>" + inline(further_reading, auto_link_iherb=False) + "</p>"
     for post in allp:
-        if post["slug"] == "creatine-guide" and paragraph not in post["content"]:
+        if post["slug"] not in FURTHER_READING:
+            continue
+        paragraph = "<p>" + inline(FURTHER_READING[post["slug"]], auto_link_iherb=False) + "</p>"
+        if paragraph not in post["content"]:
             marker = "<h2>השורה התחתונה</h2>"
             start = post["content"].index(marker) + len(marker)
             end = post["content"].find("<h2>", start)

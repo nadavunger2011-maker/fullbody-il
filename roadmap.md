@@ -19,3 +19,5 @@
 - [ ] Continue the Instagram flow: caption generator and carousel templates are compliant; 5 rendered posts still await public image hosting
 - [x] Blog SEO stage 1: auto blog generation paused, 105-article index allowlist, duplicates merged, prerendered HTML, schema, author box, related articles
 - [x] Blog SEO stage 2: content-first homepage, disclosures, selective products, three rewrites, protein calculator guide, private comparison draft, and Instagram queue audit
+
+- [ ] IndexNow: submit 4 protein guides + protein-powder-types-guide after user publishes

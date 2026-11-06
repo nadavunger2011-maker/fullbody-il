@@ -20,6 +20,23 @@ const expected: Record<string, string[]> = {
   'creatine-for-women': [creatine, 'https://iherb.pxf.io/bkB1YP'],
 };
 
+const products = {
+  on_whey: 'https://www.iherb.com/pr/optimum-nutrition-gold-standard-100-whey-protein-double-rich-chocolate-5-05-lb-2-29-kg/27509',
+  cgn_iso_van: 'https://www.iherb.com/pr/california-gold-nutrition-whey-protein-isolate-very-vanilla-5-lb-2-27-kg/82707',
+  cgn_iso_unf: 'https://www.iherb.com/pr/california-gold-nutrition-sport-whey-protein-isolate-unflavored-5-lb-2-27-kg/76479',
+  now_pea: 'https://www.iherb.com/pr/now-foods-sports-pea-protein-pure-unflavored-2-lbs-907-g/9858',
+  on_casein: 'https://www.iherb.com/pr/optimum-nutrition-gold-standard-100-casein-chocolate-supreme-1-87-lb-850-g/27527',
+};
+const aff = (slug: string, key: keyof typeof products) =>
+  `https://iherb.pxf.io/c/3215306/1665867/19332?subId1=${slug}&u=${encodeURIComponent(products[key])}`;
+const proteinGuides: Record<string, (keyof typeof products)[]> = {
+  'best-protein-powder-iherb': ['cgn_iso_unf', 'cgn_iso_van', 'now_pea', 'on_whey', 'on_casein'],
+  'casein-protein-before-sleep': ['on_casein'],
+  'protein-powder-for-women': ['cgn_iso_van', 'now_pea', 'cgn_iso_unf'],
+  'whey-vs-plant-protein': ['now_pea', 'cgn_iso_unf', 'on_whey'],
+};
+for (const [slug, keys] of Object.entries(proteinGuides)) expected[slug] = keys.map(k => aff(slug, k));
+
 function verify(content: string, urls: string[]) {
   const doc = new DOMParser().parseFromString(content, 'text/html');
   const links = [...doc.querySelectorAll<HTMLAnchorElement>('a[href^="https://iherb.pxf.io/"]')];
@@ -99,8 +116,10 @@ m = importlib.util.module_from_spec(spec); spec.loader.exec_module(m)
 posts = json.loads(re.search(r'= (\\[.*\\]);', Path('src/data/guidePosts.ts').read_text(), re.S).group(1))
 for p in posts:
     if p['slug'] in m.EXPLICIT_AFFILIATE_ONLY:
-        body, faq = m.convert(Path('scripts/content/creatine-guides', p['slug'] + '.md').read_text(), auto_link_iherb=False, linked_faq=True)
+        src = next(d for d in ['scripts/content/creatine-guides', 'scripts/content/protein-guides'] if Path(d, p['slug'] + '.md').exists())
+        body, faq = m.convert(Path(src, p['slug'] + '.md').read_text(), auto_link_iherb=False, linked_faq=True, slug=p['slug'])
         assert body == p['content'] and faq == p['faq']
+assert m.aff_url('now_pea', 'x') == 'https://iherb.pxf.io/c/3215306/1665867/19332?subId1=x&u=https%3A%2F%2Fwww.iherb.com%2Fpr%2Fnow-foods-sports-pea-protein-pure-unflavored-2-lbs-907-g%2F9858'
 assert m.inline('iHerb [מוצר](https://iherb.pxf.io/bkB1YP)', auto_link_iherb=False) == 'iHerb ' + m.affiliate_link('מוצר', 'https://iherb.pxf.io/bkB1YP')
 print('ok')
 `], { encoding: 'utf8' });
@@ -127,5 +146,24 @@ print('ok')
     if (!guide) throw new Error('Missing creatine guide');
     const links = new DOMParser().parseFromString(guide.content.split('<h2>השורה התחתונה</h2>')[1], 'text/html');
     for (const slug of slugs) expect(links.querySelector(`a[href="/blog/${slug}"]`)).not.toBeNull();
+  });
+
+  it('protein guides are dated, indexed, link internally to existing pages and the types guide links to all four', () => {
+    const policy = JSON.parse(readFileSync('supabase/functions/_shared/blog-index.json', 'utf8'));
+    const known = new Set(['/protein-calculator', '/blog/best-protein-after-workout', '/blog/protein-shake-recipes', ...GUIDE_POSTS.map(p => `/blog/${p.slug}`)]);
+    for (const slug of Object.keys(proteinGuides)) {
+      const post = GUIDE_POSTS.find(p => p.slug === slug);
+      if (!post) throw new Error(`Missing ${slug}`);
+      expect(post.date).toBe('2026-11-06');
+      expect(post.updatedAt).toBe('2026-11-06');
+      expect(policy.indexed).toContain(slug);
+      const doc = new DOMParser().parseFromString(post.content + post.faq.map(f => f.answer).join(''), 'text/html');
+      for (const a of doc.querySelectorAll('a[href^="/"]')) expect(known.has(a.getAttribute('href') || '')).toBe(true);
+      expect([...doc.querySelectorAll('a')].some(a => a.textContent === 'iHerb')).toBe(false);
+    }
+    const types = GUIDE_POSTS.find(p => p.slug === 'protein-powder-types-guide');
+    if (!types) throw new Error('Missing types guide');
+    const bottom = new DOMParser().parseFromString(types.content.split('<h2>השורה התחתונה</h2>')[1], 'text/html');
+    for (const slug of Object.keys(proteinGuides)) expect(bottom.querySelector(`a[href="/blog/${slug}"]`)).not.toBeNull();
   });
 });
