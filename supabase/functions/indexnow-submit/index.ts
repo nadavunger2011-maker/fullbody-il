@@ -1,3 +1,4 @@
+import postgres from "npm:postgres@3.4.4";
 import { corsHeaders } from "npm:@supabase/supabase-js@2/cors";
 import policy from "../_shared/blog-index.json" with { type: "json" };
 import config from "../_shared/indexnow.json" with { type: "json" };
@@ -17,7 +18,16 @@ Deno.serve(async (req) => {
   const tokenHeader = req.headers.get("x-indexnow-token") ?? "";
   const okService = !!serviceKey && auth === `Bearer ${serviceKey}`;
   const okToken = submitToken.length >= 32 && tokenHeader === submitToken;
-  if (!okService && !okToken) return json({ error: "Unauthorized" }, 401);
+  let okVault = false;
+  const vaultHeader = req.headers.get("x-indexnow-vault-token") ?? "";
+  if (!okService && !okToken && vaultHeader.length >= 32) {
+    const sql = postgres(Deno.env.get("SUPABASE_DB_URL")!, { max: 1 });
+    try {
+      const rows = await sql`select decrypted_secret from vault.decrypted_secrets where name = 'indexnow_submit_token' limit 1`;
+      okVault = rows.length === 1 && rows[0].decrypted_secret === vaultHeader;
+    } finally { await sql.end(); }
+  }
+  if (!okService && !okToken && !okVault) return json({ error: "Unauthorized" }, 401);
 
   let urls: string[] | undefined;
   const text = await req.text();
