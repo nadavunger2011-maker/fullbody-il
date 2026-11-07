@@ -1,7 +1,10 @@
 # Roadmap
 
+- [x] Update four existing guides and add three approved guides; verify exact sources, affiliate links, covers, indexing, sitemap, schemas, prerender and browser (69 tests passed; desktop/mobile verified).
+- [ ] Submit all seven changed/new guide URLs to IndexNow after this round is published (waiting for user's publication confirmation).
+
 - [x] Add four approved magnesium guides with retained markdown, dated metadata, covers, tracked affiliate/internal links, index/sitemap and prerender/browser verification.
-- [ ] Submit the four magnesium guide URLs to IndexNow after the user publishes (waiting for publication confirmation).
+- [x] Submit the four magnesium guide URLs to IndexNow after the user publishes (HTTP 200 confirmed).
 
 - [x] Add four approved creatine guides from retained markdown; verify explicit affiliate links, FAQ/internal links, dated schemas, covers, indexing, sitemap and prerender/browser output.
 

@@ -40,6 +40,7 @@
 ## דוגמאות למוצרים
 
 - **צמחי:** [NOW Foods, Sports, חלבון אפונה, ללא טעם](AFF:now_pea) – 24 גרם חלבון במנה. כדי לשפר את פרופיל חומצות האמינו, שלבו אותו עם מקורות חלבון נוספים לאורך היום, כמו קטניות ודגנים.
+- **צמחי עם תו לספורטאים:** [Vega Sport, חלבון צמחי, שוקולד](https://iherb.pxf.io/zzKoZM) – תערובת אפונה, דלעת וחמנייה, עם תו NSF Certified for Sport.
 - **מי גבינה:** [California Gold Nutrition, חלבון מי גבינה איזולט, ללא טעם](AFF:cgn_iso_unf) – 27 גרם חלבון במנה, כמעט בלי לקטוז.
 - **מי גבינה משולב:** [Optimum Nutrition, Gold Standard 100% Whey](AFF:on_whey) – עם תו Informed Choice.
 

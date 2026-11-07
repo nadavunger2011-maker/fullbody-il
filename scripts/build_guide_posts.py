@@ -8,7 +8,8 @@ from pathlib import Path
 DATE = "2026-11-05"
 EXPLICIT_AFFILIATE_ONLY = {"best-creatine-iherb", "creatine-monohydrate-vs-hcl", "does-creatine-cause-weight-gain", "creatine-for-women",
                            "best-protein-powder-iherb", "casein-protein-before-sleep", "protein-powder-for-women", "whey-vs-plant-protein",
-                           "magnesium-types-guide", "best-magnesium-iherb", "magnesium-oxide", "magnesium-for-sleep"}
+                           "magnesium-types-guide", "best-magnesium-iherb", "magnesium-oxide", "magnesium-for-sleep",
+                           "protein-bars-guide", "pre-workout-guide", "multivitamin-for-athletes"}
 LINKS = {
     "מחשבון החלבון היומי": "/protein-calculator",
     "מתכוני שייקים עם חלבון": "/blog/protein-shake-recipes",
@@ -29,6 +30,9 @@ LINKS = {
     "איזה מגנזיום לקנות": "/blog/best-magnesium-iherb",
     "מגנזיום אוקסיד": "/blog/magnesium-oxide",
     "מגנזיום לשינה": "/blog/magnesium-for-sleep",
+    "חטיפי חלבון": "/blog/protein-bars-guide",
+    "פרה-וורקאאוט": "/blog/pre-workout-guide",
+    "מולטי ויטמין למתאמנים": "/blog/multivitamin-for-athletes",
 }
 
 # (AFF:key) placeholders -> tracked deeplink with subId1 = the article's slug.

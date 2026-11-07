@@ -58,6 +58,7 @@ function ProBlogPostInner() {
   const absImage = articleImage.startsWith('/') ? `https://fullbody.co.il${articleImage}` : articleImage;
   const homeStrength = post.slug === HOME_STRENGTH_SLUG;
   const magnesiumGuide = approvedGuide && (post.slug.startsWith('magnesium-') || post.slug === 'best-magnesium-iherb');
+  const editorialOnlyGuide = magnesiumGuide || ['protein-bars-guide', 'pre-workout-guide', 'multivitamin-for-athletes'].includes(post.slug);
   const seoTitle = homeStrength ? HOME_STRENGTH_SEO_TITLE : (post.seoTitle || post.title);
   const shareImage = homeStrength ? articleImage.replace(/([?&])w=\d+/, '$1w=1200').replace(/([?&])h=\d+/, '$1h=630') : absImage;
   const category = proBlogCategories.find(c => c.id === post.categoryId);
@@ -181,7 +182,7 @@ function ProBlogPostInner() {
                 </div>
               ))}
               {proteinArticle && <p className="not-prose mt-8"><Link to="/protein-calculator" className="inline-flex rounded-md bg-accent px-5 py-3 font-bold text-accent-foreground">חשבו כמה חלבון אתם צריכים</Link></p>}
-              {!homeStrength && !magnesiumGuide && <DessertBookBanner source={post.slug} />}
+              {!homeStrength && !editorialOnlyGuide && <DessertBookBanner source={post.slug} />}
               <div dangerouslySetInnerHTML={{ __html: appendDisclaimer('') }} />
               <aside className="mt-8 p-5 rounded-xl border border-border bg-secondary/40" aria-label="על הכותב">
                 <p className="font-bold text-foreground mb-1">על הכותב</p>

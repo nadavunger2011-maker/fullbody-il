@@ -28,14 +28,18 @@ const url = (loc, lastmod, changefreq, priority) =>
    `    <changefreq>${changefreq}</changefreq>`, `    <priority>${priority}</priority>`, '  </url>'].filter(Boolean).join('\n');
 
 const bySlug = new Map((await fetchPosts()).map((p) => [p.slug, p]));
+const guideSource = readFileSync(new URL('../src/data/guidePosts.ts', import.meta.url), 'utf8');
+const guideMatch = guideSource.match(/= (\[[\s\S]*\]);/);
+const guides = new Map((guideMatch ? JSON.parse(guideMatch[1]) : []).map(p => [p.slug, p]));
 const lines = [
   '<?xml version="1.0" encoding="UTF-8"?>',
   '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">',
   ...STATIC_PAGES.map(([loc, cf, pr]) => url(loc, null, cf, pr)),
   ...policy.indexed.map((slug) => {
-    const p = bySlug.get(slug);
+    const guide = guides.get(slug);
+    const p = guide || bySlug.get(slug);
     // Only this controlled content update has a verified significant modification timestamp.
-    return url(`/blog/${slug}`, p ? String(slug === 'home-bodyweight-training' ? p.updated_at || p.date : p.date).slice(0, 10) : null, 'monthly', '0.7');
+    return url(`/blog/${slug}`, p ? String(guide ? guide.updatedAt || guide.date : slug === 'home-bodyweight-training' ? p.updated_at || p.date : p.date).slice(0, 10) : null, 'monthly', '0.7');
   }),
   '</urlset>',
 ];
