@@ -7,7 +7,8 @@ from pathlib import Path
 
 DATE = "2026-11-05"
 EXPLICIT_AFFILIATE_ONLY = {"best-creatine-iherb", "creatine-monohydrate-vs-hcl", "does-creatine-cause-weight-gain", "creatine-for-women",
-                           "best-protein-powder-iherb", "casein-protein-before-sleep", "protein-powder-for-women", "whey-vs-plant-protein"}
+                           "best-protein-powder-iherb", "casein-protein-before-sleep", "protein-powder-for-women", "whey-vs-plant-protein",
+                           "magnesium-types-guide", "best-magnesium-iherb", "magnesium-oxide", "magnesium-for-sleep"}
 LINKS = {
     "מחשבון החלבון היומי": "/protein-calculator",
     "מתכוני שייקים עם חלבון": "/blog/protein-shake-recipes",
@@ -24,6 +25,10 @@ LINKS = {
     "אבקת חלבון לנשים": "/blog/protein-powder-for-women",
     "חלבון צמחי מול מי גבינה": "/blog/whey-vs-plant-protein",
     "שייק חלבון אחרי אימון": "/blog/best-protein-after-workout",
+    "סוגי מגנזיום": "/blog/magnesium-types-guide",
+    "איזה מגנזיום לקנות": "/blog/best-magnesium-iherb",
+    "מגנזיום אוקסיד": "/blog/magnesium-oxide",
+    "מגנזיום לשינה": "/blog/magnesium-for-sleep",
 }
 
 # (AFF:key) placeholders -> tracked deeplink with subId1 = the article's slug.
@@ -33,6 +38,11 @@ AFF_PRODUCTS = {
     "cgn_iso_unf": "https://www.iherb.com/pr/california-gold-nutrition-sport-whey-protein-isolate-unflavored-5-lb-2-27-kg/76479",
     "now_pea": "https://www.iherb.com/pr/now-foods-sports-pea-protein-pure-unflavored-2-lbs-907-g/9858",
     "on_casein": "https://www.iherb.com/pr/optimum-nutrition-gold-standard-100-casein-chocolate-supreme-1-87-lb-850-g/27527",
+    "mg_db": "https://www.iherb.com/pr/doctor-s-best-high-absorption-magnesium-120-tablets-100-mg-per-tablet/15",
+    "mg_cgn": "https://www.iherb.com/pr/california-gold-nutrition-magnesium-bisglycinate-chelate-albion-traacs-240-veggie-capsules-100-mg-per-capsule/103274",
+    "mg_citrate": "https://www.iherb.com/pr/now-foods-magnesium-citrate-200-mg-250-tablets/691",
+    "mg_now_caps": "https://www.iherb.com/pr/now-foods-magnesium-caps-400-mg-180-veg-capsules/662",
+    "mg_threonate": "https://www.iherb.com/pr/life-extension-neuro-mag-magnesium-l-threonate-90-vegetarian-capsules-48-mg-per-capsule/40244",
 }
 
 def aff_url(key: str, slug: str) -> str:

@@ -173,7 +173,7 @@ function articlePage(p: Post, indexed: boolean, related: Post[]): Page {
     body: `<nav aria-label="breadcrumb"><a href="/">בית</a> › <a href="/blog">בלוג</a> › ${esc(p.title)}</nav>`
       + `<article>${cleanContent(p.content || "")}</article>${faqHtml}`
       + `<aside><strong>על הכותב:</strong> ${AUTHOR}, מפיץ עצמאי מורשה של Herbalife. <a href="/about">עוד עליי</a><p>${esc(TRANSPARENCY_DISCLOSURE)}</p></aside>`
-      + (p.slug === HOME_STRENGTH_SLUG ? '' : `<aside><a href="https://shop.fullbody.co.il/?utm_source=blog&amp;utm_medium=article&amp;utm_campaign=${encodeURIComponent(p.slug)}">ספר קינוחי חלבון במתנה</a></aside>`)
+      + (p.slug === HOME_STRENGTH_SLUG || p.slug.startsWith('magnesium-') || p.slug === 'best-magnesium-iherb' ? '' : `<aside><a href="https://shop.fullbody.co.il/?utm_source=blog&amp;utm_medium=article&amp;utm_campaign=${encodeURIComponent(p.slug)}">ספר קינוחי חלבון במתנה</a></aside>`)
       + `<p><strong>המידע אינו מהווה ייעוץ רפואי. בהריון, הנקה, מצב רפואי או נטילת תרופות – יש להתייעץ עם רופא.</strong></p>`
       + relatedHtml,
   };

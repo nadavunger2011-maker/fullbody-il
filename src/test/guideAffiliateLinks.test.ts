@@ -26,6 +26,11 @@ const products = {
   cgn_iso_unf: 'https://www.iherb.com/pr/california-gold-nutrition-sport-whey-protein-isolate-unflavored-5-lb-2-27-kg/76479',
   now_pea: 'https://www.iherb.com/pr/now-foods-sports-pea-protein-pure-unflavored-2-lbs-907-g/9858',
   on_casein: 'https://www.iherb.com/pr/optimum-nutrition-gold-standard-100-casein-chocolate-supreme-1-87-lb-850-g/27527',
+  mg_db: 'https://www.iherb.com/pr/doctor-s-best-high-absorption-magnesium-120-tablets-100-mg-per-tablet/15',
+  mg_cgn: 'https://www.iherb.com/pr/california-gold-nutrition-magnesium-bisglycinate-chelate-albion-traacs-240-veggie-capsules-100-mg-per-capsule/103274',
+  mg_citrate: 'https://www.iherb.com/pr/now-foods-magnesium-citrate-200-mg-250-tablets/691',
+  mg_now_caps: 'https://www.iherb.com/pr/now-foods-magnesium-caps-400-mg-180-veg-capsules/662',
+  mg_threonate: 'https://www.iherb.com/pr/life-extension-neuro-mag-magnesium-l-threonate-90-vegetarian-capsules-48-mg-per-capsule/40244',
 };
 const aff = (slug: string, key: keyof typeof products) =>
   `https://iherb.pxf.io/c/3215306/1665867/19332?subId1=${slug}&u=${encodeURIComponent(products[key])}`;
@@ -36,6 +41,13 @@ const proteinGuides: Record<string, (keyof typeof products)[]> = {
   'whey-vs-plant-protein': ['now_pea', 'cgn_iso_unf', 'on_whey'],
 };
 for (const [slug, keys] of Object.entries(proteinGuides)) expected[slug] = keys.map(k => aff(slug, k));
+const magnesiumGuides: Record<string, (keyof typeof products)[]> = {
+  'magnesium-types-guide': [],
+  'best-magnesium-iherb': ['mg_db', 'mg_cgn', 'mg_citrate', 'mg_now_caps', 'mg_threonate'],
+  'magnesium-oxide': ['mg_now_caps'],
+  'magnesium-for-sleep': ['mg_db', 'mg_cgn'],
+};
+for (const [slug, keys] of Object.entries(magnesiumGuides)) expected[slug] = keys.map(k => aff(slug, k));
 
 function verify(content: string, urls: string[]) {
   const doc = new DOMParser().parseFromString(content, 'text/html');
@@ -116,7 +128,7 @@ m = importlib.util.module_from_spec(spec); spec.loader.exec_module(m)
 posts = json.loads(re.search(r'= (\\[.*\\]);', Path('src/data/guidePosts.ts').read_text(), re.S).group(1))
 for p in posts:
     if p['slug'] in m.EXPLICIT_AFFILIATE_ONLY:
-        src = next(d for d in ['scripts/content/creatine-guides', 'scripts/content/protein-guides'] if Path(d, p['slug'] + '.md').exists())
+        src = next(d for d in ['scripts/content/creatine-guides', 'scripts/content/protein-guides', 'scripts/content/magnesium-guides'] if Path(d, p['slug'] + '.md').exists())
         body, faq = m.convert(Path(src, p['slug'] + '.md').read_text(), auto_link_iherb=False, linked_faq=True, slug=p['slug'])
         assert body == p['content'] and faq == p['faq']
 assert m.aff_url('now_pea', 'x') == 'https://iherb.pxf.io/c/3215306/1665867/19332?subId1=x&u=https%3A%2F%2Fwww.iherb.com%2Fpr%2Fnow-foods-sports-pea-protein-pure-unflavored-2-lbs-907-g%2F9858'
@@ -166,4 +178,21 @@ print('ok')
     const bottom = new DOMParser().parseFromString(types.content.split('<h2>השורה התחתונה</h2>')[1], 'text/html');
     for (const slug of Object.keys(proteinGuides)) expect(bottom.querySelector(`a[href="/blog/${slug}"]`)).not.toBeNull();
   });
+
+  for (const slug of Object.keys(magnesiumGuides)) {
+    it(`${slug} has today's dates, nutrition category, no products and only approved internal destinations`, () => {
+      const post = GUIDE_POSTS.find(p => p.slug === slug);
+      if (!post) throw new Error(`Missing ${slug}`);
+      expect(post.date).toBe('2026-11-07');
+      expect(post.updatedAt).toBe('2026-11-07');
+      expect(post.categoryId).toBe('nutrition');
+      expect(post.relatedProductHandles).toEqual([]);
+      const policy = JSON.parse(readFileSync('supabase/functions/_shared/blog-index.json', 'utf8'));
+      expect(policy.indexed).toContain(slug);
+      const known = new Set([...Object.keys(magnesiumGuides), 'gym-supplements-what-works'].map(s => `/blog/${s}`));
+      const doc = new DOMParser().parseFromString(post.content + post.faq.map(f => f.answer).join(''), 'text/html');
+      for (const a of doc.querySelectorAll('a[href^="/"]')) expect(known.has(a.getAttribute('href') || '')).toBe(true);
+      expect([...doc.querySelectorAll('a')].some(a => a.textContent === 'iHerb')).toBe(false);
+    });
+  }
 });

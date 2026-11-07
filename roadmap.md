@@ -1,5 +1,8 @@
 # Roadmap
 
+- [x] Add four approved magnesium guides with retained markdown, dated metadata, covers, tracked affiliate/internal links, index/sitemap and prerender/browser verification.
+- [ ] Submit the four magnesium guide URLs to IndexNow after the user publishes (waiting for publication confirmation).
+
 - [x] Add four approved creatine guides from retained markdown; verify explicit affiliate links, FAQ/internal links, dated schemas, covers, indexing, sitemap and prerender/browser output.
 
 - [x] Add the approved iHerb deeplinks and plain-text sections to all four guides and their generator; verify regenerated content, prerender HTML and browser links.
@@ -20,4 +23,4 @@
 - [x] Blog SEO stage 1: auto blog generation paused, 105-article index allowlist, duplicates merged, prerendered HTML, schema, author box, related articles
 - [x] Blog SEO stage 2: content-first homepage, disclosures, selective products, three rewrites, protein calculator guide, private comparison draft, and Instagram queue audit
 
-- [ ] IndexNow: submit 4 protein guides + protein-powder-types-guide after user publishes
+- [x] IndexNow: submit 4 protein guides + protein-powder-types-guide after user publishes
