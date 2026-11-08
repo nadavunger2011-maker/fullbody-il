@@ -1,0 +1,33 @@
+# FullBody
+
+> מדריכי תזונה וכושר עצמאיים בעברית לקוראים בישראל.
+
+FullBody publishes independent Hebrew nutrition and fitness guides for readers in Israel.
+
+האתר מציע מדריכים מעשיים על חלבון, קריאטין, מגנזיום ותוספי תזונה, לצד מחשבון חלבון. המידע כללי ואינו ייעוץ רפואי.
+
+גילוי נאות: אני מפיץ עצמאי של Herbalife, ולכן חלק מהמוצרים שאני ממליץ עליהם נמכרים בחנות שלי. הטיפים כאן הם דעתי האישית והכנה, ואני ממליץ גם על פתרונות שאינם מוצרים שלי כשהם מתאימים יותר. חלק מהקישורים באתר הם קישורי שותפים (למשל ל-iHerb). אם תרכשו דרכם, ייתכן שנקבל עמלה – בלי עלות נוספת עבורכם. ההמלצות שלנו לא תלויות בכך.
+
+## מדריכים
+
+- [קריאטין – המדריך המלא: מה זה, כמה לקחת ואיזה סוג לבחור](https://fullbody.co.il/blog/creatine-guide): מהו קריאטין, מינון, סוגים ובטיחות.
+- [איזה קריאטין לקנות ב-iHerb? השוואה בין 6 מוצרים](https://fullbody.co.il/blog/best-creatine-iherb): השוואת מוצרי קריאטין לפי הרכב, בדיקות ומחיר.
+- [קריאטין לנשים – האם זה מתאים לך?](https://fullbody.co.il/blog/creatine-for-women): התאמה לנשים, שימוש ושאלות נפוצות.
+- [האם קריאטין משמין? מה באמת קורה למשקל](https://fullbody.co.il/blog/does-creatine-cause-weight-gain): ההבדל בין אגירת מים לעלייה בשומן.
+- [איזו אבקת חלבון לקנות ב-iHerb? השוואה לפי מחיר לגרם חלבון](https://fullbody.co.il/blog/best-protein-powder-iherb): השוואת אבקות לפי מחיר לגרם חלבון.
+- [איזו אבקת חלבון לבחור? מדריך השוואה לסוגי החלבון](https://fullbody.co.il/blog/protein-powder-types-guide): הבדלים בין סוגי אבקות חלבון ובחירה מתאימה.
+- [חלבון צמחי מול חלבון מי גבינה – מה עדיף?](https://fullbody.co.il/blog/whey-vs-plant-protein): השוואת חלבון צמחי וחלבון מי גבינה.
+- [חלבון לפני שינה – האם קזאין באמת עוזר?](https://fullbody.co.il/blog/casein-protein-before-sleep): המחקר על חלבון לפני שינה וחלופות מהמזון.
+- [אבקת חלבון לנשים – כל מה שצריך לדעת](https://fullbody.co.il/blog/protein-powder-for-women): צרכים, התאמה ובחירת אבקת חלבון לנשים.
+- [חטיפי חלבון – איך לבחור ומתי הם שווים את זה](https://fullbody.co.il/blog/protein-bars-guide): איך לקרוא תווית ומתי חטיף חלבון שימושי.
+- [גיינר – מה זה, למי זה מתאים ואיך מכינים גיינר ביתי](https://fullbody.co.il/blog/mass-gainer-guide): למי גיינר מתאים ואיך להכין חלופה ביתית.
+- [תוספי תזונה למתאמנים – מה באמת עובד ומה מיותר](https://fullbody.co.il/blog/gym-supplements-what-works): תוספי תזונה למתאמנים: ראיות, התאמה ומגבלות.
+- [פרה-וורקאאוט (קדם אימון) – מה יש בו ומה באמת עובד](https://fullbody.co.il/blog/pre-workout-guide): מרכיבי קדם אימון, יעילות וזהירות.
+- [מולטי ויטמין למתאמנים – צריך או לא?](https://fullbody.co.il/blog/multivitamin-for-athletes): מתי מולטי ויטמין עשוי להתאים ומה לבדוק.
+- [סוגי מגנזיום – איזה לבחור?](https://fullbody.co.il/blog/magnesium-types-guide): הבדלים בין צורות מגנזיום ובחירת סוג.
+- [איזה מגנזיום לקנות ב-iHerb? השוואה בין 6 מוצרים](https://fullbody.co.il/blog/best-magnesium-iherb): השוואת מוצרי מגנזיום, הרכב ומחיר.
+- [מגנזיום לשינה – האם זה באמת עובד?](https://fullbody.co.il/blog/magnesium-for-sleep): מה ידוע על מגנזיום ושינה ולמי הוא מתאים.
+
+## כלים
+
+- [מחשבון חלבון יומי](https://fullbody.co.il/protein-calculator): הערכה כללית לצריכת חלבון לפי משקל, פעילות ומטרה.

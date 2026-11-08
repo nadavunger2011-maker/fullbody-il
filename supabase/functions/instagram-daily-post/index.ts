@@ -1,5 +1,6 @@
 import { createClient } from "npm:@supabase/supabase-js@2";
 import { corsHeaders } from "npm:@supabase/supabase-js@2/cors";
+import { israelSlot, isGuidePost } from './policy.ts';
 
 const GRAPH = "https://graph.instagram.com/v22.0";
 
@@ -25,18 +26,21 @@ const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") return new Response("ok", { headers: corsHeaders });
 
+  const slot = israelSlot(new Date());
+  if (!slot.allowed) return json({ status: 'outside_window', message: 'Publishing is only allowed at 20:00 Asia/Jerusalem' });
+
   const token = Deno.env.get("INSTAGRAM_ACCESS_TOKEN");
   const igUserId = Deno.env.get("INSTAGRAM_USER_ID");
   if (!token || !igUserId) return json({ error: "Instagram credentials missing" }, 500);
 
-  const supabase = createClient(
-    Deno.env.get("SUPABASE_URL")!,
-    Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!,
-  );
+  const backendUrl = Deno.env.get('SUPABASE_URL');
+  const serviceKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY');
+  if (!backendUrl || !serviceKey) return json({ error: 'Publishing configuration missing' }, 500);
+  const supabase = createClient(backendUrl, serviceKey);
 
   // Pick the next queued post, preferring the precise timestamp when present.
   const now = new Date().toISOString();
-  const today = new Date().toISOString().slice(0, 10);
+  const today = slot.date;
   const { data: rows, error } = await supabase
     .from("social_posts")
     .select("*")
@@ -46,10 +50,15 @@ Deno.serve(async (req) => {
     .order("scheduled_at", { ascending: true, nullsFirst: false })
     .order("sort_order", { ascending: true })
     .order("created_at", { ascending: true })
-    .limit(1);
+    .limit(100);
 
   if (error) return json({ error: error.message }, 500);
-  const item = rows?.[0];
+  // Retain generic rows as paused, never delete them. Scheduled guides remain untouched.
+  const genericIds = (rows ?? []).filter(row => !isGuidePost(row)).map(row => row.id);
+  if (genericIds.length) {
+    await supabase.from('social_posts').update({ status: 'paused', updated_at: now }).in('id', genericIds).eq('status', 'queued');
+  }
+  const item = rows?.find(isGuidePost);
   if (!item) return json({ status: "empty", message: "No queued posts" });
 
   // Images not reachable yet (site not published)? Leave queued and retry next run.
@@ -58,14 +67,11 @@ Deno.serve(async (req) => {
     if (!head?.ok) return json({ status: "waiting", message: `Image not reachable yet: ${u}` });
   }
 
-  // Lock the row so a retry cannot double-publish
-  const { data: locked } = await supabase
-    .from("social_posts")
-    .update({ status: "publishing", updated_at: new Date().toISOString() })
-    .eq("id", item.id)
-    .eq("status", "queued")
-    .select("id");
-  if (!locked?.length) return json({ status: "skipped", message: "Already being published" });
+  // Atomically reserve the Israel calendar day and row across concurrent invocations.
+  // Keep the daily claim even on an uncertain API failure: never risk a second post.
+  const { data: locked, error: claimError } = await supabase.rpc('claim_instagram_daily_post', { _post_id: item.id });
+  if (claimError) return json({ error: claimError.message }, 500);
+  if (!locked) return json({ status: 'skipped', message: 'Daily slot already reserved, published, or outside 20:00' });
 
   try {
     const urls: string[] = item.image_urls ?? [];

@@ -360,6 +360,32 @@ export type Database = {
           },
         ]
       }
+      instagram_publish_days: {
+        Row: {
+          claimed_at: string
+          local_date: string
+          post_id: string
+        }
+        Insert: {
+          claimed_at?: string
+          local_date: string
+          post_id: string
+        }
+        Update: {
+          claimed_at?: string
+          local_date?: string
+          post_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "instagram_publish_days_post_id_fkey"
+            columns: ["post_id"]
+            isOneToOne: false
+            referencedRelation: "social_posts"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       leads: {
         Row: {
           activity: number | null
@@ -616,6 +642,10 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      claim_instagram_daily_post: {
+        Args: { _post_id: string }
+        Returns: boolean
+      }
       create_plan_lead: {
         Args: {
           _activity: number

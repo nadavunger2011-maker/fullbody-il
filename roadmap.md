@@ -1,7 +1,12 @@
 # Roadmap
 
+- [x] Add one relevant guide-reading box to 17 approved traffic posts at their real source (15 DB, 2 code); preserve other text and verify prerender/browser. Skip the already-linked workout post and the omega post without relevant allowed targets.
+- [x] Enforce Instagram daily 20:00 Israel publishing, pause generic queued posts without deleting (0 found), preserve four scheduled guide carousels, and assess Reels only.
+- [x] Add Hebrew/English llms.txt with disclosure and 18 curated public links; verify text/plain (33 lines).
+- [ ] Submit changed traffic posts and llms.txt guide URLs to IndexNow after this round is published (waiting for publication confirmation).
+
 - [x] Update four existing guides and add three approved guides; verify exact sources, affiliate links, covers, indexing, sitemap, schemas, prerender and browser (69 tests passed; desktop/mobile verified).
-- [ ] Submit all seven changed/new guide URLs to IndexNow after this round is published (waiting for user's publication confirmation).
+- [x] Submit all seven changed/new guide URLs to IndexNow after this round is published (HTTP 200 confirmed).
 
 - [x] Add four approved magnesium guides with retained markdown, dated metadata, covers, tracked affiliate/internal links, index/sitemap and prerender/browser verification.
 - [x] Submit the four magnesium guide URLs to IndexNow after the user publishes (HTTP 200 confirmed).

@@ -1,0 +1,173 @@
+[
+  {
+    "requested": "meal-replacement-shakes-guide",
+    "real": "meal-replacement-shakes-guide",
+    "source": "featuredBlogContent.ts",
+    "targets": [
+      "protein-powder-types-guide",
+      "best-protein-powder-iherb"
+    ]
+  },
+  {
+    "requested": "deep-interval-training-endurance",
+    "real": "אימון-אינטרוולים-עמוקים-איך-לשפר-סיבולת-ולבנות-גוף-חכם-mqot42wi",
+    "source": "DB",
+    "targets": [
+      "gym-supplements-what-works",
+      "creatine-guide",
+      "protein-powder-types-guide"
+    ]
+  },
+  {
+    "requested": "איך-לבנות-תפריט-תזונה-בריא-באמת-מעבר-לדיאטה-לקיימות-יומיומית-moxxso8q",
+    "real": "איך-לבנות-תפריט-תזונה-בריא-באמת-מעבר-לדיאטה-לקיימות-יומיומית-moxxso8q",
+    "source": "DB",
+    "targets": [
+      "multivitamin-for-athletes",
+      "protein-bars-guide",
+      "protein-powder-types-guide"
+    ]
+  },
+  {
+    "requested": "brain-body-training-optimal-fitness",
+    "real": "brain-body-training-optimal-fitness",
+    "source": "DB",
+    "targets": [
+      "gym-supplements-what-works",
+      "multivitamin-for-athletes"
+    ]
+  },
+  {
+    "requested": "sleep-quality-daily-function",
+    "real": "השפעת-איכות-השינה-על-תפקוד-יומיומי-ובריאות-ארוכת-טווח-mny7t08t",
+    "source": "DB",
+    "targets": [
+      "magnesium-for-sleep",
+      "casein-protein-before-sleep"
+    ]
+  },
+  {
+    "requested": "night-environment-weight-management",
+    "real": "השפעת-הסביבה-הלילית-על-ניהול-משקל-beyond-שינה-טובה-mqxdslwj",
+    "source": "DB",
+    "targets": [
+      "magnesium-for-sleep",
+      "casein-protein-before-sleep"
+    ]
+  },
+  {
+    "requested": "איך-לבנות-עמידות-פיזית-ומנטלית-אימון-ותזונה-משלימה-mpw8b3rk",
+    "real": "physical-mental-resilience-training",
+    "source": "DB",
+    "targets": [
+      "gym-supplements-what-works",
+      "creatine-guide",
+      "protein-powder-types-guide"
+    ]
+  },
+  {
+    "requested": "slow-metabolism-weight-loss",
+    "real": "slow-metabolism-weight-loss",
+    "source": "DB",
+    "targets": [
+      "does-creatine-cause-weight-gain",
+      "protein-powder-types-guide",
+      "magnesium-for-sleep"
+    ]
+  },
+  {
+    "requested": "functional-strength-training-daily",
+    "real": "functional-strength-training-daily",
+    "source": "DB",
+    "targets": [
+      "creatine-guide",
+      "gym-supplements-what-works",
+      "protein-powder-types-guide"
+    ]
+  },
+  {
+    "requested": "home-bodyweight-training",
+    "real": "home-bodyweight-training",
+    "source": "DB",
+    "targets": [
+      "gym-supplements-what-works",
+      "protein-powder-types-guide"
+    ]
+  },
+  {
+    "requested": "plant-based-nutrition-performance",
+    "real": "plant-based-nutrition-performance",
+    "source": "DB",
+    "targets": [
+      "whey-vs-plant-protein",
+      "creatine-guide",
+      "multivitamin-for-athletes"
+    ]
+  },
+  {
+    "requested": "protein-importance-daily-health",
+    "real": "protein-importance-daily-health",
+    "source": "DB",
+    "targets": [
+      "protein-powder-types-guide",
+      "whey-vs-plant-protein",
+      "protein-bars-guide"
+    ]
+  },
+  {
+    "requested": "supplements-quality-of-life",
+    "real": "supplements-quality-of-life",
+    "source": "DB",
+    "targets": [
+      "gym-supplements-what-works",
+      "magnesium-types-guide",
+      "multivitamin-for-athletes"
+    ]
+  },
+  {
+    "requested": "conditioning-training-strong-versatile-body",
+    "real": "conditioning-training-strong-versatile-body",
+    "source": "DB",
+    "targets": [
+      "creatine-guide",
+      "gym-supplements-what-works",
+      "protein-powder-types-guide"
+    ]
+  },
+  {
+    "requested": "power-of-rest-recovery",
+    "real": "power-of-rest-recovery",
+    "source": "DB",
+    "targets": [
+      "casein-protein-before-sleep",
+      "magnesium-for-sleep",
+      "creatine-guide"
+    ]
+  },
+  {
+    "requested": "strength-endurance-workout",
+    "real": "אימוני-סיבולת-כוח-איך-לשלב-אותם-נכון-לשגרת-כושר-יעילה-mo6sgsql",
+    "source": "DB",
+    "targets": [
+      "creatine-guide",
+      "gym-supplements-what-works",
+      "protein-powder-types-guide"
+    ]
+  },
+  {
+    "requested": "protein-shake-recipes",
+    "real": "protein-shake-recipes",
+    "source": "proBlogPosts.ts",
+    "targets": [
+      "best-protein-powder-iherb",
+      "protein-powder-types-guide",
+      "whey-vs-plant-protein"
+    ]
+  },
+  {
+    "requested": "essential-fatty-acids-omega",
+    "real": "essential-fatty-acids-omega",
+    "source": "DB",
+    "targets": []
+  }
+]

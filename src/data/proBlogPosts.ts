@@ -329,6 +329,7 @@ export const proBlogPosts: ProBlogPost[] = [
 
       <h2>טיפ בונוס</h2>
       <p>רוצים עוד רעיונות? ספר המתכונים של הרבלייף כולל מעל 50 מתכונים — לא רק שייקים!</p>
+      <aside data-traffic-reading="true" class="my-8 rounded-lg border border-border bg-secondary/30 p-5"><p><strong>להמשך קריאה</strong></p><ul><li><a href="/blog/best-protein-powder-iherb">איזו אבקת חלבון לקנות ב-iHerb? השוואה לפי מחיר לגרם חלבון</a></li><li><a href="/blog/protein-powder-types-guide">איזו אבקת חלבון לבחור? מדריך השוואה לסוגי החלבון</a></li><li><a href="/blog/whey-vs-plant-protein">חלבון צמחי מול חלבון מי גבינה – מה עדיף?</a></li></ul></aside>
     `,
   },
   {

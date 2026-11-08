@@ -29,6 +29,13 @@
       "when": 1790940815200,
       "tag": "0003_schedule_current_instagram_queue",
       "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1794159253880,
+      "tag": "0004_instagram_daily_claim",
+      "breakpoints": true
     }
   ]
 }
