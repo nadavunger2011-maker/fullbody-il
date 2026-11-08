@@ -3,7 +3,7 @@
 - [x] Add one relevant guide-reading box to 17 approved traffic posts at their real source (15 DB, 2 code); preserve other text and verify prerender/browser. Skip the already-linked workout post and the omega post without relevant allowed targets.
 - [x] Enforce Instagram daily 20:00 Israel publishing, pause generic queued posts without deleting (0 found), preserve four scheduled guide carousels, and assess Reels only.
 - [x] Add Hebrew/English llms.txt with disclosure and 18 curated public links; verify text/plain (33 lines).
-- [ ] Submit changed traffic posts and llms.txt guide URLs to IndexNow after this round is published (waiting for publication confirmation).
+- [x] After publication, verify live llms.txt (200 text/plain) and three live reading boxes; submit the latest requested scope of 17 changed real post URLs plus llms.txt to IndexNow (18 accepted, HTTP 200, 2026-11-08 17:49 UTC; one-time job self-removed).
 
 - [x] Update four existing guides and add three approved guides; verify exact sources, affiliate links, covers, indexing, sitemap, schemas, prerender and browser (69 tests passed; desktop/mobile verified).
 - [x] Submit all seven changed/new guide URLs to IndexNow after this round is published (HTTP 200 confirmed).
@@ -20,7 +20,7 @@
 
 - [x] Audit existing /blog/home-bodyweight-training content, metadata, verified internal links and overlap before proposing changes
 - [x] Apply approved single-article SEO upgrade; preserve URL and other articles; verify content, metadata, FAQ schemas and internal link in browser
-- [ ] Verify published initial HTML serves the article rather than the homepage (blocked on next publish; prerender snapshot fallback added for this article only)
+- [x] Verify published initial HTML serves the home-bodyweight-training article rather than the homepage (live article and reading box confirmed 2026-11-08).
 
 - [x] Google Ads Misrepresentation cleanup across all public pages and content
 - [x] Remove the local cart/checkout experience and route all purchasing to shop.fullbody.co.il
