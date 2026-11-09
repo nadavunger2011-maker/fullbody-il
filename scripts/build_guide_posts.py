@@ -9,7 +9,8 @@ DATE = "2026-11-05"
 EXPLICIT_AFFILIATE_ONLY = {"best-creatine-iherb", "creatine-monohydrate-vs-hcl", "does-creatine-cause-weight-gain", "creatine-for-women",
                            "best-protein-powder-iherb", "casein-protein-before-sleep", "protein-powder-for-women", "whey-vs-plant-protein",
                            "magnesium-types-guide", "best-magnesium-iherb", "magnesium-oxide", "magnesium-for-sleep",
-                           "protein-bars-guide", "pre-workout-guide", "multivitamin-for-athletes"}
+                           "protein-bars-guide", "pre-workout-guide", "multivitamin-for-athletes",
+                           "bcaa-guide", "fat-burner-guide", "omega-3-for-athletes"}
 LINKS = {
     "מחשבון החלבון היומי": "/protein-calculator",
     "מתכוני שייקים עם חלבון": "/blog/protein-shake-recipes",
@@ -33,6 +34,9 @@ LINKS = {
     "חטיפי חלבון": "/blog/protein-bars-guide",
     "פרה-וורקאאוט": "/blog/pre-workout-guide",
     "מולטי ויטמין למתאמנים": "/blog/multivitamin-for-athletes",
+    "BCAA": "/blog/bcaa-guide",
+    "שורף שומן": "/blog/fat-burner-guide",
+    "אומגה 3 לספורטאים": "/blog/omega-3-for-athletes",
 }
 
 # (AFF:key) placeholders -> tracked deeplink with subId1 = the article's slug.
@@ -47,6 +51,15 @@ AFF_PRODUCTS = {
     "mg_citrate": "https://www.iherb.com/pr/now-foods-magnesium-citrate-200-mg-250-tablets/691",
     "mg_now_caps": "https://www.iherb.com/pr/now-foods-magnesium-caps-400-mg-180-veg-capsules/662",
     "mg_threonate": "https://www.iherb.com/pr/life-extension-neuro-mag-magnesium-l-threonate-90-vegetarian-capsules-48-mg-per-capsule/40244",
+    "mt_creatine": "https://www.iherb.com/pr/muscletech-essential-series-platinum-100-creatine-unflavored-14-11-oz-400-g/74271",
+    "c4_fp": "https://www.iherb.com/pr/c4-cellucor-c4-original-pre-workout-fruit-punch-12-7-oz-360-g/64195",
+    "quest_ccd": "https://www.iherb.com/pr/quest-nutrition-protein-bar-chocolate-chip-cookie-dough-12-bars-2-12-oz-60-g-each/63559",
+    "xtend_mango": "https://www.iherb.com/pr/xtend-7g-bcaa-mango-madness-14-3-oz-405-g/57800",
+    "hydroxycut_se": "https://www.iherb.com/pr/muscletech-hydroxycut-hardcore-super-elite-120-rapid-release-thermo-capsules/106000",
+    "on_optimen": "https://www.iherb.com/pr/optimum-nutrition-opti-men-multivitamin-for-active-men-150-tablets/57069",
+    "cgn_omega3": "https://www.iherb.com/pr/california-gold-nutrition-omega-3-premium-fish-oil-100-fish-gelatin-softgels-1-100-mg-per-softgel/62118",
+    "le_mg_caps": "https://www.iherb.com/pr/life-extension-magnesium-caps-500-mg-100-vegetarian-capsules/48803",
+    "vega_sport_choc": "https://www.iherb.com/pr/vega-sport-plant-based-premium-protein-powder-chocolate-1-lb-13-5-oz-837-g/66667",
 }
 
 def aff_url(key: str, slug: str) -> str:

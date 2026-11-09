@@ -58,7 +58,7 @@ function ProBlogPostInner() {
   const absImage = articleImage.startsWith('/') ? `https://fullbody.co.il${articleImage}` : articleImage;
   const homeStrength = post.slug === HOME_STRENGTH_SLUG;
   const magnesiumGuide = approvedGuide && (post.slug.startsWith('magnesium-') || post.slug === 'best-magnesium-iherb');
-  const editorialOnlyGuide = magnesiumGuide || ['protein-bars-guide', 'pre-workout-guide', 'multivitamin-for-athletes'].includes(post.slug);
+  const editorialOnlyGuide = magnesiumGuide || ['protein-bars-guide', 'pre-workout-guide', 'multivitamin-for-athletes', 'bcaa-guide', 'fat-burner-guide', 'omega-3-for-athletes'].includes(post.slug);
   const seoTitle = homeStrength ? HOME_STRENGTH_SEO_TITLE : (post.seoTitle || post.title);
   const shareImage = homeStrength ? articleImage.replace(/([?&])w=\d+/, '$1w=1200').replace(/([?&])h=\d+/, '$1h=630') : absImage;
   const category = proBlogCategories.find(c => c.id === post.categoryId);

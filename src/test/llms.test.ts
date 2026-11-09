@@ -4,10 +4,10 @@ import { readFileSync } from 'node:fs';
 import { TRANSPARENCY_DISCLOSURE } from '../lib/business';
 import policy from '../../supabase/functions/_shared/blog-index.json';
 
-it('lists exactly the 17 approved indexed guides and the calculator, with the shared disclosure', () => {
+it('lists exactly the 20 approved indexed guides and the calculator, with the shared disclosure', () => {
   const text = buildLlms();
-  expect(Object.keys(AI_GUIDES)).toHaveLength(17);
-  expect(text.match(/^- \[/gm)).toHaveLength(18);
+  expect(Object.keys(AI_GUIDES)).toHaveLength(20);
+  expect(text.match(/^- \[/gm)).toHaveLength(21);
   expect(text.split('\n').length).toBeLessThan(120);
   expect(text).toContain(TRANSPARENCY_DISCLOSURE);
   for (const slug of Object.keys(AI_GUIDES)) expect(policy.indexed).toContain(slug);

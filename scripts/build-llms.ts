@@ -20,6 +20,9 @@ export const AI_GUIDES: Record<string, string> = {
   'magnesium-types-guide': 'הבדלים בין צורות מגנזיום ובחירת סוג.',
   'best-magnesium-iherb': 'השוואת מוצרי מגנזיום, הרכב ומחיר.',
   'magnesium-for-sleep': 'מה ידוע על מגנזיום ושינה ולמי הוא מתאים.',
+  'bcaa-guide': 'מה BCAA עושות, מה המחקר אומר ולמי הן מתאימות.',
+  'fat-burner-guide': 'מה יש בשורפי שומן, מגבלותיהם ובטיחות קפאין.',
+  'omega-3-for-athletes': 'כמה EPA ו-DHA צריך ואיך לבחור שמן דגים.',
 };
 
 export function buildLlms() {
