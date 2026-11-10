@@ -1,5 +1,7 @@
 # Roadmap
 
+- [x] Build the approved 40-recipe ebook from byte-identical supplied scripts and 41 generated photos; visually inspect all 47 pages, verify 17 unique link URIs and no failed images/overflow. Saved at the requested public/downloads path; not published or linked from pages.
+
 - [x] Add one relevant guide-reading box to 17 approved traffic posts at their real source (15 DB, 2 code); preserve other text and verify prerender/browser. Skip the already-linked workout post and the omega post without relevant allowed targets.
 - [x] Enforce Instagram daily 20:00 Israel publishing, pause generic queued posts without deleting (0 found), preserve four scheduled guide carousels, and assess Reels only.
 - [x] Add Hebrew/English llms.txt with disclosure and 18 curated public links; verify text/plain (33 lines).

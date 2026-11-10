@@ -16,3 +16,4 @@ New Instagram batches keep their slide specifications and captions together in r
 - Instagram uses a service-role-only atomic daily claim keyed by the Israel calendar date; failed or uncertain attempts keep their claim to avoid duplicate publication, while unreachable images remain queued before claiming.
 - Instagram guide eligibility is shared in the publisher policy; generic queued posts become paused without deletion, and protected scheduled carousel IDs remain eligible.
 - Generate public/llms.txt with scripts/build-llms.ts from guide H1s and the shared business disclosure so the AI-readable public guide list cannot drift.
+- The dessert ebook is rendered independently from the exact approved Python scripts under scripts/ebook with local Fontsource packages and numbered photos, so rebuilding the PDF does not change website pages or routes.
