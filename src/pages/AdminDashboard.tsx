@@ -18,6 +18,8 @@ import AdminRecipes from '@/components/admin/AdminRecipes';
 import AdminLeads from '@/components/admin/AdminLeads';
 import AdminLeadsTimeline from '@/components/admin/AdminLeadsTimeline';
 import AdminBlogWebhook from '@/components/admin/AdminBlogWebhook';
+import AdminBlogAffiliate from '@/components/admin/AdminBlogAffiliate';
+import { summarizeBlog } from '@/lib/outboundClicks';
 import { BookOpen, Webhook, ClipboardList } from 'lucide-react';
 
 type DateRange = '7d' | '30d' | '90d' | 'all';
@@ -177,14 +179,13 @@ export default function AdminDashboard() {
   }, [events]);
 
   const dailyData = useMemo(() => {
-    const map = new Map<string, { date: string; views: number; carts: number; purchases: number; revenue: number }>();
+    const map = new Map<string, { date: string; views: number; clicks: number }>();
     events.forEach(e => {
       const d = e.created_at.split('T')[0];
-      if (!map.has(d)) map.set(d, { date: d, views: 0, carts: 0, purchases: 0, revenue: 0 });
+      if (!map.has(d)) map.set(d, { date: d, views: 0, clicks: 0 });
       const day = map.get(d)!;
       if (e.event_type === 'page_view') day.views++;
-      if (e.event_type === 'add_to_cart') day.carts++;
-      if (e.event_type === 'purchase') { day.purchases++; day.revenue += e.order_total || 0; }
+      if (e.event_type === 'affiliate_click') day.clicks++;
     });
     return [...map.entries()].sort(([a], [b]) => a.localeCompare(b)).map(([, v]) => v);
   }, [events]);
@@ -306,15 +307,13 @@ export default function AdminDashboard() {
     );
   }
 
+  const blog = useMemo(() => summarizeBlog(events as any), [events]);
+
   const statCards = [
-    { label: 'סשנים', value: stats.sessions.toLocaleString(), icon: Users, color: 'text-blue-400', bg: 'bg-blue-500/10' },
-    { label: 'צפיות במוצרים', value: stats.productViews.toLocaleString(), icon: Eye, color: 'text-purple-400', bg: 'bg-purple-500/10' },
-    { label: 'הוספות לסל', value: stats.addToCarts.toLocaleString(), icon: ShoppingCart, color: 'text-amber-400', bg: 'bg-amber-500/10' },
-    { label: 'הזמנות', value: stats.purchases.toLocaleString(), icon: CreditCard, color: 'text-emerald-400', bg: 'bg-emerald-500/10' },
-    { label: 'הכנסות', value: `₪${stats.totalRevenue.toLocaleString()}`, icon: TrendingUp, color: 'text-green-400', bg: 'bg-green-500/10' },
-    { label: 'הוצאות פרסום', value: `₪${stats.totalSpend.toLocaleString()}`, icon: DollarSign, color: 'text-red-400', bg: 'bg-red-500/10' },
-    { label: 'עלות פר לקוח (CAC)', value: stats.cac > 0 ? `₪${stats.cac.toFixed(0)}` : '—', icon: MousePointer, color: 'text-orange-400', bg: 'bg-orange-500/10' },
-    { label: 'שיעור המרה', value: `${stats.conversionRate.toFixed(1)}%`, icon: ArrowUpRight, color: 'text-cyan-400', bg: 'bg-cyan-500/10' },
+    { label: 'ביקורים', value: blog.sessions.toLocaleString(), icon: Users, color: 'text-blue-400', bg: 'bg-blue-500/10' },
+    { label: 'צפיות בעמודים', value: blog.views.toLocaleString(), icon: Eye, color: 'text-purple-400', bg: 'bg-purple-500/10' },
+    { label: 'לחיצות על iHerb', value: blog.clicks.toLocaleString(), icon: MousePointer, color: 'text-emerald-400', bg: 'bg-emerald-500/10' },
+    { label: 'ביקורים עם לחיצה', value: `${blog.clickRate.toFixed(1)}%`, icon: ArrowUpRight, color: 'text-cyan-400', bg: 'bg-cyan-500/10' },
   ];
 
 
@@ -375,10 +374,8 @@ export default function AdminDashboard() {
 
   const tabs = [
     { id: 'consultant' as const, label: '🤖 יועץ AI', icon: MessageSquare },
-    { id: 'overview' as const, label: 'סקירה כללית', icon: BarChart3 },
-    { id: 'funnel' as const, label: 'משפך ונטישה', icon: Users },
+    { id: 'overview' as const, label: 'בלוג ו-iHerb', icon: BarChart3 },
     { id: 'leads' as const, label: 'נרשמים לתוכנית', icon: ClipboardList },
-    { id: 'products' as const, label: 'מוצרים', icon: Package },
     { id: 'recipes' as const, label: 'מתכונים', icon: BookOpen },
     { id: 'blog' as const, label: 'בלוג / Webhook', icon: Webhook },
     { id: 'reviews' as const, label: 'ביקורות', icon: Star },
@@ -428,7 +425,7 @@ export default function AdminDashboard() {
           <div className="max-w-7xl mx-auto px-4 h-14 flex items-center justify-between">
             <div className="flex items-center gap-3">
               <BarChart3 className="w-5 h-5 text-blue-400" />
-              <span className="font-bold text-sm">FullBody Analytics</span>
+              <span className="font-bold text-sm">FullBody · בלוג ואפיליאציה</span>
             </div>
             <div className="flex items-center gap-3">
               <div className="flex bg-white/5 rounded-lg p-0.5 text-xs">
@@ -493,35 +490,13 @@ export default function AdminDashboard() {
                       <YAxis tick={{ fill: '#6b7280', fontSize: 11 }} />
                       <Tooltip contentStyle={{ background: '#1a1d27', border: '1px solid #ffffff10', borderRadius: 8, fontSize: 12 }} />
                       <Area type="monotone" dataKey="views" stroke="#3b82f6" fillOpacity={1} fill="url(#colorViews)" name="צפיות" />
-                      <Area type="monotone" dataKey="carts" stroke="#f59e0b" fillOpacity={1} fill="url(#colorCarts)" name="הוספות לסל" />
-                      <Line type="monotone" dataKey="purchases" stroke="#10b981" strokeWidth={2} dot={false} name="רכישות" />
+                      <Line type="monotone" dataKey="clicks" stroke="#10b981" strokeWidth={2} dot={false} name="לחיצות iHerb" />
                     </AreaChart>
                   </ResponsiveContainer>
                 </div>
               )}
 
-              {/* Funnel */}
-              <div className="bg-white/[0.03] border border-white/5 rounded-xl p-5">
-                <h3 className="text-sm font-semibold mb-4">משפך המרה</h3>
-                <div className="flex items-end gap-2 justify-center h-48">
-                  {[
-                    { label: 'סשנים', value: stats.sessions, color: 'bg-blue-500' },
-                    { label: 'צפיות', value: stats.productViews, color: 'bg-purple-500' },
-                    { label: 'סל', value: stats.addToCarts, color: 'bg-amber-500' },
-                    { label: 'רכישות', value: stats.purchases, color: 'bg-emerald-500' },
-                  ].map((step, i) => {
-                    const maxVal = Math.max(stats.sessions, 1);
-                    const h = Math.max((step.value / maxVal) * 160, 8);
-                    return (
-                      <div key={i} className="flex flex-col items-center gap-2 flex-1">
-                        <span className="text-xs font-bold">{step.value.toLocaleString()}</span>
-                        <div className={`${step.color} rounded-t-lg w-full max-w-[60px]`} style={{ height: h }} />
-                        <span className="text-[10px] text-gray-500">{step.label}</span>
-                      </div>
-                    );
-                  })}
-                </div>
-              </div>
+              <AdminBlogAffiliate summary={blog} />
             </div>
           )}
 

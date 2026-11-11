@@ -8,7 +8,8 @@ import { HelmetProvider } from "react-helmet-async";
 import { initGA4, trackGA4PageView } from "@/lib/ga4";
 import ScrollToTop from "@/components/ScrollToTop";
 import CookieNotice from "@/components/CookieNotice";
-import { trackPageView } from "@/lib/analytics";
+import { trackPageView, trackEvent } from "@/lib/analytics";
+import { classifyOutbound } from "@/lib/outboundClicks";
 import { trackPageView as trackFBPageView } from "@/lib/fbPixel";
 
 // Eager: landing page user typically hits first
@@ -64,6 +65,27 @@ function AnalyticsListener() {
 
   useEffect(() => {
     void initGA4(GA4_MEASUREMENT_ID);
+  }, []);
+
+  useEffect(() => {
+    const onClick = (ev: MouseEvent) => {
+      const a = (ev.target as Element | null)?.closest?.('a[href]') as HTMLAnchorElement | null;
+      if (!a) return;
+      const kind = classifyOutbound(a.href);
+      if (!kind || window.location.pathname.startsWith('/admin')) return;
+      trackEvent({
+        event_type: kind,
+        page_path: window.location.pathname,
+        exit_destination: a.href.slice(0, 500),
+        product_title: (a.textContent || '').trim().slice(0, 120) || undefined,
+      });
+    };
+    document.addEventListener('click', onClick, true);
+    document.addEventListener('auxclick', onClick, true);
+    return () => {
+      document.removeEventListener('click', onClick, true);
+      document.removeEventListener('auxclick', onClick, true);
+    };
   }, []);
 
   useEffect(() => {
