@@ -637,6 +637,24 @@ export type Database = {
         }
         Relationships: []
       }
+      user_roles: {
+        Row: {
+          id: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Insert: {
+          id?: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Update: {
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
@@ -668,11 +686,37 @@ export type Database = {
         }
         Returns: string
       }
+      get_lead_checkins: {
+        Args: { _lead_id: string }
+        Returns: {
+          checkin_date: string
+          diet_done: boolean
+          shake_done: boolean
+          workout_done: boolean
+        }[]
+      }
       get_lead_dashboard: { Args: { _lead_id: string }; Returns: Json }
+      has_role: {
+        Args: {
+          _role: Database["public"]["Enums"]["app_role"]
+          _user_id: string
+        }
+        Returns: boolean
+      }
+      save_lead_checkin: {
+        Args: {
+          _checkin_date: string
+          _diet_done: boolean
+          _lead_id: string
+          _shake_done: boolean
+          _workout_done: boolean
+        }
+        Returns: undefined
+      }
       touch_lead_seen: { Args: { _lead_id: string }; Returns: undefined }
     }
     Enums: {
-      [_ in never]: never
+      app_role: "admin" | "user"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -799,6 +843,8 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      app_role: ["admin", "user"],
+    },
   },
 } as const

@@ -88,7 +88,7 @@ export default function DailyDashboard() {
 
       const [{ data: dash }, { data: checkins }] = await Promise.all([
         supabase.rpc("get_lead_dashboard", { _lead_id: id }),
-        supabase.from("daily_checkins").select("checkin_date, shake_done, workout_done, diet_done").eq("lead_id", id).order("checkin_date", { ascending: false }).limit(400),
+        supabase.rpc("get_lead_checkins", { _lead_id: id }),
       ]);
 
       const payload = (dash as unknown) as {
@@ -145,16 +145,13 @@ export default function DailyDashboard() {
     const next = { ...today, [field]: !today[field] };
     setToday(next);
     setSaving(true);
-    const { error } = await supabase.from("daily_checkins").upsert(
-      {
-        lead_id: leadId,
-        checkin_date: next.checkin_date,
-        shake_done: next.shake_done,
-        workout_done: next.workout_done,
-        diet_done: next.diet_done,
-      },
-      { onConflict: "lead_id,checkin_date" }
-    );
+    const { error } = await supabase.rpc("save_lead_checkin", {
+      _lead_id: leadId,
+      _checkin_date: next.checkin_date,
+      _shake_done: next.shake_done,
+      _workout_done: next.workout_done,
+      _diet_done: next.diet_done,
+    });
     setSaving(false);
     if (error) {
       console.error(error);
