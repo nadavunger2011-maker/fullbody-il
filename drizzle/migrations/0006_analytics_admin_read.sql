@@ -1,0 +1,2 @@
+drop policy "Authenticated users can read events" on public.analytics_events;
+create policy "Admins read events" on public.analytics_events for select to authenticated using (public.has_role(auth.uid(),'admin'));
