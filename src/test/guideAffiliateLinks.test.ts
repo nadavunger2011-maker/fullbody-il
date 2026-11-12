@@ -162,7 +162,7 @@ print('ok')
       const post = GUIDE_POSTS.find(p => p.slug === slug);
       if (!post) throw new Error(`Missing ${slug}`);
       expect(post.date).toBe('2026-11-05');
-      expect(post.updatedAt).toBe(slug === 'best-creatine-iherb' ? '2026-11-07' : '2026-11-05');
+      expect(post.updatedAt).toBe(slug === 'best-creatine-iherb' ? '2026-11-13' : '2026-11-05');
       expect(policy.indexed).toContain(slug);
       const doc = new DOMParser().parseFromString(post.content + post.faq.map(f => f.answer).join(''), 'text/html');
       for (const a of doc.querySelectorAll('a[href^="/"]')) {
@@ -184,7 +184,7 @@ print('ok')
       const post = GUIDE_POSTS.find(p => p.slug === slug);
       if (!post) throw new Error(`Missing ${slug}`);
       expect(post.date).toBe('2026-11-06');
-      expect(post.updatedAt).toBe(['best-protein-powder-iherb', 'whey-vs-plant-protein'].includes(slug) ? '2026-11-07' : '2026-11-06');
+      expect(post.updatedAt).toBe(slug === 'best-protein-powder-iherb' ? '2026-11-13' : slug === 'whey-vs-plant-protein' ? '2026-11-07' : '2026-11-06');
       expect(policy.indexed).toContain(slug);
       const doc = new DOMParser().parseFromString(post.content + post.faq.map(f => f.answer).join(''), 'text/html');
       for (const a of doc.querySelectorAll('a[href^="/"]')) expect(known.has(a.getAttribute('href') || '')).toBe(true);

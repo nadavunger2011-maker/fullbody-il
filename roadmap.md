@@ -1,5 +1,8 @@
 # Roadmap
 
+- [x] Update only the two approved comparison guides' SEO metadata and 2026-11-13 dates; regenerate guide data and verify preserved content, prerender and all 109 tests without publishing.
+- [ ] Submit those two comparison URLs to IndexNow: the documented vault-header HTTP cron pattern is blocked by the current scheduling tools; managed scheduling requires an IndexNow authentication change outside this metadata-only task.
+
 - [x] Add supplement link blocks on the homepage (12 links), seven real article destinations (3–4 each) and blog page 1 (15 guides); preserve article/commerce content; verify generated prerender HTML, desktop/mobile browser and all 92 tests. Not published.
 
 - [x] Build the approved 40-recipe ebook from byte-identical supplied scripts and 41 generated photos; visually inspect all 47 pages, verify 17 unique link URIs and no failed images/overflow. Saved at the requested public/downloads path; not published or linked from pages.
