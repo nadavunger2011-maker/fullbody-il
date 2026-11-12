@@ -145,6 +145,8 @@ for p in posts:
     if p['slug'] in m.EXPLICIT_AFFILIATE_ONLY:
         src = next(d for d in ['scripts/content/creatine-guides', 'scripts/content/protein-guides', 'scripts/content/magnesium-guides', 'scripts/content/practical-supplement-guides', 'scripts/content/supplement-guides-2026-11-09'] if Path(d, p['slug'] + '.md').exists())
         body, faq = m.convert(Path(src, p['slug'] + '.md').read_text(), auto_link_iherb=False, linked_faq=True, slug=p['slug'])
+        if p['slug'] in m.FURTHER_READING:
+            body = body + chr(10) + '<p>' + m.inline(m.FURTHER_READING[p['slug']], auto_link_iherb=False) + '</p>'
         assert body == p['content'] and faq == p['faq']
 assert m.aff_url('now_pea', 'x') == 'https://iherb.pxf.io/c/3215306/1665867/19332?subId1=x&u=https%3A%2F%2Fwww.iherb.com%2Fpr%2Fnow-foods-sports-pea-protein-pure-unflavored-2-lbs-907-g%2F9858'
 assert m.inline('iHerb [מוצר](https://iherb.pxf.io/bkB1YP)', auto_link_iherb=False) == 'iHerb ' + m.affiliate_link('מוצר', 'https://iherb.pxf.io/bkB1YP')
@@ -204,7 +206,7 @@ print('ok')
       expect(post.relatedProductHandles).toEqual([]);
       const policy = JSON.parse(readFileSync('supabase/functions/_shared/blog-index.json', 'utf8'));
       expect(policy.indexed).toContain(slug);
-      const known = new Set([...Object.keys(magnesiumGuides), 'gym-supplements-what-works'].map(s => `/blog/${s}`));
+      const known = new Set([...Object.keys(magnesiumGuides), 'magnesium-bisglycinate', 'gym-supplements-what-works'].map(s => `/blog/${s}`));
       const doc = new DOMParser().parseFromString(post.content + post.faq.map(f => f.answer).join(''), 'text/html');
       for (const a of doc.querySelectorAll('a[href^="/"]')) expect(known.has(a.getAttribute('href') || '')).toBe(true);
       expect([...doc.querySelectorAll('a')].some(a => a.textContent === 'iHerb')).toBe(false);

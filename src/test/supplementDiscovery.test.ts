@@ -6,13 +6,13 @@ import { prerenderPlugin } from '../../scripts/prerender-plugin';
 import { BLOG_DUPLICATE_REDIRECTS, isIndexedSlug } from '../lib/blogIndex';
 import { HOME_SUPPLEMENT_GUIDES, BLOG_SUPPLEMENT_GUIDES, POST_SUPPLEMENT_GUIDES, relatedSupplementSlugs, supplementGuideLinks } from '../lib/supplementGuideLinks';
 
-it('includes exactly the twelve requested homepage guides with existing indexed destinations', () => {
+it('includes exactly the thirteen requested homepage guides with existing indexed destinations', () => {
   expect(HOME_SUPPLEMENT_GUIDES).toEqual([
     'creatine-guide', 'best-creatine-iherb', 'protein-powder-types-guide', 'best-protein-powder-iherb',
     'whey-vs-plant-protein', 'casein-protein-before-sleep', 'mass-gainer-guide', 'pre-workout-guide',
-    'magnesium-types-guide', 'best-magnesium-iherb', 'magnesium-for-sleep', 'gym-supplements-what-works',
+    'magnesium-types-guide', 'best-magnesium-iherb', 'magnesium-bisglycinate', 'magnesium-for-sleep', 'gym-supplements-what-works',
   ]);
-  expect(supplementGuideLinks(BLOG_SUPPLEMENT_GUIDES)).toHaveLength(15);
+  expect(supplementGuideLinks(BLOG_SUPPLEMENT_GUIDES)).toHaveLength(16);
   for (const slug of BLOG_SUPPLEMENT_GUIDES) expect(isIndexedSlug(slug)).toBe(true);
 });
 

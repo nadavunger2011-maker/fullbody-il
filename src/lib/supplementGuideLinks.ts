@@ -7,7 +7,7 @@ export const HOME_SUPPLEMENT_GUIDES = [
   'creatine-guide', 'best-creatine-iherb', 'protein-powder-types-guide',
   'best-protein-powder-iherb', 'whey-vs-plant-protein', 'casein-protein-before-sleep',
   'mass-gainer-guide', 'pre-workout-guide', 'magnesium-types-guide',
-  'best-magnesium-iherb', 'magnesium-for-sleep', 'gym-supplements-what-works',
+  'best-magnesium-iherb', 'magnesium-bisglycinate', 'magnesium-for-sleep', 'gym-supplements-what-works',
 ];
 
 const trainingGuides = ['creatine-guide', 'pre-workout-guide', 'best-protein-after-workout'];
