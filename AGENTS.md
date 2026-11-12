@@ -17,3 +17,4 @@ New Instagram batches keep their slide specifications and captions together in r
 - Instagram guide eligibility is shared in the publisher policy; generic queued posts become paused without deletion, and protected scheduled carousel IDs remain eligible.
 - Generate public/llms.txt with scripts/build-llms.ts from guide H1s and the shared business disclosure so the AI-readable public guide list cannot drift.
 - The dessert ebook is rendered independently from the exact approved Python scripts under scripts/ebook with local Fontsource packages and numbered photos, so rebuilding the PDF does not change website pages or routes.
+- Supplement discovery blocks share slug mappings, source titles and redirect resolution between React and prerender; keep them outside article content so editorial and commerce text remain untouched.

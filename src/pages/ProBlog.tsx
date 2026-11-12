@@ -9,6 +9,8 @@ import ContentHeader from '@/components/ContentHeader';
 import { Skeleton } from '@/components/ui/skeleton';
 import { sanitizeClaimText } from '@/lib/blogContent';
 import { indexRank, isIndexedSlug, POPULAR_GUIDE_COUNT } from '@/lib/blogIndex';
+import SupplementGuideLinks from '@/components/SupplementGuideLinks';
+import { BLOG_SUPPLEMENT_GUIDES } from '@/lib/supplementGuideLinks';
 
 export default function ProBlog() {
   const [selectedCategory, setSelectedCategory] = useState('all');
@@ -66,6 +68,8 @@ export default function ProBlog() {
           </div>
         </section>
       )}
+
+      <SupplementGuideLinks title="מדריכי תוספים למתאמנים" slugs={BLOG_SUPPLEMENT_GUIDES} />
 
       {/* Categories */}
       <section className="py-8 border-b border-border bg-card">

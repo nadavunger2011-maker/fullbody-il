@@ -1,5 +1,7 @@
 # Roadmap
 
+- [x] Add supplement link blocks on the homepage (12 links), seven real article destinations (3–4 each) and blog page 1 (15 guides); preserve article/commerce content; verify generated prerender HTML, desktop/mobile browser and all 92 tests. Not published.
+
 - [x] Build the approved 40-recipe ebook from byte-identical supplied scripts and 41 generated photos; visually inspect all 47 pages, verify 17 unique link URIs and no failed images/overflow. Saved at the requested public/downloads path; not published or linked from pages.
 
 - [x] Add one relevant guide-reading box to 17 approved traffic posts at their real source (15 DB, 2 code); preserve other text and verify prerender/browser. Skip the already-linked workout post and the omega post without relevant allowed targets.

@@ -6,6 +6,8 @@ import { pickHomeGuides } from '@/lib/blogIndex';
 import { sanitizeClaimText } from '@/lib/blogContent';
 import ContentHeader from '@/components/ContentHeader';
 import ProFooter from '@/components/ProFooter';
+import SupplementGuideLinks from '@/components/SupplementGuideLinks';
+import { HOME_SUPPLEMENT_GUIDES } from '@/lib/supplementGuideLinks';
 
 const TITLE = 'FullBody – מדריכי תזונה, חלבון וכושר בגובה העיניים';
 const DESCRIPTION = 'טיפים כנים לתזונה מאוזנת, חלבון ואימונים: מדריכים, מתכונים ומחשבון חלבון יומי. בלי הבטחות ובלי דיאטות קיצוניות.';
@@ -36,6 +38,8 @@ export default function ProBody() {
             </div>
           </div>
         </section>
+
+        <SupplementGuideLinks title="מדריכי תוספים למתאמנים" slugs={HOME_SUPPLEMENT_GUIDES} />
 
         <section className="py-16" aria-labelledby="popular-heading">
           <div className="container mx-auto px-4">

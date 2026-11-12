@@ -13,6 +13,7 @@ import { HOME_STRENGTH_SLUG, HOME_STRENGTH_SEO_TITLE } from "../src/data/homeStr
 import { GUIDE_POSTS } from "../src/data/guidePosts";
 import { HOME_FEATURED_SLUGS, CALCULATOR_RELATED_SLUGS } from "../src/lib/blogIndex";
 import { LEGACY_PRODUCT_HANDLES, legacyProductTarget } from "../src/lib/legacyProductRedirects";
+import { HOME_SUPPLEMENT_GUIDES, BLOG_SUPPLEMENT_GUIDES, relatedSupplementSlugs, supplementGuideBlockHtml } from "../src/lib/supplementGuideLinks";
 
 const BASE = "https://fullbody.co.il";
 const guideLinks = (slugs: string[]) => slugs.map((s) => GUIDE_POSTS.find((p) => p.slug === s)).filter(Boolean).map((p) => `<li><a href="/blog/${p!.slug}">${p!.title.replace(/&/g, "&amp;").replace(/</g, "&lt;")}</a></li>`).join("");
@@ -175,7 +176,8 @@ function articlePage(p: Post, indexed: boolean, related: Post[]): Page {
       + `<aside><strong>על הכותב:</strong> ${AUTHOR}, מפיץ עצמאי מורשה של Herbalife. <a href="/about">עוד עליי</a><p>${esc(TRANSPARENCY_DISCLOSURE)}</p></aside>`
       + (p.slug === HOME_STRENGTH_SLUG || p.slug.startsWith('magnesium-') || p.slug === 'best-magnesium-iherb' || ['protein-bars-guide', 'pre-workout-guide', 'multivitamin-for-athletes', 'bcaa-guide', 'fat-burner-guide', 'omega-3-for-athletes'].includes(p.slug) ? '' : `<aside><a href="https://shop.fullbody.co.il/?utm_source=blog&amp;utm_medium=article&amp;utm_campaign=${encodeURIComponent(p.slug)}">ספר קינוחי חלבון במתנה</a></aside>`)
       + `<p><strong>המידע אינו מהווה ייעוץ רפואי. בהריון, הנקה, מצב רפואי או נטילת תרופות – יש להתייעץ עם רופא.</strong></p>`
-      + relatedHtml,
+      + relatedHtml
+      + supplementGuideBlockHtml('מדריכים קשורים', relatedSupplementSlugs(p.slug)),
   };
 }
 
@@ -213,6 +215,7 @@ export function prerenderPlugin(): Plugin {
         path: "/blog", title: "בלוג תזונה וכושר | FullBody", h1: "בלוג FullBody",
         description: "מידע כללי בנושאי תזונה, חלבון, כושר וניהול משקל כחלק מאורח חיים פעיל.",
         body: `<section><h2>המדריכים הפופולריים</h2><ul>${indexedPosts.slice(0, 6).map((p) => `<li><a href="${encPath(`/blog/${p.slug}`)}">${esc(p.title)}</a></li>`).join("")}</ul></section>`
+          + supplementGuideBlockHtml('מדריכי תוספים למתאמנים', BLOG_SUPPLEMENT_GUIDES)
           + `<section><h2>כל המאמרים</h2><ul>${listing.map((p) => `<li><a href="${encPath(`/blog/${p.slug}`)}">${esc(p.title)}</a></li>`).join("")}</ul></section>`,
       };
 
@@ -224,7 +227,13 @@ export function prerenderPlugin(): Plugin {
         write(outDir, path, html);
         count++;
       }
-      for (const page of [...STATIC_PAGES, blogPage]) { write(outDir, page.path, renderHtml(template, page)); count++; }
+      for (const page of [...STATIC_PAGES, blogPage]) {
+        const renderedPage = page.path === '/' ? {
+          ...page,
+          body: page.body.replace('<section><h2>המדריכים הפופולריים', `${supplementGuideBlockHtml('מדריכי תוספים למתאמנים', HOME_SUPPLEMENT_GUIDES)}<section><h2>המדריכים הפופולריים`),
+        } : page;
+        write(outDir, page.path, renderHtml(template, renderedPage)); count++;
+      }
       for (const p of bySlug.values()) {
         if (redirects[p.slug]) continue;
         const indexed = indexedSet.has(p.slug);
