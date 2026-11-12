@@ -299,6 +299,8 @@ export default function AdminDashboard() {
     navigate('/admin');
   }
 
+  const blog = useMemo(() => summarizeBlog(events as any), [events]);
+
   if (isLoading) {
     return (
       <div className="min-h-screen bg-[#0f1117] flex items-center justify-center">
@@ -306,8 +308,6 @@ export default function AdminDashboard() {
       </div>
     );
   }
-
-  const blog = useMemo(() => summarizeBlog(events as any), [events]);
 
   const statCards = [
     { label: 'ביקורים', value: blog.sessions.toLocaleString(), icon: Users, color: 'text-blue-400', bg: 'bg-blue-500/10' },
