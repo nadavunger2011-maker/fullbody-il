@@ -637,6 +637,54 @@ export type Database = {
         }
         Relationships: []
       }
+      telegram_posts: {
+        Row: {
+          body_html: string
+          button_text: string | null
+          button_url: string | null
+          created_at: string
+          error: string | null
+          id: string
+          image_url: string | null
+          published_at: string | null
+          scheduled_for: string
+          status: string
+          sub_id: string
+          telegram_message_id: number | null
+          title: string
+        }
+        Insert: {
+          body_html: string
+          button_text?: string | null
+          button_url?: string | null
+          created_at?: string
+          error?: string | null
+          id?: string
+          image_url?: string | null
+          published_at?: string | null
+          scheduled_for: string
+          status?: string
+          sub_id: string
+          telegram_message_id?: number | null
+          title: string
+        }
+        Update: {
+          body_html?: string
+          button_text?: string | null
+          button_url?: string | null
+          created_at?: string
+          error?: string | null
+          id?: string
+          image_url?: string | null
+          published_at?: string | null
+          scheduled_for?: string
+          status?: string
+          sub_id?: string
+          telegram_message_id?: number | null
+          title?: string
+        }
+        Relationships: []
+      }
       user_roles: {
         Row: {
           id: string
@@ -663,6 +711,30 @@ export type Database = {
       claim_instagram_daily_post: {
         Args: { _post_id: string }
         Returns: boolean
+      }
+      claim_telegram_post: {
+        Args: never
+        Returns: {
+          body_html: string
+          button_text: string | null
+          button_url: string | null
+          created_at: string
+          error: string | null
+          id: string
+          image_url: string | null
+          published_at: string | null
+          scheduled_for: string
+          status: string
+          sub_id: string
+          telegram_message_id: number | null
+          title: string
+        }[]
+        SetofOptions: {
+          from: "*"
+          to: "telegram_posts"
+          isOneToOne: false
+          isSetofReturn: true
+        }
       }
       create_plan_lead: {
         Args: {
@@ -713,7 +785,16 @@ export type Database = {
         }
         Returns: undefined
       }
+      telegram_article_url: {
+        Args: { _path: string; _sub_id: string }
+        Returns: string
+      }
+      telegram_iherb_url: {
+        Args: { _product_url: string; _sub_id: string }
+        Returns: string
+      }
       touch_lead_seen: { Args: { _lead_id: string }; Returns: undefined }
+      uri_encode_component: { Args: { _t: string }; Returns: string }
     }
     Enums: {
       app_role: "admin" | "user"

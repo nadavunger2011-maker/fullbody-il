@@ -20,7 +20,8 @@ import AdminLeadsTimeline from '@/components/admin/AdminLeadsTimeline';
 import AdminBlogWebhook from '@/components/admin/AdminBlogWebhook';
 import AdminBlogAffiliate from '@/components/admin/AdminBlogAffiliate';
 import { summarizeBlog } from '@/lib/outboundClicks';
-import { BookOpen, Webhook, ClipboardList } from 'lucide-react';
+import { BookOpen, Webhook, ClipboardList, Send } from 'lucide-react';
+import AdminTelegramQueue from '@/components/admin/AdminTelegramQueue';
 
 type DateRange = '7d' | '30d' | '90d' | 'all';
 
@@ -64,7 +65,7 @@ export default function AdminDashboard() {
   const [adSpend, setAdSpend] = useState<AdSpendRow[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [dateRange, setDateRange] = useState<DateRange>('30d');
-  const [activeTab, setActiveTab] = useState<'overview' | 'products' | 'traffic' | 'funnel' | 'adspend' | 'ai' | 'consultant' | 'api' | 'reviews' | 'recipes' | 'blog' | 'leads'>('overview');
+  const [activeTab, setActiveTab] = useState<'overview' | 'products' | 'traffic' | 'funnel' | 'adspend' | 'ai' | 'consultant' | 'api' | 'reviews' | 'recipes' | 'blog' | 'leads' | 'telegram'>('overview');
   const [apiCredentials, setApiCredentials] = useState<{ supabase_url: string; service_role_key: string; anon_key: string } | null>(null);
   const [isApiLoading, setIsApiLoading] = useState(false);
   const [aiAnalysis, setAiAnalysis] = useState<string>('');
@@ -378,6 +379,7 @@ export default function AdminDashboard() {
     { id: 'leads' as const, label: 'נרשמים לתוכנית', icon: ClipboardList },
     { id: 'recipes' as const, label: 'מתכונים', icon: BookOpen },
     { id: 'blog' as const, label: 'בלוג / Webhook', icon: Webhook },
+    { id: 'telegram' as const, label: 'טלגרם', icon: Send },
     { id: 'reviews' as const, label: 'ביקורות', icon: Star },
     { id: 'traffic' as const, label: 'מקורות תנועה', icon: Globe },
     { id: 'adspend' as const, label: 'הוצאות פרסום', icon: DollarSign },
@@ -499,6 +501,8 @@ export default function AdminDashboard() {
               <AdminBlogAffiliate summary={blog} />
             </div>
           )}
+
+          {activeTab === 'telegram' && <AdminTelegramQueue />}
 
           {/* Funnel & Abandonment Tab */}
           {activeTab === 'funnel' && (
