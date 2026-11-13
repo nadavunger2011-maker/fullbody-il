@@ -16,7 +16,7 @@ import DessertBookBanner from '@/components/DessertBookBanner';
 import { HOME_STRENGTH_SLUG, HOME_STRENGTH_SEO_TITLE, HOME_STRENGTH_IMAGE_ALT } from '@/data/homeStrengthSeo';
 import TelegramChannelCta from '@/components/TelegramChannelCta';
 import SupplementGuideLinks from '@/components/SupplementGuideLinks';
-import { relatedSupplementSlugs } from '@/lib/supplementGuideLinks';
+import { relatedSupplementSlugs, relatedHerbalifeSlugs, HERBALIFE_GUIDES_TITLE } from '@/lib/supplementGuideLinks';
 
 export default function ProBlogPost() {
   const { slug } = useParams();
@@ -277,6 +277,7 @@ function ProBlogPostInner() {
       )}
 
       <SupplementGuideLinks title="מדריכים קשורים" slugs={relatedSupplementSlugs(post.slug)} />
+      <SupplementGuideLinks title={HERBALIFE_GUIDES_TITLE} slugs={relatedHerbalifeSlugs(post.slug)} />
 
       <section className="py-8">
         <div className="container mx-auto px-4 text-center">

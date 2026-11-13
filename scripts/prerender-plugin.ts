@@ -13,7 +13,7 @@ import { HOME_STRENGTH_SLUG, HOME_STRENGTH_SEO_TITLE } from "../src/data/homeStr
 import { GUIDE_POSTS } from "../src/data/guidePosts";
 import { HOME_FEATURED_SLUGS, CALCULATOR_RELATED_SLUGS } from "../src/lib/blogIndex";
 import { LEGACY_PRODUCT_HANDLES, legacyProductTarget } from "../src/lib/legacyProductRedirects";
-import { HOME_SUPPLEMENT_GUIDES, BLOG_SUPPLEMENT_GUIDES, relatedSupplementSlugs, supplementGuideBlockHtml } from "../src/lib/supplementGuideLinks";
+import { HOME_SUPPLEMENT_GUIDES, BLOG_SUPPLEMENT_GUIDES, relatedSupplementSlugs, relatedHerbalifeSlugs, HERBALIFE_GUIDES_TITLE, supplementGuideBlockHtml } from "../src/lib/supplementGuideLinks";
 import { telegramCtaHtml } from "../src/lib/telegramChannel";
 
 const BASE = "https://fullbody.co.il";
@@ -178,7 +178,8 @@ function articlePage(p: Post, indexed: boolean, related: Post[]): Page {
       + (p.slug === HOME_STRENGTH_SLUG || p.slug.startsWith('magnesium-') || p.slug === 'best-magnesium-iherb' || ['protein-bars-guide', 'pre-workout-guide', 'multivitamin-for-athletes', 'bcaa-guide', 'fat-burner-guide', 'omega-3-for-athletes'].includes(p.slug) ? '' : `<aside><a href="https://shop.fullbody.co.il/?utm_source=blog&amp;utm_medium=article&amp;utm_campaign=${encodeURIComponent(p.slug)}">ספר קינוחי חלבון במתנה</a></aside>`)
       + `<p><strong>המידע אינו מהווה ייעוץ רפואי. בהריון, הנקה, מצב רפואי או נטילת תרופות – יש להתייעץ עם רופא.</strong></p>`
       + relatedHtml
-      + supplementGuideBlockHtml('מדריכים קשורים', relatedSupplementSlugs(p.slug)),
+      + supplementGuideBlockHtml('מדריכים קשורים', relatedSupplementSlugs(p.slug))
+      + supplementGuideBlockHtml(HERBALIFE_GUIDES_TITLE, relatedHerbalifeSlugs(p.slug)),
   };
 }
 

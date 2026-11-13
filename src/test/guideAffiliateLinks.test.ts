@@ -143,7 +143,7 @@ m = importlib.util.module_from_spec(spec); spec.loader.exec_module(m)
 posts = json.loads(re.search(r'= (\\[.*\\]);', Path('src/data/guidePosts.ts').read_text(), re.S).group(1))
 for p in posts:
     if p['slug'] in m.EXPLICIT_AFFILIATE_ONLY:
-        src = next(d for d in ['scripts/content/creatine-guides', 'scripts/content/protein-guides', 'scripts/content/magnesium-guides', 'scripts/content/practical-supplement-guides', 'scripts/content/supplement-guides-2026-11-09'] if Path(d, p['slug'] + '.md').exists())
+        src = next(d for d in ['scripts/content/creatine-guides', 'scripts/content/protein-guides', 'scripts/content/magnesium-guides', 'scripts/content/practical-supplement-guides', 'scripts/content/supplement-guides-2026-11-09', 'scripts/content/herbalife-guides'] if Path(d, p['slug'] + '.md').exists())
         body, faq = m.convert(Path(src, p['slug'] + '.md').read_text(), auto_link_iherb=False, linked_faq=True, slug=p['slug'])
         if p['slug'] in m.FURTHER_READING:
             body = body + chr(10) + '<p>' + m.inline(m.FURTHER_READING[p['slug']], auto_link_iherb=False) + '</p>'

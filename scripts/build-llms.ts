@@ -24,6 +24,9 @@ export const AI_GUIDES: Record<string, string> = {
   'bcaa-guide': 'מה BCAA עושות, מה המחקר אומר ולמי הן מתאימות.',
   'fat-burner-guide': 'מה יש בשורפי שומן, מגבלותיהם ובטיחות קפאין.',
   'omega-3-for-athletes': 'כמה EPA ו-DHA צריך ואיך לבחור שמן דגים.',
+  'herbalife24-guide': 'סדרת הספורט H24: Rebuild Strength, חטיפי Achieve ובדיקות Informed Sport.',
+  'herbalife-protein-powder': 'ההבדל בין PDM לאבקת חלבון מותאמת אישית של הרבלייף.',
+  'herbalife-breakfast-routine': 'שגרת בוקר עם פורמולה 1, תוספת חלבון ופורמולה 2.',
 };
 
 export function buildLlms() {

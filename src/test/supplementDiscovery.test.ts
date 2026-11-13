@@ -4,7 +4,7 @@ import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { prerenderPlugin } from '../../scripts/prerender-plugin';
 import { BLOG_DUPLICATE_REDIRECTS, isIndexedSlug } from '../lib/blogIndex';
-import { HOME_SUPPLEMENT_GUIDES, BLOG_SUPPLEMENT_GUIDES, POST_SUPPLEMENT_GUIDES, relatedSupplementSlugs, supplementGuideLinks } from '../lib/supplementGuideLinks';
+import { HOME_SUPPLEMENT_GUIDES, BLOG_SUPPLEMENT_GUIDES, POST_SUPPLEMENT_GUIDES, relatedHerbalifeSlugs, relatedSupplementSlugs, supplementGuideLinks } from '../lib/supplementGuideLinks';
 
 it('includes exactly the thirteen requested homepage guides with existing indexed destinations', () => {
   expect(HOME_SUPPLEMENT_GUIDES).toEqual([
@@ -44,8 +44,12 @@ it('writes crawlable discovery blocks on homepage, blog page 1 and all seven rea
     ];
     for (const [path, slugs] of cases) {
       const doc = new DOMParser().parseFromString(readFileSync(join(dir, path), 'utf8'), 'text/html');
-      const blocks = doc.querySelectorAll('[data-supplement-guides]');
+      const blocks = doc.querySelectorAll('[data-supplement-guides]:not([aria-label="מדריכי הרבלייף"])');
       expect(blocks.length, path).toBe(1);
+      const herbalife = doc.querySelector('[data-supplement-guides][aria-label="מדריכי הרבלייף"]');
+      const herbalifeSlugs = relatedHerbalifeSlugs(path.split('/')[1] ?? '');
+      expect(Array.from(herbalife?.querySelectorAll('li a') ?? []).map(a => a.getAttribute('href')), path)
+        .toEqual(herbalifeSlugs.map(s => `/blog/${s}`));
       const links = Array.from(blocks[0].querySelectorAll('li a'));
       expect(links.map(a => a.getAttribute('href')), path).toEqual(supplementGuideLinks(slugs).map(link => link.href));
     }

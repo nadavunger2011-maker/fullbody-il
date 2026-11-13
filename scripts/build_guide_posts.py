@@ -10,7 +10,8 @@ EXPLICIT_AFFILIATE_ONLY = {"best-creatine-iherb", "creatine-monohydrate-vs-hcl",
                            "best-protein-powder-iherb", "casein-protein-before-sleep", "protein-powder-for-women", "whey-vs-plant-protein",
                            "magnesium-types-guide", "best-magnesium-iherb", "magnesium-oxide", "magnesium-for-sleep",
                            "protein-bars-guide", "pre-workout-guide", "multivitamin-for-athletes",
-                           "bcaa-guide", "fat-burner-guide", "omega-3-for-athletes", "magnesium-bisglycinate"}
+                           "bcaa-guide", "fat-burner-guide", "omega-3-for-athletes", "magnesium-bisglycinate",
+                           "herbalife24-guide", "herbalife-protein-powder", "herbalife-breakfast-routine"}
 LINKS = {
     "מחשבון החלבון היומי": "/protein-calculator",
     "מתכוני שייקים עם חלבון": "/blog/protein-shake-recipes",
@@ -38,7 +39,31 @@ LINKS = {
     "BCAA": "/blog/bcaa-guide",
     "שורף שומן": "/blog/fat-burner-guide",
     "אומגה 3 לספורטאים": "/blog/omega-3-for-athletes",
+    "שגרת בוקר עם פורמולה 1": "/blog/herbalife-breakfast-routine",
+    "אבקת חלבון הרבלייף": "/blog/herbalife-protein-powder",
+    "Herbalife24": "/blog/herbalife24-guide",
 }
+
+# (SHOP:key) placeholders -> the owner's own Herbalife shop (not sponsored), with per-article UTM.
+SHOP_PRODUCTS = {
+    "rebuild": "https://shop.fullbody.co.il/products/h24-rebuild-strength-%D7%A9%D7%95%D7%A7%D7%95%D7%9C%D7%93-1-%D7%A7%D7%92",
+    "achieve": "https://shop.fullbody.co.il/products/%D7%97%D7%98%D7%99%D7%A3-%D7%97%D7%9C%D7%91%D7%95%D7%9F-h24-achieve-%D7%A9%D7%95%D7%A7%D7%95%D7%9C%D7%93-%D7%9E%D7%A8%D7%99%D7%A8",
+    "pdm": "https://shop.fullbody.co.il/products/%D7%90%D7%91%D7%A7%D7%AA-%D7%97%D7%9C%D7%91%D7%95%D7%9F-pdm-%D7%AA%D7%95%D7%A1%D7%A4%D7%AA-%D7%97%D7%9C%D7%91%D7%95%D7%9F-%D7%9C%D7%A9%D7%99%D7%99%D7%A7",
+    "protein": "https://shop.fullbody.co.il/products/%D7%90%D7%91%D7%A7%D7%AA-%D7%97%D7%9C%D7%91%D7%95%D7%9F-%D7%94%D7%A8%D7%91%D7%9C%D7%99%D7%99%D7%A3",
+    "f1": "https://shop.fullbody.co.il/products/%D7%90%D7%91%D7%A7%D7%AA-%D7%A4%D7%95%D7%A8%D7%9E%D7%95%D7%9C%D7%94-1-%D7%95%D7%A0%D7%99%D7%9C-550-%D7%92%D7%A8%D7%9D",
+    "f1kosher": "https://shop.fullbody.co.il/products/%D7%A4%D7%95%D7%A8%D7%9E%D7%95%D7%9C%D7%94-1-%D7%95%D7%A0%D7%99%D7%9C-%D7%9B%D7%A9%D7%A8-%D7%9C%D7%9E%D7%94%D7%93%D7%A8%D7%99%D7%9F",
+    "f2men": "https://shop.fullbody.co.il/products/%D7%A4%D7%95%D7%A8%D7%9E%D7%95%D7%9C%D7%94-2-%D7%A7%D7%95%D7%9E%D7%A4%D7%9C%D7%A7%D7%A1-%D7%95%D7%99%D7%98%D7%9E%D7%99%D7%A0%D7%99%D7%9D-%D7%95%D7%9E%D7%99%D7%A0%D7%A8%D7%9C%D7%99%D7%9D-%D7%9C%D7%92%D7%91%D7%A8%D7%99%D7%9D",
+    "f2women": "https://shop.fullbody.co.il/products/%D7%A4%D7%95%D7%A8%D7%9E%D7%95%D7%9C%D7%94-2-%D7%A7%D7%95%D7%9E%D7%A4%D7%9C%D7%A7%D7%A1-%D7%95%D7%99%D7%98%D7%9E%D7%99%D7%A0%D7%99%D7%9D-%D7%95%D7%9E%D7%99%D7%A0%D7%A8%D7%9C%D7%99%D7%9D-%D7%9C%D7%A0%D7%A9%D7%99%D7%9D",
+}
+
+def shop_link(label: str, key: str, slug: str) -> str:
+    if key not in SHOP_PRODUCTS:
+        raise SystemExit(f"unknown SHOP key: {key}")
+    if not slug:
+        raise SystemExit("SHOP placeholder needs the article slug")
+    url = f"{SHOP_PRODUCTS[key]}?utm_source=fullbody_blog&utm_medium=guide&utm_campaign={slug}"
+    return f'<a href="{html.escape(url, quote=True)}" rel="noopener">{label}</a>'
+
 
 # (AFF:key) placeholders -> tracked deeplink with subId1 = the article's slug.
 AFF_PRODUCTS = {
@@ -128,6 +153,8 @@ def inline(t: str, auto_link_iherb: bool = True, slug: str = "") -> str:
         label, url = m.group(1), m.group(2)
         if url and url.startswith("AFF:"):
             parts.append(affiliate_link(label, aff_url(url[4:], slug)))
+        elif url and url.startswith("SHOP:"):
+            parts.append(shop_link(label, url[5:], slug))
         elif url:
             if not url.startswith("https://iherb.pxf.io/"):
                 raise SystemExit(f"unsupported external link: {url}")

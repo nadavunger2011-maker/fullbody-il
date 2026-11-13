@@ -21,6 +21,15 @@ export const POST_SUPPLEMENT_GUIDES: Record<string, string[]> = {
   'functional-strength-training-daily': trainingGuides,
 };
 
+export const HERBALIFE_GUIDES = ['herbalife24-guide', 'herbalife-protein-powder', 'herbalife-breakfast-routine'];
+export const HERBALIFE_GUIDES_TITLE = 'מדריכי הרבלייף';
+const POSTS_WITH_HERBALIFE_GUIDES = ['meal-replacement-shakes-guide', 'formula1-meal-replacement-guide', 'aloe-vera-benefits-digestion'];
+
+export function relatedHerbalifeSlugs(slug: string): string[] {
+  const realSlug = BLOG_DUPLICATE_REDIRECTS[slug] ?? slug;
+  return POSTS_WITH_HERBALIFE_GUIDES.some(source => (BLOG_DUPLICATE_REDIRECTS[source] ?? source) === realSlug) ? HERBALIFE_GUIDES : [];
+}
+
 export const BLOG_SUPPLEMENT_GUIDES = [...new Set([
   ...HOME_SUPPLEMENT_GUIDES, ...Object.values(POST_SUPPLEMENT_GUIDES).flat(),
 ])];
