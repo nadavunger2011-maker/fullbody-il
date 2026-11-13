@@ -1,3 +1,5 @@
+// Public channel username (not secret); env TELEGRAM_CHANNEL_ID overrides it.
+const TELEGRAM_CHANNEL_ID_DEFAULT = "@Fullbodeals";
 import postgres from "npm:postgres@3.4.4";
 import { corsHeaders } from "npm:@supabase/supabase-js@2/cors";
 import { publishOnce, type TelegramPost } from "./policy.ts";
@@ -26,7 +28,7 @@ Deno.serve(async (req) => {
     const lovableKey = Deno.env.get("LOVABLE_API_KEY");
     const telegramKey = Deno.env.get("TELEGRAM_API_KEY");
     const result = await publishOnce({
-      chatId: Deno.env.get("TELEGRAM_CHANNEL_ID")?.trim() || undefined,
+      chatId: Deno.env.get("TELEGRAM_CHANNEL_ID")?.trim() || TELEGRAM_CHANNEL_ID_DEFAULT,
       hasConnector: !!lovableKey && !!telegramKey,
       log: console.log,
       claim: async () => ((await sql`select * from public.claim_telegram_post()`)[0] as TelegramPost | undefined) ?? null,
