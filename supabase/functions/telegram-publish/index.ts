@@ -27,6 +27,8 @@ Deno.serve(async (req) => {
 
     const lovableKey = Deno.env.get("LOVABLE_API_KEY");
     const telegramKey = Deno.env.get("TELEGRAM_API_KEY");
+    const missing = [!lovableKey && "LOVABLE_API_KEY", !telegramKey && "TELEGRAM_API_KEY"].filter(Boolean);
+    if (missing.length) console.log(`telegram-publish: missing env ${missing.join(", ")}`);
     const result = await publishOnce({
       chatId: Deno.env.get("TELEGRAM_CHANNEL_ID")?.trim() || TELEGRAM_CHANNEL_ID_DEFAULT,
       hasConnector: !!lovableKey && !!telegramKey,
@@ -54,7 +56,7 @@ Deno.serve(async (req) => {
         await sql`update public.telegram_posts set status='failed', error=${error} where id=${id}`;
       },
     });
-    return json(result);
+    return json(missing.length ? { ...result, missing } : result);
   } catch (e) {
     console.error("telegram-publish error", e);
     return json({ error: e instanceof Error ? e.message : String(e) }, 500);
