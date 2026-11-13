@@ -14,6 +14,7 @@ import { normalizeBlogContent, splitContentByH2, appendDisclaimer, sanitizeClaim
 import ContentHeader from '@/components/ContentHeader';
 import DessertBookBanner from '@/components/DessertBookBanner';
 import { HOME_STRENGTH_SLUG, HOME_STRENGTH_SEO_TITLE, HOME_STRENGTH_IMAGE_ALT } from '@/data/homeStrengthSeo';
+import TelegramChannelCta from '@/components/TelegramChannelCta';
 import SupplementGuideLinks from '@/components/SupplementGuideLinks';
 import { relatedSupplementSlugs } from '@/lib/supplementGuideLinks';
 
@@ -198,6 +199,8 @@ function ProBlogPostInner() {
           </div>
         </div>
       </article>
+
+      {approvedGuide && <div className="container mx-auto px-4"><TelegramChannelCta /></div>}
 
       {post.faq.length > 0 && !homeStrength && (
         <section className="py-12 bg-secondary/30">

@@ -46,9 +46,16 @@ it('writes crawlable discovery blocks on homepage, blog page 1 and all seven rea
       const doc = new DOMParser().parseFromString(readFileSync(join(dir, path), 'utf8'), 'text/html');
       const blocks = doc.querySelectorAll('[data-supplement-guides]');
       expect(blocks.length, path).toBe(1);
-      const links = Array.from(blocks[0].querySelectorAll('a'));
+      const links = Array.from(blocks[0].querySelectorAll('li a'));
       expect(links.map(a => a.getAttribute('href')), path).toEqual(supplementGuideLinks(slugs).map(link => link.href));
     }
+    const home = new DOMParser().parseFromString(readFileSync(join(dir, 'index.html'), 'utf8'), 'text/html');
+    expect(home.querySelector('[data-supplement-guides] [data-telegram-cta] a')?.getAttribute('href')).toBe('https://t.me/Fullbodeals');
+    const guide = readFileSync(join(dir, 'blog/magnesium-bisglycinate/index.html'), 'utf8');
+    const cta = guide.indexOf('data-telegram-cta');
+    expect(cta).toBeGreaterThan(guide.indexOf('</article>'));
+    expect(cta).toBeLessThan(guide.indexOf('<h2>שאלות ותשובות</h2>'));
+    expect(guide).toContain('href="https://t.me/Fullbodeals" target="_blank" rel="noopener"');
     expect(relatedSupplementSlugs('omega-3-for-athletes')).toEqual([]);
   } finally { rmSync(dir, { recursive: true, force: true }); }
 }, 30000);

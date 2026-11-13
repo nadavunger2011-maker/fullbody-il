@@ -23,3 +23,10 @@ describe('outbound click tracking', () => {
     expect(s.clickRate).toBe(50);
   });
 });
+
+describe('telegram channel clicks', () => {
+  it('classifies t.me links as telegram_click', () => {
+    expect(classifyOutbound('https://t.me/Fullbodeals')).toBe('telegram_click');
+    expect(classifyOutbound('https://evil-t.me/x')).toBeNull();
+  });
+});

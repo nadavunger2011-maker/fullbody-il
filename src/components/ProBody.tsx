@@ -7,6 +7,7 @@ import { sanitizeClaimText } from '@/lib/blogContent';
 import ContentHeader from '@/components/ContentHeader';
 import ProFooter from '@/components/ProFooter';
 import SupplementGuideLinks from '@/components/SupplementGuideLinks';
+import TelegramChannelCta from '@/components/TelegramChannelCta';
 import { HOME_SUPPLEMENT_GUIDES } from '@/lib/supplementGuideLinks';
 
 const TITLE = 'FullBody – מדריכי תזונה, חלבון וכושר בגובה העיניים';
@@ -39,7 +40,7 @@ export default function ProBody() {
           </div>
         </section>
 
-        <SupplementGuideLinks title="מדריכי תוספים למתאמנים" slugs={HOME_SUPPLEMENT_GUIDES} />
+        <SupplementGuideLinks title="מדריכי תוספים למתאמנים" slugs={HOME_SUPPLEMENT_GUIDES} footer={<TelegramChannelCta inline />} />
 
         <section className="py-16" aria-labelledby="popular-heading">
           <div className="container mx-auto px-4">

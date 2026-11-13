@@ -43,8 +43,8 @@ export function supplementGuideLinks(slugs: string[]) {
 
 const escapeHtml = (value: string) => value.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 
-export function supplementGuideBlockHtml(title: string, slugs: string[]): string {
+export function supplementGuideBlockHtml(title: string, slugs: string[], footerHtml = ''): string {
   const links = supplementGuideLinks(slugs);
   if (!links.length) return '';
-  return `<section data-supplement-guides aria-label="${escapeHtml(title)}"><h2>${escapeHtml(title)}</h2><ul>${links.map(link => `<li><a href="${escapeHtml(link.href)}">${escapeHtml(link.title)}</a></li>`).join('')}</ul></section>`;
+  return `<section data-supplement-guides aria-label="${escapeHtml(title)}"><h2>${escapeHtml(title)}</h2><ul>${links.map(link => `<li><a href="${escapeHtml(link.href)}">${escapeHtml(link.title)}</a></li>`).join('')}</ul>${footerHtml}</section>`;
 }

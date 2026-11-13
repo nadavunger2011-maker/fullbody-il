@@ -1,6 +1,7 @@
+import type { ReactNode } from 'react';
 import { supplementGuideLinks } from '@/lib/supplementGuideLinks';
 
-export default function SupplementGuideLinks({ title, slugs }: { title: string; slugs: string[] }) {
+export default function SupplementGuideLinks({ title, slugs, footer }: { title: string; slugs: string[]; footer?: ReactNode }) {
   const links = supplementGuideLinks(slugs);
   if (!links.length) return null;
   return (
@@ -10,6 +11,7 @@ export default function SupplementGuideLinks({ title, slugs }: { title: string; 
         <ul className="grid gap-x-8 gap-y-3 sm:grid-cols-2">
           {links.map(link => <li key={link.slug}><a href={link.href} className="font-medium text-primary underline underline-offset-4 hover:text-accent">{link.title}</a></li>)}
         </ul>
+        {footer}
       </div>
     </section>
   );

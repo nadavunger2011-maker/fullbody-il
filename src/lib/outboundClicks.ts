@@ -1,4 +1,4 @@
-export type OutboundKind = 'affiliate_click' | 'shop_click';
+export type OutboundKind = 'affiliate_click' | 'shop_click' | 'telegram_click';
 
 /** Classify an outbound link: iHerb affiliate/iHerb links vs. the separate shop. */
 export function classifyOutbound(href: string): OutboundKind | null {
@@ -6,6 +6,7 @@ export function classifyOutbound(href: string): OutboundKind | null {
   try { host = new URL(href).hostname.toLowerCase(); } catch { return null; }
   if (host === 'iherb.pxf.io' || host === 'iherb.com' || host.endsWith('.iherb.com')) return 'affiliate_click';
   if (host === 'shop.fullbody.co.il') return 'shop_click';
+  if (host === 't.me' || host === 'telegram.me') return 'telegram_click';
   return null;
 }
 
