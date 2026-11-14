@@ -1,7 +1,7 @@
 # Roadmap
 
 - [x] Link the owner's Google Search Console connection for fullbody.co.il; verified owner access through the linked account.
-- [ ] Inspect the 11 requested blog URLs (best-creatine-iherb, whey-vs-plant-protein, pre-workout-guide, protein-bars-guide, magnesium-for-sleep, gym-supplements-what-works, creatine-for-women, creatine-side-effects, herbalife24-guide, herbalife-protein-powder, herbalife-breakfast-routine): waiting for the owner's selection between https://fullbody.co.il/ and sc-domain:fullbody.co.il. Google indexing requests require the owner's manual URL Inspection action; the API only reads indexed state.
+- [x] Inspect the 11 requested blog URLs using the owner's selected https://fullbody.co.il/ property: all three Herbalife guides are indexed; whey-vs-plant-protein and gym-supplements-what-works are discovered but not indexed; best-creatine-iherb, pre-workout-guide, protein-bars-guide, magnesium-for-sleep, creatine-for-women and creatine-side-effects are unknown to Google. Google indexing requests require the owner's manual URL Inspection action; the API only reads indexed state. No indexing request was sent.
 
 - [x] Add the verbatim creatine-side-effects guide, cover, explicit short affiliate link, two further-reading paragraphs and blog-only discovery; regenerate indexing files; all 122 tests, prerender FAQ/link checks and desktop/mobile verification passed. Not published.
 - [ ] Submit creatine-side-effects, creatine-guide and does-creatine-cause-weight-gain to IndexNow: current scheduling guidance forbids hand-authored HTTP cron SQL; managed scheduling needs a separate authentication repair/change, so the requested vault-header pattern remains unavailable.
