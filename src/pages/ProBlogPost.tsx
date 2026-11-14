@@ -15,6 +15,8 @@ import ContentHeader from '@/components/ContentHeader';
 import DessertBookBanner from '@/components/DessertBookBanner';
 import { HOME_STRENGTH_SLUG, HOME_STRENGTH_SEO_TITLE, HOME_STRENGTH_IMAGE_ALT } from '@/data/homeStrengthSeo';
 import TelegramChannelCta from '@/components/TelegramChannelCta';
+import HerbalifeWhatsAppCta, { HerbalifeFloatingWhatsApp } from '@/components/HerbalifeWhatsAppCta';
+import { hasHerbalifeCta, HERBALIFE_DOUBLE_CTA_SLUGS, splitHerbalifeFirstSection } from '@/lib/herbalifeWhatsApp';
 import SupplementGuideLinks from '@/components/SupplementGuideLinks';
 import { relatedSupplementSlugs, relatedHerbalifeSlugs, HERBALIFE_GUIDES_TITLE } from '@/lib/supplementGuideLinks';
 
@@ -57,6 +59,9 @@ function ProBlogPostInner() {
   const approvedGuide = post.id.startsWith('guide-');
   const normalizedContent = approvedGuide ? post.content : normalizeBlogContent(post.content);
   const contentChunks = splitContentByH2(normalizedContent);
+  const herbalifeContact = hasHerbalifeCta(post.slug);
+  const doubleContact = HERBALIFE_DOUBLE_CTA_SLUGS.includes(post.slug);
+  const [firstSection, remainingSections] = splitHerbalifeFirstSection(normalizedContent);
   const articleImage = post.image || '/placeholder.svg';
   const absImage = articleImage.startsWith('/') ? `https://fullbody.co.il${articleImage}` : articleImage;
   const homeStrength = post.slug === HOME_STRENGTH_SLUG;
@@ -179,7 +184,11 @@ function ProBlogPostInner() {
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto bg-card rounded-b-2xl p-6 sm:p-10 -mt-1">
             <div className={`blog-content prose prose-lg max-w-none text-foreground prose-headings:text-foreground prose-headings:font-bold prose-h1:text-4xl prose-h2:text-2xl prose-h2:mt-10 prose-h2:mb-4 prose-h3:text-xl prose-h3:mt-6 prose-h3:mb-3 prose-p:text-foreground prose-p:leading-relaxed prose-p:mb-4 prose-ul:text-foreground prose-li:my-1 prose-strong:text-foreground [&_h2]:text-2xl [&_h2]:font-bold [&_h2]:mt-10 [&_h2]:mb-4 [&_h3]:text-xl [&_h3]:font-bold [&_h3]:mt-6 [&_h3]:mb-3 [&_p]:mb-4 [&_p]:leading-relaxed [&_a]:text-primary [&_a]:underline [&_ul]:list-disc [&_ul]:ps-6 [&_li]:my-2 [&_table]:w-full [&_table]:text-sm [&_th]:p-3 [&_td]:p-3 [&_th]:bg-secondary [&_td]:border-b [&_td]:border-border [&_caption]:mb-4 [&_strong]:font-bold [&_ol]:list-decimal [&_ol]:ps-6 [&_th]:text-start [&_th]:font-bold [&_table]:my-6`}>
-              {contentChunks.map((chunk, i) => (
+              {doubleContact ? <>
+                <div dangerouslySetInnerHTML={{ __html: firstSection }} />
+                <HerbalifeWhatsAppCta slug={post.slug} title={post.title} />
+                <div dangerouslySetInnerHTML={{ __html: remainingSections }} />
+              </> : contentChunks.map((chunk, i) => (
                 <div key={i}>
                   <div dangerouslySetInnerHTML={{ __html: chunk }} />
                 </div>
@@ -201,6 +210,8 @@ function ProBlogPostInner() {
       </article>
 
       {approvedGuide && <div className="container mx-auto px-4"><TelegramChannelCta /></div>}
+
+      {herbalifeContact && <div className="container mx-auto max-w-4xl px-4"><HerbalifeWhatsAppCta slug={post.slug} title={post.title} /></div>}
 
       {post.faq.length > 0 && !homeStrength && (
         <section className="py-12 bg-secondary/30">
@@ -288,6 +299,7 @@ function ProBlogPostInner() {
       </section>
 
       <ProFooter />
+      {herbalifeContact && <HerbalifeFloatingWhatsApp slug={post.slug} title={post.title} />}
     </div>
   );
 }

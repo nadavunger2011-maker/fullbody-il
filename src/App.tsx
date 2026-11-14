@@ -10,6 +10,7 @@ import ScrollToTop from "@/components/ScrollToTop";
 import CookieNotice from "@/components/CookieNotice";
 import { trackPageView, trackEvent } from "@/lib/analytics";
 import { classifyOutbound } from "@/lib/outboundClicks";
+import { hasHerbalifeCta } from "@/lib/herbalifeWhatsApp";
 import { trackPageView as trackFBPageView } from "@/lib/fbPixel";
 
 // Eager: landing page user typically hits first
@@ -188,7 +189,7 @@ function AppContent() {
         </Routes>
       </Suspense>
       <Suspense fallback={null}>
-        {!isCalculator && !isRecipes && !isProtocol && !isChocolateCake && !isSweets && <WhatsAppButton />}
+        {!isCalculator && !isRecipes && !isProtocol && !isChocolateCake && !isSweets && !hasHerbalifeCta(location.pathname.replace(/^\/blog\//, '').replace(/\/$/, '')) && <WhatsAppButton />}
         <LeadMagnetModal />
         <CookieNotice />
       </Suspense>

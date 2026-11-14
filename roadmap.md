@@ -1,5 +1,7 @@
 # Roadmap
 
+- [x] Add crawlable personal WhatsApp cards at the requested positions and a dismissible floating button on six Herbalife posts; preserve article sources and shop links; verify all 134 tests, six prerendered pages, desktop/mobile, click page attribution and the authenticated admin WhatsApp counter. Not published.
+
 - [x] Link the owner's Google Search Console connection for fullbody.co.il; verified owner access through the linked account.
 - [x] Inspect the 11 requested blog URLs using the owner's selected https://fullbody.co.il/ property: all three Herbalife guides are indexed; whey-vs-plant-protein and gym-supplements-what-works are discovered but not indexed; best-creatine-iherb, pre-workout-guide, protein-bars-guide, magnesium-for-sleep, creatine-for-women and creatine-side-effects are unknown to Google. Google indexing requests require the owner's manual URL Inspection action; the API only reads indexed state. No indexing request was sent.
 

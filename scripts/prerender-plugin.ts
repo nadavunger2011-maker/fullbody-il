@@ -15,6 +15,7 @@ import { HOME_FEATURED_SLUGS, CALCULATOR_RELATED_SLUGS } from "../src/lib/blogIn
 import { LEGACY_PRODUCT_HANDLES, legacyProductTarget } from "../src/lib/legacyProductRedirects";
 import { HOME_SUPPLEMENT_GUIDES, BLOG_SUPPLEMENT_GUIDES, relatedSupplementSlugs, relatedHerbalifeSlugs, HERBALIFE_GUIDES_TITLE, supplementGuideBlockHtml } from "../src/lib/supplementGuideLinks";
 import { telegramCtaHtml } from "../src/lib/telegramChannel";
+import { herbalifeArticleHtml, herbalifeWhatsAppCtaHtml } from "../src/lib/herbalifeWhatsApp";
 
 const BASE = "https://fullbody.co.il";
 const guideLinks = (slugs: string[]) => slugs.map((s) => GUIDE_POSTS.find((p) => p.slug === s)).filter(Boolean).map((p) => `<li><a href="/blog/${p!.slug}">${p!.title.replace(/&/g, "&amp;").replace(/</g, "&lt;")}</a></li>`).join("");
@@ -173,7 +174,7 @@ function articlePage(p: Post, indexed: boolean, related: Post[]): Page {
     path: `/blog/${p.slug}`, title: `${p.slug === HOME_STRENGTH_SLUG ? HOME_STRENGTH_SEO_TITLE : (p.seo_title || p.title)} | FullBody`, description, h1: p.title, image,
     noindex: !indexed, ogType: "article", jsonLd,
     body: `<nav aria-label="breadcrumb"><a href="/">בית</a> › <a href="/blog">בלוג</a> › ${esc(p.title)}</nav>`
-      + `<article>${cleanContent(p.content || "")}</article>${proBlogPosts.some(s => s.slug === p.slug && s.id.startsWith('guide-')) ? telegramCtaHtml() : ''}${faqHtml}`
+      + `<article>${herbalifeArticleHtml(cleanContent(p.content || ""), p.slug, p.title)}</article>${proBlogPosts.some(s => s.slug === p.slug && s.id.startsWith('guide-')) ? telegramCtaHtml() : ''}${herbalifeWhatsAppCtaHtml(p.slug, p.title)}${faqHtml}`
       + `<aside><strong>על הכותב:</strong> ${AUTHOR}, מפיץ עצמאי מורשה של Herbalife. <a href="/about">עוד עליי</a><p>${esc(TRANSPARENCY_DISCLOSURE)}</p></aside>`
       + (p.slug === HOME_STRENGTH_SLUG || p.slug.startsWith('magnesium-') || p.slug === 'best-magnesium-iherb' || ['protein-bars-guide', 'pre-workout-guide', 'multivitamin-for-athletes', 'bcaa-guide', 'fat-burner-guide', 'omega-3-for-athletes'].includes(p.slug) ? '' : `<aside><a href="https://shop.fullbody.co.il/?utm_source=blog&amp;utm_medium=article&amp;utm_campaign=${encodeURIComponent(p.slug)}">ספר קינוחי חלבון במתנה</a></aside>`)
       + `<p><strong>המידע אינו מהווה ייעוץ רפואי. בהריון, הנקה, מצב רפואי או נטילת תרופות – יש להתייעץ עם רופא.</strong></p>`

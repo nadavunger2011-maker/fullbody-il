@@ -314,6 +314,7 @@ export default function AdminDashboard() {
     { label: 'ביקורים', value: blog.sessions.toLocaleString(), icon: Users, color: 'text-blue-400', bg: 'bg-blue-500/10' },
     { label: 'צפיות בעמודים', value: blog.views.toLocaleString(), icon: Eye, color: 'text-purple-400', bg: 'bg-purple-500/10' },
     { label: 'לחיצות על iHerb', value: blog.clicks.toLocaleString(), icon: MousePointer, color: 'text-emerald-400', bg: 'bg-emerald-500/10' },
+    { label: 'וואטסאפ', value: blog.whatsapp.toLocaleString(), icon: MessageSquare, color: 'text-primary', bg: 'bg-secondary' },
     { label: 'ביקורים עם לחיצה', value: `${blog.clickRate.toFixed(1)}%`, icon: ArrowUpRight, color: 'text-cyan-400', bg: 'bg-cyan-500/10' },
   ];
 
@@ -445,7 +446,7 @@ export default function AdminDashboard() {
 
         <div className="max-w-7xl mx-auto px-4 py-6">
           {/* Stat Cards */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
+          <div className="grid grid-cols-2 md:grid-cols-5 gap-3 mb-6">
             {statCards.map(s => (
               <div key={s.label} className="bg-white/[0.03] border border-white/5 rounded-xl p-4 hover:bg-white/[0.05] transition">
                 <div className="flex items-center gap-2 mb-2">
