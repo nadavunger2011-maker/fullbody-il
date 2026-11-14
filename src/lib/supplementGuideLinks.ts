@@ -31,7 +31,7 @@ export function relatedHerbalifeSlugs(slug: string): string[] {
 }
 
 export const BLOG_SUPPLEMENT_GUIDES = [...new Set([
-  ...HOME_SUPPLEMENT_GUIDES, ...Object.values(POST_SUPPLEMENT_GUIDES).flat(),
+  ...HOME_SUPPLEMENT_GUIDES, ...Object.values(POST_SUPPLEMENT_GUIDES).flat(), 'creatine-side-effects',
 ])];
 
 export function relatedSupplementSlugs(slug: string): string[] {

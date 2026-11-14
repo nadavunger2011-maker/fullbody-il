@@ -7,6 +7,7 @@ export const AI_GUIDES: Record<string, string> = {
   'best-creatine-iherb': 'השוואת מוצרי קריאטין לפי הרכב, בדיקות ומחיר.',
   'creatine-for-women': 'התאמה לנשים, שימוש ושאלות נפוצות.',
   'does-creatine-cause-weight-gain': 'ההבדל בין אגירת מים לעלייה בשומן.',
+  'creatine-side-effects': 'תופעות לוואי, מיתוסים, קריאטינין בבדיקות דם ומתי להתייעץ.',
   'best-protein-powder-iherb': 'השוואת אבקות לפי מחיר לגרם חלבון.',
   'protein-powder-types-guide': 'הבדלים בין סוגי אבקות חלבון ובחירה מתאימה.',
   'whey-vs-plant-protein': 'השוואת חלבון צמחי וחלבון מי גבינה.',

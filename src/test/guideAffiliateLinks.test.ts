@@ -18,6 +18,7 @@ const expected: Record<string, string[]> = {
   'creatine-monohydrate-vs-hcl': [creatine, 'https://iherb.pxf.io/bkB1E9'],
   'does-creatine-cause-weight-gain': [],
   'creatine-for-women': [creatine, 'https://iherb.pxf.io/bkB1YP'],
+  'creatine-side-effects': [creatine],
 };
 
 const products = {

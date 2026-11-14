@@ -12,7 +12,7 @@ it('includes exactly the thirteen requested homepage guides with existing indexe
     'whey-vs-plant-protein', 'casein-protein-before-sleep', 'mass-gainer-guide', 'pre-workout-guide',
     'magnesium-types-guide', 'best-magnesium-iherb', 'magnesium-bisglycinate', 'magnesium-for-sleep', 'gym-supplements-what-works',
   ]);
-  expect(supplementGuideLinks(BLOG_SUPPLEMENT_GUIDES)).toHaveLength(16);
+  expect(supplementGuideLinks(BLOG_SUPPLEMENT_GUIDES)).toHaveLength(17);
   for (const slug of BLOG_SUPPLEMENT_GUIDES) expect(isIndexedSlug(slug)).toBe(true);
 });
 

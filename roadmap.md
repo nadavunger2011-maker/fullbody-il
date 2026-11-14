@@ -1,5 +1,8 @@
 # Roadmap
 
+- [x] Add the verbatim creatine-side-effects guide, cover, explicit short affiliate link, two further-reading paragraphs and blog-only discovery; regenerate indexing files; all 122 tests, prerender FAQ/link checks and desktop/mobile verification passed. Not published.
+- [ ] Submit creatine-side-effects, creatine-guide and does-creatine-cause-weight-gain to IndexNow: current scheduling guidance forbids hand-authored HTTP cron SQL; managed scheduling needs a separate authentication repair/change, so the requested vault-header pattern remains unavailable.
+
 - [x] Update only the two approved comparison guides' SEO metadata and 2026-11-13 dates; regenerate guide data and verify preserved content, prerender and all 109 tests without publishing.
 - [ ] Submit those two comparison URLs to IndexNow: the documented vault-header HTTP cron pattern is blocked by the current scheduling tools; managed scheduling requires an IndexNow authentication change outside this metadata-only task.
 
